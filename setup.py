@@ -1,4 +1,4 @@
-import setuptools, find_packages
+import setuptools
 
 
 
