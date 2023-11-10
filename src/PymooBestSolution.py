@@ -3,7 +3,7 @@ import multiprocessing
 import numpy as np
 import itertools
 import shutil
-from typing import Dict, List
+from typing import Dict, List, Tuple
 
 this = sys.modules[__name__]
 
@@ -40,7 +40,18 @@ def add_solutions(paths_array: List[Dict[str, str]], errors_array: np.ndarray) -
             shutil.rmtree(i)
 
 
-def add_solution(X, path, error):
+def add_solution(X: np.ndarray, path: Dict[str, str], error: float) -> None:
+    """
+    Add a solution to the shared variables if it is better than the current best solution.
+
+    Parameters:
+    - X (Any): The solution.
+    - path (str): The path associated with the solution.
+    - error (float): The error associated with the solution.
+
+    Returns:
+    None
+    """
     with this.lock:
         if this.error is None or this.error > error:
             this.X = X
@@ -48,7 +59,14 @@ def add_solution(X, path, error):
             this.error = error
 
 
-def get_solution():
+def get_solution() -> Tuple[np.ndarray, Dict[str, str], float]:
+    """
+    Retrieve the best solution.
+
+    Returns:
+    Tuple[Optional[Any], Optional[str], Optional[float]]: The best solution, path, and error.
+    """
+    
     with this.lock:
         return this.X, this.path, this.error
 
