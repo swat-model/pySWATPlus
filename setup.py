@@ -1,10 +1,8 @@
 import setuptools
 
 
-
 setuptools.setup(
     name = "PySWATPlus",
-    packages = ['PySWATPlus'],   
     version = "0.0.1",
     license = 'GPL-3.0',
     description = " Running and calibrating default or custom SWAT+ projects with Python",
