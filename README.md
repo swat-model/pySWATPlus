@@ -35,7 +35,7 @@ from pySWATPlus.TxtinoutReader import TxtinoutReader
 reader = TxtinoutReader(txtinout_folder_path)
 ```
 This class allows users to do the following: 
-##### ```set_beginning_and_end_year```
+#### ```set_beginning_and_end_year```
 It allows the user to modify the begining and end year in the ```time.sim``` file.
 
 It takes two parameters:
@@ -49,7 +49,7 @@ reader.set_beginning_and_end_year(beginning, end)
 ```py
 reader.set_beginning_and_end_year(2010, 2020)
 ```
-##### ```set_warmup```
+### ```set_warmup```
 This function allows the user to modify the warmup period (years) in the "time.sim" file.
 
 As a parameter it takes the ```warmup``` (int) value.
