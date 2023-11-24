@@ -1,6 +1,6 @@
 import subprocess 
 import os
-from src.FileReader import FileReader
+from pySWATPlus.FileReader import FileReader
 import shutil
 import tempfile
 import multiprocessing
@@ -474,7 +474,7 @@ class TxtinoutReader:
         return reader.run_swat(params, show_output = show_output)
 
 
-    def copy_and_run_star(self, args: Tuple[str, bool, Dict[str, Tuple[str, List[Tuple[str, str, int]]], bool]]) -> str:
+    def copy_and_run_star(self, args: Tuple[str, bool, Dict[str, Tuple[str, List[Tuple[str, str, int]]]], bool]) -> str:
         """
         Copy the SWAT model files to a specified directory, modify input parameters, and run the simulation using arguments provided as a tuple.
 
