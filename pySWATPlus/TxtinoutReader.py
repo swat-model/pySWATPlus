@@ -15,7 +15,7 @@ class TxtinoutReader:
     def __init__(self, path: str) -> None:
 
         """
-        Initialize a SWATReader instance for working with SWAT model data.
+        Initialize a TxtinoutReader instance for working with SWAT model data.
 
         Parameters:
         path (str or Path): The path to the SWAT model folder.
@@ -490,11 +490,9 @@ class TxtinoutReader:
     
     """
     params --> [{filename: (id_col, [(id, col, value)])}]
-    results --> {filename: [col]}
     """
     def run_parallel_swat(self, 
                           params: List[Dict[str, Tuple[str, List[Tuple[str, str, int]]]]], 
-                          results: Optional[Dict[str, List[str]]] = None, 
                           n_workers: int = 1, 
                           dir: str = None, 
                           client: Optional[dask.distributed.Client] = None) -> List[str]:
@@ -505,7 +503,6 @@ class TxtinoutReader:
         Parameters:
         params (List[Dict[str, Tuple[str, List[Tuple[str, str, int]]]]): A list of dictionaries containing modifications to input files.
         Format: [{filename: (id_col, [(id, col, value)])}].
-        results (Dict[str, List[str]], optional): A dictionary to store results. If provided, it maps filenames to columns for each simulation (default is None).
         n_workers (int, optional): The number of parallel workers to use (default is 1).
         dir (str, optional): The target directory where the SWAT model files will be copied (default is None).
         client (dask.distributed.Client, optional): A Dask client for parallel execution (default is None).
