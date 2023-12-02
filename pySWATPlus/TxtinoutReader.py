@@ -423,8 +423,11 @@ class TxtinoutReader:
             file = aux_txtinout.register_file(filename, has_units = False, index = id_col)
 
             #for each col_name in file_params
-            for id, col_name, value in file_mods:
-                file.df.loc[id, col_name] = value
+            for id, col_name, value in file_mods:   #if id is not given, value will be applied to all rows
+                if id is None:
+                    file.df[col_name] = value
+                else:
+                    file.df.loc[id, col_name] = value
 
             #store file
             file.overwrite_file()

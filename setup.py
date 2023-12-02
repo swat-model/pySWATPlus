@@ -6,7 +6,7 @@ with open("README.md", "r", encoding = "utf-8") as fh:
 setuptools.setup(
     name = "pySWATPlus",
     packages = ['pySWATPlus'],   # Chose the same as "name"
-    version = "0.0.5",
+    version = "0.0.6",
     author = "Joan Saló",
     author_email = "jsalo@icra.cat",
     description = "Running and calibrating default or custom SWAT+ projects with Python",
