@@ -207,7 +207,7 @@ reader.overwrite_file(show_output=True)
 This feature inicializes a ```SWATProblem``` instance, which is used to perform optimization of the desired SWAT+ paraleters by using the ```pymoo``` library. Parameters included in the optimisation but not related to SWAT+ can be optimised as well by using a prior function that is executed before the SWAT+ execution and modifies a parameter in the kwargs directory.
 
 The ```SWATProblem``` class takes the following parameters: 
-- ```params``` (Dict[str, Tuple[str, List[Tuple[str, str, int, int]]]]): A dictionary containing the range of values to optimize.. **Format:** {filename: (id_col, [(id, col, upper_bound, lower_bound)])}
+- ```params``` (Dict[str, Tuple[str, List[Tuple[str, str, int, int]]]]): A dictionary containing the range of values to optimize. **Format:** {filename: (id_col, [(id, col, upper_bound, lower_bound)])}
 
 - ```function_to_evaluate``` (Callable): objective function to minimize. This function should be responsible for adjusting the necessary values based on the calibration iteration, running SWAT, reading the results, comparing them with observations, and calculating an error measure. The function can accept user-defined arguments, but it must receive at least one argument (named as indicated by ```param_arg_name```), which takes a dictionary in the format {filename: (id_col, [(id, col, value)])}, representing the current calibration values. 
 **Format**: function_to_evaluate(Dict[Any, Any]) -> Tuple[int, Dict[str, str]] where the first element is the error produced in the observations and the second element is a dictionary containing a user-desired identifier as the key and the location where the simulation has been saved as the value.
