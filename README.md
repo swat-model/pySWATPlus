@@ -204,7 +204,7 @@ reader.overwrite_file(show_output=True)
 ```
 
 ## SWATProblem
-This feature inicializes a ```SWATProblem``` instance, which is used to perform optimization of the desired SWAT+ paraleters by using the ```pymoo``` library.
+This feature inicializes a ```SWATProblem``` instance, which is used to perform optimization of the desired SWAT+ parameters by using the ```pymoo``` library.
 
 The ```SWATProblem``` class takes the following parameters: 
 - ```params``` (Dict[str, Tuple[str, List[Tuple[str, str, int, int]]]]): A dictionary containing the range of values to optimize. **Format:** {filename: (id_col, [(id, col, upper_bound, lower_bound)])}
