@@ -211,9 +211,9 @@ The ```SWATProblem``` class takes the following parameters:
 
 - ```function_to_evaluate``` (Callable): objective function to minimize. This function should be responsible for adjusting the necessary values based on the calibration iteration, running SWAT, reading the results, comparing them with observations, and calculating an error measure. The function can accept user-defined arguments, but it must receive at least one argument (named as indicated by ```param_arg_name```), which takes a dictionary in the format {filename: (id_col, [(id, col, value)])}, representing the current calibration values. 
 **Format**: function_to_evaluate(Dict[Any, Any]) -> Tuple[int, Dict[str, str]] where the first element is the error produced in the observations and the second element is a dictionary containing a user-desired identifier as the key and the location where the simulation has been saved as the value.
-- ```param_arg_name``` (str): The name of the argument in the objective function that hold the current calibration parameters.
+- ```param_arg_name``` (str): The name of the argument ```function_to_evaluate``` that hold the current calibration parameters.
 - ```n_workers``` (int, optional): The number of parallel workers to use (default is 1).
-- ```**kwargs```: Additional keyword arguments, that will be passed to the objective function.
+- ```**kwargs```: Additional keyword arguments, that will alse be passed to the ```function_to_evaluate```.
 
 
 --------------------------------------------------------------------------
