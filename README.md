@@ -207,35 +207,43 @@ reader.overwrite_file(show_output=True)
 This feature inicializes a ```SWATProblem``` instance, which is used to perform optimization of the desired SWAT+ paraleters by using the ```pymoo``` library. Parameters included in the optimisation but not related to SWAT+ can be optimised as well by using a prior function that is executed before the SWAT+ execution and modifies a parameter in the kwargs directory.
 
 The ```SWATProblem``` class takes the following parameters: 
-- ```params``` (Dict[str, Tuple[str, List[Tuple[str, str, int, int]]]]): A dictionary containing parameter files. Where the first string is the file name.
-- ```function_to_evaluate``` (Callable): The objective function to be minimized. Must take a dictionary as argument, and must return a tuple where the first element is the error and the second element is a dictionary where the key is the name of the output file and the value is the path to the output file. 
-Format: function_to_evaluate(Dict[Any, Any]) -> Tuple[int, Dict[str, str]] where the first element is the error and the second element is a dictionary where the key is the name of the output file and the value is the path to the output file.
-- ```param_arg_name``` (str): The name of the argument in the objective function representing the parameters.
+- ```params``` (Dict[str, Tuple[str, List[Tuple[str, str, int, int]]]]): A dictionary containing the range of values to optimize.. **Format:** {filename: (id_col, [(id, col, upper_bound, lower_bound)])}
+
+- ```function_to_evaluate``` (Callable): objective function to minimize. This function should be responsible for adjusting the necessary values based on the calibration iteration, running SWAT, reading the results, comparing them with observations, and calculating an error measure. The function can accept user-defined arguments, but it must receive at least one argument (named as indicated by ```param_arg_name```), which takes a dictionary in the format {filename: (id_col, [(id, col, value)])}, representing the current calibration values. 
+**Format**: function_to_evaluate(Dict[Any, Any]) -> Tuple[int, Dict[str, str]] where the first element is the error produced in the observations and the second element is a dictionary containing a user-desired identifier as the key and the location where the simulation has been saved as the value.
+- ```param_arg_name``` (str): The name of the argument in the objective function that hold the current calibration parameters.
 - ```n_workers``` (int, optional): The number of parallel workers to use (default is 1).
+- - **```kwargs```: Additional keyword arguments, that will be passed to the objective function.
+
+
+--------------------------------------------------------------------------
+
 - ```ub_prior``` (List[int], optional): Upper bounds for the prior function X parameter (where X is the list of parameters optimised in the optimisation). Default is None.
 - ```lb_prior``` (List[int], optional): Lower bounds for the prior function X parameter (where X is the list of parameters optimised in the optimisation). Default is None.
 - ```function_to_evaluate_prior``` (Callable, optional): Prior function to be used for modifying parameters before SWAT+ simulation. Must take X (np.ndarray) as a mandatory argument, and must return a value that will be used to modify a parameter in the kwargs dictionary. Default is None.
 - ```args_function_to_evaluate_prior``` (Dict[str, Any], optional): Additional arguments for function_to_evaluate_prior. X does not have to be included here;
 - ```param_arg_name_to_modificate_by_prior_function``` (str, optional): Parameter modified in kwargs by the return of function_to_evaluate_prior.
-- **```kwargs```: Additional keyword arguments, that will be passed to the objective function.
+
 
 ```py
 from pySWATPlus.SWATProblem import SWATProblem
 
 problem = SWATProblem(params = ["path_to_folder",{"filename": (id_col, [(id, col, lb, up)])}, function_to_evaluate = function_to_evaluate([element1,element2]), param_arg_name = "name", n_workers = 2, ub_prior = [ub_param1, ub_param2, ub_param3], lb_prior = [lb_param1, lb_param2, lb_param3], function_to_evaluate_prior = function_to_evaluate_prior([element1, element2]), param_arg_name_to_modificate_by_prior_function = "param_name")
 ```
+
+#### Methods:
 ##### ```minimize_pymo```
 This function performs the optimization by using the pymoo library.
 
 It takes the following parameters:
-- ```problem``` (Problem): The optimization problem defined using the pymoo Problem class.
+- ```problem``` (pyswatplus SWATProblem): The optimization problem defined using the SWATProblem class.
 - ```algorithm``` (Algorithm): The optimization algorithm defined using the pymoo Algorithm class.
 - ```termination``` (Termination): The termination criteria for the optimization defined using the pymoo Termination class.
 - ```seed``` (Optional[int], optional): The random seed for reproducibility (default is None).
 - ```verbose``` (bool, optional): If True, print verbose output during optimization (default is False).
 - ```callback``` (Optional[Callable], optional): A callback function that is called after each generation (default is None).
 
-It returns the best solution found during the process. The output format is a tuple containing the decision variables, the path to the output files, and the error (Tuple[Optional[np.ndarray], Optional[str], Optional[float]]).
+It returns the best solution found during the process. The output format is a tuple containing the decision variables, the path to the output files, and the error (Tuple[np.ndarray, Dict[str, str], float]).
 
 ```py
 from pySWATPlus.SWATProblem import SWATProblem, minimize_pymoo
