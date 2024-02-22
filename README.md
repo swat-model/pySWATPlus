@@ -240,3 +240,48 @@ from pySWATPlus.SWATProblem import SWATProblem, minimize_pymoo
 x, path, error = minimize_pymoo(self.swat_problem, algorithm, termination, seed = 1, verbose = True, callback = MyCallback())
 ```
 
+## SWATProblemMultimodel
+[!WARNING]  This class is only for advanced users
+
+This class serves the same purpose as ```SWATProblem```, with the added capability of running another model before executing SWAT+. This enables running a prior model in the same calibration process, wherein the parameters are calibrated simultaneously. For example, the prior model can modify an input file of SWAT+ before initiating SWAT+.
+
+The ```SWATProblemMultimodel``` class takes the following parameters: 
+- ```params``` (Dict[str, Tuple[str, List[Tuple[str, str, int, int]]]]): A dictionary containing the range of values to optimize. **Format:** {filename: (id_col, [(id, col, upper_bound, lower_bound)])}
+
+- ```function_to_evaluate``` (Callable): objective function to minimize. This function should be responsible for adjusting the necessary values based on the calibration iteration, running SWAT, reading the results, comparing them with observations, and calculating an error measure. The function can accept user-defined arguments, but it must receive at least one argument (named as indicated by ```param_arg_name```), which takes a dictionary in the format {filename: (id_col, [(id, col, value)])}, representing the current calibration values. 
+**Format**: function_to_evaluate(Dict[Any, Any]) -> Tuple[int, Dict[str, str]] where the first element is the error produced in the observations and the second element is a dictionary containing a user-desired identifier as the key and the location where the simulation has been saved as the value.
+- ```param_arg_name``` (str): The name of the argument ```function_to_evaluate``` that hold the current calibration parameters.
+- ```n_workers``` (int, optional): The number of parallel workers to use (default is 1).
+- ```ub_prior``` (List[int], optional): Upper bounds list of calibrated parameters of the prior model. Default is None.
+- ```lb_prior``` (List[int], optional): Lower bounds list of calibrated parameters of the prior model. Default is None.
+- ```function_to_evaluate_prior``` (Callable, optional): Prior function to be used for modifying parameters before SWAT+ simulation. Must take the name indicated by ```args_function_to_evaluate_prior``` as a mandatory argument that must be a np.ndarray, and must return a value that will be used to modify a parameter in the kwargs dictionary. Default is None.
+- ```args_function_to_evaluate_prior``` (Dict[str, Any], optional): Additional arguments for function_to_evaluate_prior. ```args_function_to_evaluate_prior`` does not have to be included here;
+- ```param_arg_name_to_modificate_by_prior_function``` (str, optional): Parameter modified in kwargs by the return of ```function_to_evaluate_prior```.
+- ```**kwargs```: Additional keyword arguments, that will alse be passed to the ```function_to_evaluate```.
+
+
+```py
+from pySWATPlus.SWATProblem import SWATProblem
+
+problem = SWATProblem(params = {"filename": (id_col, [(id, col, lb, up)])}, function_to_evaluate = function_to_evaluate({name: {filename: (id_col, [(id, col, value)])}}), param_arg_name = "name", n_workers = 2, ub_prior = [ub_param1, ub_param2, ub_param3], lb_prior = [lb_param1, lb_param2, lb_param3], args_function_to_evaluate_prior = 'name2', function_to_evaluate_prior = function_to_evaluate_prior(name2 = np.np.ndarray), param_arg_name_to_modificate_by_prior_function = "param_name")
+```
+
+#### Methods:
+##### ```minimize_pymo```
+This function performs the optimization by using the pymoo library.
+
+It takes the following parameters:
+- ```problem``` (pyswatplus SWATProblem): The optimization problem defined using the SWATProblem class.
+- ```algorithm``` (Algorithm): The optimization algorithm defined using the pymoo Algorithm class.
+- ```termination``` (Termination): The termination criteria for the optimization defined using the pymoo Termination class.
+- ```seed``` (Optional[int], optional): The random seed for reproducibility (default is None).
+- ```verbose``` (bool, optional): If True, print verbose output during optimization (default is False).
+- ```callback``` (Optional[Callable], optional): A callback function that is called after each generation (default is None).
+
+It returns the best solution found during the process. The output format is a tuple containing the decision variables, the path to the output files, and the error (Tuple[np.ndarray, Dict[str, str], float]).
+
+```py
+from pySWATPlus.SWATProblem import SWATProblem, minimize_pymoo
+
+x, path, error = minimize_pymoo(self.swat_problem, algorithm, termination, seed = 1, verbose = True, callback = MyCallback())
+```
