@@ -9,10 +9,8 @@ With this package and by providing an existing SWAT+ model, modelers can do the 
 pySWATPlus can be installed via PyPI and requires additional packages to be installed first for its proper functioning. These are the commands required for installing the necessary packages:
 - ```pip install pandas```
 - ```pip install numpy```
-- ```pip install dask```
 - ```pip install pymoo```
 - ```pip install tqdm```
-- ```pip install "dask[distributed]" --upgrade```
 
 To use this package, a Python version above 3.6 is required.
 
@@ -155,7 +153,6 @@ Parameters:
 - ```params``` (List[Dict[str, Tuple[str, List[Tuple[str, str, int]]]]): A list of dictionaries containing modifications to input files. **Format:** [{filename: (id_col, [(id, col, value)])}]
 - ```n_workers``` (int, optional): The number of parallel workers to use (default is 1)
 - ```dir``` (str, optional): The target directory where the SWAT model files will be copied (default is None)
-- ```client``` (dask.distributed.Client, optional): A Dask client for parallel execution (default is None)
 
 The function returns a list of paths to the directories where the SWAT simulations were executed. list[str]
 ```py
