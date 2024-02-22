@@ -32,7 +32,7 @@ from pySWATPlus.TxtinoutReader import TxtinoutReader
 
 reader = TxtinoutReader(txtinout_folder_path)
 ```
-This class allows users to do the following: 
+#### Methods:
 ##### ```set_beginning_and_end_year```
 It allows the user to modify the begining and end year in the ```time.sim``` file.
 
@@ -127,6 +127,10 @@ txt_in_out_result = reader.run_swat(params = {'file_name': [('id_col', ['id', 'c
 ```py
 txt_in_out_result = reader.run_swat(params = {'plants.plt': [('name', ['bana', 'bm_e', 45)])}, show_output=False)
 ```
+For running the SWAT model without any parameter modification:
+```py
+txt_in_out_result = reader.run_swat()
+```
 
 ##### ```copy_and_run```
 Copy the SWAT model files to a specified directory, modify input parameters, and run the simulation
@@ -156,10 +160,10 @@ Parameters:
 
 The function returns a list of paths to the directories where the SWAT simulations were executed. list[str]
 ```py
-txt_in_out_result = reader.run_parallel_swat(params = [{'file_name': [('id_col', ['id', 'col', value)])}], show_output=False)
+txt_in_out_result = reader.run_parallel_swat(params = [{'file_name': [('id_col', ['id', 'col', value)])}], n_workers = 2)
 ```
 ```py
-txt_in_out_result = reader.run_parallel_swat(params = [{'plants.plt': [('name', ['bana', 'bm_e', 40)])}, {'plants.plt': [('name', ['bana', 'bm_e', 45)])}], show_output=False)
+txt_in_out_result = reader.run_parallel_swat(params = [{'plants.plt': [('name', ['bana', 'bm_e', 40)])}, {'plants.plt': [('name', ['bana', 'bm_e', 45)])}], n_workers = 2)
 ```
 
 ## FileReader
@@ -184,10 +188,20 @@ from pySWATPlus.FileReader import FileReader
 reader = FileReader('TxtInOut\\plants.plt', has_units = False, index = 'name', usecols=['name', 'plnt_typ', 'gro_trig'], filter_by={'plnt_typ': 'perennial'})
 ```
 
+#### Attributes:
+##### ```df```
+Returns a reference to the pandas DataFrame containing the data read from the file.
+```py
+reader.df
+```
+#### Methods:
 ##### ```overwrite_file```
 Overwrite the original file with the DataFrame.
 
 It doesn't take any parameters and neither returns anything.
+```py
+reader.overwrite_file(show_output=True)
+```
 
 ## SWATProblem
 This feature inicializes a ```SWATProblem``` instance, which is used to perform optimization of the desired SWAT+ paraleters by using the ```pymoo``` library. Parameters included in the optimisation but not related to SWAT+ can be optimised as well by using a prior function that is executed before the SWAT+ execution and modifies a parameter in the kwargs directory.
