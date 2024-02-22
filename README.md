@@ -204,7 +204,7 @@ reader.overwrite_file(show_output=True)
 ```
 
 ## SWATProblem
-This feature inicializes a ```SWATProblem``` instance, which is used to perform optimization of the desired SWAT+ paraleters by using the ```pymoo``` library. Parameters included in the optimisation but not related to SWAT+ can be optimised as well by using a prior function that is executed before the SWAT+ execution and modifies a parameter in the kwargs directory.
+This feature inicializes a ```SWATProblem``` instance, which is used to perform optimization of the desired SWAT+ paraleters by using the ```pymoo``` library. Optionally, it is allowed to run another model before SWAT+. Therefore, parameters included in the optimisation but not related to SWAT+ can be optimised as well by using a prior function that is executed before the SWAT+ execution and modifies a parameter in the kwargs directory. For example, a prior function can modify a file given a and then it can be read by the SWAT model.
 
 The ```SWATProblem``` class takes the following parameters: 
 - ```params``` (Dict[str, Tuple[str, List[Tuple[str, str, int, int]]]]): A dictionary containing the range of values to optimize. **Format:** {filename: (id_col, [(id, col, upper_bound, lower_bound)])}
@@ -213,16 +213,13 @@ The ```SWATProblem``` class takes the following parameters:
 **Format**: function_to_evaluate(Dict[Any, Any]) -> Tuple[int, Dict[str, str]] where the first element is the error produced in the observations and the second element is a dictionary containing a user-desired identifier as the key and the location where the simulation has been saved as the value.
 - ```param_arg_name``` (str): The name of the argument ```function_to_evaluate``` that hold the current calibration parameters.
 - ```n_workers``` (int, optional): The number of parallel workers to use (default is 1).
-- ```**kwargs```: Additional keyword arguments, that will alse be passed to the ```function_to_evaluate```.
-
-
---------------------------------------------------------------------------
-
-- ```ub_prior``` (List[int], optional): Upper bounds for the prior function X parameter (where X is the list of parameters optimised in the optimisation). Default is None.
-- ```lb_prior``` (List[int], optional): Lower bounds for the prior function X parameter (where X is the list of parameters optimised in the optimisation). Default is None.
-- ```function_to_evaluate_prior``` (Callable, optional): Prior function to be used for modifying parameters before SWAT+ simulation. Must take X (np.ndarray) as a mandatory argument, and must return a value that will be used to modify a parameter in the kwargs dictionary. Default is None.
+- ```ub_prior``` (List[int], optional): Upper bounds for the prior function X parameter (where X is the list of parameters optimised in the calibration). Set it to None if the goal is calibrating solely a SWAT+ model. Default is None.
+- ```lb_prior``` (List[int], optional): Lower bounds for the prior function X parameter (where X is the list of parameters optimised in the calibration). Set it to None if the goal is calibrating solely a SWAT+ model. Default is None.
+- ```function_to_evaluate_prior``` (Callable, optional): Prior function to be used for modifying parameters before SWAT+ simulation. Must take X (np.ndarray) as a mandatory argument, and must return a value that will be used to modify a parameter in the kwargs dictionary. Set it to None if the goal is calibrating solely a SWAT+ model. Default is None.
 - ```args_function_to_evaluate_prior``` (Dict[str, Any], optional): Additional arguments for function_to_evaluate_prior. X does not have to be included here;
 - ```param_arg_name_to_modificate_by_prior_function``` (str, optional): Parameter modified in kwargs by the return of function_to_evaluate_prior.
+
+- ```**kwargs```: Additional keyword arguments, that will alse be passed to the ```function_to_evaluate```.
 
 
 ```py
