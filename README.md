@@ -122,22 +122,39 @@ The function takes the following parameters:
 The function returns the path to the directory where the simulation was executed (str)
 
 ```py
-txt_in_out_result = reader.run_swat(params = {'file_name': [('id_col', ['id', 'col', value)])}, show_output=False)
+txt_in_out_result = reader.run_swat(params = {'file_name': ('id_col', [('id', 'col', value)])}, show_output=False)
 ```
 ```py
-txt_in_out_result = reader.run_swat(params = {'plants.plt': [('name', ['bana', 'bm_e', 45)])}, show_output=False)
+txt_in_out_result = reader.run_swat(params = {'plants.plt': ('name', [('bana', 'bm_e', 45)])}, show_output=False)
 ```
 For running the SWAT model without any parameter modification:
 ```py
 txt_in_out_result = reader.run_swat()
 ```
 
+##### ```copy_swat```
+Copy the SWAT model files to a specified directory.
+
+The function takes the following parameters:
+- ```dir (str, optional)```: The target directory where the SWAT model files will be copied. If None, a temporary folder will be created (default is None).
+
+- ```overwrite``` (bool, optional): If True, overwrite the content of ```dir```; if False, create a new folder inside ```dir``` (default is False).
+
+
+The function returns the path to the directory where the SWAT model files were copied (str)
+
+```py
+new_path = reader.copy_swat(dir = 'new_path', overwrite = False)
+```
+
+
+
 ##### ```copy_and_run```
 Copy the SWAT model files to a specified directory, modify input parameters, and run the simulation
 
 The function takes the following parameters: 
 - ```dir``` (str): The target directory where the SWAT model files will be copied
-- ```overwrite``` (bool, optional): If True, overwrite the content of 'dir'; if False, create a new folder (default is False)
+- ```overwrite``` (bool, optional): If True, overwrite the content of ```dir```; if False, create a new folder inside ```dir```(default is False)
 - ```params``` (Dict[str, Tuple[str, List[Tuple[str, str, int]]], optional): A dictionary containing modifications to input files. **Format:** {filename: (id_col, [(id, col, value)])}
 - ```show_output``` (bool, optional): If True, print the simulation output; if False, suppress output (default is True)
 
@@ -157,13 +174,14 @@ Parameters:
 - ```params``` (List[Dict[str, Tuple[str, List[Tuple[str, str, int]]]]): A list of dictionaries containing modifications to input files. **Format:** [{filename: (id_col, [(id, col, value)])}]
 - ```n_workers``` (int, optional): The number of parallel workers to use (default is 1)
 - ```dir``` (str, optional): The target directory where the SWAT model files will be copied (default is None)
+- ```parallelization``` (str, optional): The parallelization method to use ('thread' or 'process') (default is 'thread')
 
 The function returns a list of paths to the directories where the SWAT simulations were executed. list[str]
 ```py
 txt_in_out_result = reader.run_parallel_swat(params = [{'file_name': [('id_col', ['id', 'col', value)])}], n_workers = 2)
 ```
 ```py
-txt_in_out_result = reader.run_parallel_swat(params = [{'plants.plt': [('name', ['bana', 'bm_e', 40)])}, {'plants.plt': [('name', ['bana', 'bm_e', 45)])}], n_workers = 2)
+txt_in_out_result = reader.run_parallel_swat(params = [{'plants.plt': ('name', [('bana', 'bm_e', 45)])}, {'plants.plt': ('name', [('bana', 'bm_e', 40)])}], n_workers = 2)
 ```
 
 ## FileReader
@@ -173,7 +191,7 @@ To incicialize this class the following parameters are required:
 - ```path``` (str): The path to the file.
 - ```has_units``` (bool): Indicates if the file has units (default is False).
 - ```index``` (str, optional): The name of the index column (default is None).
-- ```usecols``` (List[str]): A list of column names to read (default is an empty list).
+- ```usecols``` (List[str], optional): A list of column names to read (default is None).
 - ```filter_by``` (Dict[str, List[str]]): A dictionary of column names and values (list of str) to filter by (default is an empty dictionary).
 
 ```py
@@ -200,7 +218,7 @@ Overwrite the original file with the DataFrame.
 
 It doesn't take any parameters and neither returns anything.
 ```py
-reader.overwrite_file(show_output=True)
+reader.overwrite_file()
 ```
 
 ## SWATProblem
