@@ -18,7 +18,7 @@ After all the requirements are met the package can be installed through the foll
 ````py
 pip install pySWATPlus
 ````
-# Examples
+# How to use it
 [https://github.com/icra/pySWATPlus/tree/main/examples](https://github.com/icra/pySWATPlus/tree/main/examples)
 
 # Package Structure
