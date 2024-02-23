@@ -217,7 +217,7 @@ Overwrite the original file with the DataFrame.
 
 It doesn't take any parameters and neither returns anything.
 ```py
-reader.overwrite_file(show_output=True)
+reader.overwrite_file()
 ```
 
 ## SWATProblem
