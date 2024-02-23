@@ -8,7 +8,7 @@ import tqdm
 from pathlib import Path
 import datetime
 from typing import List, Dict, Tuple, Optional
-import dask.distributed
+from concurrent.futures import ThreadPoolExecutor
 
 class TxtinoutReader:
 
@@ -497,8 +497,7 @@ class TxtinoutReader:
     def run_parallel_swat(self, 
                           params: List[Dict[str, Tuple[str, List[Tuple[str, str, int]]]]], 
                           n_workers: int = 1, 
-                          dir: str = None, 
-                          client: Optional[dask.distributed.Client] = None) -> List[str]:
+                          dir: str = None):
         
         """
         Run SWAT simulations in parallel with modified input parameters.
@@ -508,7 +507,6 @@ class TxtinoutReader:
         Format: [{filename: (id_col, [(id, col, value)])}].
         n_workers (int, optional): The number of parallel workers to use (default is 1).
         dir (str, optional): The target directory where the SWAT model files will be copied (default is None).
-        client (dask.distributed.Client, optional): A Dask client for parallel execution (default is None).
 
         Returns:
         List[str]: A list of paths to the directories where the SWAT simulations were executed.
@@ -519,7 +517,7 @@ class TxtinoutReader:
         max_treads = multiprocessing.cpu_count()
         threads = max(min(n_workers, max_treads), 1)
         
-        if client is None:
+        if n_workers == 1:
             
             results_ret = []
 
@@ -532,13 +530,11 @@ class TxtinoutReader:
             return results_ret
 
         else:
-
-            items = [[dir, False, params[i], False] for i in range(len(params))] 
                 
             items = [[dir, False, params[i], False] for i in range(len(params))]
 
-            futures = client.map(self.copy_and_run_star, items)
-            results = client.gather(futures)
+            with ThreadPoolExecutor(max_workers=threads) as executor:
+                results = list(executor.map(self.copy_and_run_star, items))      
 
             return results
             
