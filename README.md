@@ -191,7 +191,7 @@ To incicialize this class the following parameters are required:
 - ```path``` (str): The path to the file.
 - ```has_units``` (bool): Indicates if the file has units (default is False).
 - ```index``` (str, optional): The name of the index column (default is None).
-- ```usecols``` (List[str]): A list of column names to read (default is an empty list).
+- ```usecols``` (List[str], optional): A list of column names to read (default is None).
 - ```filter_by``` (Dict[str, List[str]]): A dictionary of column names and values (list of str) to filter by (default is an empty dictionary).
 
 ```py
