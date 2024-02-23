@@ -16,7 +16,7 @@ To use this package, a Python version above 3.6 is required.
 
 After all the requirements are met the package can be installed through the following command:
 ````py
-pip install pySWATPlus
+pip install -i https://test.pypi.org/simple/ pySWATPlus
 ````
 # How to use it
 [https://github.com/icra/pySWATPlus/tree/main/examples](https://github.com/icra/pySWATPlus/tree/main/examples)
