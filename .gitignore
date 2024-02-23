@@ -7,6 +7,11 @@ __pycache__/
 *.so
 
 # Distribution / packaging
+*.egg-info/
+*.egg
+*.egg-info
+*.tar.gz
+*.whl
 .Python
 build/
 develop-eggs/

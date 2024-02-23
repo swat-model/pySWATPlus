@@ -18,7 +18,7 @@ class TxtinoutReader:
         Initialize a TxtinoutReader instance for working with SWAT model data.
 
         Parameters:
-        path (str or Path): The path to the SWAT model folder.
+        path (str, os.PathLike): The path to the SWAT model folder.
 
         Raises:
         TypeError: If the provided path is not a string or a Path object, or if the folder does not exist,
@@ -31,16 +31,15 @@ class TxtinoutReader:
 
 
         #check if path is a string or a path
-        if isinstance(path, str):
-            #convert to path
-            path = Path(path)
-        elif not isinstance(path, Path):
-            raise TypeError("path must be a string or a Path object")
-            
-        #check if folder exists
-        if not os.path.isdir(path):
-            raise FileNotFoundError("folder does not exist")
+        if not isinstance(path, (str, os.PathLike)):
+            raise TypeError("path must be a string or os.PathLike object")
+        
+        path = Path(path).resolve()                        
 
+        #check if folder exists
+        if not path.is_dir():
+            raise FileNotFoundError("folder does not exist")
+            
         #count files that end with .exe
         count = 0
         swat_exe = None
@@ -293,8 +292,8 @@ class TxtinoutReader:
         If 'overwrite' is False, the 'txtinout' folder will be copied to a new folder inside 'dir'.
 
         Parameters:
-        dir (str, optional): The target directory where the SWAT model files will be copied.
-        overwrite (bool, optional): If True, overwrite the content of 'dir'; if False, create a new folder (default is False).
+        dir (str, optional): The target directory where the SWAT model files will be copied. If None, a temporary folder will be created (default is None).
+        overwrite (bool, optional): If True, overwrite the content of 'dir'; if False, create a new folder inside dir(default is False).
 
         Returns:
         str: The path to the directory where the SWAT model files were copied.
@@ -463,7 +462,7 @@ class TxtinoutReader:
 
         Parameters:
         dir (str): The target directory where the SWAT model files will be copied.
-        overwrite (bool, optional): If True, overwrite the content of 'dir'; if False, create a new folder (default is False).
+        overwrite (bool, optional): If True, overwrite the content of 'dir'; if False, create a new folder inside 'dir' (default is False).
         params (Dict[str, Tuple[str, List[Tuple[str, str, int]]], optional): A dictionary containing modifications to input files.
         Format: {filename: (id_col, [(id, col, value)])}.
         show_output (bool, optional): If True, print the simulation output; if False, suppress output (default is True).
@@ -497,7 +496,8 @@ class TxtinoutReader:
     def run_parallel_swat(self, 
                           params: List[Dict[str, Tuple[str, List[Tuple[str, str, int]]]]], 
                           n_workers: int = 1, 
-                          dir: str = None):
+                          dir: str = None,
+                          parallelization: str = 'thread') -> List[str]:
         
         """
         Run SWAT simulations in parallel with modified input parameters.
@@ -507,6 +507,7 @@ class TxtinoutReader:
         Format: [{filename: (id_col, [(id, col, value)])}].
         n_workers (int, optional): The number of parallel workers to use (default is 1).
         dir (str, optional): The target directory where the SWAT model files will be copied (default is None).
+        parallelization (str, optional): The parallelization method to use ('thread' or 'process') (default is 'thread').
 
         Returns:
         List[str]: A list of paths to the directories where the SWAT simulations were executed.
@@ -533,8 +534,14 @@ class TxtinoutReader:
                 
             items = [[dir, False, params[i], False] for i in range(len(params))]
 
-            with ThreadPoolExecutor(max_workers=threads) as executor:
-                results = list(executor.map(self.copy_and_run_star, items))      
+            if parallelization == 'thread':
+                with ThreadPoolExecutor(max_workers=threads) as executor:
+                    results = list(executor.map(self.copy_and_run_star, items))    
+            elif parallelization == 'process':
+                with multiprocessing.Pool(threads) as pool:
+                    results = list(pool.map(self.copy_and_run_star, items))
+            else:
+                raise ValueError("parallelization must be 'thread' or 'process'")  
 
             return results
             

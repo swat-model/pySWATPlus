@@ -3,7 +3,7 @@ import warnings
 import dask.dataframe as dd
 from pathlib import Path
 from typing import Union, List, Dict, Literal, Optional
-
+import os
 
 def read_csv(
         path: Union[str, Path], 
@@ -85,18 +85,18 @@ class FileReader:
     def __init__(self, 
                  path: str, 
                  has_units: bool = False, 
-                 index: Optional[str] = [], 
-                 usecols: List[str] = [], 
+                 index: Optional[str] = None, 
+                 usecols: List[str] = None, 
                  filter_by:  Dict[str, List[str]] = {}):
         
         '''
         Initialize a FileReader instance to read data from a file.
 
         Parameters:
-        path (str): The path to the file.
+        path (str, os.PathLike): The path to the file.
         has_units (bool): Indicates if the file has units (default is False).
         index (str, optional): The name of the index column (default is None).
-        usecols (List[str]): A list of column names to read (default is an empty list).
+        usecols (List[str], optional): A list of column names to read (default is None).
         filter_by (Dict[str, List[str]]): A dictionary of column names and values (list of str) to filter by (default is an empty dictionary).
 
         Raises:
@@ -116,9 +116,12 @@ class FileReader:
         FileReader('plants.plt', has_units = False, index = 'name', usecols=['name', 'plnt_typ', 'gro_trig'], filter_by={'plnt_typ': 'perennial'})
 
         '''
+        if not isinstance(path, (str, os.PathLike)):
+            raise TypeError("path must be a string or os.PathLike object")
+        
+        path = Path(path).resolve()
 
-        #if file does not exist, raise FileNotFoundError
-        if not Path(path).exists():
+        if not path.is_file():
             raise FileNotFoundError("file does not exist")
 
         df = None
@@ -129,7 +132,7 @@ class FileReader:
             skip_rows.append(2) #skips the units
         
         #if file is txt
-        if path.endswith('.csv'):
+        if path.suffix == '.csv':
             raise TypeError("Not implemented yet")
 
         else:
@@ -253,7 +256,7 @@ class FileReader:
         Returns:
         None
         '''
-        if self.path.endswith('.csv'):
+        if self.path.suffix == '.csv':
             self._store_csv()
         else:
             self._store_text()        
