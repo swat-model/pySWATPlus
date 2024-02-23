@@ -122,10 +122,10 @@ The function takes the following parameters:
 The function returns the path to the directory where the simulation was executed (str)
 
 ```py
-txt_in_out_result = reader.run_swat(params = {'file_name': [('id_col', ['id', 'col', value)])}, show_output=False)
+txt_in_out_result = reader.run_swat(params = {'file_name': ('id_col', [('id', 'col', value)])}, show_output=False)
 ```
 ```py
-txt_in_out_result = reader.run_swat(params = {'plants.plt': [('name', ['bana', 'bm_e', 45)])}, show_output=False)
+txt_in_out_result = reader.run_swat(params = {'plants.plt': ('name', [('bana', 'bm_e', 45)])}, show_output=False)
 ```
 For running the SWAT model without any parameter modification:
 ```py
@@ -174,13 +174,14 @@ Parameters:
 - ```params``` (List[Dict[str, Tuple[str, List[Tuple[str, str, int]]]]): A list of dictionaries containing modifications to input files. **Format:** [{filename: (id_col, [(id, col, value)])}]
 - ```n_workers``` (int, optional): The number of parallel workers to use (default is 1)
 - ```dir``` (str, optional): The target directory where the SWAT model files will be copied (default is None)
+- ```parallelization``` (str, optional): The parallelization method to use ('thread' or 'process') (default is 'thread')
 
 The function returns a list of paths to the directories where the SWAT simulations were executed. list[str]
 ```py
 txt_in_out_result = reader.run_parallel_swat(params = [{'file_name': [('id_col', ['id', 'col', value)])}], n_workers = 2)
 ```
 ```py
-txt_in_out_result = reader.run_parallel_swat(params = [{'plants.plt': [('name', ['bana', 'bm_e', 40)])}, {'plants.plt': [('name', ['bana', 'bm_e', 45)])}], n_workers = 2)
+txt_in_out_result = reader.run_parallel_swat(params = [{'plants.plt': ('name', [('bana', 'bm_e', 45)])}, {'plants.plt': ('name', [('bana', 'bm_e', 40)])}], n_workers = 2)
 ```
 
 ## FileReader
