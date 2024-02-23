@@ -132,12 +132,29 @@ For running the SWAT model without any parameter modification:
 txt_in_out_result = reader.run_swat()
 ```
 
+##### ```copy_swat```
+Copy the SWAT model files to a specified directory.
+
+The function takes the following parameters:
+- ```dir (str, optional)```: The target directory where the SWAT model files will be copied. If None, a temporary folder will be created (default is None).
+
+- ```overwrite``` (bool, optional): If True, overwrite the content of ```dir```; if False, create a new folder inside ```dir``` (default is False).
+
+
+The function returns the path to the directory where the SWAT model files were copied (str)
+
+```py
+new_path = reader.copy_swat(dir = 'new_path', overwrite = False)
+```
+
+
+
 ##### ```copy_and_run```
 Copy the SWAT model files to a specified directory, modify input parameters, and run the simulation
 
 The function takes the following parameters: 
 - ```dir``` (str): The target directory where the SWAT model files will be copied
-- ```overwrite``` (bool, optional): If True, overwrite the content of 'dir'; if False, create a new folder (default is False)
+- ```overwrite``` (bool, optional): If True, overwrite the content of ```dir```; if False, create a new folder inside ```dir```(default is False)
 - ```params``` (Dict[str, Tuple[str, List[Tuple[str, str, int]]], optional): A dictionary containing modifications to input files. **Format:** {filename: (id_col, [(id, col, value)])}
 - ```show_output``` (bool, optional): If True, print the simulation output; if False, suppress output (default is True)
 
