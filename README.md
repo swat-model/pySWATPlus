@@ -233,12 +233,13 @@ The ```SWATProblem``` class takes the following parameters:
 - ```function_to_evaluate``` (Callable): An objective function to minimize. This function, which has to be created entirely by the user, should be responsible for adjusting the necessary values based on the calibration iteration, running SWAT, reading the results, comparing them with observations, and calculating an error measure. The function must receive a single argument, which is a dictionary that can contain any user-defined items. However, it must receive at least one item (named as indicated by ```param_arg_name```), which takes a dictionary in the format {filename: (id_col, [(id, col, value)])}, representing the current calibration values. **Format**: function_to_evaluate(Dict[Any, Any]) -> Tuple[int, Dict[str, str]] where the first element is the error produced in the observations and the second element is a dictionary containing a user-desired identifier as the key and the location where the simulation has been saved as the value.
 - ```param_arg_name``` (str): The name of the argument within ```function_to_evaluate``` function where the current calibration parameters are expected to be passed. This parameter must be included in ```**kwargs```
 - ```n_workers``` (int, optional): The number of parallel workers to use (default is 1).
+- ```parallelization``` (str, optional): The parallelization method to use ('thread' or 'process') (default is 'thread').
 - ```**kwargs```: Additional keyword arguments, that will be passed to the ```function_to_evaluate```.
 
 
 ```py
 from pySWATPlus.SWATProblem import SWATProblem
-problem = SWATProblem(params = {"filename": (id_col, [(id, col, lb, up)])}, function_to_evaluate = function, param_arg_name = "name", n_workers = 2, kwarg1 = arg1, kwarg2 = arg2)
+problem = SWATProblem(params = {"filename": (id_col, [(id, col, lb, up)])}, function_to_evaluate = function, param_arg_name = "name", n_workers = 2, parallelization = 'thread', kwarg1 = arg1, kwarg2 = arg2)
 ```
 
 #### Methods:
@@ -272,6 +273,7 @@ The ```SWATProblemMultimodel``` class takes the following parameters:
 - ```function_to_evaluate``` (Callable): An objective function to minimize. This function, which has to be created entirely by the user, should be responsible for adjusting the necessary values based on the calibration iteration, running SWAT, reading the results, comparing them with observations, and calculating an error measure. The function must receive a single argument, which is a dictionary that can contain any user-defined items. However, it must receive at least one item (named as indicated by ```param_arg_name```), which takes a dictionary in the format {filename: (id_col, [(id, col, value)])}, representing the current calibration values. **Format**: function_to_evaluate(Dict[Any, Any]) -> Tuple[int, Dict[str, str]] where the first element is the error produced in the observations and the second element is a dictionary containing a user-desired identifier as the key and the location where the simulation has been saved as the value.
 - ```param_arg_name``` (str): The name of the argument within ```function_to_evaluate``` function where the current calibration parameters are expected to be passed. This parameter must be included in ```**kwargs```
 - ```n_workers``` (int, optional): The number of parallel workers to use (default is 1).
+- ```parallelization``` (str, optional): The parallelization method to use ('thread' or 'process') (default is 'thread').
 - ```ub_prior``` (List[int], optional): Upper bounds list of calibrated parameters of the prior model. Default is None.
 - ```lb_prior``` (List[int], optional): Lower bounds list of calibrated parameters of the prior model. Default is None.
 - ```function_to_evaluate_prior``` (Callable, optional): Prior function to be used for modifying parameters before SWAT+ simulation. Must take the name indicated by ```args_function_to_evaluate_prior``` as a mandatory argument, and must be a np.ndarray, so in the source code the following is done: ```function_to_evaluate_prior(args_function_to_evaluate_prior = np.ndarray, ...)```. Must return a value that will be used to modify a parameter in the kwargs dictionary. Default is None. 
@@ -283,7 +285,7 @@ The ```SWATProblemMultimodel``` class takes the following parameters:
 ```py
 from pySWATPlus.SWATProblem import SWATProblem
 
-problem = SWATProblem(params = {"filename": (id_col, [(id, col, lb, up)])}, function_to_evaluate = function, param_arg_name = "name", n_workers = 2, ub_prior = [ub_param1, ub_param2, ub_param3], lb_prior = [lb_param1, lb_param2, lb_param3], args_function_to_evaluate_prior = 'name2', function_to_evaluate_prior = function_to_evaluate_prior, param_arg_name_to_modificate_by_prior_function = "param_name", kwarg1 = arg1, kwarg2 = arg2)
+problem = SWATProblem(params = {"filename": (id_col, [(id, col, lb, up)])}, function_to_evaluate = function, param_arg_name = "name", n_workers = 2, parallelization = 'thread', ub_prior = [ub_param1, ub_param2, ub_param3], lb_prior = [lb_param1, lb_param2, lb_param3], args_function_to_evaluate_prior = 'name2', function_to_evaluate_prior = function_to_evaluate_prior, param_arg_name_to_modificate_by_prior_function = "param_name", kwarg1 = arg1, kwarg2 = arg2)
 ```
 
 #### Methods:
