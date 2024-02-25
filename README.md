@@ -11,6 +11,8 @@ pySWATPlus can be installed via PyPI and requires additional packages to be inst
 - ```pip install numpy```
 - ```pip install pymoo```
 - ```pip install tqdm```
+- ```pip install dask```
+
 
 To use this package, a Python version above 3.6 is required.
 
