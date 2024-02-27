@@ -1,12 +1,11 @@
 from pymoo.core.problem import Problem
-import src.PymooBestSolution
+from pySWATPlus.PymooBestSolution import get_solution, add_solutions
 import copy
 import numpy as np
 from typing import Optional, Callable, Tuple, Any, Dict, List
-#from pymoo.model.algorithm import Algorithm
-#from pymoo.model.termination import Termination
 from pymoo.optimize import minimize
 from concurrent.futures import ThreadPoolExecutor
+import multiprocessing
 
 def minimize_pymoo(
         problem: Problem, 
@@ -31,15 +30,24 @@ def minimize_pymoo(
     - Tuple[np.ndarray, Dict[str, str], float]: The best solution found during the optimization process, in the form of a tuple containing the decision variables, the path to the output files with the identifier, and the error.
     """
 
-    minimize(problem,
-        algorithm,
-        seed=seed,
-        verbose=verbose,
-        callback=callback,
-        termination = termination
-    )
+    if callback is None:
+        minimize(problem,
+            algorithm,
+            seed=seed,
+            verbose=verbose,
+            termination = termination
+        )
+    else:
+        minimize(problem,
+            algorithm,
+            seed=seed,
+            verbose=verbose,
+            callback=callback,
+            termination = termination
+        )
 
-    return src.PymooBestSolution.get_solution()
+
+    return get_solution()
 
 
 class SWATProblemMultimodel(Problem):
@@ -49,7 +57,7 @@ class SWATProblemMultimodel(Problem):
                  function_to_evaluate: Callable,
                  param_arg_name: str,
                  n_workers: int = 1,
-
+                 parallelization: str = 'thread',
                  ub_prior: Optional[List[int]] = None,
                  lb_prior: Optional[List[int]] = None,
                  function_to_evaluate_prior: Optional[Callable] = None, #Must get X (np.ndarray) as mandatory argument
@@ -69,6 +77,7 @@ class SWATProblemMultimodel(Problem):
           Format: function_to_evaluate(Dict[Any, Any]) -> Tuple[int, Dict[str, str]] where the first element is the error produced in the observations and the second element is a dictionary containing a user-desired identifier as the key and the location where the simulation has been saved as the value.
         - param_arg_name (str): The name of the argument within function_to_evaluate function where the current calibration parameters are expected to be passed. This parameter must be included in **kwargs
         - n_workers (int, optional): The number of parallel workers to use (default is 1).
+        - parallelization (str, optional): The parallelization method to use ('thread' or 'process') (default is 'thread').
         - ub_prior (List[int], optional): Upper bounds list of calibrated parameters of the prior model. Default is None.
         - lb_prior (List[int], optional): Lower bounds list of calibrated parameters of the prior model. Default is None.
         - function_to_evaluate_prior (Callable, optional): Prior function to be used for modifying parameters before SWAT+ simulation. Must take the name indicated by args_function_to_evaluate_prior as a mandatory argument, and must be a np.ndarray, so in the source code the following is done: function_to_evaluate_prior(args_function_to_evaluate_prior = np.ndarray, ...). Must return a value that will be used to modify a parameter in the kwargs dictionary. Default is None. 
@@ -103,6 +112,7 @@ class SWATProblemMultimodel(Problem):
 
         self.function_to_evaluate = function_to_evaluate
         self.n_workers = n_workers
+        self.parallelization = parallelization
         self.params = params
         self.kwargs = kwargs
         self.param_arg_name = param_arg_name
@@ -164,9 +174,16 @@ class SWATProblemMultimodel(Problem):
             args_array.append(copy.deepcopy(self.kwargs))
         
         #F = self.pool.map(self.fuction_to_evaluate, args_array)
-        with ThreadPoolExecutor(max_workers=self.n_workers) as executor:
-            F = list(executor.map(self.function_to_evaluate, args_array))      
-        
+        if self.parallelization == 'thread':
+            with ThreadPoolExecutor(max_workers=self.n_workers) as executor:
+                F = list(executor.map(self.function_to_evaluate, args_array))      
+        elif self.parallelization == 'process':
+            with multiprocessing.Pool(self.n_workers) as pool:
+                F = list(pool.map(self.function_to_evaluate, args_array))
+        else:
+            raise ValueError("parallelization must be 'thread' or 'process'")  
+
+                
         errors, paths = zip(*F)
 
         errors_array = np.array(errors)
@@ -185,7 +202,7 @@ class SWATProblemMultimodel(Problem):
 
         print('adding solutions')
 
-        src.PymooBestSolution.add_solutions(paths_array, errors_array)
+        add_solutions(paths_array, errors_array)
     
         print('exit adding solutions')
 
