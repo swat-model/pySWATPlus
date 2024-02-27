@@ -497,7 +497,7 @@ class TxtinoutReader:
                           params: List[Dict[str, Tuple[str, List[Tuple[str, str, int]]]]], 
                           n_workers: int = 1, 
                           dir: str = None,
-                          parallelization: str = 'thread') -> List[str]:
+                          parallelization: str = 'threads') -> List[str]:
         
         """
         Run SWAT simulations in parallel with modified input parameters.
@@ -507,7 +507,7 @@ class TxtinoutReader:
         Format: [{filename: (id_col, [(id, col, value)])}].
         n_workers (int, optional): The number of parallel workers to use (default is 1).
         dir (str, optional): The target directory where the SWAT model files will be copied (default is None).
-        parallelization (str, optional): The parallelization method to use ('thread' or 'process') (default is 'thread').
+        parallelization (str, optional): The parallelization method to use ('threads' or 'processes') (default is 'threads').
 
         Returns:
         List[str]: A list of paths to the directories where the SWAT simulations were executed.
@@ -534,14 +534,14 @@ class TxtinoutReader:
                 
             items = [[dir, False, params[i], False] for i in range(len(params))]
 
-            if parallelization == 'thread':
+            if parallelization == 'threads':
                 with ThreadPoolExecutor(max_workers=threads) as executor:
                     results = list(executor.map(self.copy_and_run_star, items))    
-            elif parallelization == 'process':
+            elif parallelization == 'processes':
                 with multiprocessing.Pool(threads) as pool:
                     results = list(pool.map(self.copy_and_run_star, items))
             else:
-                raise ValueError("parallelization must be 'thread' or 'process'")  
+                raise ValueError("parallelization must be 'threads' or 'processes'")  
 
             return results
             
