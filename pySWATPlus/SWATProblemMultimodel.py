@@ -1,11 +1,12 @@
 from pymoo.core.problem import Problem
-from pySWATPlus.PymooBestSolution import get_solution, add_solutions
 import copy
 import numpy as np
 from typing import Optional, Callable, Tuple, Any, Dict, List
 from pymoo.optimize import minimize
 from concurrent.futures import ThreadPoolExecutor
 import multiprocessing
+from pySWATPlus.PymooBestSolution import get_solution, add_solutions
+
 
 def minimize_pymoo(
         problem: Problem, 
@@ -213,7 +214,7 @@ class SWATProblemMultimodel(Problem):
         if self.debug:
             print('adding solutions')
 
-        add_solutions(paths_array, errors_array)
+        add_solutions(X, paths_array, errors_array)
     
         if self.debug:
             print('exit adding solutions')

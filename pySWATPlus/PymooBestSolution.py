@@ -13,23 +13,24 @@ this.error = None
 this.lock = multiprocessing.Lock()
 
 
-def add_solutions(paths_array: List[Dict[str, str]], errors_array: np.ndarray) -> None:
+def add_solutions(X, paths_array: List[Dict[str, str]], errors_array: np.ndarray) -> None:
     """
     Update the best solution based on the provided paths and errors. Only the best solution is kept, the other ones are deleted.
 
     Parameters:
+    - X (np.ndarray): An array of the parameters used in each simulation.
     - paths_array (np.ndarray): An array of dictionaries containing the paths to the output files.
     - errors_array (np.ndarray): An array of errors.
 
     Returns:
     None
     """
-    
     min_idx = np.nanargmin(errors_array)
     path = paths_array[min_idx]
     error = errors_array[min_idx]
+    x = X[min_idx]
 
-    add_solution(None, path, error)
+    add_solution(x, path, error)
 
     best = this.path.values()
     all_paths = itertools.chain.from_iterable((map(lambda x: x.values(), paths_array)))
