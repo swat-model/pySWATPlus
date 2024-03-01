@@ -64,7 +64,6 @@ class SWATProblemMultimodel(Problem):
                  args_function_to_evaluate_prior: Optional[Dict[str, Any]] = None,  #X does not have to be in here, it's added in the function
                  param_arg_name_to_modificate_by_prior_function: Optional[str] = None,  #param that is modified in kwargs by the return of the prior function
                  debug: bool = False,
-
                  **kwargs: Dict[str, Any]
                  ) -> None:
         
@@ -92,8 +91,11 @@ class SWATProblemMultimodel(Problem):
         None
         """
         
+        
         lb = []
         ub = []
+        
+        #build upper and lower bounds
         for _, params_file in list(params.values()):
             for x in params_file:
                 lb.append(x[2])
@@ -103,7 +105,6 @@ class SWATProblemMultimodel(Problem):
 
         self.n_vars_prior = 0
         if ub_prior is not None and lb_prior is not None:
-
             if len(ub_prior) != len(lb_prior):
                 raise ValueError('ub_prior and lb_prior must have the same length')
 
@@ -122,11 +123,9 @@ class SWATProblemMultimodel(Problem):
         self.args_function_to_evaluate_prior = args_function_to_evaluate_prior
         self.param_arg_name_to_modificate_by_prior_function = param_arg_name_to_modificate_by_prior_function
         self.debug = debug
-                
-        
+                        
         super().__init__(n_var=n_vars, n_obj=1, n_constr=0, xl=lb, xu=ub, elementwise_evaluation=False)
 
-        
 
     def _evaluate(self, 
                   X: np.ndarray, 
@@ -177,6 +176,9 @@ class SWATProblemMultimodel(Problem):
             
             args_array.append(copy.deepcopy(self.kwargs))
         
+        if self.debug:
+            print('begin running simulations')
+
         #F = self.pool.map(self.fuction_to_evaluate, args_array)
         if self.parallelization == 'threads':
             with ThreadPoolExecutor(max_workers=self.n_workers) as executor:
@@ -186,6 +188,9 @@ class SWATProblemMultimodel(Problem):
                 F = list(pool.map(self.function_to_evaluate, args_array))
         else:
             raise ValueError("parallelization must be 'threads' or 'processes'")  
+        
+        if self.debug:
+            print('simulations done')
 
                 
         errors, paths = zip(*F)
