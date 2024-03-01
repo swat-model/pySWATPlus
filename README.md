@@ -1,9 +1,11 @@
 # pySWATPlus
-pySWATPlus is a python package for running and calibrating default or custom SWAT+ projects with python.
+pySWATPlus is a python package for running and calibrating default or custom SWAT+ projects with Python.
 
 With this package and by providing an existing SWAT+ model, modelers can do the following: 
 - Acces the TxtInOut folder used by SWAT+ and navigate through all its files in order to read, modify and write them.
 - Calibrate the different SWAT+ input parameters in order to optimize the output through the Pymoo.
+
+pySWATPlus is open source software released by [ICRA](https://icra.cat/). It is available for download on [PyPI](https://test.pypi.org/project/pySWATPlus/).
 
 # Installation
 pySWATPlus can be installed via PyPI and requires additional packages to be installed first for its proper functioning. These are the commands required for installing the necessary packages:
