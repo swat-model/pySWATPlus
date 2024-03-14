@@ -248,7 +248,7 @@ problem = SWATProblem(params = {"filename": (id_col, [(id, col, lb, up)])}, func
 ```
 
 #### Methods:
-##### ```minimize_pymo```
+##### ```minimize_pymoo```
 This function performs the optimization by using the pymoo library.
 
 It takes the following parameters:
@@ -296,7 +296,7 @@ problem = SWATProblem(params = {"filename": (id_col, [(id, col, lb, up)])}, func
 ```
 
 #### Methods:
-##### ```minimize_pymo```
+##### ```minimize_pymoo```
 This function performs the optimization by using the pymoo library.
 
 It takes the following parameters:
