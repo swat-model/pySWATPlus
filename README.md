@@ -184,10 +184,10 @@ Parameters:
 
 The function returns a list of paths to the directories where the SWAT simulations were executed. list[str]
 ```py
-txt_in_out_result = reader.run_parallel_swat(params = [{'file_name': [('id_col', ['id', 'col', value)])}], n_workers = 2)
+txt_in_out_result = reader.run_parallel_swat(params = [{'file_name': [('id_col', ['id', 'col', value)])}], n_workers = n_workers, parallelization = 'parallelization_mode')
 ```
 ```py
-txt_in_out_result = reader.run_parallel_swat(params = [{'plants.plt': ('name', [('bana', 'bm_e', 45)])}, {'plants.plt': ('name', [('bana', 'bm_e', 40)])}], n_workers = 2)
+txt_in_out_result = reader.run_parallel_swat(params = [{'plants.plt': ('name', [('bana', 'bm_e', 45)])}, {'plants.plt': ('name', [('bana', 'bm_e', 40)])}], n_workers = 2, parallelization = 'threads')
 ```
 
 ## FileReader
