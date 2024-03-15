@@ -38,6 +38,18 @@ from pySWATPlus.TxtinoutReader import TxtinoutReader
 
 reader = TxtinoutReader(txtinout_folder_path)
 ```
+
+#### Attributes:
+##### ```root_folder```
+Returns the path of the used TxtInOut folder
+```py
+reader.root_folder
+```
+##### ```swat_exe_path```
+The path to the main SWAT executable file
+```py
+reader.swat_exe_path
+```
 #### Methods:
 ##### ```set_beginning_and_end_year```
 It allows the user to modify the begining and end year in the ```time.sim``` file.
