@@ -9,7 +9,7 @@ def minimize_pymoo(
         termination: Any, 
         seed: Optional[int] = None, 
         verbose: bool = False, 
-        callback: Optional[Callable] = None) -> Tuple[np.ndarray, str, float]:
+        callback: Optional[Callable] = None) -> Tuple[np.ndarray, Dict[str, str], float]:
     
     """
     Perform optimization using the pymoo library.
