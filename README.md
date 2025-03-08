@@ -1,11 +1,16 @@
 # pySWATPlus
+
+
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.14889320.svg)](https://doi.org/10.5281/zenodo.14889320)
+
+
 pySWATPlus is a python package for running and calibrating default or custom SWAT+ projects with Python.
 
 With this package and by providing an existing SWAT+ model, modelers can do the following: 
 - Acces the TxtInOut folder used by SWAT+ and navigate through all its files in order to read, modify and write them.
 - Calibrate the different SWAT+ input parameters in order to optimize the output through the Pymoo.
 
-pySWATPlus is open source software released by [ICRA](https://icra.cat/). It is available for download on [PyPI](https://test.pypi.org/project/pySWATPlus/).
+pySWATPlus is open source software released by [ICRA](https://icra.cat/). It is available for download on [PyPI](https://pypi.org/project/pySWATPlus/).
 
 # Installation
 pySWATPlus can be installed via PyPI and requires additional packages to be installed first for its proper functioning. These are the commands required for installing the necessary packages:
@@ -20,10 +25,10 @@ To use this package, a Python version above 3.6 is required.
 
 After all the requirements are met the package can be installed through the following command:
 ````py
-pip install -i https://test.pypi.org/simple/ pySWATPlus
+pip install pySWATPlus
 ````
 # How to use it
-[https://github.com/icra/pySWATPlus/tree/main/examples](https://github.com/icra/pySWATPlus/tree/main/examples)
+[https://github.com/swat-model/pySWATPlus/tree/main/examples](https://github.com/swat-model/pySWATPlus/tree/main/examples)
 
 # Package Structure
 The package consists of three main features: 
@@ -326,3 +331,16 @@ from pySWATPlus.SWATProblem import SWATProblem, minimize_pymoo
 
 x, path, error = minimize_pymoo(self.swat_problem, algorithm, termination, seed = 1, verbose = True, callback = MyCallback())
 ```
+#### 📖 Citation
+If you use **pySWATPlus**, please cite it as follows:
+```bibtex
+@software{Salo_Llorente_2025,
+  author    = {Joan Saló and Oliu Llorente},
+  title     = {swat-model/pySWATPlus: pySWATPlus},
+  year      = {2025},
+  version   = {0.1.0},
+  publisher = {Zenodo},
+  doi       = {10.5281/zenodo.14889320},
+  url       = {https://doi.org/10.5281/zenodo.14889320}
+}
+
