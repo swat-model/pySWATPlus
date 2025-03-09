@@ -1,10 +1,8 @@
 [build-system]
-requires = ["setuptools", "wheel"]
-build-backend = "setuptools.build_meta"
+requires = ["setuptools", "setuptools-scm", "wheel"]build-backend = "setuptools.build_meta"
 
 [project]
 name = "pySWATPlus"
-version = "0.1.0"
 description = "Running and calibrating default or custom SWAT+ projects with Python"
 readme = "README.md"
 requires-python = ">=3.6"
@@ -26,3 +24,7 @@ Issues = "https://github.com/swat-model/pySWATPlus/issues"
 
 [tool.setuptools]
 packages = ["pySWATPlus"]
+
+[tool.setuptools_scm]
+version_scheme = "post-release"
+local_scheme = "no-local-version"
