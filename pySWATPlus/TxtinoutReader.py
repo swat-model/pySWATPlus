@@ -1,14 +1,15 @@
 import subprocess 
 import os
-from pySWATPlus.FileReader import FileReader
+from .FileReader import FileReader
 import shutil
 import tempfile
 import multiprocessing
 import tqdm
 from pathlib import Path
-import datetime
-from typing import List, Dict, Tuple, Optional
+from typing import List, Dict, Tuple, Optional, Union
 from concurrent.futures import ThreadPoolExecutor
+import re
+
 
 class TxtinoutReader:
 
@@ -399,18 +400,19 @@ class TxtinoutReader:
     """
     params --> {filename: (id_col, [(id, col, value)])}
     """
-    def run_swat(self, params: Dict[str, Tuple[str, List[Tuple[str, str, int]]]] = {}, show_output: bool = True) -> str:
+    def run_swat(self, params: Dict[str, Tuple[str, List[Tuple[Union[None, str, re.Pattern], str, int]]]] = {}, show_output: bool = True) -> str:
         """
         Run the SWAT simulation with modified input parameters.
 
         Parameters:
-        params (Dict[str, Tuple[str, List[Tuple[str, str, int]]], optional): A dictionary containing modifications to input files. Format: {filename: (id_col, [(id, col, value)])}.
+        params (Dict[str, Tuple[str, List[Tuple[Union[None, str, re.Pattern], str, int]]]], optional): 
+            A dictionary containing modifications to input files. Format: {filename: (id_col, [(id, col, value)])}.
+            'id' can be None to apply the value to all rows or a regex pattern to match multiple IDs.
         show_output (bool, optional): If True, print the simulation output; if False, suppress output (default is True).
 
         Returns:
         str: The path to the directory where the SWAT simulation was executed.
         """
-
         aux_txtinout = TxtinoutReader(self.root_folder)
 
         #Modify files for simulation
@@ -422,40 +424,41 @@ class TxtinoutReader:
             file = aux_txtinout.register_file(filename, has_units = False, index = id_col)
 
             #for each col_name in file_params
-            for id, col_name, value in file_mods:   #if id is not given, value will be applied to all rows
+            for id, col_name, value in file_mods:   # 'id' can be None, a str or a regex pattern
                 if id is None:
                     file.df[col_name] = value
+                elif isinstance(id, re.Pattern):
+                    mask = file.df.index.astype(str).str.match(id)
+                    file.df.loc[mask, col_name] = value
                 else:
                     file.df.loc[id, col_name] = value
-
+            
             #store file
             file.overwrite_file()
                 
-        beginning = datetime.datetime.now()
         
         #run simulation
-        #print(f'Simulation started at {beginning.strftime("%H:%M:%S")}. Stored at {str(self.root_folder)}.')
         aux_txtinout._run_swat(show_output=show_output)
-        end = datetime.datetime.now()
-        td = end - beginning
 
         return self.root_folder
 
 
-    def run_swat_star(self, args: Tuple[Dict[str, Tuple[str, List[Tuple[str, str, int]]]], bool]) -> str:
+    def run_swat_star(self, args: Tuple[Dict[str, Tuple[str, List[Tuple[Union[None, str, re.Pattern], str, int]]]], bool]) -> str:
         """
         Run the SWAT simulation with modified input parameters using arguments provided as a tuple.
 
         Parameters:
-        args (Tuple[Dict[str, Tuple[str, List[Tuple[str, str, int]]], bool]): A tuple containing simulation parameters.
-        The first element is a dictionary with input parameter modifications, the second element is a boolean to show output.
+        args (Tuple[Dict[str, Tuple[str, List[Tuple[Union[None, str, re.Pattern], str, int]]]]], bool]): 
+            A tuple containing simulation parameters.
+            The first element is a dictionary with input parameter modifications, 
+            the second element is a boolean to show output.
 
         Returns:
         str: The path to the directory where the SWAT simulation was executed.
         """
         return self.run_swat(*args)
 
-    def copy_and_run(self, dir: str, overwrite: bool = False, params: Dict[str, Tuple[str, List[Tuple[str, str, int]]]] = {}, show_output: bool = True) -> str:
+    def copy_and_run(self, dir: str, overwrite: bool = False, params: Dict[str, Tuple[str, List[Tuple[Union[None, str, re.Pattern], str, int]]]] = {}, show_output: bool = True) -> str:
         
         """
         Copy the SWAT model files to a specified directory, modify input parameters, and run the simulation.
@@ -463,7 +466,8 @@ class TxtinoutReader:
         Parameters:
         dir (str): The target directory where the SWAT model files will be copied.
         overwrite (bool, optional): If True, overwrite the content of 'dir'; if False, create a new folder inside 'dir' (default is False).
-        params (Dict[str, Tuple[str, List[Tuple[str, str, int]]], optional): A dictionary containing modifications to input files.
+        params (Dict[str, Tuple[str, List[Tuple[Union[None, str, re.Pattern], str, int]]]], optional):
+            A dictionary containing modifications to input files. Format: {filename: (id_col, [(id, col, value)])}.
         Format: {filename: (id_col, [(id, col, value)])}.
         show_output (bool, optional): If True, print the simulation output; if False, suppress output (default is True).
 
@@ -476,13 +480,15 @@ class TxtinoutReader:
         return reader.run_swat(params, show_output = show_output)
 
 
-    def copy_and_run_star(self, args: Tuple[str, bool, Dict[str, Tuple[str, List[Tuple[str, str, int]]]], bool]) -> str:
+    def copy_and_run_star(self, args: Tuple[str, bool, Dict[str, Tuple[str, List[Tuple[Union[None, str, re.Pattern], str, int]]]], bool]) -> str:
         """
         Copy the SWAT model files to a specified directory, modify input parameters, and run the simulation using arguments provided as a tuple.
 
         Parameters:
-        args (Tuple[str, bool, Dict[str, Tuple[str, List[Tuple[str, str, int]]], bool]): A tuple containing simulation parameters.
-        The first element is the target directory, the second element is a boolean to overwrite content, and the third element is a dictionary with input parameter modifications and a boolean to show output.
+        args (Tuple[Dict[str, Tuple[str, List[Tuple[Union[None, str, re.Pattern], str, int]]]]], bool]): 
+            A tuple containing simulation parameters.
+            The first element is a dictionary with input parameter modifications, 
+            the second element is a boolean to show output.
 
         Returns:
         str: The path to the directory where the SWAT simulation was executed.
@@ -494,7 +500,7 @@ class TxtinoutReader:
     params --> [{filename: (id_col, [(id, col, value)])}]
     """
     def run_parallel_swat(self, 
-                          params: List[Dict[str, Tuple[str, List[Tuple[str, str, int]]]]], 
+                          params: List[Dict[str, Tuple[str, List[Tuple[Union[None, str, re.Pattern], str, int]]]]], 
                           n_workers: int = 1, 
                           dir: str = None,
                           parallelization: str = 'threads') -> List[str]:
@@ -503,8 +509,8 @@ class TxtinoutReader:
         Run SWAT simulations in parallel with modified input parameters.
 
         Parameters:
-        params (List[Dict[str, Tuple[str, List[Tuple[str, str, int]]]]): A list of dictionaries containing modifications to input files.
-        Format: [{filename: (id_col, [(id, col, value)])}].
+        params (Dict[str, Tuple[str, List[Tuple[Union[None, str, re.Pattern], str, int]]]], optional):
+            A dictionary containing modifications to input files. Format: {filename: (id_col, [(id, col, value)])}.
         n_workers (int, optional): The number of parallel workers to use (default is 1).
         dir (str, optional): The target directory where the SWAT model files will be copied (default is None).
         parallelization (str, optional): The parallelization method to use ('threads' or 'processes') (default is 'threads').

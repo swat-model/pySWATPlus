@@ -1,0 +1,28 @@
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "pySWATPlus"
+version = "0.1.0"
+description = "Running and calibrating default or custom SWAT+ projects with Python"
+readme = "README.md"
+requires-python = ">=3.6"
+license = {text = "GPL-3.0"}
+authors = [
+    { name = "Joan Saló", email = "joansalograu@gmail.com" }
+]
+keywords = ["SWAT+", "hydrology", "calibration", "Python"]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
+    "Operating System :: OS Independent"
+]
+
+[project.urls]
+Homepage = "https://github.com/swat-model/pySWATPlus"
+Repository = "https://github.com/swat-model/pySWATPlus"
+Issues = "https://github.com/swat-model/pySWATPlus/issues"
+
+[tool.setuptools]
+packages = ["pySWATPlus"]

@@ -1,0 +1,45 @@
+site_name: pySWATPlus
+theme:
+  name: material
+  features:
+    - navigation.tabs
+    - content.code.annotate
+  palette: 
+    - scheme: default
+      toggle:
+        icon: material/toggle-switch-off-outline
+        name: Switch to dark mode
+    - scheme: slate
+      toggle:
+        icon: material/toggle-switch
+        name: Switch to light mode
+
+plugins:
+  - mkdocstrings:
+      handlers:
+        python:
+          options:
+            docstring_style: google
+            show_signature_annotations: true
+            show_source: false
+  - mkdocs-jupyter
+
+markdown_extensions:
+  - admonition
+  - pymdownx.highlight
+  - pymdownx.superfences
+  - pymdownx.details
+
+nav:
+  - Home: index.md
+  - Getting Started:
+    - Basic Usage: examples/basic_examples.ipynb
+    - Calibration: examples/calibration.ipynb
+    - Sensitivy Analysis: examples/sensitivity_analysis.ipynb
+
+  - API Reference:
+    - TxtinoutReader: api/txtinoutreader.md
+    - FileReader: api/filereader.md
+    - SWATProblem: api/swatproblem.md
+    - SWATProblemMultimodel: api/swatproblemmultimodel.md
+  - Citation: citation.md
