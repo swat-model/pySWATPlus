@@ -51,8 +51,12 @@ pip install pySWATPlus
 
 The **[Getting Started](getting-started.md)** page is the perfect place to begin your journey with pySWATPlus. It covers the basics and links to practical examples, from setting up and running a simple SWAT+ project to diving into parameter optimization techniques and sensitivity analysis.
 
-For a deeper dive, check out the **[API Reference](api/core.md)**, which documents all functions, input arguments, and provides short examples on how to use them. 📚
+For a deeper dive, check out the **[API Reference](api/txtinoutreader.md)**, which documents all functions, input arguments, and provides short examples on how to use them. The API Reference includes:
 
+- **[TxtinoutReader](api/txtinoutreader.md)**: Work with SWAT+ input and output files.
+- **[FileReader](api/filereader.md)**: Read and manipulate SWAT+ files.
+- **[SWATProblem](api/swatproblem.md)**: Define and solve SWAT+ optimization problems.
+- **[SWATProblemMultimodel](api/swatproblemmultimodel.md)**: Handle multi-model calibration scenarios.
 ---
 
 
