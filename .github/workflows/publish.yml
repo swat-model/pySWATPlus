@@ -14,8 +14,8 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0  # Fetch all history for tags
-          persist-credentials: true  # Allow pushing changes
+          fetch-depth: 0 
+          persist-credentials: true
 
       - name: Set up Python
         uses: actions/setup-python@v4

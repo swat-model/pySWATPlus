@@ -39,7 +39,7 @@ class TxtinoutReader:
 
         #check if folder exists
         if not path.is_dir():
-            raise FileNotFoundError("folder does not exist")
+            raise FileNotFoundError("Folder does not exist")
             
         #count files that end with .exe
         count = 0
