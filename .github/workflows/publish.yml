@@ -42,11 +42,6 @@ jobs:
         run: |
           twine upload dist/*
 
-      - name: Create GitHub Release
-        run: |
-          gh release create $VERSION --title "Release $VERSION" --notes "Automated release for version $VERSION."
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   
   deploy-docs:
     runs-on: ubuntu-latest
