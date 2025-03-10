@@ -45,7 +45,7 @@ jobs:
   
   deploy-docs:
     runs-on: ubuntu-latest
-
+    
     permissions:
       contents: write  # Allow pushing to the repository
 
