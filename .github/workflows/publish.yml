@@ -45,6 +45,10 @@ jobs:
   
   deploy-docs:
     runs-on: ubuntu-latest
+
+    permissions:
+      contents: write  # Allow pushing to the repository
+
     needs: build-and-publish  # Ensure this runs after the build-and-publish job
     steps:
       - name: Checkout repository
