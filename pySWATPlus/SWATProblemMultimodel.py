@@ -1,11 +1,13 @@
 from pymoo.core.problem import Problem
-from .PymooBestSolution import get_solution, add_solutions
+from .PymooBestSolution import SolutionManager
 import copy
 import numpy as np
 from typing import Optional, Callable, Tuple, Any, Dict, List
 from pymoo.optimize import minimize
 from concurrent.futures import ThreadPoolExecutor
 import multiprocessing
+import warnings
+
 
 def minimize_pymoo(
         problem: Problem, 
@@ -29,25 +31,29 @@ def minimize_pymoo(
     Returns:
     - Tuple[np.ndarray, Dict[str, str], float]: The best solution found during the optimization process, in the form of a tuple containing the decision variables, the path to the output files with the identifier, and the error.
     """
+    
+    problem.solution_manager = SolutionManager()
 
-    if callback is None:
-        minimize(problem,
-            algorithm,
-            seed=seed,
-            verbose=verbose,
-            termination = termination
-        )
-    else:
-        minimize(problem,
-            algorithm,
-            seed=seed,
-            verbose=verbose,
-            callback=callback,
-            termination = termination
-        )
+    with warnings.catch_warnings():
+        warnings.filterwarnings("ignore", category=DeprecationWarning)
+               
+        if callback is None:
+            minimize(problem,
+                algorithm,
+                seed=seed,
+                verbose=verbose,
+                termination = termination
+            )
+        else:
+            minimize(problem,
+                algorithm,
+                seed=seed,
+                verbose=verbose,
+                callback=callback,
+                termination = termination
+            )
 
-
-    return get_solution()
+    return problem.solution_manager.get_solution()
 
 
 class SWATProblemMultimodel(Problem):
@@ -122,8 +128,7 @@ class SWATProblemMultimodel(Problem):
         self.args_function_to_evaluate_prior = args_function_to_evaluate_prior
         self.param_arg_name_to_modificate_by_prior_function = param_arg_name_to_modificate_by_prior_function
         self.debug = debug
-                
-        
+        self.solution_manager = None  #it is initialized in the minize_pymoo function
         super().__init__(n_var=n_vars, n_obj=1, n_constr=0, xl=lb, xu=ub, elementwise_evaluation=False)
 
         
@@ -194,7 +199,8 @@ class SWATProblemMultimodel(Problem):
         paths_array = np.array(paths)
 
         if self.debug:
-            print(errors_array)
+            print(f"errors array: {errors_array}")
+            print(f"paths array: {paths_array}")
 
         #replace nan error by 1e10 (infinity)
         errors_array[np.isnan(errors_array)] = 1e10
@@ -208,7 +214,7 @@ class SWATProblemMultimodel(Problem):
         if self.debug:
             print('adding solutions')
 
-        add_solutions(paths_array, errors_array)
+        self.solution_manager.add_solutions(X, paths_array, errors_array)
     
         if self.debug:
             print('exit adding solutions')
