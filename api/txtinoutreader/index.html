@@ -16,7 +16,7 @@
       
       
       <link rel="icon" href="../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.8">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.9">
     
     
       
@@ -24,7 +24,7 @@
       
     
     
-      <link rel="stylesheet" href="../../assets/stylesheets/main.8608ea7d.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.4af4bdda.min.css">
       
         
         <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
@@ -526,33 +526,6 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#pySWATPlus.TxtinoutReader.TxtinoutReader._build_line_to_add" class="md-nav__link">
-    <span class="md-ellipsis">
-      _build_line_to_add
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#pySWATPlus.TxtinoutReader.TxtinoutReader._enable_disable_csv_print" class="md-nav__link">
-    <span class="md-ellipsis">
-      _enable_disable_csv_print
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#pySWATPlus.TxtinoutReader.TxtinoutReader._run_swat" class="md-nav__link">
-    <span class="md-ellipsis">
-      _run_swat
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
   <a href="#pySWATPlus.TxtinoutReader.TxtinoutReader.copy_and_run" class="md-nav__link">
     <span class="md-ellipsis">
       copy_and_run
@@ -823,33 +796,6 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#pySWATPlus.TxtinoutReader.TxtinoutReader._build_line_to_add" class="md-nav__link">
-    <span class="md-ellipsis">
-      _build_line_to_add
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#pySWATPlus.TxtinoutReader.TxtinoutReader._enable_disable_csv_print" class="md-nav__link">
-    <span class="md-ellipsis">
-      _enable_disable_csv_print
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#pySWATPlus.TxtinoutReader.TxtinoutReader._run_swat" class="md-nav__link">
-    <span class="md-ellipsis">
-      _run_swat
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
   <a href="#pySWATPlus.TxtinoutReader.TxtinoutReader.copy_and_run" class="md-nav__link">
     <span class="md-ellipsis">
       copy_and_run
@@ -1057,76 +1003,6 @@ path (str, os.PathLike): The path to the SWAT model folder.</p>
 <p>Attributes:
 root_folder (Path): The path to the root folder of the SWAT model.
 swat_exe_path (Path): The path to the main SWAT executable file.</p>
-
-
-    </div>
-
-</div>
-
-<div class="doc doc-object doc-function">
-
-
-<h3 id="pySWATPlus.TxtinoutReader.TxtinoutReader._build_line_to_add" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">_build_line_to_add</span><span class="p">(</span><span class="n">obj</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">daily</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span> <span class="n">monthly</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span> <span class="n">yearly</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span> <span class="n">avann</span><span class="p">:</span> <span class="nb">bool</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span></code>
-
-</h3>
-
-
-    <div class="doc doc-contents ">
-
-        <p>Build a line to add to the 'print.prt' file based on the provided parameters.</p>
-<p>Parameters:
-obj (str): The object name or identifier.
-daily (bool): Flag for daily print frequency.
-monthly (bool): Flag for monthly print frequency.
-yearly (bool): Flag for yearly print frequency.
-avann (bool): Flag for average annual print frequency.</p>
-<p>Returns:
-str: A formatted string representing the line to add to the 'print.prt' file.</p>
-
-
-    </div>
-
-</div>
-
-<div class="doc doc-object doc-function">
-
-
-<h3 id="pySWATPlus.TxtinoutReader.TxtinoutReader._enable_disable_csv_print" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">_enable_disable_csv_print</span><span class="p">(</span><span class="n">enable</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span></code>
-
-</h3>
-
-
-    <div class="doc doc-contents ">
-
-        <p>Enable or disable CSV print in the 'print.prt' file.</p>
-<p>Parameters:
-enable (bool, optional): True to enable CSV print, False to disable (default is True).</p>
-<p>Returns:
-None</p>
-
-
-    </div>
-
-</div>
-
-<div class="doc doc-object doc-function">
-
-
-<h3 id="pySWATPlus.TxtinoutReader.TxtinoutReader._run_swat" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">_run_swat</span><span class="p">(</span><span class="n">show_output</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span></code>
-
-</h3>
-
-
-    <div class="doc doc-contents ">
-
-        <p>Run the SWAT simulation.</p>
-<p>Parameters:
-show_output (bool, optional): If True, print the simulation output; if False, suppress output (default is True).</p>
-<p>Returns:
-None</p>
 
 
     </div>
