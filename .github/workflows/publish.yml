@@ -43,15 +43,10 @@ jobs:
           twine upload dist/*
 
       - name: Create GitHub Release
-        uses: softprops/action-gh-release@v1
-        with:
-          tag_name: ${{ github.ref }}
-          name: Release ${{ github.ref_name }}
-          body: "Automated release for version ${{ github.ref_name }}."
-          draft: false
-          prerelease: false
-          files: |
-            dist/*
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh release create ${{ github.ref_name }} dist/* --title "Release ${{ github.ref_name }}" --notes "Automated release for version ${{ github.ref_name }}"
 
   
   deploy-docs:
