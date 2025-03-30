@@ -42,6 +42,17 @@ jobs:
         run: |
           twine upload dist/*
 
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: ${{ github.ref }}
+          name: Release ${{ github.ref_name }}
+          body: "Automated release for version ${{ github.ref_name }}."
+          draft: false
+          prerelease: false
+          files: |
+            dist/*
+
   
   deploy-docs:
     runs-on: ubuntu-latest
