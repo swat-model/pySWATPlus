@@ -20,7 +20,7 @@
     
     
       
-        <title>Calibration - pySWATPlus</title>
+        <title>SWAT+ Calibration Example using pySWATPlus and pymoo - pySWATPlus</title>
       
     
     
@@ -73,6 +73,11 @@
     <label class="md-overlay" for="__drawer"></label>
     <div data-md-component="skip">
       
+        
+        <a href="#swat-calibration-example-using-pyswatplus-and-pymoo" class="md-skip">
+          Skip to content
+        </a>
+      
     </div>
     <div data-md-component="announce">
       
@@ -103,7 +108,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Calibration
+              SWAT+ Calibration Example using pySWATPlus and pymoo
             
           </span>
         </div>
@@ -337,7 +342,7 @@
         
   
   <span class="md-ellipsis">
-    Basic Usage
+    SWAT+ Model Simulation with
     
   </span>
   
@@ -361,17 +366,104 @@
       <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
       
       
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    SWAT+ Calibration Example using pySWATPlus and pymoo
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
       
       <a href="./" class="md-nav__link md-nav__link--active">
         
   
   <span class="md-ellipsis">
-    Calibration
+    SWAT+ Calibration Example using pySWATPlus and pymoo
     
   </span>
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-import-required-libraries" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Import Required Libraries
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-define-the-objective-function" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Define the Objective Function
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-set-up-the-swat-calibration-problem" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Set Up the SWAT+ Calibration Problem
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-configure-the-optimization-algorithm" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Configure the Optimization Algorithm
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-run-the-optimization" class="md-nav__link">
+    <span class="md-ellipsis">
+      5. Run the Optimization
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-analyze-the-results" class="md-nav__link">
+    <span class="md-ellipsis">
+      6. Analyze the Results
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
       
     </li>
   
@@ -389,7 +481,7 @@
         
   
   <span class="md-ellipsis">
-    Sensitivy Analysis
+    Sobol Sensitivity Analysis for SWAT+ Model Parameters
     
   </span>
   
@@ -579,6 +671,70 @@
   
   
   
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-import-required-libraries" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Import Required Libraries
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-define-the-objective-function" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Define the Objective Function
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-set-up-the-swat-calibration-problem" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Set Up the SWAT+ Calibration Problem
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-configure-the-optimization-algorithm" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Configure the Optimization Algorithm
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-run-the-optimization" class="md-nav__link">
+    <span class="md-ellipsis">
+      5. Run the Optimization
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-analyze-the-results" class="md-nav__link">
+    <span class="md-ellipsis">
+      6. Analyze the Results
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
   
 </nav>
                   </div>
@@ -593,8 +749,6 @@
                   
 
 
-
-  <h1>Calibration</h1>
 
 <script>
 (function (global, factory) {
@@ -1032,13 +1186,25 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </style>
 <!-- End of mermaid configuration --><div class="jupyter-wrapper">
 <div class="jp-Notebook" data-jp-theme-light="true" data-jp-theme-name="JupyterLab Light">
-<div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h1 id="swat-calibration-example-using-pyswatplus-and-pymoo">SWAT+ Calibration Example using pySWATPlus and pymoo<a class="anchor-link" href="#swat-calibration-example-using-pyswatplus-and-pymoo">¶</a></h1><p>This notebook demonstrates how to use the <code>pySWATPlus</code> package to calibrate SWAT+ model parameters using the <code>pymoo</code> optimization library. The example focuses on calibrating parameters in the <code>plants.plt</code> file and minimizing a user-defined objective function.</p>
+<hr/>
+<h2 id="1-import-required-libraries">1. Import Required Libraries<a class="anchor-link" href="#1-import-required-libraries">¶</a></h2><p>First, we import the necessary libraries, including <code>pySWATPlus</code> for SWAT+ model interaction and <code>pymoo</code> for optimization.</p>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
 <div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [1]:</div><div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [16]:</div><div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="CodeMirror cm-s-jupyter">
 <div class="zeroclipboard-container">
 <clipboard-copy ,="" aria-label="Copy to Clipboard" for="cell-1">
@@ -1051,20 +1217,38 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </div>
 </clipboard-copy>
 </div>
-<div class="highlight-ipynb hl-python"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">pySWATPlus</span><span class="w"> </span><span class="kn">import</span> <span class="n">TxtinoutReader</span>
+<div class="highlight-ipynb hl-python"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pySWATPlus.TxtinoutReader</span><span class="w"> </span><span class="kn">import</span> <span class="n">TxtinoutReader</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">pySWATPlus</span><span class="w"> </span><span class="kn">import</span> <span class="n">SWATProblem</span><span class="p">,</span> <span class="n">minimize_pymoo</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">random</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">pymoo.algorithms.soo.nonconvex.cmaes</span><span class="w"> </span><span class="kn">import</span> <span class="n">CMAES</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">pymoo.termination</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_termination</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pymoo.util.normalization</span><span class="w"> </span><span class="kn">import</span> <span class="n">denormalize</span>
 </pre></div>
-<div class="clipboard-copy-txt" id="cell-1">
-from pySWATPlus import TxtinoutReader
+<div class="clipboard-copy-txt" id="cell-1">import numpy as np
+from pySWATPlus.TxtinoutReader import TxtinoutReader
 from pySWATPlus import SWATProblem, minimize_pymoo
-import random
 from pymoo.algorithms.soo.nonconvex.cmaes import CMAES
-from pymoo.termination import get_termination</div>
+from pymoo.termination import get_termination
+from pymoo.util.normalization import denormalize</div>
 </div>
 </div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<hr/>
+<h2 id="2-define-the-objective-function">2. Define the Objective Function<a class="anchor-link" href="#2-define-the-objective-function">¶</a></h2><p>The objective function is a user-defined function that evaluates the performance of the SWAT+ model for a given set of parameters. It must:</p>
+<ul>
+<li>Accept a single dictionary argument containing the calibration parameters.</li>
+<li>Run the SWAT+ model with the provided parameters.</li>
+<li>Calculate and return an error metric based on the model's output.</li>
+</ul>
 </div>
 </div>
 </div>
@@ -1074,7 +1258,7 @@ from pymoo.termination import get_termination</div>
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [2]:</div><div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [17]:</div><div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="CodeMirror cm-s-jupyter">
 <div class="zeroclipboard-container">
 <clipboard-copy ,="" aria-label="Copy to Clipboard" for="cell-2">
@@ -1088,53 +1272,99 @@ from pymoo.termination import get_termination</div>
 </clipboard-copy>
 </div>
 <div class="highlight-ipynb hl-python"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">function_to_minimize</span><span class="p">(</span><span class="n">dict_of_params</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""</span>
+<span class="sd">    Objective function to minimize. It runs the SWAT+ model with the provided parameters and returns an error metric.</span>
 
+<span class="sd">    Parameters:</span>
+<span class="sd">        dict_of_params (dict): A dictionary containing the calibration parameters and other necessary information.</span>
+<span class="sd">                               Must include the key 'calibration_params' with the format:</span>
+<span class="sd">                               {filename: (id_col, [(id, col, value)])}</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        Tuple[int, Dict[str, str]]: A tuple containing the error metric and a dictionary with the simulation results.</span>
+<span class="sd">    """</span>
+    <span class="c1"># Extract calibration parameters and path to the SWAT+ TxtInOut folder</span>
     <span class="n">calibration_params</span> <span class="o">=</span> <span class="n">dict_of_params</span><span class="p">[</span><span class="s1">'calibration_params'</span><span class="p">]</span>
     <span class="n">path_to_txtinout</span> <span class="o">=</span> <span class="n">dict_of_params</span><span class="p">[</span><span class="s1">'path_to_txtinout'</span><span class="p">]</span>
 
-    <span class="c1">#read path to txtinout</span>
+    <span class="c1"># Initialize the TxtinoutReader and copy the SWAT+ project to a temporary directory</span>
     <span class="n">reader</span> <span class="o">=</span> <span class="n">TxtinoutReader</span><span class="p">(</span><span class="n">path_to_txtinout</span><span class="p">)</span>
-    <span class="n">tmp_path</span> <span class="o">=</span> <span class="n">reader</span><span class="o">.</span><span class="n">copy_swat</span><span class="p">(</span><span class="nb">dir</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="c1">#Copy to temporary directory</span>
+    <span class="n">tmp_path</span> <span class="o">=</span> <span class="n">reader</span><span class="o">.</span><span class="n">copy_swat</span><span class="p">(</span><span class="nb">dir</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>  <span class="c1"># Copy to a temporary directory</span>
     <span class="n">reader</span> <span class="o">=</span> <span class="n">TxtinoutReader</span><span class="p">(</span><span class="n">tmp_path</span><span class="p">)</span>
 
-    <span class="c1">#run swat with calibration_params, which must be in format  {filename: (id_col, [(id, col, value)])}</span>
+    <span class="c1"># Run SWAT+ with the provided calibration parameters</span>
     <span class="n">txt_in_out_result</span> <span class="o">=</span> <span class="n">reader</span><span class="o">.</span><span class="n">run_swat</span><span class="p">(</span><span class="n">calibration_params</span><span class="p">,</span> <span class="n">show_output</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-        
-    <span class="c1">#read path_to_txtinout</span>
+
+    <span class="c1"># Initialize a new TxtinoutReader to read the results</span>
     <span class="n">result_reader</span> <span class="o">=</span> <span class="n">TxtinoutReader</span><span class="p">(</span><span class="n">txt_in_out_result</span><span class="p">)</span>
 
 <span class="w">    </span><span class="sd">"""</span>
-<span class="sd">    The following steps should be: read the results, gather the observations, calculate the error based on the observations and the simulation, and finally, return the error</span>
+<span class="sd">    The following steps should include:</span>
+<span class="sd">    1. Reading the simulation results.</span>
+<span class="sd">    2. Gathering observed data.</span>
+<span class="sd">    3. Calculating the error metric based on the observed and simulated data.</span>
 <span class="sd">    """</span>
 
-    <span class="c1">#Return in format Tuple[int, Dict[str, str]]</span>
-    <span class="k">return</span> <span class="p">(</span><span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">(),</span> <span class="p">{</span><span class="s1">'test_calibration'</span><span class="p">:</span> <span class="n">result_reader</span><span class="o">.</span><span class="n">root_folder</span><span class="p">})</span>
+    <span class="c1"># For demonstration, we return a random error metric</span>
+    <span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">()</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">rng</span><span class="o">.</span><span class="n">random</span><span class="p">(),</span> <span class="p">{</span><span class="s1">'test_calibration'</span><span class="p">:</span> <span class="n">result_reader</span><span class="o">.</span><span class="n">root_folder</span><span class="p">})</span>
 </pre></div>
 <div class="clipboard-copy-txt" id="cell-2">def function_to_minimize(dict_of_params):
+    """
+    Objective function to minimize. It runs the SWAT+ model with the provided parameters and returns an error metric.
 
+    Parameters:
+        dict_of_params (dict): A dictionary containing the calibration parameters and other necessary information.
+                               Must include the key 'calibration_params' with the format:
+                               {filename: (id_col, [(id, col, value)])}
+
+    Returns:
+        Tuple[int, Dict[str, str]]: A tuple containing the error metric and a dictionary with the simulation results.
+    """
+    # Extract calibration parameters and path to the SWAT+ TxtInOut folder
     calibration_params = dict_of_params['calibration_params']
     path_to_txtinout = dict_of_params['path_to_txtinout']
 
-    #read path to txtinout
+    # Initialize the TxtinoutReader and copy the SWAT+ project to a temporary directory
     reader = TxtinoutReader(path_to_txtinout)
-    tmp_path = reader.copy_swat(dir = None) #Copy to temporary directory
+    tmp_path = reader.copy_swat(dir=None)  # Copy to a temporary directory
     reader = TxtinoutReader(tmp_path)
 
-    #run swat with calibration_params, which must be in format  {filename: (id_col, [(id, col, value)])}
+    # Run SWAT+ with the provided calibration parameters
     txt_in_out_result = reader.run_swat(calibration_params, show_output=False)
-        
-    #read path_to_txtinout
+
+    # Initialize a new TxtinoutReader to read the results
     result_reader = TxtinoutReader(txt_in_out_result)
 
     """
-    The following steps should be: read the results, gather the observations, calculate the error based on the observations and the simulation, and finally, return the error
+    The following steps should include:
+    1. Reading the simulation results.
+    2. Gathering observed data.
+    3. Calculating the error metric based on the observed and simulated data.
     """
 
-    #Return in format Tuple[int, Dict[str, str]]
-    return (random.random(), {'test_calibration': result_reader.root_folder})
+    # For demonstration, we return a random error metric
+    rng = np.random.default_rng()
+    return (rng.random(), {'test_calibration': result_reader.root_folder})</div>
 </div>
 </div>
 </div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<hr/>
+<h2 id="3-set-up-the-swat-calibration-problem">3. Set Up the SWAT+ Calibration Problem<a class="anchor-link" href="#3-set-up-the-swat-calibration-problem">¶</a></h2><p>We define the calibration problem by specifying:</p>
+<ul>
+<li>The parameters to calibrate (e.g., <code>bm_e</code> and <code>harv_idx</code> in the <code>plants.plt</code> file).</li>
+<li>The objective function (<code>function_to_minimize</code>).</li>
+<li>Additional arguments such as the path to the SWAT+ TxtInOut folder.</li>
+</ul>
 </div>
 </div>
 </div>
@@ -1144,7 +1374,7 @@ from pymoo.termination import get_termination</div>
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [3]:</div><div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [18]:</div><div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="CodeMirror cm-s-jupyter">
 <div class="zeroclipboard-container">
 <clipboard-copy ,="" aria-label="Copy to Clipboard" for="cell-3">
@@ -1157,35 +1387,65 @@ from pymoo.termination import get_termination</div>
 </div>
 </clipboard-copy>
 </div>
-<div class="highlight-ipynb hl-python"><pre><span></span><span class="n">txtinout_folder</span> <span class="o">=</span> <span class="s1">'/mnt/c/users/joans/onedrive/Escriptori/icra/muga_windows'</span>
+<div class="highlight-ipynb hl-python"><pre><span></span><span class="c1"># Path to the SWAT+ TxtInOut folder</span>
+<span class="n">txtinout_folder</span> <span class="o">=</span> <span class="s1">'/mnt/c/Users/joans/OneDrive/Escriptori/icra/muga_windows'</span>
 
-<span class="n">swat_problem</span> <span class="o">=</span> <span class="n">SWATProblem</span><span class="p">(</span><span class="n">params</span> <span class="o">=</span> <span class="p">{</span><span class="s1">'plants.plt'</span><span class="p">:</span> <span class="p">(</span><span class="s1">'name'</span><span class="p">,</span> <span class="p">[(</span><span class="s1">'bana'</span><span class="p">,</span> <span class="s1">'bm_e'</span><span class="p">,</span> <span class="mi">40</span><span class="p">,</span> <span class="mi">50</span><span class="p">),</span> <span class="p">(</span><span class="s1">'bana'</span><span class="p">,</span> <span class="s1">'harv_idx'</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">)])},</span>
-                           <span class="n">function_to_evaluate</span><span class="o">=</span><span class="n">function_to_minimize</span><span class="p">,</span>
-                           <span class="n">param_arg_name</span><span class="o">=</span><span class="s1">'calibration_params'</span><span class="p">,</span>
-                           <span class="n">n_workers</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>
-                           <span class="n">parallelization</span> <span class="o">=</span> <span class="s1">'threads'</span><span class="p">,</span>
-                           <span class="n">path_to_txtinout</span><span class="o">=</span><span class="n">txtinout_folder</span><span class="p">)</span>
+<span class="c1"># Define the SWATProblem instance</span>
+<span class="n">swat_problem</span> <span class="o">=</span> <span class="n">SWATProblem</span><span class="p">(</span>
+    <span class="n">params</span><span class="o">=</span><span class="p">{</span>
+        <span class="s1">'plants.plt'</span><span class="p">:</span> <span class="p">(</span><span class="s1">'name'</span><span class="p">,</span> <span class="p">[(</span><span class="s1">'bana'</span><span class="p">,</span> <span class="s1">'bm_e'</span><span class="p">,</span> <span class="mi">40</span><span class="p">,</span> <span class="mi">50</span><span class="p">),</span> <span class="p">(</span><span class="s1">'bana'</span><span class="p">,</span> <span class="s1">'harv_idx'</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">)])</span>
+    <span class="p">},</span>
+    <span class="n">function_to_evaluate</span><span class="o">=</span><span class="n">function_to_minimize</span><span class="p">,</span>
+    <span class="n">param_arg_name</span><span class="o">=</span><span class="s1">'calibration_params'</span><span class="p">,</span>
+    <span class="n">n_workers</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>
+    <span class="n">parallelization</span><span class="o">=</span><span class="s1">'threads'</span><span class="p">,</span>
+    <span class="n">debug</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">path_to_txtinout</span><span class="o">=</span><span class="n">txtinout_folder</span>
+<span class="p">)</span>
 </pre></div>
-<div class="clipboard-copy-txt" id="cell-3">txtinout_folder = '/mnt/c/users/joans/onedrive/Escriptori/icra/muga_windows'
+<div class="clipboard-copy-txt" id="cell-3"># Path to the SWAT+ TxtInOut folder
+txtinout_folder = '/mnt/c/Users/joans/OneDrive/Escriptori/icra/muga_windows'
 
-swat_problem = SWATProblem(params = {'plants.plt': ('name', [('bana', 'bm_e', 40, 50), ('bana', 'harv_idx', 0.4, 0.5)])},
-                           function_to_evaluate=function_to_minimize,
-                           param_arg_name='calibration_params',
-                           n_workers=4,
-                           parallelization = 'threads',
-                           path_to_txtinout=txtinout_folder)</div>
+# Define the SWATProblem instance
+swat_problem = SWATProblem(
+    params={
+        'plants.plt': ('name', [('bana', 'bm_e', 40, 50), ('bana', 'harv_idx', 0.4, 0.5)])
+    },
+    function_to_evaluate=function_to_minimize,
+    param_arg_name='calibration_params',
+    n_workers=4,
+    parallelization='threads',
+    debug=False,
+    path_to_txtinout=txtinout_folder
+)</div>
 </div>
 </div>
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell">
-<div class="jp-Cell jp-CodeCell jp-Notebook-cell">
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<hr/>
+<h2 id="4-configure-the-optimization-algorithm">4. Configure the Optimization Algorithm<a class="anchor-link" href="#4-configure-the-optimization-algorithm">¶</a></h2><p>We use the CMA-ES (Covariance Matrix Adaptation Evolution Strategy) algorithm from pymoo for optimization. The algorithm is configured with:</p>
+<ul>
+<li>Initial parameter values (<code>x0</code>).</li>
+<li>Termination criteria (e.g., maximum number of evaluations).</li>
+</ul>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
+<div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [4]:</div><div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [19]:</div><div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="CodeMirror cm-s-jupyter">
 <div class="zeroclipboard-container">
 <clipboard-copy ,="" aria-label="Copy to Clipboard" for="cell-4">
@@ -1198,33 +1458,54 @@ swat_problem = SWATProblem(params = {'plants.plt': ('name', [('bana', 'bm_e', 40
 </div>
 </clipboard-copy>
 </div>
-<div class="highlight-ipynb hl-python"><pre><span></span><span class="p">{</span><span class="s1">'plants.plt'</span><span class="p">:</span> <span class="p">(</span><span class="s1">'name'</span><span class="p">,</span> <span class="p">[(</span><span class="s1">'bana'</span><span class="p">,</span> <span class="s1">'bm_e'</span><span class="p">,</span> <span class="mi">40</span><span class="p">)])}</span>
+<div class="highlight-ipynb hl-python"><pre><span></span><span class="c1"># Define initial parameter values and bounds</span>
+<span class="n">x0</span> <span class="o">=</span> <span class="n">denormalize</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">(</span><span class="mi">2</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">40</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">]),</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">50</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">]))</span>
+
+<span class="c1"># Set the number of simulations (evaluations)</span>
+<span class="n">n_simulations</span> <span class="o">=</span> <span class="mi">2</span>
+
+<span class="c1"># Configure the CMA-ES algorithm</span>
+<span class="n">algorithm</span> <span class="o">=</span> <span class="n">CMAES</span><span class="p">(</span><span class="n">x0</span><span class="o">=</span><span class="n">x0</span><span class="p">,</span> <span class="n">maxfevals</span><span class="o">=</span><span class="n">n_simulations</span><span class="p">)</span>
+<span class="n">termination</span> <span class="o">=</span> <span class="n">get_termination</span><span class="p">(</span><span class="s2">"n_eval"</span><span class="p">,</span> <span class="n">n_simulations</span><span class="p">)</span>
 </pre></div>
-<div class="clipboard-copy-txt" id="cell-4">{'plants.plt': ('name', [('bana', 'bm_e', 40)])}</div>
+<div class="clipboard-copy-txt" id="cell-4"># Define initial parameter values and bounds
+x0 = denormalize(np.random.random(2), np.array([40, 0.4]), np.array([50, 0.5]))
+
+# Set the number of simulations (evaluations)
+n_simulations = 2
+
+# Configure the CMA-ES algorithm
+algorithm = CMAES(x0=x0, maxfevals=n_simulations)
+termination = get_termination("n_eval", n_simulations)</div>
 </div>
-</div>
-</div>
-</div>
-<div class="jp-Cell-outputWrapper">
-<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
-</div>
-<div class="jp-OutputArea jp-Cell-outputArea">
-<div class="jp-OutputArea-child jp-OutputArea-executeResult">
-<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[4]:</div>
-<div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain" tabindex="0">
-<pre>{'plants.plt': ('name', [('bana', 'bm_e', 40)])}</pre>
 </div>
 </div>
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell">
-<div class="jp-Cell jp-CodeCell jp-Notebook-cell">
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<hr/>
+<h2 id="5-run-the-optimization">5. Run the Optimization<a class="anchor-link" href="#5-run-the-optimization">¶</a></h2><p>We run the optimization using the <code>minimize_pymoo</code> function. The results include:</p>
+<ul>
+<li>The best set of parameters (<code>x</code>).</li>
+<li>The path to the best simulation results (<code>path</code>).</li>
+<li>The error metric (<code>error</code>).</li>
+</ul>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
+<div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div><div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [20]:</div><div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="CodeMirror cm-s-jupyter">
 <div class="zeroclipboard-container">
 <clipboard-copy ,="" aria-label="Copy to Clipboard" for="cell-5">
@@ -1237,144 +1518,40 @@ swat_problem = SWATProblem(params = {'plants.plt': ('name', [('bana', 'bm_e', 40
 </div>
 </clipboard-copy>
 </div>
-<div class="highlight-ipynb hl-python"><pre><span></span><span class="c1">#Preparing CMAES algorithm from pymoo</span>
-<span class="n">algorithm</span> <span class="o">=</span> <span class="n">CMAES</span><span class="p">(</span><span class="n">restarts</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">restart_from_best</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="n">termination</span> <span class="o">=</span> <span class="n">get_termination</span><span class="p">(</span><span class="s2">"n_eval"</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
-
-<span class="c1">#to fix</span>
-<span class="n">x</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">error</span> <span class="o">=</span> <span class="n">minimize_pymoo</span><span class="p">(</span><span class="n">swat_problem</span><span class="p">,</span>
+<div class="highlight-ipynb hl-python"><pre><span></span><span class="c1"># Run the optimization</span>
+<span class="n">x</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">error</span> <span class="o">=</span> <span class="n">minimize_pymoo</span><span class="p">(</span>
+    <span class="n">swat_problem</span><span class="p">,</span>
     <span class="n">algorithm</span><span class="p">,</span>
     <span class="n">termination</span><span class="p">,</span>
-    <span class="n">seed</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
     <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-    <span class="n">callback</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
 <span class="p">)</span>
 </pre></div>
-<div class="clipboard-copy-txt" id="cell-5">#Preparing CMAES algorithm from pymoo
-algorithm = CMAES(restarts=10, restart_from_best=True)
-termination = get_termination("n_eval", 2)
-
-#to fix
-x, path, error = minimize_pymoo(swat_problem,
+<div class="clipboard-copy-txt" id="cell-5"># Run the optimization
+x, path, error = minimize_pymoo(
+    swat_problem,
     algorithm,
     termination,
-    seed=1,
     verbose=False,
-    callback=None,
-)
+)</div>
 </div>
 </div>
 </div>
 </div>
 </div>
-<div class="jp-Cell-outputWrapper">
-<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
 </div>
-<div class="jp-OutputArea jp-Cell-outputArea">
-<div class="jp-OutputArea-child">
-<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="application/vnd.jupyter.stderr" tabindex="0">
-<pre>
-<span class="ansi-red-fg">---------------------------------------------------------------------------</span>
-<span class="ansi-red-fg">FileNotFoundError</span>                         Traceback (most recent call last)
-Cell <span class="ansi-green-fg">In[5], line 5</span>
-<span class="ansi-green-intense-fg ansi-bold">      2</span> algorithm <span style="color: rgb(98,98,98)">=</span> CMAES(restarts<span style="color: rgb(98,98,98)">=</span><span style="color: rgb(98,98,98)">10</span>, restart_from_best<span style="color: rgb(98,98,98)">=</span><span class="ansi-bold" style="color: rgb(0,135,0)">True</span>)
-<span class="ansi-green-intense-fg ansi-bold">      3</span> termination <span style="color: rgb(98,98,98)">=</span> get_termination(<span style="color: rgb(175,0,0)">"</span><span style="color: rgb(175,0,0)">n_eval</span><span style="color: rgb(175,0,0)">"</span>, <span style="color: rgb(98,98,98)">2</span>)
-<span class="ansi-green-fg">----&gt; 5</span> x, path, error <span style="color: rgb(98,98,98)">=</span> <span class="ansi-yellow-bg">minimize_pymoo</span><span class="ansi-yellow-bg">(</span><span class="ansi-yellow-bg">swat_problem</span><span class="ansi-yellow-bg">,</span>
-<span class="ansi-green-intense-fg ansi-bold">      6</span> <span class="ansi-yellow-bg">    </span><span class="ansi-yellow-bg">algorithm</span><span class="ansi-yellow-bg">,</span>
-<span class="ansi-green-intense-fg ansi-bold">      7</span> <span class="ansi-yellow-bg">    </span><span class="ansi-yellow-bg">termination</span><span class="ansi-yellow-bg">,</span>
-<span class="ansi-green-intense-fg ansi-bold">      8</span> <span class="ansi-yellow-bg">    </span><span class="ansi-yellow-bg">seed</span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">=</span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">1</span><span class="ansi-yellow-bg">,</span>
-<span class="ansi-green-intense-fg ansi-bold">      9</span> <span class="ansi-yellow-bg">    </span><span class="ansi-yellow-bg">verbose</span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">=</span><span class="ansi-yellow-bg ansi-bold" style="color: rgb(0,135,0)">False</span><span class="ansi-yellow-bg">,</span>
-<span class="ansi-green-intense-fg ansi-bold">     10</span> <span class="ansi-yellow-bg">    </span><span class="ansi-yellow-bg">callback</span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">=</span><span class="ansi-yellow-bg ansi-bold" style="color: rgb(0,135,0)">None</span><span class="ansi-yellow-bg">,</span>
-<span class="ansi-green-intense-fg ansi-bold">     11</span> <span class="ansi-yellow-bg">)</span>
-
-File <span class="ansi-green-fg">~/miniconda3/envs/pyswatplus/lib/python3.12/site-packages/pySWATPlus/SWATProblemMultimodel.py:34</span>, in <span class="ansi-cyan-fg">minimize_pymoo</span><span class="ansi-blue-fg">(problem, algorithm, termination, seed, verbose, callback)</span>
-<span class="ansi-green-intense-fg ansi-bold">     18</span> <span style="color: rgb(175,0,0)">"""</span>
-<span class="ansi-green-intense-fg ansi-bold">     19</span> <span style="color: rgb(175,0,0)">Perform optimization using the pymoo library.</span>
-<span class="ansi-green-intense-fg ansi-bold">     20</span> 
-<span class="ansi-green-fg">   (...)</span>
-<span class="ansi-green-intense-fg ansi-bold">     30</span> <span style="color: rgb(175,0,0)">- Tuple[np.ndarray, Dict[str, str], float]: The best solution found during the optimization process, in the form of a tuple containing the decision variables, the path to the output files with the identifier, and the error.</span>
-<span class="ansi-green-intense-fg ansi-bold">     31</span> <span style="color: rgb(175,0,0)">"""</span>
-<span class="ansi-green-intense-fg ansi-bold">     33</span> <span class="ansi-bold" style="color: rgb(0,135,0)">if</span> callback <span class="ansi-bold" style="color: rgb(175,0,255)">is</span> <span class="ansi-bold" style="color: rgb(0,135,0)">None</span>:
-<span class="ansi-green-fg">---&gt; 34</span>     <span class="ansi-yellow-bg">minimize</span><span class="ansi-yellow-bg">(</span><span class="ansi-yellow-bg">problem</span><span class="ansi-yellow-bg">,</span>
-<span class="ansi-green-intense-fg ansi-bold">     35</span> <span class="ansi-yellow-bg">        </span><span class="ansi-yellow-bg">algorithm</span><span class="ansi-yellow-bg">,</span>
-<span class="ansi-green-intense-fg ansi-bold">     36</span> <span class="ansi-yellow-bg">        </span><span class="ansi-yellow-bg">seed</span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">=</span><span class="ansi-yellow-bg">seed</span><span class="ansi-yellow-bg">,</span>
-<span class="ansi-green-intense-fg ansi-bold">     37</span> <span class="ansi-yellow-bg">        </span><span class="ansi-yellow-bg">verbose</span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">=</span><span class="ansi-yellow-bg">verbose</span><span class="ansi-yellow-bg">,</span>
-<span class="ansi-green-intense-fg ansi-bold">     38</span> <span class="ansi-yellow-bg">        </span><span class="ansi-yellow-bg">termination</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">=</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-bg">termination</span>
-<span class="ansi-green-intense-fg ansi-bold">     39</span> <span class="ansi-yellow-bg">    </span><span class="ansi-yellow-bg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">     40</span> <span class="ansi-bold" style="color: rgb(0,135,0)">else</span>:
-<span class="ansi-green-intense-fg ansi-bold">     41</span>     minimize(problem,
-<span class="ansi-green-intense-fg ansi-bold">     42</span>         algorithm,
-<span class="ansi-green-intense-fg ansi-bold">     43</span>         seed<span style="color: rgb(98,98,98)">=</span>seed,
-<span class="ansi-green-fg">   (...)</span>
-<span class="ansi-green-intense-fg ansi-bold">     46</span>         termination <span style="color: rgb(98,98,98)">=</span> termination
-<span class="ansi-green-intense-fg ansi-bold">     47</span>     )
-
-File <span class="ansi-green-fg">~/miniconda3/envs/pyswatplus/lib/python3.12/site-packages/pymoo/optimize.py:67</span>, in <span class="ansi-cyan-fg">minimize</span><span class="ansi-blue-fg">(problem, algorithm, termination, copy_algorithm, copy_termination, **kwargs)</span>
-<span class="ansi-green-intense-fg ansi-bold">     64</span>     algorithm<span style="color: rgb(98,98,98)">.</span>setup(problem, <span style="color: rgb(98,98,98)">*</span><span style="color: rgb(98,98,98)">*</span>kwargs)
-<span class="ansi-green-intense-fg ansi-bold">     66</span> <span style="color: rgb(95,135,135)"># actually execute the algorithm</span>
-<span class="ansi-green-fg">---&gt; 67</span> res <span style="color: rgb(98,98,98)">=</span> <span class="ansi-yellow-bg">algorithm</span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">.</span><span class="ansi-yellow-bg">run</span><span class="ansi-yellow-bg">(</span><span class="ansi-yellow-bg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">     69</span> <span style="color: rgb(95,135,135)"># store the deep copied algorithm in the result object</span>
-<span class="ansi-green-intense-fg ansi-bold">     70</span> res<span style="color: rgb(98,98,98)">.</span>algorithm <span style="color: rgb(98,98,98)">=</span> algorithm
-
-File <span class="ansi-green-fg">~/miniconda3/envs/pyswatplus/lib/python3.12/site-packages/pymoo/core/algorithm.py:138</span>, in <span class="ansi-cyan-fg">Algorithm.run</span><span class="ansi-blue-fg">(self)</span>
-<span class="ansi-green-intense-fg ansi-bold">    136</span> <span class="ansi-bold" style="color: rgb(0,135,0)">def</span> <span style="color: rgb(0,0,255)">run</span>(<span style="color: rgb(0,135,0)">self</span>):
-<span class="ansi-green-intense-fg ansi-bold">    137</span>     <span class="ansi-bold" style="color: rgb(0,135,0)">while</span> <span style="color: rgb(0,135,0)">self</span><span style="color: rgb(98,98,98)">.</span>has_next():
-<span class="ansi-green-fg">--&gt; 138</span>         <span class="ansi-yellow-bg" style="color: rgb(0,135,0)">self</span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">.</span><span class="ansi-yellow-bg">next</span><span class="ansi-yellow-bg">(</span><span class="ansi-yellow-bg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">    139</span>     <span class="ansi-bold" style="color: rgb(0,135,0)">return</span> <span style="color: rgb(0,135,0)">self</span><span style="color: rgb(98,98,98)">.</span>result()
-
-File <span class="ansi-green-fg">~/miniconda3/envs/pyswatplus/lib/python3.12/site-packages/pymoo/core/algorithm.py:159</span>, in <span class="ansi-cyan-fg">Algorithm.next</span><span class="ansi-blue-fg">(self)</span>
-<span class="ansi-green-intense-fg ansi-bold">    157</span> <span class="ansi-bold" style="color: rgb(0,135,0)">if</span> infills <span class="ansi-bold" style="color: rgb(175,0,255)">is</span> <span class="ansi-bold" style="color: rgb(175,0,255)">not</span> <span class="ansi-bold" style="color: rgb(0,135,0)">None</span>:
-<span class="ansi-green-intense-fg ansi-bold">    158</span>     <span style="color: rgb(0,135,0)">self</span><span style="color: rgb(98,98,98)">.</span>evaluator<span style="color: rgb(98,98,98)">.</span>eval(<span style="color: rgb(0,135,0)">self</span><span style="color: rgb(98,98,98)">.</span>problem, infills, algorithm<span style="color: rgb(98,98,98)">=</span><span style="color: rgb(0,135,0)">self</span>)
-<span class="ansi-green-fg">--&gt; 159</span>     <span class="ansi-yellow-bg" style="color: rgb(0,135,0)">self</span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">.</span><span class="ansi-yellow-bg">advance</span><span class="ansi-yellow-bg">(</span><span class="ansi-yellow-bg">infills</span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">=</span><span class="ansi-yellow-bg">infills</span><span class="ansi-yellow-bg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">    161</span> <span style="color: rgb(95,135,135)"># if the algorithm does not follow the infill-advance scheme just call advance</span>
-<span class="ansi-green-intense-fg ansi-bold">    162</span> <span class="ansi-bold" style="color: rgb(0,135,0)">else</span>:
-<span class="ansi-green-intense-fg ansi-bold">    163</span>     <span style="color: rgb(0,135,0)">self</span><span style="color: rgb(98,98,98)">.</span>advance()
-
-File <span class="ansi-green-fg">~/miniconda3/envs/pyswatplus/lib/python3.12/site-packages/pymoo/core/algorithm.py:214</span>, in <span class="ansi-cyan-fg">Algorithm.advance</span><span class="ansi-blue-fg">(self, infills, **kwargs)</span>
-<span class="ansi-green-intense-fg ansi-bold">    211</span> <span style="color: rgb(0,135,0)">self</span><span style="color: rgb(98,98,98)">.</span>pop <span style="color: rgb(98,98,98)">=</span> infills
-<span class="ansi-green-intense-fg ansi-bold">    213</span> <span style="color: rgb(95,135,135)"># do what is necessary after the initialization</span>
-<span class="ansi-green-fg">--&gt; 214</span> <span class="ansi-yellow-bg" style="color: rgb(0,135,0)">self</span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">.</span><span class="ansi-yellow-bg">_initialize_advance</span><span class="ansi-yellow-bg">(</span><span class="ansi-yellow-bg">infills</span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">=</span><span class="ansi-yellow-bg">infills</span><span class="ansi-yellow-bg">,</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">*</span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">*</span><span class="ansi-yellow-bg">kwargs</span><span class="ansi-yellow-bg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">    216</span> <span style="color: rgb(95,135,135)"># set this algorithm to be initialized</span>
-<span class="ansi-green-intense-fg ansi-bold">    217</span> <span style="color: rgb(0,135,0)">self</span><span style="color: rgb(98,98,98)">.</span>is_initialized <span style="color: rgb(98,98,98)">=</span> <span class="ansi-bold" style="color: rgb(0,135,0)">True</span>
-
-File <span class="ansi-green-fg">~/miniconda3/envs/pyswatplus/lib/python3.12/site-packages/pymoo/algorithms/soo/nonconvex/cmaes.py:431</span>, in <span class="ansi-cyan-fg">CMAES._initialize_advance</span><span class="ansi-blue-fg">(self, **kwargs)</span>
-<span class="ansi-green-intense-fg ansi-bold">    428</span> <span style="color: rgb(0,135,0)">self</span><span style="color: rgb(98,98,98)">.</span>es <span style="color: rgb(98,98,98)">=</span> my_fmin(x0, <span style="color: rgb(0,135,0)">self</span><span style="color: rgb(98,98,98)">.</span>sigma, <span style="color: rgb(98,98,98)">*</span><span style="color: rgb(98,98,98)">*</span>kwargs)
-<span class="ansi-green-intense-fg ansi-bold">    430</span> <span style="color: rgb(95,135,135)"># do this to allow the printout in the first generation</span>
-<span class="ansi-green-fg">--&gt; 431</span> <span style="color: rgb(0,135,0)">self</span><span style="color: rgb(98,98,98)">.</span>next_X <span style="color: rgb(98,98,98)">=</span> <span class="ansi-yellow-bg" style="color: rgb(0,135,0)">next</span><span class="ansi-yellow-bg">(</span><span class="ansi-yellow-bg" style="color: rgb(0,135,0)">self</span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">.</span><span class="ansi-yellow-bg">es</span><span class="ansi-yellow-bg">)</span>
-
-File <span class="ansi-green-fg">~/miniconda3/envs/pyswatplus/lib/python3.12/site-packages/pymoo/vendor/vendor_cmaes.py:128</span>, in <span class="ansi-cyan-fg">my_fmin</span><span class="ansi-blue-fg">(x0, sigma0, objective_function, options, args, gradf, restarts, restart_from_best, incpopsize, eval_initial_x, parallel_objective, noise_handler, noise_change_sigma_exponent, noise_kappa_exponent, bipop, callback)</span>
-<span class="ansi-green-intense-fg ansi-bold">    126</span>     es <span style="color: rgb(98,98,98)">=</span> MyCMAEvolutionStrategy(best<span style="color: rgb(98,98,98)">.</span>x, sigma_factor <span style="color: rgb(98,98,98)">*</span> sigma0, opts)
-<span class="ansi-green-intense-fg ansi-bold">    127</span> <span class="ansi-bold" style="color: rgb(0,135,0)">else</span>:
-<span class="ansi-green-fg">--&gt; 128</span>     es <span style="color: rgb(98,98,98)">=</span> <span class="ansi-yellow-bg">MyCMAEvolutionStrategy</span><span class="ansi-yellow-bg">(</span><span class="ansi-yellow-bg">x0</span><span class="ansi-yellow-bg">,</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-bg">sigma_factor</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">*</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-bg">sigma0</span><span class="ansi-yellow-bg">,</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-bg">opts</span><span class="ansi-yellow-bg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">    129</span> <span style="color: rgb(95,135,135)"># return opts, es</span>
-<span class="ansi-green-intense-fg ansi-bold">    130</span> <span class="ansi-bold" style="color: rgb(0,135,0)">if</span> <span style="color: rgb(0,135,0)">callable</span>(objective_function) <span class="ansi-bold" style="color: rgb(175,0,255)">and</span> (
-<span class="ansi-green-intense-fg ansi-bold">    131</span>         eval_initial_x
-<span class="ansi-green-intense-fg ansi-bold">    132</span>         <span class="ansi-bold" style="color: rgb(175,0,255)">or</span> es<span style="color: rgb(98,98,98)">.</span>opts[<span style="color: rgb(175,0,0)">'</span><span style="color: rgb(175,0,0)">CMA_elitist</span><span style="color: rgb(175,0,0)">'</span>] <span style="color: rgb(98,98,98)">==</span> <span style="color: rgb(175,0,0)">'</span><span style="color: rgb(175,0,0)">initial</span><span style="color: rgb(175,0,0)">'</span>
-<span class="ansi-green-intense-fg ansi-bold">    133</span>         <span class="ansi-bold" style="color: rgb(175,0,255)">or</span> (es<span style="color: rgb(98,98,98)">.</span>opts[<span style="color: rgb(175,0,0)">'</span><span style="color: rgb(175,0,0)">CMA_elitist</span><span style="color: rgb(175,0,0)">'</span>] <span class="ansi-bold" style="color: rgb(175,0,255)">and</span>
-<span class="ansi-green-intense-fg ansi-bold">    134</span>             eval_initial_x <span class="ansi-bold" style="color: rgb(175,0,255)">is</span> <span class="ansi-bold" style="color: rgb(0,135,0)">None</span>)):
-
-File <span class="ansi-green-fg">~/miniconda3/envs/pyswatplus/lib/python3.12/site-packages/cma/evolution_strategy.py:1738</span>, in <span class="ansi-cyan-fg">CMAEvolutionStrategy.__init__</span><span class="ansi-blue-fg">(self, x0, sigma0, inopts)</span>
-<span class="ansi-green-intense-fg ansi-bold">   1735</span> <span style="color: rgb(0,135,0)">self</span><span style="color: rgb(98,98,98)">.</span>const <span style="color: rgb(98,98,98)">=</span> _BlancClass()
-<span class="ansi-green-intense-fg ansi-bold">   1736</span> <span style="color: rgb(0,135,0)">self</span><span style="color: rgb(98,98,98)">.</span>const<span style="color: rgb(98,98,98)">.</span>chiN <span style="color: rgb(98,98,98)">=</span> N<span style="color: rgb(98,98,98)">*</span><span style="color: rgb(98,98,98)">*</span><span style="color: rgb(98,98,98)">0.5</span> <span style="color: rgb(98,98,98)">*</span> (<span style="color: rgb(98,98,98)">1</span> <span style="color: rgb(98,98,98)">-</span> <span style="color: rgb(98,98,98)">1.</span> <span style="color: rgb(98,98,98)">/</span> (<span style="color: rgb(98,98,98)">4.</span><span style="color: rgb(98,98,98)">*</span>N) <span style="color: rgb(98,98,98)">+</span> <span style="color: rgb(98,98,98)">1.</span> <span style="color: rgb(98,98,98)">/</span> (<span style="color: rgb(98,98,98)">21.</span><span style="color: rgb(98,98,98)">*</span>N<span style="color: rgb(98,98,98)">*</span><span style="color: rgb(98,98,98)">*</span><span style="color: rgb(98,98,98)">2</span>))  <span style="color: rgb(95,135,135)"># expectation of norm(randn(N,1))</span>
-<span class="ansi-green-fg">-&gt; 1738</span> <span style="color: rgb(0,135,0)">self</span><span style="color: rgb(98,98,98)">.</span>logger <span style="color: rgb(98,98,98)">=</span> <span class="ansi-yellow-bg">CMADataLogger</span><span class="ansi-yellow-bg">(</span><span class="ansi-yellow-bg">opts</span><span class="ansi-yellow-bg">[</span><span class="ansi-yellow-bg" style="color: rgb(175,0,0)">'</span><span class="ansi-yellow-bg" style="color: rgb(175,0,0)">verb_filenameprefix</span><span class="ansi-yellow-bg" style="color: rgb(175,0,0)">'</span><span class="ansi-yellow-bg">]</span><span class="ansi-yellow-bg">,</span>
-<span class="ansi-green-intense-fg ansi-bold">   1739</span> <span class="ansi-yellow-bg">                            </span><span class="ansi-yellow-bg">modulo</span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">=</span><span class="ansi-yellow-bg">opts</span><span class="ansi-yellow-bg">[</span><span class="ansi-yellow-bg" style="color: rgb(175,0,0)">'</span><span class="ansi-yellow-bg" style="color: rgb(175,0,0)">verb_log</span><span class="ansi-yellow-bg" style="color: rgb(175,0,0)">'</span><span class="ansi-yellow-bg">]</span><span class="ansi-yellow-bg">,</span>
-<span class="ansi-green-intense-fg ansi-bold">   1740</span> <span class="ansi-yellow-bg">                            </span><span class="ansi-yellow-bg">expensive_modulo</span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">=</span><span class="ansi-yellow-bg">opts</span><span class="ansi-yellow-bg">[</span><span class="ansi-yellow-bg" style="color: rgb(175,0,0)">'</span><span class="ansi-yellow-bg" style="color: rgb(175,0,0)">verb_log_expensive</span><span class="ansi-yellow-bg" style="color: rgb(175,0,0)">'</span><span class="ansi-yellow-bg">]</span><span class="ansi-yellow-bg">)</span><span style="color: rgb(98,98,98)">.</span>register(<span style="color: rgb(0,135,0)">self</span>)
-<span class="ansi-green-intense-fg ansi-bold">   1742</span> <span style="color: rgb(0,135,0)">self</span><span style="color: rgb(98,98,98)">.</span>_stopdict <span style="color: rgb(98,98,98)">=</span> _CMAStopDict()
-<span class="ansi-green-intense-fg ansi-bold">   1743</span> <span style="color: rgb(175,0,0)">"</span><span style="color: rgb(175,0,0)">    attribute for stopping criteria in function stop</span><span style="color: rgb(175,0,0)">"</span>
-
-File <span class="ansi-green-fg">~/miniconda3/envs/pyswatplus/lib/python3.12/site-packages/cma/logger.py:100</span>, in <span class="ansi-cyan-fg">CMADataLogger.__init__</span><span class="ansi-blue-fg">(self, name_prefix, modulo, append, expensive_modulo)</span>
-<span class="ansi-green-intense-fg ansi-bold">     98</span> <span class="ansi-bold" style="color: rgb(0,135,0)">if</span> name_prefix <span class="ansi-bold" style="color: rgb(175,0,255)">is</span> <span class="ansi-bold" style="color: rgb(0,135,0)">None</span>:
-<span class="ansi-green-intense-fg ansi-bold">     99</span>     name_prefix <span style="color: rgb(98,98,98)">=</span> CMADataLogger<span style="color: rgb(98,98,98)">.</span>default_prefix
-<span class="ansi-green-fg">--&gt; 100</span> <span style="color: rgb(0,135,0)">self</span><span style="color: rgb(98,98,98)">.</span>name_prefix <span style="color: rgb(98,98,98)">=</span> <span class="ansi-yellow-bg">os</span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">.</span><span class="ansi-yellow-bg">path</span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">.</span><span class="ansi-yellow-bg">abspath</span><span class="ansi-yellow-bg">(</span><span class="ansi-yellow-bg">os</span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">.</span><span class="ansi-yellow-bg">path</span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">.</span><span class="ansi-yellow-bg">join</span><span class="ansi-yellow-bg">(</span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">*</span><span class="ansi-yellow-bg">os</span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">.</span><span class="ansi-yellow-bg">path</span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">.</span><span class="ansi-yellow-bg">split</span><span class="ansi-yellow-bg">(</span><span class="ansi-yellow-bg">name_prefix</span><span class="ansi-yellow-bg">)</span><span class="ansi-yellow-bg">)</span><span class="ansi-yellow-bg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">    101</span> <span class="ansi-bold" style="color: rgb(0,135,0)">if</span> name_prefix <span class="ansi-bold" style="color: rgb(175,0,255)">is</span> <span class="ansi-bold" style="color: rgb(175,0,255)">not</span> <span class="ansi-bold" style="color: rgb(0,135,0)">None</span> <span class="ansi-bold" style="color: rgb(175,0,255)">and</span> name_prefix<span style="color: rgb(98,98,98)">.</span>endswith((os<span style="color: rgb(98,98,98)">.</span>sep, <span style="color: rgb(175,0,0)">'</span><span style="color: rgb(175,0,0)">/</span><span style="color: rgb(175,0,0)">'</span>)):
-<span class="ansi-green-intense-fg ansi-bold">    102</span>     <span style="color: rgb(0,135,0)">self</span><span style="color: rgb(98,98,98)">.</span>name_prefix <span style="color: rgb(98,98,98)">=</span> <span style="color: rgb(0,135,0)">self</span><span style="color: rgb(98,98,98)">.</span>name_prefix <span style="color: rgb(98,98,98)">+</span> os<span style="color: rgb(98,98,98)">.</span>sep
-
-File <span class="ansi-green-fg">&lt;frozen posixpath&gt;:423</span>, in <span class="ansi-cyan-fg">abspath</span><span class="ansi-blue-fg">(path)</span>
-
-<span class="ansi-red-fg">FileNotFoundError</span>: [Errno 2] No such file or directory</pre>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
-</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<hr/>
+<h2 id="6-analyze-the-results">6. Analyze the Results<a class="anchor-link" href="#6-analyze-the-results">¶</a></h2><p>Finally, we analyze the results of the optimization:</p>
+<ul>
+<li>The best combination of parameters.</li>
+<li>The path to the simulation results.</li>
+<li>The error metric.</li>
+</ul>
 </div>
 </div>
 </div>
@@ -1384,7 +1561,7 @@ File <span class="ansi-green-fg">&lt;frozen posixpath&gt;:423</span>, in <span c
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div><div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [21]:</div><div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="CodeMirror cm-s-jupyter">
 <div class="zeroclipboard-container">
 <clipboard-copy ,="" aria-label="Copy to Clipboard" for="cell-6">
@@ -1397,11 +1574,23 @@ File <span class="ansi-green-fg">&lt;frozen posixpath&gt;:423</span>, in <span c
 </div>
 </clipboard-copy>
 </div>
-<div class="highlight-ipynb hl-python"><pre><span></span><span class="c1">#best combination of parameters</span>
-<span class="n">x</span>
+<div class="highlight-ipynb hl-python"><pre><span></span><span class="c1"># Best combination of parameters</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"Best parameters:"</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span>
+
+<span class="c1"># Path to the best simulation results</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"Simulation results path:"</span><span class="p">,</span> <span class="n">path</span><span class="p">)</span>
+
+<span class="c1"># Error metric</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"Error:"</span><span class="p">,</span> <span class="n">error</span><span class="p">)</span>
 </pre></div>
-<div class="clipboard-copy-txt" id="cell-6">#best combination of parameters
-x</div>
+<div class="clipboard-copy-txt" id="cell-6"># Best combination of parameters
+print("Best parameters:", x)
+
+# Path to the best simulation results
+print("Simulation results path:", path)
+
+# Error metric
+print("Error:", error)</div>
 </div>
 </div>
 </div>
@@ -1410,92 +1599,13 @@ x</div>
 <div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
 </div>
 <div class="jp-OutputArea jp-Cell-outputArea">
-<div class="jp-OutputArea-child jp-OutputArea-executeResult">
-<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[ ]:</div>
-<div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain" tabindex="0">
-<pre>array([49.41067224,  0.46305621])</pre>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell">
-<div class="jp-Cell jp-CodeCell jp-Notebook-cell">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div><div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="CodeMirror cm-s-jupyter">
-<div class="zeroclipboard-container">
-<clipboard-copy ,="" aria-label="Copy to Clipboard" for="cell-7">
-<div>
-<span class="notice" hidden="">Copied!</span>
-<svg aria-hidden="true" class="clipboard-copy-icon" data-view-component="true" height="20" version="1.1" viewbox="0 0 16 16" width="20">
-<path d="M0 6.75C0 5.784.784 5 1.75 5h1.5a.75.75 0 010 1.5h-1.5a.25.25 0 00-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 00.25-.25v-1.5a.75.75 0 011.5 0v1.5A1.75 1.75 0 019.25 16h-7.5A1.75 1.75 0 010 14.25v-7.5z" fill="currentColor" fill-rule="evenodd"></path>
-<path d="M5 1.75C5 .784 5.784 0 6.75 0h7.5C15.216 0 16 .784 16 1.75v7.5A1.75 1.75 0 0114.25 11h-7.5A1.75 1.75 0 015 9.25v-7.5zm1.75-.25a.25.25 0 00-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 00.25-.25v-7.5a.25.25 0 00-.25-.25h-7.5z" fill="currentColor" fill-rule="evenodd"></path>
-</svg>
-</div>
-</clipboard-copy>
-</div>
-<div class="highlight-ipynb hl-python"><pre><span></span><span class="c1">#path of best solution</span>
-<span class="n">path</span>
-</pre></div>
-<div class="clipboard-copy-txt" id="cell-7">#path of best solution
-path</div>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell-outputWrapper">
-<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
-</div>
-<div class="jp-OutputArea jp-Cell-outputArea">
-<div class="jp-OutputArea-child jp-OutputArea-executeResult">
-<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[ ]:</div>
-<div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain" tabindex="0">
-<pre>{'test_calibration': PosixPath('/tmp/tmpljyxbn39')}</pre>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell">
-<div class="jp-Cell jp-CodeCell jp-Notebook-cell">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div><div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="CodeMirror cm-s-jupyter">
-<div class="zeroclipboard-container">
-<clipboard-copy ,="" aria-label="Copy to Clipboard" for="cell-8">
-<div>
-<span class="notice" hidden="">Copied!</span>
-<svg aria-hidden="true" class="clipboard-copy-icon" data-view-component="true" height="20" version="1.1" viewbox="0 0 16 16" width="20">
-<path d="M0 6.75C0 5.784.784 5 1.75 5h1.5a.75.75 0 010 1.5h-1.5a.25.25 0 00-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 00.25-.25v-1.5a.75.75 0 011.5 0v1.5A1.75 1.75 0 019.25 16h-7.5A1.75 1.75 0 010 14.25v-7.5z" fill="currentColor" fill-rule="evenodd"></path>
-<path d="M5 1.75C5 .784 5.784 0 6.75 0h7.5C15.216 0 16 .784 16 1.75v7.5A1.75 1.75 0 0114.25 11h-7.5A1.75 1.75 0 015 9.25v-7.5zm1.75-.25a.25.25 0 00-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 00.25-.25v-7.5a.25.25 0 00-.25-.25h-7.5z" fill="currentColor" fill-rule="evenodd"></path>
-</svg>
-</div>
-</clipboard-copy>
-</div>
-<div class="highlight-ipynb hl-python"><pre><span></span><span class="c1">#error</span>
-<span class="n">error</span>
-</pre></div>
-<div class="clipboard-copy-txt" id="cell-8">#error
-error</div>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell-outputWrapper">
-<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
-</div>
-<div class="jp-OutputArea jp-Cell-outputArea">
-<div class="jp-OutputArea-child jp-OutputArea-executeResult">
-<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[ ]:</div>
-<div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain" tabindex="0">
-<pre>0.13436424411240122</pre>
+<div class="jp-OutputArea-child">
+<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
+<pre>Best parameters: [42.2548061   0.41222274]
+Simulation results path: {'test_calibration': PosixPath('/tmp/tmp6gnrs7xq')}
+Error: 0.2528642743696815
+</pre>
 </div>
 </div>
 </div>

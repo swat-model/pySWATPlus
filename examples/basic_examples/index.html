@@ -20,7 +20,7 @@
     
     
       
-        <title>Basic Usage - pySWATPlus</title>
+        <title>SWAT+ Model Simulation with - pySWATPlus</title>
       
     
     
@@ -73,6 +73,11 @@
     <label class="md-overlay" for="__drawer"></label>
     <div data-md-component="skip">
       
+        
+        <a href="#swat-model-simulation-with" class="md-skip">
+          Skip to content
+        </a>
+      
     </div>
     <div data-md-component="announce">
       
@@ -103,7 +108,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Basic Usage
+              SWAT+ Model Simulation with
             
           </span>
         </div>
@@ -339,17 +344,179 @@
       <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
       
       
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    SWAT+ Model Simulation with
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
       
       <a href="./" class="md-nav__link md-nav__link--active">
         
   
   <span class="md-ellipsis">
-    Basic Usage
+    SWAT+ Model Simulation with
     
   </span>
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-importing-required-libraries" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Importing Required Libraries
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-setting-up-the-swat-model" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Setting Up the SWAT+ Model
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-initializing-the" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Initializing the
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-reading-input-files" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Reading Input Files
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-exploring-the-input-data" class="md-nav__link">
+    <span class="md-ellipsis">
+      5. Exploring the Input Data
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-modifying-input-parameters" class="md-nav__link">
+    <span class="md-ellipsis">
+      6. Modifying Input Parameters
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-running-the-swat-simulation" class="md-nav__link">
+    <span class="md-ellipsis">
+      7. Running the SWAT+ Simulation
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="7. Running the SWAT+ Simulation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#handling-simulation-output" class="md-nav__link">
+    <span class="md-ellipsis">
+      Handling Simulation Output
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8-reading-simulation-results" class="md-nav__link">
+    <span class="md-ellipsis">
+      8. Reading Simulation Results
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#9-running-swat-with-specific-modifications" class="md-nav__link">
+    <span class="md-ellipsis">
+      9. Running SWAT+ with Specific Modifications
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="9. Running SWAT+ with Specific Modifications">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#option-1-modify-specific-values" class="md-nav__link">
+    <span class="md-ellipsis">
+      Option 1: Modify Specific Values
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#option-2-use-regular-expressions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Option 2: Use Regular Expressions
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#10-running-multiple-simulations-in-parallel" class="md-nav__link">
+    <span class="md-ellipsis">
+      10. Running Multiple Simulations in Parallel
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
       
     </li>
   
@@ -367,7 +534,7 @@
         
   
   <span class="md-ellipsis">
-    Calibration
+    SWAT+ Calibration Example using pySWATPlus and pymoo
     
   </span>
   
@@ -389,7 +556,7 @@
         
   
   <span class="md-ellipsis">
-    Sensitivy Analysis
+    Sobol Sensitivity Analysis for SWAT+ Model Parameters
     
   </span>
   
@@ -579,6 +746,145 @@
   
   
   
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-importing-required-libraries" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Importing Required Libraries
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-setting-up-the-swat-model" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Setting Up the SWAT+ Model
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-initializing-the" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Initializing the
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-reading-input-files" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Reading Input Files
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-exploring-the-input-data" class="md-nav__link">
+    <span class="md-ellipsis">
+      5. Exploring the Input Data
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-modifying-input-parameters" class="md-nav__link">
+    <span class="md-ellipsis">
+      6. Modifying Input Parameters
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-running-the-swat-simulation" class="md-nav__link">
+    <span class="md-ellipsis">
+      7. Running the SWAT+ Simulation
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="7. Running the SWAT+ Simulation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#handling-simulation-output" class="md-nav__link">
+    <span class="md-ellipsis">
+      Handling Simulation Output
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8-reading-simulation-results" class="md-nav__link">
+    <span class="md-ellipsis">
+      8. Reading Simulation Results
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#9-running-swat-with-specific-modifications" class="md-nav__link">
+    <span class="md-ellipsis">
+      9. Running SWAT+ with Specific Modifications
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="9. Running SWAT+ with Specific Modifications">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#option-1-modify-specific-values" class="md-nav__link">
+    <span class="md-ellipsis">
+      Option 1: Modify Specific Values
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#option-2-use-regular-expressions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Option 2: Use Regular Expressions
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#10-running-multiple-simulations-in-parallel" class="md-nav__link">
+    <span class="md-ellipsis">
+      10. Running Multiple Simulations in Parallel
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
   
 </nav>
                   </div>
@@ -593,8 +899,6 @@
                   
 
 
-
-  <h1>Basic Usage</h1>
 
 <script>
 (function (global, factory) {
@@ -1038,7 +1342,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [26]:</div><div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [1]:</div><div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="CodeMirror cm-s-jupyter">
 <div class="zeroclipboard-container">
 <clipboard-copy ,="" aria-label="Copy to Clipboard" for="cell-1">
@@ -1051,13 +1355,32 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </div>
 </clipboard-copy>
 </div>
-<div class="highlight-ipynb hl-python"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">pySWATPlus</span><span class="w"> </span><span class="kn">import</span> <span class="n">TxtinoutReader</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">re</span>
+<div class="highlight-ipynb hl-python"><pre><span></span><span class="o">%</span><span class="n">load_ext</span> <span class="n">autoreload</span>
 </pre></div>
-<div class="clipboard-copy-txt" id="cell-1">from pySWATPlus import TxtinoutReader
-import re</div>
+<div class="clipboard-copy-txt" id="cell-1">%load_ext autoreload</div>
 </div>
 </div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h1 id="swat-model-simulation-with-pyswatplus">SWAT+ Model Simulation with <code>pySWATPlus</code><a class="anchor-link" href="#swat-model-simulation-with-pyswatplus">¶</a></h1><p>This notebook demonstrates how to use the <code>pySWATPlus</code> library to interact with SWAT+ models, modify input files, and run simulations. We'll cover the following steps:</p>
+<ul>
+<li><strong>Loading the necessary libraries.</strong></li>
+<li><strong>Initializing the <code>TxtinoutReader</code> to interact with the SWAT+ model.</strong></li>
+<li><strong>Reading and modifying input files (e.g., <code>plants.plt</code>).</strong></li>
+<li><strong>Running the SWAT+ simulation and analyzing results.</strong></li>
+<li><strong>Running multiple simulations in parallel.</strong></li>
+</ul>
+<p>Let’s get started!</p>
+<hr/>
+<h2 id="1-importing-required-libraries">1. Importing Required Libraries<a class="anchor-link" href="#1-importing-required-libraries">¶</a></h2><p>First, we import the <code>pySWATPlus</code> module.</p>
 </div>
 </div>
 </div>
@@ -1067,7 +1390,7 @@ import re</div>
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div><div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [2]:</div><div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="CodeMirror cm-s-jupyter">
 <div class="zeroclipboard-container">
 <clipboard-copy ,="" aria-label="Copy to Clipboard" for="cell-2">
@@ -1080,13 +1403,23 @@ import re</div>
 </div>
 </clipboard-copy>
 </div>
-<div class="highlight-ipynb hl-python"><pre><span></span><span class="n">txtinout_folder</span> <span class="o">=</span> <span class="s1">'/mnt/c/users/joans/onedrive/Escriptori/icra/muga_windows'</span>    <span class="c1">#Here you have to put the path to your  txtinout folder, with the SWAT.exe </span>
-<span class="n">filename</span> <span class="o">=</span>  <span class="s1">'plants.plt'</span>
+<div class="highlight-ipynb hl-python"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">pySWATPlus</span><span class="w"> </span><span class="kn">import</span> <span class="n">TxtinoutReader</span>
 </pre></div>
-<div class="clipboard-copy-txt" id="cell-2">txtinout_folder = '/mnt/c/users/joans/onedrive/Escriptori/icra/muga_windows'    #Here you have to put the path to your  txtinout folder, with the SWAT.exe 
-filename =  'plants.plt'</div>
+<div class="clipboard-copy-txt" id="cell-2">from pySWATPlus import TxtinoutReader</div>
 </div>
 </div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<hr/>
+<h2 id="2-setting-up-the-swat-model">2. Setting Up the SWAT+ Model<a class="anchor-link" href="#2-setting-up-the-swat-model">¶</a></h2><p>To work with a SWAT+ model, we need to specify the path to the <code>txtinout</code> folder. This folder contains all the input files required for the simulation, including the SWAT+ executable.</p>
 </div>
 </div>
 </div>
@@ -1096,7 +1429,7 @@ filename =  'plants.plt'</div>
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [7]:</div><div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [3]:</div><div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="CodeMirror cm-s-jupyter">
 <div class="zeroclipboard-container">
 <clipboard-copy ,="" aria-label="Copy to Clipboard" for="cell-3">
@@ -1109,13 +1442,27 @@ filename =  'plants.plt'</div>
 </div>
 </clipboard-copy>
 </div>
-<div class="highlight-ipynb hl-python"><pre><span></span><span class="c1">#The folder pointed by txtinout_folder must have a .exe file to run the simulation</span>
-<span class="n">reader</span> <span class="o">=</span> <span class="n">TxtinoutReader</span><span class="p">(</span><span class="n">txtinout_folder</span><span class="p">)</span>
+<div class="highlight-ipynb hl-python"><pre><span></span><span class="c1"># Path to the SWAT+ model folder</span>
+<span class="n">txtinout_folder</span> <span class="o">=</span> <span class="s1">'/mnt/c/Users/joans/OneDrive/Escriptori/icra/muga_windows'</span>
+<span class="n">filename</span> <span class="o">=</span>  <span class="s1">'plants.plt'</span>
 </pre></div>
-<div class="clipboard-copy-txt" id="cell-3">#The folder pointed by txtinout_folder must have a .exe file to run the simulation
-reader = TxtinoutReader(txtinout_folder)</div>
+<div class="clipboard-copy-txt" id="cell-3"># Path to the SWAT+ model folder
+txtinout_folder = '/mnt/c/Users/joans/OneDrive/Escriptori/icra/muga_windows'
+filename =  'plants.plt'</div>
 </div>
 </div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<hr/>
+<h2 id="3-initializing-the-txtinoutreader">3. Initializing the <code>TxtinoutReader</code><a class="anchor-link" href="#3-initializing-the-txtinoutreader">¶</a></h2><p>The <code>TxtinoutReader</code> class is used to interact with the SWAT+ model. It allows us to read, modify, and run simulations.</p>
 </div>
 </div>
 </div>
@@ -1125,7 +1472,7 @@ reader = TxtinoutReader(txtinout_folder)</div>
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [8]:</div><div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [4]:</div><div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="CodeMirror cm-s-jupyter">
 <div class="zeroclipboard-container">
 <clipboard-copy ,="" aria-label="Copy to Clipboard" for="cell-4">
@@ -1138,17 +1485,27 @@ reader = TxtinoutReader(txtinout_folder)</div>
 </div>
 </clipboard-copy>
 </div>
-<div class="highlight-ipynb hl-python"><pre><span></span><span class="c1">#Read plants.plt file</span>
-<span class="n">plants_reader</span> <span class="o">=</span> <span class="n">reader</span><span class="o">.</span><span class="n">register_file</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> 
-                    <span class="n">has_units</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-                    <span class="n">index</span><span class="o">=</span><span class="s1">'name'</span><span class="p">)</span>
+<div class="highlight-ipynb hl-python"><pre><span></span><span class="c1"># Initialize the TxtinoutReader</span>
+<span class="c1"># Note: The folder must contain a .exe file to run the simulation.</span>
+<span class="n">reader</span> <span class="o">=</span> <span class="n">TxtinoutReader</span><span class="p">(</span><span class="n">txtinout_folder</span><span class="p">)</span>
 </pre></div>
-<div class="clipboard-copy-txt" id="cell-4">#Read plants.plt file
-plants_reader = reader.register_file(filename, 
-                    has_units=False,
-                    index='name')</div>
+<div class="clipboard-copy-txt" id="cell-4"># Initialize the TxtinoutReader
+# Note: The folder must contain a .exe file to run the simulation.
+reader = TxtinoutReader(txtinout_folder)</div>
 </div>
 </div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<hr/>
+<h2 id="4-reading-input-files">4. Reading Input Files<a class="anchor-link" href="#4-reading-input-files">¶</a></h2><p>We can read specific input files, such as <code>plants.plt</code>, using the <code>register_file</code> method. This method returns a <code>FileReader</code> object that allows us to manipulate the file.</p>
 </div>
 </div>
 </div>
@@ -1158,7 +1515,7 @@ plants_reader = reader.register_file(filename,
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [9]:</div><div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [5]:</div><div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="CodeMirror cm-s-jupyter">
 <div class="zeroclipboard-container">
 <clipboard-copy ,="" aria-label="Copy to Clipboard" for="cell-5">
@@ -1171,9 +1528,25 @@ plants_reader = reader.register_file(filename,
 </div>
 </clipboard-copy>
 </div>
-<div class="highlight-ipynb hl-python"><pre><span></span><span class="n">plants_reader</span><span class="o">.</span><span class="n">header_file</span>
+<div class="highlight-ipynb hl-python"><pre><span></span><span class="c1"># Read the 'plants.plt' file</span>
+<span class="n">plants_reader</span> <span class="o">=</span> <span class="n">reader</span><span class="o">.</span><span class="n">register_file</span><span class="p">(</span>
+    <span class="n">filename</span><span class="p">,</span> 
+    <span class="n">has_units</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>  <span class="c1"># Indicates if the file has units information</span>
+    <span class="n">index</span><span class="o">=</span><span class="s1">'name'</span>      <span class="c1"># Use the 'name' column as the index</span>
+<span class="p">)</span>
+
+<span class="c1"># Display the header of the file</span>
+<span class="n">plants_reader</span><span class="o">.</span><span class="n">header_file</span>
 </pre></div>
-<div class="clipboard-copy-txt" id="cell-5">plants_reader.header_file</div>
+<div class="clipboard-copy-txt" id="cell-5"># Read the 'plants.plt' file
+plants_reader = reader.register_file(
+    filename, 
+    has_units=False,  # Indicates if the file has units information
+    index='name'      # Use the 'name' column as the index
+)
+
+# Display the header of the file
+plants_reader.header_file</div>
 </div>
 </div>
 </div>
@@ -1183,11 +1556,23 @@ plants_reader = reader.register_file(filename,
 </div>
 <div class="jp-OutputArea jp-Cell-outputArea">
 <div class="jp-OutputArea-child jp-OutputArea-executeResult">
-<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[9]:</div>
+<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[5]:</div>
 <div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain" tabindex="0">
 <pre>'plants.plt: written by SWAT+ editor v2.2.0 on 2023-09-25 11:54 for SWAT+ rev.60.5.4\n'</pre>
 </div>
 </div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<hr/>
+<h2 id="5-exploring-the-input-data">5. Exploring the Input Data<a class="anchor-link" href="#5-exploring-the-input-data">¶</a></h2><p>The <code>plants.plt</code> file contains information about different plant species used in the SWAT+ model. Let’s take a look at the data.</p>
 </div>
 </div>
 </div>
@@ -1197,7 +1582,7 @@ plants_reader = reader.register_file(filename,
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [29]:</div><div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [6]:</div><div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="CodeMirror cm-s-jupyter">
 <div class="zeroclipboard-container">
 <clipboard-copy ,="" aria-label="Copy to Clipboard" for="cell-6">
@@ -1210,9 +1595,11 @@ plants_reader = reader.register_file(filename,
 </div>
 </clipboard-copy>
 </div>
-<div class="highlight-ipynb hl-python"><pre><span></span><span class="n">plants_reader</span><span class="o">.</span><span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+<div class="highlight-ipynb hl-python"><pre><span></span><span class="c1"># Display the first few rows of the 'plants.plt' file</span>
+<span class="n">plants_reader</span><span class="o">.</span><span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
 </pre></div>
-<div class="clipboard-copy-txt" id="cell-6">plants_reader.df.head()</div>
+<div class="clipboard-copy-txt" id="cell-6"># Display the first few rows of the 'plants.plt' file
+plants_reader.df.head()</div>
 </div>
 </div>
 </div>
@@ -1222,7 +1609,7 @@ plants_reader = reader.register_file(filename,
 </div>
 <div class="jp-OutputArea jp-Cell-outputArea">
 <div class="jp-OutputArea-child jp-OutputArea-executeResult">
-<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[29]:</div>
+<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[6]:</div>
 <div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/html" tabindex="0">
 <div>
 <style scoped="">
@@ -1321,7 +1708,7 @@ plants_reader = reader.register_file(filename,
 <td>temp_gro</td>
 <td>0.0</td>
 <td>110.0</td>
-<td>40.0</td>
+<td>50.0</td>
 <td>0.45</td>
 <td>3.0</td>
 <td>0.15</td>
@@ -1345,7 +1732,7 @@ plants_reader = reader.register_file(filename,
 <td>temp_gro</td>
 <td>0.0</td>
 <td>110.0</td>
-<td>40.0</td>
+<td>50.0</td>
 <td>0.50</td>
 <td>3.0</td>
 <td>0.15</td>
@@ -1369,7 +1756,7 @@ plants_reader = reader.register_file(filename,
 <td>temp_gro</td>
 <td>0.5</td>
 <td>0.0</td>
-<td>40.0</td>
+<td>50.0</td>
 <td>0.90</td>
 <td>5.0</td>
 <td>0.15</td>
@@ -1393,7 +1780,7 @@ plants_reader = reader.register_file(filename,
 <td>temp_gro</td>
 <td>0.0</td>
 <td>0.0</td>
-<td>40.0</td>
+<td>50.0</td>
 <td>0.05</td>
 <td>1.2</td>
 <td>0.05</td>
@@ -1419,13 +1806,25 @@ plants_reader = reader.register_file(filename,
 </div>
 </div>
 </div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<hr/>
+<h2 id="6-modifying-input-parameters">6. Modifying Input Parameters<a class="anchor-link" href="#6-modifying-input-parameters">¶</a></h2><p>We can modify the input parameters directly in the DataFrame. For example, let’s change the <code>bm_e</code> (biomass-energy ratio) for the <code>agrc</code> plant.</p>
+</div>
+</div>
+</div>
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
 <div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [11]:</div><div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [7]:</div><div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="CodeMirror cm-s-jupyter">
 <div class="zeroclipboard-container">
 <clipboard-copy ,="" aria-label="Copy to Clipboard" for="cell-7">
@@ -1438,11 +1837,31 @@ plants_reader = reader.register_file(filename,
 </div>
 </clipboard-copy>
 </div>
-<div class="highlight-ipynb hl-python"><pre><span></span><span class="n">reader</span><span class="o">.</span><span class="n">set_beginning_and_end_year</span><span class="p">(</span><span class="mi">2009</span><span class="p">,</span> <span class="mi">2010</span><span class="p">)</span>
+<div class="highlight-ipynb hl-python"><pre><span></span><span class="c1"># Modify the 'bm_e' value for the 'agrc' plant</span>
+<span class="n">plants_reader</span><span class="o">.</span><span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s1">'agrc'</span><span class="p">,</span> <span class="s1">'bm_e'</span><span class="p">]</span> <span class="o">=</span> <span class="mi">40</span>
+
+<span class="c1"># Save the changes back to the file</span>
+<span class="n">plants_reader</span><span class="o">.</span><span class="n">overwrite_file</span><span class="p">()</span>
 </pre></div>
-<div class="clipboard-copy-txt" id="cell-7">reader.set_beginning_and_end_year(2009, 2010)</div>
+<div class="clipboard-copy-txt" id="cell-7"># Modify the 'bm_e' value for the 'agrc' plant
+plants_reader.df.loc['agrc', 'bm_e'] = 40
+
+# Save the changes back to the file
+plants_reader.overwrite_file()</div>
 </div>
 </div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<hr/>
+<h2 id="7-running-the-swat-simulation">7. Running the SWAT+ Simulation<a class="anchor-link" href="#7-running-the-swat-simulation">¶</a></h2><p>Now that we’ve modified the input file, let’s run the SWAT+ simulation. We can also specify additional parameters, such as the simulation period and warmup period.</p>
 </div>
 </div>
 </div>
@@ -1452,7 +1871,7 @@ plants_reader = reader.register_file(filename,
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [12]:</div><div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [8]:</div><div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="CodeMirror cm-s-jupyter">
 <div class="zeroclipboard-container">
 <clipboard-copy ,="" aria-label="Copy to Clipboard" for="cell-8">
@@ -1465,11 +1884,40 @@ plants_reader = reader.register_file(filename,
 </div>
 </clipboard-copy>
 </div>
-<div class="highlight-ipynb hl-python"><pre><span></span><span class="n">reader</span><span class="o">.</span><span class="n">set_warmup</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<div class="highlight-ipynb hl-python"><pre><span></span><span class="c1"># Set the beginning and end years for the simulation</span>
+<span class="n">reader</span><span class="o">.</span><span class="n">set_beginning_and_end_year</span><span class="p">(</span><span class="mi">2009</span><span class="p">,</span> <span class="mi">2011</span><span class="p">)</span>
+
+<span class="c1"># Set the warmup period (in years)</span>
+<span class="n">reader</span><span class="o">.</span><span class="n">set_warmup</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="c1"># Enable the 'channel_sd' object in the 'print.prt' file for daily output</span>
+<span class="n">reader</span><span class="o">.</span><span class="n">enable_object_in_print_prt</span><span class="p">(</span><span class="n">obj</span><span class="o">=</span><span class="s1">'channel_sd'</span><span class="p">,</span> <span class="n">daily</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">monthly</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">yearly</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">avann</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 </pre></div>
-<div class="clipboard-copy-txt" id="cell-8">reader.set_warmup(1)</div>
+<div class="clipboard-copy-txt" id="cell-8"># Set the beginning and end years for the simulation
+reader.set_beginning_and_end_year(2009, 2011)
+
+# Set the warmup period (in years)
+reader.set_warmup(1)
+
+# Enable the 'channel_sd' object in the 'print.prt' file for daily output
+reader.enable_object_in_print_prt(obj='channel_sd', daily=True, monthly=False, yearly=False, avann=False)</div>
 </div>
 </div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h3 id="handling-simulation-output">Handling Simulation Output<a class="anchor-link" href="#handling-simulation-output">¶</a></h3><p>To avoid cluttering the notebook with long simulation output:</p>
+<ul>
+<li>Set <code>show_output=False</code> to suppress all output.</li>
+<li>Use <code>%%capture</code> to store the output and print only a portion (e.g., the first 20 lines).</li>
+</ul>
 </div>
 </div>
 </div>
@@ -1479,7 +1927,7 @@ plants_reader = reader.register_file(filename,
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [13]:</div><div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [9]:</div><div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="CodeMirror cm-s-jupyter">
 <div class="zeroclipboard-container">
 <clipboard-copy ,="" aria-label="Copy to Clipboard" for="cell-9">
@@ -1492,23 +1940,23 @@ plants_reader = reader.register_file(filename,
 </div>
 </clipboard-copy>
 </div>
-<div class="highlight-ipynb hl-python"><pre><span></span><span class="c1">#Enable the 'channel_sd' in the print.prt file (the other ones are mantained as they are)</span>
-<span class="n">reader</span><span class="o">.</span><span class="n">enable_object_in_print_prt</span><span class="p">(</span><span class="n">obj</span><span class="o">=</span><span class="s1">'channel_sd'</span><span class="p">,</span> <span class="n">daily</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">monthly</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">yearly</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">avann</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<div class="highlight-ipynb hl-python"><pre><span></span><span class="o">%%</span><span class="n">capture</span> <span class="n">captured_output</span>
+<span class="n">simulation_path</span> <span class="o">=</span> <span class="n">reader</span><span class="o">.</span><span class="n">run_swat</span><span class="p">(</span><span class="n">show_output</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </pre></div>
-<div class="clipboard-copy-txt" id="cell-9">#Enable the 'channel_sd' in the print.prt file (the other ones are mantained as they are)
-reader.enable_object_in_print_prt(obj='channel_sd', daily=True, monthly=False, yearly=False, avann=False)</div>
+<div class="clipboard-copy-txt" id="cell-9">%%capture captured_output
+simulation_path = reader.run_swat(show_output=True)</div>
 </div>
 </div>
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
-<div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell">
+<div class="jp-Cell jp-CodeCell jp-Notebook-cell">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div><div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [10]:</div><div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="CodeMirror cm-s-jupyter">
 <div class="zeroclipboard-container">
 <clipboard-copy ,="" aria-label="Copy to Clipboard" for="cell-10">
@@ -1521,20 +1969,60 @@ reader.enable_object_in_print_prt(obj='channel_sd', daily=True, monthly=False, y
 </div>
 </clipboard-copy>
 </div>
-<div class="highlight-ipynb hl-python"><pre><span></span><span class="o">%%</span><span class="n">capture</span> <span class="n">captured_output</span>
-
-<span class="c1">#Run the model with the default settings. With show_output=True, the output of the model will be printed in the console.</span>
-<span class="c1">#We capture it using the magic command %%capture to avoid printing it.</span>
-<span class="n">txtinout_path</span> <span class="o">=</span> <span class="n">reader</span><span class="o">.</span><span class="n">run_swat</span><span class="p">(</span><span class="n">show_output</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<div class="highlight-ipynb hl-python"><pre><span></span><span class="c1"># Print the first 20 lines of the output</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"Simulation Output (First 20 Lines):"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">"</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">captured_output</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">splitlines</span><span class="p">()[:</span><span class="mi">20</span><span class="p">]))</span>
 </pre></div>
-<div class="clipboard-copy-txt" id="cell-10">%%capture captured_output
-
-#Run the model with the default settings. With show_output=True, the output of the model will be printed in the console.
-#We capture it using the magic command %%capture to avoid printing it.
-txtinout_path = reader.run_swat(show_output=True)
+<div class="clipboard-copy-txt" id="cell-10"># Print the first 20 lines of the output
+print("Simulation Output (First 20 Lines):")
+print("\n".join(captured_output.stdout.splitlines()[:20]))</div>
 </div>
 </div>
 </div>
+</div>
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="jp-OutputArea-child">
+<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
+<pre>Simulation Output (First 20 Lines):
+SWAT+
+Revision 60.5.7
+Soil &amp; Water Assessment Tool
+PC Version
+Program reading . . . executing
+Date of Sim   3/23/2025 Time  19:59: 1
+reading from precipitation file         Time  19:59: 1
+reading from temperature file           Time  19:59: 1
+reading from solar radiation file       Time  19:59: 2
+reading from relative humidity file     Time  19:59: 2
+reading from wind file                  Time  19:59: 2
+reading from wgn file                   Time  19:59: 3
+reading from wx station file            Time  19:59: 3
+Original Simulation        1   1  2009 Yr    1 of    3 Time  19:59: 4
+Original Simulation        1   2  2009 Yr    1 of    3 Time  19:59: 4
+Original Simulation        1   3  2009 Yr    1 of    3 Time  19:59: 4
+Original Simulation        1   4  2009 Yr    1 of    3 Time  19:59: 5
+Original Simulation        1   5  2009 Yr    1 of    3 Time  19:59: 5
+Original Simulation        1   6  2009 Yr    1 of    3 Time  19:59: 5
+Original Simulation        1   7  2009 Yr    1 of    3 Time  19:59: 5
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<hr/>
+<h2 id="8-reading-simulation-results">8. Reading Simulation Results<a class="anchor-link" href="#8-reading-simulation-results">¶</a></h2><p>After running the simulation, we can read the results from the output files. For example, let’s read the daily channel output (<code>channel_sd_day.txt</code>).</p>
 </div>
 </div>
 </div>
@@ -1544,7 +2032,7 @@ txtinout_path = reader.run_swat(show_output=True)
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div><div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [11]:</div><div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="CodeMirror cm-s-jupyter">
 <div class="zeroclipboard-container">
 <clipboard-copy ,="" aria-label="Copy to Clipboard" for="cell-11">
@@ -1557,112 +2045,16 @@ txtinout_path = reader.run_swat(show_output=True)
 </div>
 </clipboard-copy>
 </div>
-<div class="highlight-ipynb hl-python"><pre><span></span><span class="c1">#If can print now the first 15 lines of the output, to see that the model has run correctly</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">"</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">captured_output</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">splitlines</span><span class="p">()[:</span><span class="mi">15</span><span class="p">]))</span>
-</pre></div>
-<div class="clipboard-copy-txt" id="cell-11">#If can print now the first 15 lines of the output, to see that the model has run correctly
-print("\n".join(captured_output.stdout.splitlines()[:15]))
-</div>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell-outputWrapper">
-<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
-</div>
-<div class="jp-OutputArea jp-Cell-outputArea">
-<div class="jp-OutputArea-child">
-<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
-<pre>SWAT+
-Revision 60.5.7
-Soil &amp; Water Assessment Tool
-PC Version
-Program reading . . . executing
-Date of Sim   3/ 9/2025 Time  17: 6:17
-reading from precipitation file         Time  17: 6:17
-reading from temperature file           Time  17: 6:17
-reading from solar radiation file       Time  17: 6:18
-reading from relative humidity file     Time  17: 6:18
-reading from wind file                  Time  17: 6:19
-reading from wgn file                   Time  17: 6:19
-reading from wx station file            Time  17: 6:20
-Original Simulation        1   1  2009 Yr    1 of    2 Time  17: 6:21
-Original Simulation        1   2  2009 Yr    1 of    2 Time  17: 6:21
-</pre>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell">
-<div class="jp-Cell jp-CodeCell jp-Notebook-cell">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div><div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="CodeMirror cm-s-jupyter">
-<div class="zeroclipboard-container">
-<clipboard-copy ,="" aria-label="Copy to Clipboard" for="cell-12">
-<div>
-<span class="notice" hidden="">Copied!</span>
-<svg aria-hidden="true" class="clipboard-copy-icon" data-view-component="true" height="20" version="1.1" viewbox="0 0 16 16" width="20">
-<path d="M0 6.75C0 5.784.784 5 1.75 5h1.5a.75.75 0 010 1.5h-1.5a.25.25 0 00-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 00.25-.25v-1.5a.75.75 0 011.5 0v1.5A1.75 1.75 0 019.25 16h-7.5A1.75 1.75 0 010 14.25v-7.5z" fill="currentColor" fill-rule="evenodd"></path>
-<path d="M5 1.75C5 .784 5.784 0 6.75 0h7.5C15.216 0 16 .784 16 1.75v7.5A1.75 1.75 0 0114.25 11h-7.5A1.75 1.75 0 015 9.25v-7.5zm1.75-.25a.25.25 0 00-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 00.25-.25v-7.5a.25.25 0 00-.25-.25h-7.5z" fill="currentColor" fill-rule="evenodd"></path>
-</svg>
-</div>
-</clipboard-copy>
-</div>
-<div class="highlight-ipynb hl-python"><pre><span></span><span class="c1">#and txtinout path has now the path to the folder where the simulation has been run</span>
-<span class="n">txtinout_path</span>
-</pre></div>
-<div class="clipboard-copy-txt" id="cell-12">#and txtinout path has now the path to the folder where the simulation has been run
-txtinout_path</div>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell-outputWrapper">
-<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
-</div>
-<div class="jp-OutputArea jp-Cell-outputArea">
-<div class="jp-OutputArea-child jp-OutputArea-executeResult">
-<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[ ]:</div>
-<div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain" tabindex="0">
-<pre>PosixPath('/mnt/c/users/joans/onedrive/Escriptori/icra/muga_windows')</pre>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell">
-<div class="jp-Cell jp-CodeCell jp-Notebook-cell">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [30]:</div><div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="CodeMirror cm-s-jupyter">
-<div class="zeroclipboard-container">
-<clipboard-copy ,="" aria-label="Copy to Clipboard" for="cell-13">
-<div>
-<span class="notice" hidden="">Copied!</span>
-<svg aria-hidden="true" class="clipboard-copy-icon" data-view-component="true" height="20" version="1.1" viewbox="0 0 16 16" width="20">
-<path d="M0 6.75C0 5.784.784 5 1.75 5h1.5a.75.75 0 010 1.5h-1.5a.25.25 0 00-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 00.25-.25v-1.5a.75.75 0 011.5 0v1.5A1.75 1.75 0 019.25 16h-7.5A1.75 1.75 0 010 14.25v-7.5z" fill="currentColor" fill-rule="evenodd"></path>
-<path d="M5 1.75C5 .784 5.784 0 6.75 0h7.5C15.216 0 16 .784 16 1.75v7.5A1.75 1.75 0 0114.25 11h-7.5A1.75 1.75 0 015 9.25v-7.5zm1.75-.25a.25.25 0 00-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 00.25-.25v-7.5a.25.25 0 00-.25-.25h-7.5z" fill="currentColor" fill-rule="evenodd"></path>
-</svg>
-</div>
-</clipboard-copy>
-</div>
-<div class="highlight-ipynb hl-python"><pre><span></span><span class="c1">#For reading the results of the simulation, we can use the same reader object because the output files are in the same folder. Otherwise, we would need to create a new reader object with the path to the output folder.</span>
-<span class="n">channel_sd</span> <span class="o">=</span> <span class="n">reader</span><span class="o">.</span><span class="n">register_file</span><span class="p">(</span><span class="s1">'channel_sd_day.txt'</span><span class="p">,</span> 
-                    <span class="n">has_units</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<div class="highlight-ipynb hl-python"><pre><span></span><span class="c1"># Read the daily channel output</span>
+<span class="n">channel_sd</span> <span class="o">=</span> <span class="n">reader</span><span class="o">.</span><span class="n">register_file</span><span class="p">(</span><span class="s1">'channel_sd_day.txt'</span><span class="p">,</span> <span class="n">has_units</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="c1"># Display the first few rows of the results</span>
 <span class="n">channel_sd</span><span class="o">.</span><span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
 </pre></div>
-<div class="clipboard-copy-txt" id="cell-13">#For reading the results of the simulation, we can use the same reader object because the output files are in the same folder. Otherwise, we would need to create a new reader object with the path to the output folder.
-channel_sd = reader.register_file('channel_sd_day.txt', 
-                    has_units=True)
+<div class="clipboard-copy-txt" id="cell-11"># Read the daily channel output
+channel_sd = reader.register_file('channel_sd_day.txt', has_units=True)
+
+# Display the first few rows of the results
 channel_sd.df.head()</div>
 </div>
 </div>
@@ -1673,7 +2065,7 @@ channel_sd.df.head()</div>
 </div>
 <div class="jp-OutputArea jp-Cell-outputArea">
 <div class="jp-OutputArea-child jp-OutputArea-executeResult">
-<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[30]:</div>
+<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[11]:</div>
 <div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/html" tabindex="0">
 <div>
 <style scoped="">
@@ -1846,13 +2238,147 @@ channel_sd.df.head()</div>
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
-<div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<hr/>
+<h2 id="9-running-swat-with-specific-modifications">9. Running SWAT+ with Specific Modifications<a class="anchor-link" href="#9-running-swat-with-specific-modifications">¶</a></h2><p>Instead of modifying input files manually, you can directly specify the modifications when running the simulation. This is useful for quickly testing different scenarios.</p>
+<h4 id="option-1-modify-specific-values">Option 1: Modify Specific Values<a class="anchor-link" href="#option-1-modify-specific-values">¶</a></h4><p>You can specify the file, column, and value to modify. For example, let’s change the <code>bm_e</code> value for the <code>agrc</code> plant.</p>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell">
+<div class="jp-Cell jp-CodeCell jp-Notebook-cell">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [23]:</div><div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [12]:</div><div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="CodeMirror cm-s-jupyter">
+<div class="zeroclipboard-container">
+<clipboard-copy ,="" aria-label="Copy to Clipboard" for="cell-12">
+<div>
+<span class="notice" hidden="">Copied!</span>
+<svg aria-hidden="true" class="clipboard-copy-icon" data-view-component="true" height="20" version="1.1" viewbox="0 0 16 16" width="20">
+<path d="M0 6.75C0 5.784.784 5 1.75 5h1.5a.75.75 0 010 1.5h-1.5a.25.25 0 00-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 00.25-.25v-1.5a.75.75 0 011.5 0v1.5A1.75 1.75 0 019.25 16h-7.5A1.75 1.75 0 010 14.25v-7.5z" fill="currentColor" fill-rule="evenodd"></path>
+<path d="M5 1.75C5 .784 5.784 0 6.75 0h7.5C15.216 0 16 .784 16 1.75v7.5A1.75 1.75 0 0114.25 11h-7.5A1.75 1.75 0 015 9.25v-7.5zm1.75-.25a.25.25 0 00-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 00.25-.25v-7.5a.25.25 0 00-.25-.25h-7.5z" fill="currentColor" fill-rule="evenodd"></path>
+</svg>
+</div>
+</clipboard-copy>
+</div>
+<div class="highlight-ipynb hl-python"><pre><span></span><span class="c1"># Run the simulation with specific modifications</span>
+<span class="n">txtinout_path</span> <span class="o">=</span> <span class="n">reader</span><span class="o">.</span><span class="n">run_swat</span><span class="p">(</span>
+    <span class="n">params</span><span class="o">=</span><span class="p">{</span><span class="s1">'plants.plt'</span><span class="p">:</span> <span class="p">(</span><span class="s1">'name'</span><span class="p">,</span> <span class="p">[(</span><span class="s1">'agrc'</span><span class="p">,</span> <span class="s1">'bm_e'</span><span class="p">,</span> <span class="mi">40</span><span class="p">)])},</span> 
+    <span class="n">show_output</span><span class="o">=</span><span class="kc">False</span>
+<span class="p">)</span>
+<span class="n">txtinout_path</span>
+</pre></div>
+<div class="clipboard-copy-txt" id="cell-12"># Run the simulation with specific modifications
+txtinout_path = reader.run_swat(
+    params={'plants.plt': ('name', [('agrc', 'bm_e', 40)])}, 
+    show_output=False
+)
+txtinout_path</div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="jp-OutputArea-child jp-OutputArea-executeResult">
+<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[12]:</div>
+<div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain" tabindex="0">
+<pre>PosixPath('/mnt/c/Users/joans/OneDrive/Escriptori/icra/muga_windows')</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h4 id="option-2-use-regular-expressions">Option 2: Use Regular Expressions<a class="anchor-link" href="#option-2-use-regular-expressions">¶</a></h4><p>You can also use regular expressions to select rows for modification. For example, let’s modify the <code>bm_e</code> value for all plants whose names start with the letter "A".</p>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell">
+<div class="jp-Cell jp-CodeCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [13]:</div><div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="CodeMirror cm-s-jupyter">
+<div class="zeroclipboard-container">
+<clipboard-copy ,="" aria-label="Copy to Clipboard" for="cell-13">
+<div>
+<span class="notice" hidden="">Copied!</span>
+<svg aria-hidden="true" class="clipboard-copy-icon" data-view-component="true" height="20" version="1.1" viewbox="0 0 16 16" width="20">
+<path d="M0 6.75C0 5.784.784 5 1.75 5h1.5a.75.75 0 010 1.5h-1.5a.25.25 0 00-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 00.25-.25v-1.5a.75.75 0 011.5 0v1.5A1.75 1.75 0 019.25 16h-7.5A1.75 1.75 0 010 14.25v-7.5z" fill="currentColor" fill-rule="evenodd"></path>
+<path d="M5 1.75C5 .784 5.784 0 6.75 0h7.5C15.216 0 16 .784 16 1.75v7.5A1.75 1.75 0 0114.25 11h-7.5A1.75 1.75 0 015 9.25v-7.5zm1.75-.25a.25.25 0 00-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 00.25-.25v-7.5a.25.25 0 00-.25-.25h-7.5z" fill="currentColor" fill-rule="evenodd"></path>
+</svg>
+</div>
+</clipboard-copy>
+</div>
+<div class="highlight-ipynb hl-python"><pre><span></span><span class="c1"># Run the simulation using a regular expression to select rows</span>
+<span class="n">txtinout_path</span> <span class="o">=</span> <span class="n">reader</span><span class="o">.</span><span class="n">run_swat</span><span class="p">(</span>
+    <span class="n">params</span><span class="o">=</span><span class="p">{</span><span class="s1">'plants.plt'</span><span class="p">:</span> <span class="p">(</span><span class="s1">'name'</span><span class="p">,</span> <span class="p">[(</span><span class="sa">r</span><span class="s1">'^A.*'</span><span class="p">,</span> <span class="s1">'bm_e'</span><span class="p">,</span> <span class="mi">40</span><span class="p">)])},</span> 
+    <span class="n">show_output</span><span class="o">=</span><span class="kc">False</span>
+<span class="p">)</span>
+<span class="n">txtinout_path</span>
+</pre></div>
+<div class="clipboard-copy-txt" id="cell-13"># Run the simulation using a regular expression to select rows
+txtinout_path = reader.run_swat(
+    params={'plants.plt': ('name', [(r'^A.*', 'bm_e', 40)])}, 
+    show_output=False
+)
+txtinout_path</div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="jp-OutputArea-child jp-OutputArea-executeResult">
+<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[13]:</div>
+<div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain" tabindex="0">
+<pre>PosixPath('/mnt/c/Users/joans/OneDrive/Escriptori/icra/muga_windows')</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<hr/>
+<h2 id="10-running-multiple-simulations-in-parallel">10. Running Multiple Simulations in Parallel<a class="anchor-link" href="#10-running-multiple-simulations-in-parallel">¶</a></h2><p>If you need to run multiple simulations with different parameters, you can use the <code>run_parallel_swat</code> method. This allows you to run simulations in parallel using multiple threads or processes.</p>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell">
+<div class="jp-Cell jp-CodeCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [14]:</div><div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="CodeMirror cm-s-jupyter">
 <div class="zeroclipboard-container">
 <clipboard-copy ,="" aria-label="Copy to Clipboard" for="cell-14">
@@ -1865,115 +2391,11 @@ channel_sd.df.head()</div>
 </div>
 </clipboard-copy>
 </div>
-<div class="highlight-ipynb hl-python"><pre><span></span><span class="c1">#For modifying the input files, either modify the stored dataframe and save it, and then run the model again...</span>
-<span class="n">plants_reader</span><span class="o">.</span><span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s1">'agrc'</span><span class="p">,</span> <span class="s1">'bm_e'</span><span class="p">]</span> <span class="o">=</span> <span class="mi">40</span>
-<span class="n">plants_reader</span><span class="o">.</span><span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
-<span class="n">plants_reader</span><span class="o">.</span><span class="n">overwrite_file</span><span class="p">()</span>
-</pre></div>
-<div class="clipboard-copy-txt" id="cell-14">#For modifying the input files, either modify the stored dataframe and save it, and then run the model again...
-plants_reader.df.loc['agrc', 'bm_e'] = 40
-plants_reader.df.head()
-plants_reader.overwrite_file()
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell">
-<div class="jp-Cell jp-CodeCell jp-Notebook-cell">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [25]:</div><div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="CodeMirror cm-s-jupyter">
-<div class="zeroclipboard-container">
-<clipboard-copy ,="" aria-label="Copy to Clipboard" for="cell-15">
-<div>
-<span class="notice" hidden="">Copied!</span>
-<svg aria-hidden="true" class="clipboard-copy-icon" data-view-component="true" height="20" version="1.1" viewbox="0 0 16 16" width="20">
-<path d="M0 6.75C0 5.784.784 5 1.75 5h1.5a.75.75 0 010 1.5h-1.5a.25.25 0 00-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 00.25-.25v-1.5a.75.75 0 011.5 0v1.5A1.75 1.75 0 019.25 16h-7.5A1.75 1.75 0 010 14.25v-7.5z" fill="currentColor" fill-rule="evenodd"></path>
-<path d="M5 1.75C5 .784 5.784 0 6.75 0h7.5C15.216 0 16 .784 16 1.75v7.5A1.75 1.75 0 0114.25 11h-7.5A1.75 1.75 0 015 9.25v-7.5zm1.75-.25a.25.25 0 00-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 00.25-.25v-7.5a.25.25 0 00-.25-.25h-7.5z" fill="currentColor" fill-rule="evenodd"></path>
-</svg>
-</div>
-</clipboard-copy>
-</div>
-<div class="highlight-ipynb hl-python"><pre><span></span><span class="c1">#Or directly the model specifying the modifications</span>
-<span class="n">reader</span><span class="o">.</span><span class="n">run_swat</span><span class="p">(</span><span class="n">params</span> <span class="o">=</span> <span class="p">{</span><span class="s1">'plants.plt'</span><span class="p">:</span> <span class="p">(</span><span class="s1">'name'</span><span class="p">,</span> <span class="p">[(</span><span class="s1">'agrc'</span><span class="p">,</span> <span class="s1">'bm_e'</span><span class="p">,</span> <span class="mi">50</span><span class="p">)])},</span> <span class="n">show_output</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-</pre></div>
-<div class="clipboard-copy-txt" id="cell-15">#Or directly the model specifying the modifications
-reader.run_swat(params = {'plants.plt': ('name', [('agrc', 'bm_e', 50)])}, show_output=False)</div>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell-outputWrapper">
-<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
-</div>
-<div class="jp-OutputArea jp-Cell-outputArea">
-<div class="jp-OutputArea-child jp-OutputArea-executeResult">
-<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[25]:</div>
-<div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain" tabindex="0">
-<pre>PosixPath('/mnt/c/users/joans/onedrive/Escriptori/icra/muga_windows')</pre>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
-<div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [28]:</div><div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="CodeMirror cm-s-jupyter">
-<div class="zeroclipboard-container">
-<clipboard-copy ,="" aria-label="Copy to Clipboard" for="cell-16">
-<div>
-<span class="notice" hidden="">Copied!</span>
-<svg aria-hidden="true" class="clipboard-copy-icon" data-view-component="true" height="20" version="1.1" viewbox="0 0 16 16" width="20">
-<path d="M0 6.75C0 5.784.784 5 1.75 5h1.5a.75.75 0 010 1.5h-1.5a.25.25 0 00-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 00.25-.25v-1.5a.75.75 0 011.5 0v1.5A1.75 1.75 0 019.25 16h-7.5A1.75 1.75 0 010 14.25v-7.5z" fill="currentColor" fill-rule="evenodd"></path>
-<path d="M5 1.75C5 .784 5.784 0 6.75 0h7.5C15.216 0 16 .784 16 1.75v7.5A1.75 1.75 0 0114.25 11h-7.5A1.75 1.75 0 015 9.25v-7.5zm1.75-.25a.25.25 0 00-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 00.25-.25v-7.5a.25.25 0 00-.25-.25h-7.5z" fill="currentColor" fill-rule="evenodd"></path>
-</svg>
-</div>
-</clipboard-copy>
-</div>
-<div class="highlight-ipynb hl-python"><pre><span></span><span class="c1">#Or for multiple modifications, you can use a regular expression. In this case, all the land cover/plants starting with 'a' will have the 'bm_e' value set to 50</span>
-<span class="n">txtinout_path</span> <span class="o">=</span> <span class="n">reader</span><span class="o">.</span><span class="n">run_swat</span><span class="p">(</span><span class="n">params</span><span class="o">=</span><span class="p">{</span><span class="s1">'plants.plt'</span><span class="p">:</span> <span class="p">(</span><span class="s1">'name'</span><span class="p">,</span> <span class="p">[(</span><span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s1">'^a'</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">IGNORECASE</span><span class="p">),</span> <span class="s1">'bm_e'</span><span class="p">,</span> <span class="mi">50</span><span class="p">)])},</span> <span class="n">show_output</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-</pre></div>
-<div class="clipboard-copy-txt" id="cell-16">#Or for multiple modifications, you can use a regular expression. In this case, all the land cover/plants starting with 'a' will have the 'bm_e' value set to 50
-txtinout_path = reader.run_swat(params={'plants.plt': ('name', [(re.compile('^a', re.IGNORECASE), 'bm_e', 50)])}, show_output=False)</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell">
-<div class="jp-Cell jp-CodeCell jp-Notebook-cell">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [31]:</div><div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="CodeMirror cm-s-jupyter">
-<div class="zeroclipboard-container">
-<clipboard-copy ,="" aria-label="Copy to Clipboard" for="cell-17">
-<div>
-<span class="notice" hidden="">Copied!</span>
-<svg aria-hidden="true" class="clipboard-copy-icon" data-view-component="true" height="20" version="1.1" viewbox="0 0 16 16" width="20">
-<path d="M0 6.75C0 5.784.784 5 1.75 5h1.5a.75.75 0 010 1.5h-1.5a.25.25 0 00-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 00.25-.25v-1.5a.75.75 0 011.5 0v1.5A1.75 1.75 0 019.25 16h-7.5A1.75 1.75 0 010 14.25v-7.5z" fill="currentColor" fill-rule="evenodd"></path>
-<path d="M5 1.75C5 .784 5.784 0 6.75 0h7.5C15.216 0 16 .784 16 1.75v7.5A1.75 1.75 0 0114.25 11h-7.5A1.75 1.75 0 015 9.25v-7.5zm1.75-.25a.25.25 0 00-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 00.25-.25v-7.5a.25.25 0 00-.25-.25h-7.5z" fill="currentColor" fill-rule="evenodd"></path>
-</svg>
-</div>
-</clipboard-copy>
-</div>
-<div class="highlight-ipynb hl-python"><pre><span></span><span class="c1">#You can also run multiple simulations on parallel. Notice that in this case, each simulation will be run in a different folder, so the output files will be stored in different folders.</span>
+<div class="highlight-ipynb hl-python"><pre><span></span><span class="c1">#You can also run multiple simulations in parallel</span>
 <span class="n">txtinout_paths</span> <span class="o">=</span> <span class="n">reader</span><span class="o">.</span><span class="n">run_parallel_swat</span><span class="p">(</span><span class="n">params</span> <span class="o">=</span> <span class="p">[{</span><span class="s1">'plants.plt'</span><span class="p">:</span> <span class="p">(</span><span class="s1">'name'</span><span class="p">,</span> <span class="p">[(</span><span class="s1">'bana'</span><span class="p">,</span> <span class="s1">'bm_e'</span><span class="p">,</span> <span class="mi">45</span><span class="p">)])},</span> <span class="p">{</span><span class="s1">'plants.plt'</span><span class="p">:</span> <span class="p">(</span><span class="s1">'name'</span><span class="p">,</span> <span class="p">[(</span><span class="s1">'bana'</span><span class="p">,</span> <span class="s1">'bm_e'</span><span class="p">,</span> <span class="mi">40</span><span class="p">)])}],</span> <span class="n">n_workers</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span> <span class="n">parallelization</span><span class="o">=</span><span class="s1">'threads'</span><span class="p">)</span>
 <span class="n">txtinout_paths</span>
 </pre></div>
-<div class="clipboard-copy-txt" id="cell-17">#You can also run multiple simulations on parallel. Notice that in this case, each simulation will be run in a different folder, so the output files will be stored in different folders.
+<div class="clipboard-copy-txt" id="cell-14">#You can also run multiple simulations in parallel
 txtinout_paths = reader.run_parallel_swat(params = [{'plants.plt': ('name', [('bana', 'bm_e', 45)])}, {'plants.plt': ('name', [('bana', 'bm_e', 40)])}], n_workers = 2, parallelization='threads')
 txtinout_paths</div>
 </div>
@@ -1985,9 +2407,9 @@ txtinout_paths</div>
 </div>
 <div class="jp-OutputArea jp-Cell-outputArea">
 <div class="jp-OutputArea-child jp-OutputArea-executeResult">
-<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[31]:</div>
+<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[14]:</div>
 <div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain" tabindex="0">
-<pre>[PosixPath('/tmp/tmp800utdva'), PosixPath('/tmp/tmp7l0alo1k')]</pre>
+<pre>[PosixPath('/tmp/tmpa7a397py'), PosixPath('/tmp/tmpa227i7m4')]</pre>
 </div>
 </div>
 </div>
