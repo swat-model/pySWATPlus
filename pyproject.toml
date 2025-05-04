@@ -18,6 +18,13 @@ classifiers = [
     "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
     "Operating System :: OS Independent"
 ]
+dependencies = [
+    "pandas",
+    "numpy",
+    "pymoo",
+    "tqdm",
+    "dask"
+]
 
 [project.urls]
 Homepage = "https://github.com/swat-model/pySWATPlus"
