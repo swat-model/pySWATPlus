@@ -279,81 +279,80 @@ class TxtinoutReader:
         
         file_path = os.path.join(self.root_folder, filename)
         return FileReader(file_path, has_units, index, usecols, filter_by)
-    
-    """
-    if overwrite = True, content of dir folder will be deleted and txtinout folder will be copied there
-    if overwrite = False, txtinout folder will be copied to a new folder inside dir
-    """
-    def copy_swat(self, dir: str = None, overwrite: bool = False) -> str:
 
+    
+    def copy_swat(self, dst_fld: str = None, overwrite: bool = False) -> str:
         """
         Copy the SWAT model files to a specified directory.
-
-        If 'overwrite' is True, the content of the 'dir' folder will be deleted, and the 'txtinout' folder will be copied there.
-        If 'overwrite' is False, the 'txtinout' folder will be copied to a new folder inside 'dir'.
-
+    
+        If 'overwrite' is True, the content of 'dst_fld' will be deleted, and the 'txtinout' folder will be copied there.
+        If 'overwrite' is False, the 'txtinout' folder will be copied to a new folder inside 'dst_fld'.
+    
         Parameters:
-        dir (str, optional): The target directory where the SWAT model files will be copied. If None, a temporary folder will be created (default is None).
-        overwrite (bool, optional): If True, overwrite the content of 'dir'; if False, create a new folder inside dir(default is False).
-
+        dst_fld (str, optional): The target directory where the SWAT model files will be copied. 
+                                 If None, a temporary folder will be created (default is None).
+        overwrite (bool, optional): If True, overwrite the content of 'dst_fld'; if False, create a new folder inside 'dst_fld' (default is False).
+    
         Returns:
         str: The path to the directory where the SWAT model files were copied.
         """
-
-        #if dir is None or dir is a folder and overwrite is False, create a new folder using mkdtemp
-        if (dir is None) or (not overwrite and dir is not None):
-
+    
+        # If dst_fld is None or is a folder and overwrite is False, create a new folder using mkdtemp
+        if (dst_fld is None) or (not overwrite and dst_fld is not None):
             try: 
-                temp_folder_path = tempfile.mkdtemp(dir = dir)
+                temp_folder_path = tempfile.mkdtemp(dir=dst_fld)
             except FileNotFoundError:
-                os.makedirs(dir, exist_ok=True)
-                temp_folder_path = tempfile.mkdtemp(dir = dir)
-        
-        #if dir is a folder and overwrite is True, delete all contents
+                os.makedirs(dst_fld, exist_ok=True)
+                temp_folder_path = tempfile.mkdtemp(dir=dst_fld)
+    
+        # If dst_fld is a folder and overwrite is True, delete all contents
         elif overwrite:
-
-            if os.path.isdir(dir):
-            
-                temp_folder_path = dir
-                
-                #delete all files in dir
-                for file in os.listdir(dir):
-                    file_path = os.path.join(dir, file)
+            if os.path.isdir(dst_fld):
+                temp_folder_path = dst_fld
+    
+                # Delete all files in dst_fld
+                for file in os.listdir(dst_fld):
+                    file_path = os.path.join(dst_fld, file)
                     try:
                         if os.path.isfile(file_path):
                             os.remove(file_path)
                     except Exception as e:
                         print(e)
-            
-            else:   #if overwrite and dir is not a folder, create dir anyway
-                os.makedirs(dir, exist_ok=True)
-                temp_folder_path = dir
-        
-        #check if dir does not exist
-        elif not os.path.isdir(dir):
-            #check if dir is a file
-            if os.path.isfile(dir):
-                raise TypeError("dir must be a folder")
-
-            #create dir
-            os.makedirs(dir, exist_ok=True)
-            temp_folder_path = dir
-        
+    
+            else:  # If overwrite and dst_fld is not a folder, create dst_fld anyway
+                os.makedirs(dst_fld, exist_ok=True)
+                temp_folder_path = dst_fld
+    
+        # Check if dst_fld does not exist
+        elif not os.path.isdir(dst_fld):
+            # Check if dst_fld is a file
+            if os.path.isfile(dst_fld):
+                raise TypeError("dst_fld must be a folder")
+    
+            # Create dst_fld
+            os.makedirs(dst_fld, exist_ok=True)
+            temp_folder_path = dst_fld
+    
         else:
             raise TypeError("option not recognized")
-
+    
         # Get the list of files in the source folder
         source_folder = self.root_folder
         files = os.listdir(source_folder)
-
+        
+        file_suffix = ['day', 'mon', 'yr', 'aa']
+        file_ext = ['txt', 'csv']
+        ignored_file = tuple(
+            f'_{suf}.{ext}' for suf in file_suffix for ext in file_ext
+        ) 
+    
         # Exclude files with the specified suffix and copy the remaining files
         for file in files:
-            if not file.endswith('_aa.txt') and not file.endswith('_aa.csv') and not file.endswith('_yr.txt') and not file.endswith('_yr.csv') and not file.endswith('_day.txt') and not file.endswith('_day.csv') and not file.endswith('_mon.csv') and not file.endswith('_mon.txt'):
-                source_file = os.path.join(source_folder, file)
+            file_path = os.path.join(source_folder, file)
+            if (not os.path.isdir(file_path)) and (not file.endswith(ignored_file)):
                 destination_file = os.path.join(temp_folder_path, file)
-
-                shutil.copy2(source_file, destination_file)
-
+                shutil.copy2(file_path, destination_file)
+    
         return temp_folder_path
 
 
@@ -475,7 +474,7 @@ class TxtinoutReader:
         str: The path to the directory where the SWAT simulation was executed.
         """
         
-        tmp_path = self.copy_swat(dir = dir, overwrite = overwrite)
+        tmp_path = self.copy_swat(dst_fld = dir, overwrite = overwrite)
         reader = TxtinoutReader(tmp_path)
         return reader.run_swat(params, show_output = show_output)
 
