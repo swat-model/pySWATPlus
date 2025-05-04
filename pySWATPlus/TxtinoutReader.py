@@ -6,7 +6,7 @@ import tempfile
 import multiprocessing
 import tqdm
 from pathlib import Path
-from typing import List, Dict, Tuple, Optional, Union
+from typing import List, Dict, Tuple, Optional, Union, Any
 from concurrent.futures import ThreadPoolExecutor
 import re
 
@@ -261,7 +261,7 @@ class TxtinoutReader:
         self._enable_disable_csv_print(enable = False)
 
     
-    def register_file(self, filename: str, has_units: bool = False, index: Optional[str] = None, usecols: Optional[List[str]] =  None, filter_by: Dict[str, List[str]] = {}) -> FileReader:
+    def register_file(self, filename: str, has_units: bool = False, index: Optional[str] = None, usecols: Optional[List[str]] =  None, filter_by:  Dict[str, Union[Any, List[Any], re.Pattern]] = {}) -> FileReader:
 
         """
         Register a file to work with in the SWAT model.
@@ -271,7 +271,7 @@ class TxtinoutReader:
         has_units (bool): Indicates if the file has units information (default is False).
         index (str, optional): The name of the index column (default is None).
         usecols (List[str], optional): A list of column names to read (default is None).
-        filter_by (Dict[str, List[str]], optional): A dictionary of column names and values (list of str) to filter by (default is an empty dictionary).
+        filter_by (Dict[str, Union[Any, List[Any], re.Pattern]): A dictionary of column names and values to filter by (default is an empty dictionary).
 
         Returns:
         FileReader: A FileReader instance for the registered file.
@@ -281,63 +281,64 @@ class TxtinoutReader:
         return FileReader(file_path, has_units, index, usecols, filter_by)
     
     """
-    if overwrite = True, content of dir folder will be deleted and txtinout folder will be copied there
-    if overwrite = False, txtinout folder will be copied to a new folder inside dir
+    if overwrite = True, content of target_dir folder will be deleted and txtinout folder will be copied there
+    if overwrite = False, txtinout folder will be copied to a new folder inside target_dir
     """
-    def copy_swat(self, dir: str = None, overwrite: bool = False) -> str:
+    def copy_swat(self, target_dir: str = None, overwrite: bool = False) -> str:
 
         """
         Copy the SWAT model files to a specified directory.
 
-        If 'overwrite' is True, the content of the 'dir' folder will be deleted, and the 'txtinout' folder will be copied there.
-        If 'overwrite' is False, the 'txtinout' folder will be copied to a new folder inside 'dir'.
+        If 'overwrite' is True, the content of the 'target_dir' folder will be deleted, and the 'txtinout' folder will be copied there.
+        If 'overwrite' is False, the 'txtinout' folder will be copied to a new folder inside 'target_dir'.
 
         Parameters:
-        dir (str, optional): The target directory where the SWAT model files will be copied. If None, a temporary folder will be created (default is None).
-        overwrite (bool, optional): If True, overwrite the content of 'dir'; if False, create a new folder inside dir(default is False).
+        target_dir (str, optional): The target directory where the SWAT model files will be copied. If None, a temporary folder will be created (default is None).
+        overwrite (bool, optional): If True, overwrite the content of 'target_dir'; if False, create a new folder inside target_dir (default is False).
 
         Returns:
         str: The path to the directory where the SWAT model files were copied.
         """
 
-        #if dir is None or dir is a folder and overwrite is False, create a new folder using mkdtemp
-        if (dir is None) or (not overwrite and dir is not None):
+        #if target_dir is None or target_dir is a folder and overwrite is False, create a new folder using mkdtemp
+        if (target_dir is None) or (not overwrite and target_dir is not None):
 
             try: 
-                temp_folder_path = tempfile.mkdtemp(dir = dir)
+                temp_folder_path = tempfile.mkdtemp(dir = target_dir)
             except FileNotFoundError:
                 os.makedirs(dir, exist_ok=True)
-                temp_folder_path = tempfile.mkdtemp(dir = dir)
+                temp_folder_path = tempfile.mkdtemp(dir = target_dir)
         
-        #if dir is a folder and overwrite is True, delete all contents
+        #if target_dir is a folder and overwrite is True, delete all contents
         elif overwrite:
 
-            if os.path.isdir(dir):
+            if os.path.isdir(target_dir):
             
-                temp_folder_path = dir
+                temp_folder_path = target_dir
                 
-                #delete all files in dir
-                for file in os.listdir(dir):
-                    file_path = os.path.join(dir, file)
+                #delete all files in target_dir
+                for file in os.listdir(target_dir):
+                    file_path = os.path.join(target_dir, file)
                     try:
                         if os.path.isfile(file_path):
                             os.remove(file_path)
                     except Exception as e:
                         print(e)
             
-            else:   #if overwrite and dir is not a folder, create dir anyway
-                os.makedirs(dir, exist_ok=True)
-                temp_folder_path = dir
+            #if overwrite and target_dir is not a folder, create target_dir anyway
+            else:   
+                os.makedirs(target_dir, exist_ok=True)
+                temp_folder_path = target_dir
         
-        #check if dir does not exist
-        elif not os.path.isdir(dir):
-            #check if dir is a file
-            if os.path.isfile(dir):
+        #check if target_dir does not exist
+        elif not os.path.isdir(target_dir):
+            #check if target_dir is a file
+            if os.path.isfile(target_dir):
                 raise TypeError("dir must be a folder")
 
-            #create dir
-            os.makedirs(dir, exist_ok=True)
-            temp_folder_path = dir
+            #create target_dir
+            os.makedirs(target_dir, exist_ok=True)
+            temp_folder_path = target_dir
         
         else:
             raise TypeError("option not recognized")
@@ -346,13 +347,20 @@ class TxtinoutReader:
         source_folder = self.root_folder
         files = os.listdir(source_folder)
 
-        # Exclude files with the specified suffix and copy the remaining files
+        # Exclude files with the specified suffix and copy the remaining files (only the required files for running SWAT are copied)
         for file in files:
-            if not file.endswith('_aa.txt') and not file.endswith('_aa.csv') and not file.endswith('_yr.txt') and not file.endswith('_yr.csv') and not file.endswith('_day.txt') and not file.endswith('_day.csv') and not file.endswith('_mon.csv') and not file.endswith('_mon.txt'):
-                source_file = os.path.join(source_folder, file)
-                destination_file = os.path.join(temp_folder_path, file)
+            
+            source_file = os.path.join(source_folder, file)
+            
+            # Skip directories and unwanted files
+            if not os.path.isfile(source_file):
+                continue
 
-                shutil.copy2(source_file, destination_file)
+            if file.endswith(('_aa.txt', '_aa.csv', '_yr.txt', '_yr.csv', '_day.txt', '_day.csv', '_mon.txt', '_mon.csv')):
+                continue
+            
+            destination_file = os.path.join(temp_folder_path, file)
+            shutil.copy2(source_file, destination_file)
 
         return temp_folder_path
 
@@ -400,14 +408,14 @@ class TxtinoutReader:
     """
     params --> {filename: (id_col, [(id, col, value)])}
     """
-    def run_swat(self, params: Dict[str, Tuple[str, List[Tuple[Union[None, str, re.Pattern], str, int]]]] = {}, show_output: bool = True) -> str:
+    def run_swat(self, params: Dict[str, Tuple[str, List[Tuple[Union[None, str, List[str], re.Pattern], str, Any]]]] = {}, show_output: bool = True) -> str:
         """
         Run the SWAT simulation with modified input parameters.
 
         Parameters:
-        params (Dict[str, Tuple[str, List[Tuple[Union[None, str, re.Pattern], str, int]]]], optional): 
+        params (Dict[str, Tuple[str, List[Tuple[Union[None, str, List[str], re.Pattern], str, Any]]]], optional): 
             A dictionary containing modifications to input files. Format: {filename: (id_col, [(id, col, value)])}.
-            'id' can be None to apply the value to all rows or a regex pattern to match multiple IDs.
+            'id' can be None to apply the value to all rows, a single id or a regex pattern or list to match multiple IDs.
         show_output (bool, optional): If True, print the simulation output; if False, suppress output (default is True).
 
         Returns:
@@ -427,6 +435,9 @@ class TxtinoutReader:
             for id, col_name, value in file_mods:   # 'id' can be None, a str or a regex pattern
                 if id is None:
                     file.df[col_name] = value
+                elif isinstance(id, list):
+                    mask = file.df.index.astype(str).isin(id)
+                    file.df.loc[mask, col_name] = value
                 elif isinstance(id, re.Pattern):
                     mask = file.df.index.astype(str).str.match(id)
                     file.df.loc[mask, col_name] = value
@@ -443,12 +454,12 @@ class TxtinoutReader:
         return self.root_folder
 
 
-    def run_swat_star(self, args: Tuple[Dict[str, Tuple[str, List[Tuple[Union[None, str, re.Pattern], str, int]]]], bool]) -> str:
+    def run_swat_star(self, args: Tuple[Dict[str, Tuple[str, List[Tuple[Union[None, str, List[str], re.Pattern], str, Any]]]], bool]) -> str:
         """
         Run the SWAT simulation with modified input parameters using arguments provided as a tuple.
 
         Parameters:
-        args (Tuple[Dict[str, Tuple[str, List[Tuple[Union[None, str, re.Pattern], str, int]]]]], bool]): 
+        args (Tuple[Dict[str, Tuple[str, List[Tuple[Union[None, str, List[str], re.Pattern], str, Any]]]]], bool]): 
             A tuple containing simulation parameters.
             The first element is a dictionary with input parameter modifications, 
             the second element is a boolean to show output.
@@ -458,15 +469,15 @@ class TxtinoutReader:
         """
         return self.run_swat(*args)
 
-    def copy_and_run(self, dir: str, overwrite: bool = False, params: Dict[str, Tuple[str, List[Tuple[Union[None, str, re.Pattern], str, int]]]] = {}, show_output: bool = True) -> str:
+    def copy_and_run(self, target_dir: str, overwrite: bool = False, params: Dict[str, Tuple[str, List[Tuple[Union[None, str, List[str], re.Pattern], str, Any]]]] = {}, show_output: bool = True) -> str:
         
         """
         Copy the SWAT model files to a specified directory, modify input parameters, and run the simulation.
 
         Parameters:
-        dir (str): The target directory where the SWAT model files will be copied.
-        overwrite (bool, optional): If True, overwrite the content of 'dir'; if False, create a new folder inside 'dir' (default is False).
-        params (Dict[str, Tuple[str, List[Tuple[Union[None, str, re.Pattern], str, int]]]], optional):
+        target_dir (str): The target directory where the SWAT model files will be copied.
+        overwrite (bool, optional): If True, overwrite the content of 'target_dir'; if False, create a new folder inside 'target_dir' (default is False).
+        params (Dict[str, Tuple[str, List[Tuple[Union[None, str, List[str], re.Pattern], str, Any]]]], optional):
             A dictionary containing modifications to input files. Format: {filename: (id_col, [(id, col, value)])}.
         Format: {filename: (id_col, [(id, col, value)])}.
         show_output (bool, optional): If True, print the simulation output; if False, suppress output (default is True).
@@ -475,17 +486,17 @@ class TxtinoutReader:
         str: The path to the directory where the SWAT simulation was executed.
         """
         
-        tmp_path = self.copy_swat(dir = dir, overwrite = overwrite)
+        tmp_path = self.copy_swat(target_dir = target_dir, overwrite = overwrite)
         reader = TxtinoutReader(tmp_path)
         return reader.run_swat(params, show_output = show_output)
 
 
-    def copy_and_run_star(self, args: Tuple[str, bool, Dict[str, Tuple[str, List[Tuple[Union[None, str, re.Pattern], str, int]]]], bool]) -> str:
+    def copy_and_run_star(self, args: Tuple[str, bool, Dict[str, Tuple[str, List[Tuple[Union[None, str, List[str], re.Pattern], str, Any]]]], bool]) -> str:
         """
         Copy the SWAT model files to a specified directory, modify input parameters, and run the simulation using arguments provided as a tuple.
 
         Parameters:
-        args (Tuple[Dict[str, Tuple[str, List[Tuple[Union[None, str, re.Pattern], str, int]]]]], bool]): 
+        args (Tuple[Dict[str, Tuple[str, List[Tuple[Union[None, str, List[str], re.Pattern], str, Any]]]]], bool]): 
             A tuple containing simulation parameters.
             The first element is a dictionary with input parameter modifications, 
             the second element is a boolean to show output.
@@ -500,19 +511,19 @@ class TxtinoutReader:
     params --> [{filename: (id_col, [(id, col, value)])}]
     """
     def run_parallel_swat(self, 
-                          params: List[Dict[str, Tuple[str, List[Tuple[Union[None, str, re.Pattern], str, int]]]]], 
+                          params: List[Dict[str, Tuple[str, List[Tuple[Union[None, str, List[str], re.Pattern], str, Any]]]]], 
                           n_workers: int = 1, 
-                          dir: str = None,
+                          target_dir: str = None,
                           parallelization: str = 'threads') -> List[str]:
         
         """
         Run SWAT simulations in parallel with modified input parameters.
 
         Parameters:
-        params (Dict[str, Tuple[str, List[Tuple[Union[None, str, re.Pattern], str, int]]]], optional):
+        params (Dict[str, Tuple[str, List[Tuple[Union[None, str, List[str], re.Pattern], str, Any]]]], optional):
             A dictionary containing modifications to input files. Format: {filename: (id_col, [(id, col, value)])}.
         n_workers (int, optional): The number of parallel workers to use (default is 1).
-        dir (str, optional): The target directory where the SWAT model files will be copied (default is None).
+        target_dir (str, optional): The target directory where the SWAT model files will be copied (default is None).
         parallelization (str, optional): The parallelization method to use ('threads' or 'processes') (default is 'threads').
 
         Returns:
@@ -529,7 +540,7 @@ class TxtinoutReader:
             results_ret = []
 
             for i in tqdm.tqdm(range(len(params))):
-                results_ret.append(self.copy_and_run(dir = dir,
+                results_ret.append(self.copy_and_run(target_dir = target_dir,
                                                     overwrite = False,
                                                     params = params[i], 
                                                     show_output = False))
@@ -538,7 +549,7 @@ class TxtinoutReader:
 
         else:
                 
-            items = [[dir, False, params[i], False] for i in range(len(params))]
+            items = [[target_dir, False, params[i], False] for i in range(len(params))]
 
             if parallelization == 'threads':
                 with ThreadPoolExecutor(max_workers=threads) as executor:

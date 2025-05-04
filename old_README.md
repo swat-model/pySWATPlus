@@ -159,15 +159,15 @@ txt_in_out_result = reader.run_swat()
 Copy the SWAT model files to a specified directory.
 
 The function takes the following parameters:
-- ```dir (str, optional)```: The target directory where the SWAT model files will be copied. If None, a temporary folder will be created (default is None).
+- ```target_dir (str, optional)```: The target directory where the SWAT model files will be copied. If None, a temporary folder will be created (default is None).
 
-- ```overwrite``` (bool, optional): If True, overwrite the content of ```dir```; if False, create a new folder inside ```dir``` (default is False).
+- ```overwrite``` (bool, optional): If True, overwrite the content of ```target_dir```; if False, create a new folder inside ```target_dir``` (default is False).
 
 
 The function returns the path to the directory where the SWAT model files were copied (str)
 
 ```py
-new_path = reader.copy_swat(dir = 'new_path', overwrite = False)
+new_path = reader.copy_swat(target_dir = 'new_path', overwrite = False)
 ```
 
 
@@ -176,18 +176,18 @@ new_path = reader.copy_swat(dir = 'new_path', overwrite = False)
 Copy the SWAT model files to a specified directory, modify input parameters, and run the simulation
 
 The function takes the following parameters: 
-- ```dir``` (str): The target directory where the SWAT model files will be copied
-- ```overwrite``` (bool, optional): If True, overwrite the content of ```dir```; if False, create a new folder inside ```dir```(default is False)
+- ```target_dir``` (str): The target directory where the SWAT model files will be copied
+- ```overwrite``` (bool, optional): If True, overwrite the content of ```target_dir```; if False, create a new folder inside ```target_dir```(default is False)
 - ```params``` (Dict[str, Tuple[str, List[Tuple[str, str, int]]], optional): A dictionary containing modifications to input files. **Format:** {filename: (id_col, [(id, col, value)])}
 - ```show_output``` (bool, optional): If True, print the simulation output; if False, suppress output (default is True)
 
 The function returns the path to the directory where the SWAT simulation was executed
 
 ```py
-txt_in_out_result =  reader.copy_and_run(dir="directory_path", overwrite=False, params={'file_name': [('id_col', ['id', 'col', value)])}, show_output=False)
+txt_in_out_result =  reader.copy_and_run(target_dir="directory_path", overwrite=False, params={'file_name': [('id_col', ['id', 'col', value)])}, show_output=False)
 ```
 ```py
-txt_in_out_result = reader.copy_and_run(dir = "directory_path", overwrite=False, params = {'plants.plt': [('name', ['bana', 'bm_e', 45)])}, show_output=False)
+txt_in_out_result = reader.copy_and_run(target_dir = "directory_path", overwrite=False, params = {'plants.plt': [('name', ['bana', 'bm_e', 45)])}, show_output=False)
 ```
 
 ##### ```run_parallel_swat```
@@ -196,7 +196,7 @@ Run SWAT simulations in parallel with modified input parameters.
 Parameters:
 - ```params``` (List[Dict[str, Tuple[str, List[Tuple[str, str, int]]]]): A list of dictionaries containing modifications to input files. **Format:** [{filename: (id_col, [(id, col, value)])}]
 - ```n_workers``` (int, optional): The number of parallel workers to use (default is 1)
-- ```dir``` (str, optional): The target directory where the SWAT model files will be copied (default is None)
+- ```target_dir``` (str, optional): The target directory where the SWAT model files will be copied (default is None)
 - ```parallelization``` (str, optional): The parallelization method to use ('threads' or 'processes') (default is 'threads')
 
 The function returns a list of paths to the directories where the SWAT simulations were executed. list[str]

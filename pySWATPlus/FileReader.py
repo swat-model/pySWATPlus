@@ -2,14 +2,15 @@ import pandas as pd
 import warnings
 import dask.dataframe as dd
 from pathlib import Path
-from typing import Union, List, Dict, Literal, Optional
+from typing import Union, List, Dict, Literal, Optional, Any
 import os
+import re
 
 def read_csv(
         path: Union[str, Path], 
         skip_rows: List[int],
         usecols: List[str],
-        filter_by:  Dict[str, List[str]],
+        filter_by:  Dict[str, Union[Any, List[Any], re.Pattern]],
         separator: str,
         encoding: str, 
         engine: Literal['c', 'python'],
@@ -22,7 +23,7 @@ def read_csv(
         path (Union[str, Path]): The path to the CSV file.
         skip_rows (List[int]): List of specific row numbers to skip.
         usecols (List[str]): A list of column names to read
-        filter_by (Dict[str, List[str]): A dictionary of column names and values (list of str) to filter by.
+        filter_by (Dict[str, Union[Any, List[Any], re.Pattern]): A dictionary of column names and values to filter by.
         separator (str): The delimiter used in the CSV file.
         encoding (str): The character encoding to use when reading the file.
         engine (Literal['c', 'python']): The CSV parsing engine to use (e.g., 'c' for C engine, 'python' for Python engine).
@@ -50,15 +51,15 @@ def read_csv(
             engine=engine
         )
         
-        for column, keys in filter_by.items():
-            #check if keys is a list or a str
-            if isinstance(keys, list):
-                df = df.loc[df[column].isin(keys)]
+        for column, condition in filter_by.items():
+            if isinstance(condition, list):
+                df = df.loc[df[column].isin(condition)]
+            elif isinstance(condition, re.Pattern):
+                df = df.loc[df[column].str.match(condition)]
             else:
-                df = df.loc[df[column] == keys]
-        
-
-        return df.compute()
+                df = df.loc[df[column] == condition]
+                
+        return df.compute().reset_index(drop=True)
     
     elif mode == 'pandas':
         df = pd.read_csv(
@@ -70,14 +71,15 @@ def read_csv(
             engine=engine
         )
 
-        for column, keys in filter_by.items():
-            #check if keys is a list or a str
-            if isinstance(keys, list):
-                df = df.loc[df[column].isin(keys)]
+        for column, condition in filter_by.items():
+            if isinstance(condition, list):
+                df = df.loc[df[column].isin(condition)]
+            elif isinstance(condition, re.Pattern):
+                df = df.loc[df[column].str.match(condition)]
             else:
-                df = df.loc[df[column] == keys]
-
-        return df
+                df = df.loc[df[column] == condition]
+        
+        return df.reset_index(drop=True)
 
 
 class FileReader:
@@ -87,7 +89,7 @@ class FileReader:
                  has_units: bool = False, 
                  index: Optional[str] = None, 
                  usecols: List[str] = None, 
-                 filter_by:  Dict[str, List[str]] = {}):
+                 filter_by:  Dict[str, Union[Any, List[Any], re.Pattern]] = {}):
         
         '''
         Initialize a FileReader instance to read data from a file.
@@ -97,7 +99,7 @@ class FileReader:
         has_units (bool): Indicates if the file has units (default is False).
         index (str, optional): The name of the index column (default is None).
         usecols (List[str], optional): A list of column names to read (default is None).
-        filter_by (Dict[str, List[str]]): A dictionary of column names and values (list of str) to filter by (default is an empty dictionary).
+        filter_by (Dict[str, Union[Any, List[Any], re.Pattern]): A dictionary of column names and values to filter by (default is an empty dictionary).
 
         Raises:
         FileNotFoundError: If the specified file does not exist.
@@ -157,10 +159,10 @@ class FileReader:
 
                 #first try with dask. if it fails, try with pandas
                 try:
-                    df = read_csv(path, skip_rows, usecols, filter_by, '\s+', 'utf-8', 'c', 'dask')
+                    df = read_csv(path, skip_rows, usecols, filter_by, r'\s+', 'utf-8', 'c', 'dask')
                 except:
                     try:
-                        df = read_csv(path, skip_rows, usecols, filter_by, '\s+', 'latin-1', 'c', 'dask')
+                        df = read_csv(path, skip_rows, usecols, filter_by, r'\s+', 'latin-1', 'c', 'dask')
                     except:
                         try:
                             df = read_csv(path, skip_rows, usecols, filter_by, r"[ ]{2,}", 'utf-8', 'python', 'dask')
@@ -169,10 +171,10 @@ class FileReader:
                                 df = read_csv(path, skip_rows, usecols, filter_by, r"[ ]{2,}", 'latin-1', 'python', 'dask')
                             except:    
                                 try:
-                                    df = read_csv(path, skip_rows, usecols, filter_by, '\s+', 'utf-8', 'c', 'pandas')
+                                    df = read_csv(path, skip_rows, usecols, filter_by, r'\s+', 'utf-8', 'c', 'pandas')
                                 except:
                                     try:
-                                        df = read_csv(path, skip_rows, usecols, filter_by, '\s+', 'latin-1', 'c', 'pandas')
+                                        df = read_csv(path, skip_rows, usecols, filter_by, r'\s+', 'latin-1', 'c', 'pandas')
                                     except:
                                         try:
                                             df = read_csv(path, skip_rows, usecols, filter_by, r"[ ]{2,}", 'utf-8', 'python', 'pandas')
