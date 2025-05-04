@@ -325,24 +325,23 @@ class TxtinoutReader:
                     except Exception as e:
                         print(e)
             
-            #if overwrite and target_dir is not a folder, create target_dir anyway
-            else:   
-                os.makedirs(target_dir, exist_ok=True)
-                temp_folder_path = target_dir
+            else:   #if overwrite and dir is not a folder, create dir anyway
+                os.makedirs(dir, exist_ok=True)
+                temp_folder_path = dir
         
-        #check if target_dir does not exist
-        elif not os.path.isdir(target_dir):
-            #check if target_dir is a file
-            if os.path.isfile(target_dir):
-                raise TypeError("dir must be a folder")
+        #check if dir does not exist
+        elif not os.path.isdir(dir):
+            #check if dir is a file
+            if os.path.isfile(dir):
+                raise TypeError("target_dir must be a folder")
 
-            #create target_dir
-            os.makedirs(target_dir, exist_ok=True)
-            temp_folder_path = target_dir
+            #create dir
+            os.makedirs(dir, exist_ok=True)
+            temp_folder_path = dir
         
         else:
             raise TypeError("option not recognized")
-
+    
         # Get the list of files in the source folder
         source_folder = self.root_folder
         files = os.listdir(source_folder)
@@ -353,10 +352,16 @@ class TxtinoutReader:
             source_file = os.path.join(source_folder, file)
             
             # Skip directories and unwanted files
-            if not os.path.isfile(source_file):
+            if os.path.isdir(source_file):
                 continue
 
-            if file.endswith(('_aa.txt', '_aa.csv', '_yr.txt', '_yr.csv', '_day.txt', '_day.csv', '_mon.txt', '_mon.csv')):
+            file_suffix = ['day', 'mon', 'yr', 'aa']
+            file_ext = ['txt', 'csv']
+            ignored_file = tuple(
+                f'_{suf}.{ext}' for suf in file_suffix for ext in file_ext
+            ) 
+
+            if file.endswith(ignored_file):
                 continue
             
             destination_file = os.path.join(temp_folder_path, file)
