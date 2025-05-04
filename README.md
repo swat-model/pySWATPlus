@@ -21,25 +21,9 @@ pySWATPlus is an open-source software developed and maintained by [ICRA](https:/
 
 ---
 
-## 🛠️ Installation
-
-Before installing pySWATPlus, make sure you have the following dependencies installed:
-
-```py
-pip install pandas numpy pymoo tqdm dask
-```
-
----
-
-## ⚙️ Requirements
-
-To use this package, a Python version above 3.6 is required.
-
----
-
 ## 📥 Install pySWATPlus
 
-Once the dependencies are installed, you can install pySWATPlus using this simple command:
+To use this package, a Python version above 3.6 is required. You can install pySWATPlus using this simple command:
 
 ````py
 pip install pySWATPlus
