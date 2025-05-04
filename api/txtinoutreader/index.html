@@ -16,7 +16,7 @@
       
       
       <link rel="icon" href="../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.9">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.12">
     
     
       
@@ -24,7 +24,7 @@
       
     
     
-      <link rel="stylesheet" href="../../assets/stylesheets/main.4af4bdda.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.2afb09e1.min.css">
       
         
         <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
@@ -165,9 +165,11 @@
   
   
   
+  
     <li class="md-tabs__item">
       <a href="../.." class="md-tabs__link">
         
+  
   
     
   
@@ -182,11 +184,13 @@
   
   
   
+  
     
     
       <li class="md-tabs__item">
         <a href="../../examples/basic_examples/" class="md-tabs__link">
           
+  
   
   Getting Started
 
@@ -199,6 +203,7 @@
         
   
   
+  
     
   
   
@@ -207,6 +212,7 @@
       <li class="md-tabs__item md-tabs__item--active">
         <a href="./" class="md-tabs__link">
           
+  
   
   API Reference
 
@@ -220,9 +226,11 @@
   
   
   
+  
     <li class="md-tabs__item">
       <a href="../../citation/" class="md-tabs__link">
         
+  
   
     
   
@@ -276,6 +284,7 @@
       <a href="../.." class="md-nav__link">
         
   
+  
   <span class="md-ellipsis">
     Home
     
@@ -296,6 +305,7 @@
     
     
     
+    
       
       
     
@@ -309,6 +319,7 @@
           
           <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
             
+  
   
   <span class="md-ellipsis">
     Getting Started
@@ -336,6 +347,7 @@
       <a href="../../examples/basic_examples/" class="md-nav__link">
         
   
+  
   <span class="md-ellipsis">
     SWAT+ Model Simulation with
     
@@ -358,6 +370,7 @@
       <a href="../../examples/calibration/" class="md-nav__link">
         
   
+  
   <span class="md-ellipsis">
     SWAT+ Calibration Example using pySWATPlus and pymoo
     
@@ -379,6 +392,7 @@
     <li class="md-nav__item">
       <a href="../../examples/sensitivity_analysis/" class="md-nav__link">
         
+  
   
   <span class="md-ellipsis">
     Sobol Sensitivity Analysis for SWAT+ Model Parameters
@@ -410,6 +424,7 @@
     
     
     
+    
       
         
         
@@ -426,6 +441,7 @@
           
           <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
             
+  
   
   <span class="md-ellipsis">
     API Reference
@@ -462,6 +478,7 @@
         <label class="md-nav__link md-nav__link--active" for="__toc">
           
   
+  
   <span class="md-ellipsis">
     TxtinoutReader
     
@@ -473,6 +490,7 @@
       
       <a href="./" class="md-nav__link md-nav__link--active">
         
+  
   
   <span class="md-ellipsis">
     TxtinoutReader
@@ -657,6 +675,7 @@
       <a href="../filereader/" class="md-nav__link">
         
   
+  
   <span class="md-ellipsis">
     FileReader
     
@@ -679,6 +698,7 @@
       <a href="../swatproblem/" class="md-nav__link">
         
   
+  
   <span class="md-ellipsis">
     SWATProblem
     
@@ -700,6 +720,7 @@
     <li class="md-nav__item">
       <a href="../swatproblemmultimodel/" class="md-nav__link">
         
+  
   
   <span class="md-ellipsis">
     SWATProblemMultimodel
@@ -729,6 +750,7 @@
     <li class="md-nav__item">
       <a href="../../citation/" class="md-nav__link">
         
+  
   
   <span class="md-ellipsis">
     Citation
@@ -1013,7 +1035,7 @@ swat_exe_path (Path): The path to the main SWAT executable file.</p>
 
 
 <h3 id="pySWATPlus.TxtinoutReader.TxtinoutReader.copy_and_run" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">copy_and_run</span><span class="p">(</span><span class="nb">dir</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">overwrite</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">params</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">Pattern</span><span class="p">],</span> <span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">]]]]</span> <span class="o">=</span> <span class="p">{},</span> <span class="n">show_output</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span></code>
+            <code class="highlight language-python"><span class="n">copy_and_run</span><span class="p">(</span><span class="n">target_dir</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">overwrite</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">params</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">re</span><span class="o">.</span><span class="n">Pattern</span><span class="p">],</span> <span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]]]</span> <span class="o">=</span> <span class="p">{},</span> <span class="n">show_output</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span></code>
 
 </h3>
 
@@ -1022,9 +1044,9 @@ swat_exe_path (Path): The path to the main SWAT executable file.</p>
 
         <p>Copy the SWAT model files to a specified directory, modify input parameters, and run the simulation.</p>
 <p>Parameters:
-dir (str): The target directory where the SWAT model files will be copied.
-overwrite (bool, optional): If True, overwrite the content of 'dir'; if False, create a new folder inside 'dir' (default is False).
-params (Dict[str, Tuple[str, List[Tuple[Union[None, str, re.Pattern], str, int]]]], optional):
+target_dir (str): The target directory where the SWAT model files will be copied.
+overwrite (bool, optional): If True, overwrite the content of 'target_dir'; if False, create a new folder inside 'target_dir' (default is False).
+params (Dict[str, Tuple[str, List[Tuple[Union[None, str, List[str], re.Pattern], str, Any]]]], optional):
     A dictionary containing modifications to input files. Format: {filename: (id_col, [(id, col, value)])}.
 Format: {filename: (id_col, [(id, col, value)])}.
 show_output (bool, optional): If True, print the simulation output; if False, suppress output (default is True).</p>
@@ -1040,7 +1062,7 @@ str: The path to the directory where the SWAT simulation was executed.</p>
 
 
 <h3 id="pySWATPlus.TxtinoutReader.TxtinoutReader.copy_and_run_star" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">copy_and_run_star</span><span class="p">(</span><span class="n">args</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">bool</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">Pattern</span><span class="p">],</span> <span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">]]]],</span> <span class="nb">bool</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">str</span></code>
+            <code class="highlight language-python"><span class="n">copy_and_run_star</span><span class="p">(</span><span class="n">args</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">bool</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">re</span><span class="o">.</span><span class="n">Pattern</span><span class="p">],</span> <span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]]],</span> <span class="nb">bool</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">str</span></code>
 
 </h3>
 
@@ -1048,7 +1070,7 @@ str: The path to the directory where the SWAT simulation was executed.</p>
     <div class="doc doc-contents ">
 
         <p>Copy the SWAT model files to a specified directory, modify input parameters, and run the simulation using arguments provided as a tuple.</p>
-        <p>args (Tuple[Dict[str, Tuple[str, List[Tuple[Union[None, str, re.Pattern], str, int]]]]], bool]): 
+        <p>args (Tuple[Dict[str, Tuple[str, List[Tuple[Union[None, str, List[str], re.Pattern], str, Any]]]]], bool]): 
     A tuple containing simulation parameters.
     The first element is a dictionary with input parameter modifications, 
     the second element is a boolean to show output.</p>
@@ -1064,7 +1086,7 @@ str: The path to the directory where the SWAT simulation was executed.</p>
 
 
 <h3 id="pySWATPlus.TxtinoutReader.TxtinoutReader.copy_swat" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">copy_swat</span><span class="p">(</span><span class="nb">dir</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">overwrite</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span></code>
+            <code class="highlight language-python"><span class="n">copy_swat</span><span class="p">(</span><span class="n">target_dir</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">overwrite</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span></code>
 
 </h3>
 
@@ -1072,11 +1094,11 @@ str: The path to the directory where the SWAT simulation was executed.</p>
     <div class="doc doc-contents ">
 
         <p>Copy the SWAT model files to a specified directory.</p>
-<p>If 'overwrite' is True, the content of the 'dir' folder will be deleted, and the 'txtinout' folder will be copied there.
-If 'overwrite' is False, the 'txtinout' folder will be copied to a new folder inside 'dir'.</p>
+<p>If 'overwrite' is True, the content of the 'target_dir' folder will be deleted, and the 'txtinout' folder will be copied there.
+If 'overwrite' is False, the 'txtinout' folder will be copied to a new folder inside 'target_dir'.</p>
 <p>Parameters:
-dir (str, optional): The target directory where the SWAT model files will be copied. If None, a temporary folder will be created (default is None).
-overwrite (bool, optional): If True, overwrite the content of 'dir'; if False, create a new folder inside dir(default is False).</p>
+target_dir (str, optional): The target directory where the SWAT model files will be copied. If None, a temporary folder will be created (default is None).
+overwrite (bool, optional): If True, overwrite the content of 'target_dir'; if False, create a new folder inside target_dir (default is False).</p>
 <p>Returns:
 str: The path to the directory where the SWAT model files were copied.</p>
 
@@ -1155,7 +1177,7 @@ None</p>
 
 
 <h3 id="pySWATPlus.TxtinoutReader.TxtinoutReader.register_file" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">register_file</span><span class="p">(</span><span class="n">filename</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">has_units</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">index</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">usecols</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">filter_by</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="p">{})</span> <span class="o">-&gt;</span> <span class="n">FileReader</span></code>
+            <code class="highlight language-python"><span class="n">register_file</span><span class="p">(</span><span class="n">filename</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">has_units</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">index</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">usecols</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">filter_by</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Union</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">Any</span><span class="p">],</span> <span class="n">re</span><span class="o">.</span><span class="n">Pattern</span><span class="p">]]</span> <span class="o">=</span> <span class="p">{})</span> <span class="o">-&gt;</span> <span class="n">FileReader</span></code>
 
 </h3>
 
@@ -1168,7 +1190,7 @@ filename (str): The name of the file to register.
 has_units (bool): Indicates if the file has units information (default is False).
 index (str, optional): The name of the index column (default is None).
 usecols (List[str], optional): A list of column names to read (default is None).
-filter_by (Dict[str, List[str]], optional): A dictionary of column names and values (list of str) to filter by (default is an empty dictionary).</p>
+filter_by (Dict[str, Union[Any, List[Any], re.Pattern]): A dictionary of column names and values to filter by (default is an empty dictionary).</p>
 <p>Returns:
 FileReader: A FileReader instance for the registered file.</p>
 
@@ -1181,7 +1203,7 @@ FileReader: A FileReader instance for the registered file.</p>
 
 
 <h3 id="pySWATPlus.TxtinoutReader.TxtinoutReader.run_parallel_swat" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">run_parallel_swat</span><span class="p">(</span><span class="n">params</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">Pattern</span><span class="p">],</span> <span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">]]]]],</span> <span class="n">n_workers</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="nb">dir</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">parallelization</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;threads&#39;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span></code>
+            <code class="highlight language-python"><span class="n">run_parallel_swat</span><span class="p">(</span><span class="n">params</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">re</span><span class="o">.</span><span class="n">Pattern</span><span class="p">],</span> <span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]]]],</span> <span class="n">n_workers</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">target_dir</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">parallelization</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;threads&#39;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span></code>
 
 </h3>
 
@@ -1189,10 +1211,10 @@ FileReader: A FileReader instance for the registered file.</p>
     <div class="doc doc-contents ">
 
         <p>Run SWAT simulations in parallel with modified input parameters.</p>
-        <p>params (Dict[str, Tuple[str, List[Tuple[Union[None, str, re.Pattern], str, int]]]], optional):
+        <p>params (Dict[str, Tuple[str, List[Tuple[Union[None, str, List[str], re.Pattern], str, Any]]]], optional):
     A dictionary containing modifications to input files. Format: {filename: (id_col, [(id, col, value)])}.
 n_workers (int, optional): The number of parallel workers to use (default is 1).
-dir (str, optional): The target directory where the SWAT model files will be copied (default is None).
+target_dir (str, optional): The target directory where the SWAT model files will be copied (default is None).
 parallelization (str, optional): The parallelization method to use ('threads' or 'processes') (default is 'threads').</p>
 <p>Returns:
 List[str]: A list of paths to the directories where the SWAT simulations were executed.</p>
@@ -1206,7 +1228,7 @@ List[str]: A list of paths to the directories where the SWAT simulations were ex
 
 
 <h3 id="pySWATPlus.TxtinoutReader.TxtinoutReader.run_swat" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">run_swat</span><span class="p">(</span><span class="n">params</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">Pattern</span><span class="p">],</span> <span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">]]]]</span> <span class="o">=</span> <span class="p">{},</span> <span class="n">show_output</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span></code>
+            <code class="highlight language-python"><span class="n">run_swat</span><span class="p">(</span><span class="n">params</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">re</span><span class="o">.</span><span class="n">Pattern</span><span class="p">],</span> <span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]]]</span> <span class="o">=</span> <span class="p">{},</span> <span class="n">show_output</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span></code>
 
 </h3>
 
@@ -1214,9 +1236,9 @@ List[str]: A list of paths to the directories where the SWAT simulations were ex
     <div class="doc doc-contents ">
 
         <p>Run the SWAT simulation with modified input parameters.</p>
-        <p>params (Dict[str, Tuple[str, List[Tuple[Union[None, str, re.Pattern], str, int]]]], optional): 
+        <p>params (Dict[str, Tuple[str, List[Tuple[Union[None, str, List[str], re.Pattern], str, Any]]]], optional): 
     A dictionary containing modifications to input files. Format: {filename: (id_col, [(id, col, value)])}.
-    'id' can be None to apply the value to all rows or a regex pattern to match multiple IDs.
+    'id' can be None to apply the value to all rows, a single id or a regex pattern or list to match multiple IDs.
 show_output (bool, optional): If True, print the simulation output; if False, suppress output (default is True).</p>
 <p>Returns:
 str: The path to the directory where the SWAT simulation was executed.</p>
@@ -1230,7 +1252,7 @@ str: The path to the directory where the SWAT simulation was executed.</p>
 
 
 <h3 id="pySWATPlus.TxtinoutReader.TxtinoutReader.run_swat_star" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">run_swat_star</span><span class="p">(</span><span class="n">args</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">Pattern</span><span class="p">],</span> <span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">]]]],</span> <span class="nb">bool</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">str</span></code>
+            <code class="highlight language-python"><span class="n">run_swat_star</span><span class="p">(</span><span class="n">args</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">re</span><span class="o">.</span><span class="n">Pattern</span><span class="p">],</span> <span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]]],</span> <span class="nb">bool</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">str</span></code>
 
 </h3>
 
@@ -1238,7 +1260,7 @@ str: The path to the directory where the SWAT simulation was executed.</p>
     <div class="doc doc-contents ">
 
         <p>Run the SWAT simulation with modified input parameters using arguments provided as a tuple.</p>
-        <p>args (Tuple[Dict[str, Tuple[str, List[Tuple[Union[None, str, re.Pattern], str, int]]]]], bool]): 
+        <p>args (Tuple[Dict[str, Tuple[str, List[Tuple[Union[None, str, List[str], re.Pattern], str, Any]]]]], bool]): 
     A tuple containing simulation parameters.
     The first element is a dictionary with input parameter modifications, 
     the second element is a boolean to show output.</p>
@@ -1357,7 +1379,9 @@ None</p>
     </div>
     
     
-    <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.tabs", "content.code.annotate"], "search": "../../assets/javascripts/workers/search.f8cc74c7.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+      
+      <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.tabs", "content.code.annotate"], "search": "../../assets/javascripts/workers/search.f8cc74c7.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
       <script src="../../assets/javascripts/bundle.c8b220af.min.js"></script>
