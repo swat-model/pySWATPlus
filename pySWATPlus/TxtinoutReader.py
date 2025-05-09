@@ -1,4 +1,4 @@
-import subprocess 
+import subprocess
 import os
 from .FileReader import FileReader
 import shutil
@@ -14,7 +14,6 @@ import re
 class TxtinoutReader:
 
     def __init__(self, path: str) -> None:
-
         """
         Initialize a TxtinoutReader instance for working with SWAT model data.
 
@@ -30,18 +29,17 @@ class TxtinoutReader:
         swat_exe_path (Path): The path to the main SWAT executable file.
         """
 
-
-        #check if path is a string or a path
+        # check if path is a string or a path
         if not isinstance(path, (str, os.PathLike)):
             raise TypeError("path must be a string or os.PathLike object")
-        
-        path = Path(path).resolve()                        
 
-        #check if folder exists
+        path = Path(path).resolve()
+
+        # check if folder exists
         if not path.is_dir():
             raise FileNotFoundError("Folder does not exist")
-            
-        #count files that end with .exe
+
+        # count files that end with .exe
         count = 0
         swat_exe = None
         for file in os.listdir(path):
@@ -54,11 +52,10 @@ class TxtinoutReader:
 
         if count == 0:
             raise TypeError(".exe not found in parent folder")
-  
-        #find parent directory
+
+        # find parent directory
         self.root_folder = path
         self.swat_exe_path = path / swat_exe
-
 
     def _build_line_to_add(self, obj: str, daily: bool, monthly: bool, yearly: bool, avann: bool) -> str:
         """
@@ -85,16 +82,15 @@ class TxtinoutReader:
         for value in print_periodicity.values():
             if value:
                 periodicity = 'y'
-            else: 
+            else:
                 periodicity = 'n'
-                
+
             arg_to_add += periodicity.ljust(14)
 
         arg_to_add = arg_to_add.rstrip()
         arg_to_add += '\n'
         return arg_to_add
 
-    
     def enable_object_in_print_prt(self, obj: str, daily: bool, monthly: bool, yearly: bool, avann: bool) -> None:
         """
         Enable or update an object in the 'print.prt' file. If obj is not a default identifier, it will be added at the end of the file.
@@ -110,34 +106,33 @@ class TxtinoutReader:
         None
         """
 
-        #check if obj is object itself or file 
+        # check if obj is object itself or file
         if os.path.splitext(obj)[1] != '':
             arg_to_add = obj.rsplit('_', maxsplit=1)[0]
         else:
             arg_to_add = obj
-        
-        #read all print_prt file, line by line
+
+        # read all print_prt file, line by line
         print_prt_path = self.root_folder / 'print.prt'
         new_print_prt = ""
         found = False
         with open(print_prt_path) as file:
             for line in file:
-                if not line.startswith(arg_to_add + ' '): #Line must start exactly with arg_to_add, not a word that starts with arg_to_add 
+                if not line.startswith(arg_to_add + ' '):  # Line must start exactly with arg_to_add, not a word that starts with arg_to_add
                     new_print_prt += line
                 else:
-                    #obj already exist, replace it in same position
+                    # obj already exist, replace it in same position
                     new_print_prt += self._build_line_to_add(arg_to_add, daily, monthly, yearly, avann)
                     found = True
 
         if not found:
             new_print_prt += self._build_line_to_add(arg_to_add, daily, monthly, yearly, avann)
 
-
-        #store new print_prt
+        # store new print_prt
         with open(print_prt_path, 'w') as file:
             file.write(new_print_prt)
-        
-    #modify yrc_start and yrc_end
+
+    # modify yrc_start and yrc_end
     def set_beginning_and_end_year(self, beginning: int, end: int) -> None:
         """
         Modify the beginning and end year in the 'time.sim' file.
@@ -149,12 +144,11 @@ class TxtinoutReader:
         Returns:
         None
         """
-                
+
         nth_line = 3
 
-        #time_sim_path = f"{self.root_folder}\\{'time.sim'}"
+        # time_sim_path = f"{self.root_folder}\\{'time.sim'}"
         time_sim_path = self.root_folder / 'time.sim'
-
 
         # Open the file in read mode and read its contents
         with open(time_sim_path, 'r') as file:
@@ -170,13 +164,13 @@ class TxtinoutReader:
 
         # Reconstruct the result string while maintaining spaces
         result_string = '{: >8} {: >10} {: >10} {: >10} {: >10} \n'.format(*elements)
-        
+
         lines[nth_line - 1] = result_string
 
         with open(time_sim_path, 'w') as file:
             file.writelines(lines)
 
-    #modify warmup
+    # modify warmup
     def set_warmup(self, warmup: int) -> None:
         """
         Modify the warmup period in the 'time.sim' file.
@@ -203,12 +197,11 @@ class TxtinoutReader:
 
         # Reconstruct the result string while maintaining spaces
         result_string = '{: <12} {: <11} {: <11} {: <10} {: <10} {: <10} \n'.format(*elements)
-                
+
         lines[nth_line - 1] = result_string
 
         with open(time_sim_path, 'w') as file:
             file.writelines(lines)
-
 
     def _enable_disable_csv_print(self, enable: bool = True) -> None:
         """
@@ -221,27 +214,24 @@ class TxtinoutReader:
         None
         """
 
-        #read 
+        # read
         nth_line = 7
 
-        #time_sim_path = f"{self.root_folder}\\{'time.sim'}"
+        # time_sim_path = f"{self.root_folder}\\{'time.sim'}"
         print_prt_path = self.root_folder / 'print.prt'
-
 
         # Open the file in read mode and read its contents
         with open(print_prt_path, 'r') as file:
             lines = file.readlines()
 
         if enable:
-            lines[nth_line - 1] = 'y' + lines[nth_line - 1][1:] 
+            lines[nth_line - 1] = 'y' + lines[nth_line - 1][1:]
         else:
-            lines[nth_line - 1] = 'n' + lines[nth_line - 1][1:] 
-
+            lines[nth_line - 1] = 'n' + lines[nth_line - 1][1:]
 
         with open(print_prt_path, 'w') as file:
             file.writelines(lines)
 
-        
     def enable_csv_print(self) -> None:
         """
         Enable CSV print in the 'print.prt' file.
@@ -249,7 +239,7 @@ class TxtinoutReader:
         Returns:
         None
         """
-        self._enable_disable_csv_print(enable = True)
+        self._enable_disable_csv_print(enable=True)
 
     def disable_csv_print(self) -> None:
         """
@@ -258,11 +248,9 @@ class TxtinoutReader:
         Returns:
         None
         """
-        self._enable_disable_csv_print(enable = False)
+        self._enable_disable_csv_print(enable=False)
 
-    
-    def register_file(self, filename: str, has_units: bool = False, index: Optional[str] = None, usecols: Optional[List[str]] =  None, filter_by:  Dict[str, Union[Any, List[Any], re.Pattern]] = {}) -> FileReader:
-
+    def register_file(self, filename: str, has_units: bool = False, index: Optional[str] = None, usecols: Optional[List[str]] = None, filter_by: Dict[str, Union[Any, List[Any], re.Pattern]] = {}) -> FileReader:
         """
         Register a file to work with in the SWAT model.
 
@@ -276,16 +264,15 @@ class TxtinoutReader:
         Returns:
         FileReader: A FileReader instance for the registered file.
         """
-        
+
         file_path = os.path.join(self.root_folder, filename)
         return FileReader(file_path, has_units, index, usecols, filter_by)
-    
+
     """
     if overwrite = True, content of target_dir folder will be deleted and txtinout folder will be copied there
     if overwrite = False, txtinout folder will be copied to a new folder inside target_dir
     """
     def copy_swat(self, target_dir: str = None, overwrite: bool = False) -> str:
-
         """
         Copy the SWAT model files to a specified directory.
 
@@ -300,23 +287,23 @@ class TxtinoutReader:
         str: The path to the directory where the SWAT model files were copied.
         """
 
-        #if target_dir is None or target_dir is a folder and overwrite is False, create a new folder using mkdtemp
+        # if target_dir is None or target_dir is a folder and overwrite is False, create a new folder using mkdtemp
         if (target_dir is None) or (not overwrite and target_dir is not None):
 
-            try: 
-                temp_folder_path = tempfile.mkdtemp(dir = target_dir)
+            try:
+                temp_folder_path = tempfile.mkdtemp(dir=target_dir)
             except FileNotFoundError:
                 os.makedirs(dir, exist_ok=True)
-                temp_folder_path = tempfile.mkdtemp(dir = target_dir)
-        
-        #if target_dir is a folder and overwrite is True, delete all contents
+                temp_folder_path = tempfile.mkdtemp(dir=target_dir)
+
+        # if target_dir is a folder and overwrite is True, delete all contents
         elif overwrite:
 
             if os.path.isdir(target_dir):
-            
+
                 temp_folder_path = target_dir
-                
-                #delete all files in target_dir
+
+                # delete all files in target_dir
                 for file in os.listdir(target_dir):
                     file_path = os.path.join(target_dir, file)
                     try:
@@ -324,33 +311,33 @@ class TxtinoutReader:
                             os.remove(file_path)
                     except Exception as e:
                         print(e)
-            
-            else:   #if overwrite and dir is not a folder, create dir anyway
+
+            else:  # if overwrite and dir is not a folder, create dir anyway
                 os.makedirs(dir, exist_ok=True)
                 temp_folder_path = dir
-        
-        #check if dir does not exist
+
+        # check if dir does not exist
         elif not os.path.isdir(dir):
-            #check if dir is a file
+            # check if dir is a file
             if os.path.isfile(dir):
                 raise TypeError("target_dir must be a folder")
 
-            #create dir
+            # create dir
             os.makedirs(dir, exist_ok=True)
             temp_folder_path = dir
-        
+
         else:
             raise TypeError("option not recognized")
-    
+
         # Get the list of files in the source folder
         source_folder = self.root_folder
         files = os.listdir(source_folder)
 
         # Exclude files with the specified suffix and copy the remaining files (only the required files for running SWAT are copied)
         for file in files:
-            
+
             source_file = os.path.join(source_folder, file)
-            
+
             # Skip directories and unwanted files
             if os.path.isdir(source_file):
                 continue
@@ -359,17 +346,15 @@ class TxtinoutReader:
             file_ext = ['txt', 'csv']
             ignored_file = tuple(
                 f'_{suf}.{ext}' for suf in file_suffix for ext in file_ext
-            ) 
+            )
 
             if file.endswith(ignored_file):
                 continue
-            
+
             destination_file = os.path.join(temp_folder_path, file)
             shutil.copy2(source_file, destination_file)
 
         return temp_folder_path
-
-
 
     def _run_swat(self, show_output: bool = True) -> None:
         """
@@ -382,9 +367,9 @@ class TxtinoutReader:
         None
         """
 
-        #Run siumulation
+        # Run siumulation
         swat_exe_path = self.swat_exe_path
-                
+
         os.chdir(self.root_folder)
 
         with subprocess.Popen(swat_exe_path, stdout=subprocess.PIPE, stderr=subprocess.PIPE) as process:
@@ -392,11 +377,11 @@ class TxtinoutReader:
             while True:
                 # Read a line of output
                 raw_output = process.stdout.readline()
-                
+
                 # Check if the output is empty and the subprocess has finished
                 if raw_output == b'' and process.poll() is not None:
                     break
-                
+
                 # Decode the output using 'latin-1' encoding
                 try:
                     output = raw_output.decode('latin-1').strip()
@@ -407,8 +392,6 @@ class TxtinoutReader:
                 # Print the decoded output if needed
                 if output and show_output:
                     print(output)
-        
-    
 
     """
     params --> {filename: (id_col, [(id, col, value)])}
@@ -418,7 +401,7 @@ class TxtinoutReader:
         Run the SWAT simulation with modified input parameters.
 
         Parameters:
-        params (Dict[str, Tuple[str, List[Tuple[Union[None, str, List[str], re.Pattern], str, Any]]]], optional): 
+        params (Dict[str, Tuple[str, List[Tuple[Union[None, str, List[str], re.Pattern], str, Any]]]], optional):
             A dictionary containing modifications to input files. Format: {filename: (id_col, [(id, col, value)])}.
             'id' can be None to apply the value to all rows, a single id or a regex pattern or list to match multiple IDs.
         show_output (bool, optional): If True, print the simulation output; if False, suppress output (default is True).
@@ -428,15 +411,15 @@ class TxtinoutReader:
         """
         aux_txtinout = TxtinoutReader(self.root_folder)
 
-        #Modify files for simulation
+        # Modify files for simulation
         for filename, file_params in params.items():
 
             id_col, file_mods = file_params
 
-            #get file
-            file = aux_txtinout.register_file(filename, has_units = False, index = id_col)
+            # get file
+            file = aux_txtinout.register_file(filename, has_units=False, index=id_col)
 
-            #for each col_name in file_params
+            # for each col_name in file_params
             for id, col_name, value in file_mods:   # 'id' can be None, a str or a regex pattern
                 if id is None:
                     file.df[col_name] = value
@@ -448,25 +431,23 @@ class TxtinoutReader:
                     file.df.loc[mask, col_name] = value
                 else:
                     file.df.loc[id, col_name] = value
-            
-            #store file
+
+            # store file
             file.overwrite_file()
-                
-        
-        #run simulation
+
+        # run simulation
         aux_txtinout._run_swat(show_output=show_output)
 
         return self.root_folder
-
 
     def run_swat_star(self, args: Tuple[Dict[str, Tuple[str, List[Tuple[Union[None, str, List[str], re.Pattern], str, Any]]]], bool]) -> str:
         """
         Run the SWAT simulation with modified input parameters using arguments provided as a tuple.
 
         Parameters:
-        args (Tuple[Dict[str, Tuple[str, List[Tuple[Union[None, str, List[str], re.Pattern], str, Any]]]]], bool]): 
+        args (Tuple[Dict[str, Tuple[str, List[Tuple[Union[None, str, List[str], re.Pattern], str, Any]]]]], bool]):
             A tuple containing simulation parameters.
-            The first element is a dictionary with input parameter modifications, 
+            The first element is a dictionary with input parameter modifications,
             the second element is a boolean to show output.
 
         Returns:
@@ -475,7 +456,6 @@ class TxtinoutReader:
         return self.run_swat(*args)
 
     def copy_and_run(self, target_dir: str, overwrite: bool = False, params: Dict[str, Tuple[str, List[Tuple[Union[None, str, List[str], re.Pattern], str, Any]]]] = {}, show_output: bool = True) -> str:
-        
         """
         Copy the SWAT model files to a specified directory, modify input parameters, and run the simulation.
 
@@ -490,37 +470,36 @@ class TxtinoutReader:
         Returns:
         str: The path to the directory where the SWAT simulation was executed.
         """
-        
-        tmp_path = self.copy_swat(target_dir = target_dir, overwrite = overwrite)
-        reader = TxtinoutReader(tmp_path)
-        return reader.run_swat(params, show_output = show_output)
 
+        tmp_path = self.copy_swat(target_dir=target_dir, overwrite=overwrite)
+        reader = TxtinoutReader(tmp_path)
+        return reader.run_swat(params, show_output=show_output)
 
     def copy_and_run_star(self, args: Tuple[str, bool, Dict[str, Tuple[str, List[Tuple[Union[None, str, List[str], re.Pattern], str, Any]]]], bool]) -> str:
         """
         Copy the SWAT model files to a specified directory, modify input parameters, and run the simulation using arguments provided as a tuple.
 
         Parameters:
-        args (Tuple[Dict[str, Tuple[str, List[Tuple[Union[None, str, List[str], re.Pattern], str, Any]]]]], bool]): 
+        args (Tuple[Dict[str, Tuple[str, List[Tuple[Union[None, str, List[str], re.Pattern], str, Any]]]]], bool]):
             A tuple containing simulation parameters.
-            The first element is a dictionary with input parameter modifications, 
+            The first element is a dictionary with input parameter modifications,
             the second element is a boolean to show output.
 
         Returns:
         str: The path to the directory where the SWAT simulation was executed.
-        """        
+        """
         return self.copy_and_run(*args)
 
-    
     """
     params --> [{filename: (id_col, [(id, col, value)])}]
     """
-    def run_parallel_swat(self, 
-                          params: List[Dict[str, Tuple[str, List[Tuple[Union[None, str, List[str], re.Pattern], str, Any]]]]], 
-                          n_workers: int = 1, 
-                          target_dir: str = None,
-                          parallelization: str = 'threads') -> List[str]:
-        
+    def run_parallel_swat(
+        self,
+        params: List[Dict[str, Tuple[str, List[Tuple[Union[None, str, List[str], re.Pattern], str, Any]]]]],
+        n_workers: int = 1,
+        target_dir: str = None,
+        parallelization: str = 'threads'
+    ) -> List[str]:
         """
         Run SWAT simulations in parallel with modified input parameters.
 
@@ -535,43 +514,34 @@ class TxtinoutReader:
         List[str]: A list of paths to the directories where the SWAT simulations were executed.
         """
 
-        
-
         max_treads = multiprocessing.cpu_count()
         threads = max(min(n_workers, max_treads), 1)
-        
+
         if n_workers == 1:
-            
+
             results_ret = []
 
             for i in tqdm.tqdm(range(len(params))):
-                results_ret.append(self.copy_and_run(target_dir = target_dir,
-                                                    overwrite = False,
-                                                    params = params[i], 
-                                                    show_output = False))
-            
+                results_ret.append(
+                    self.copy_and_run(
+                        target_dir=target_dir,
+                        overwrite=False,
+                        params=params[i],
+                        show_output=False
+                    )
+                )
+
             return results_ret
 
         else:
-                
             items = [[target_dir, False, params[i], False] for i in range(len(params))]
-
             if parallelization == 'threads':
                 with ThreadPoolExecutor(max_workers=threads) as executor:
-                    results = list(executor.map(self.copy_and_run_star, items))    
+                    results = list(executor.map(self.copy_and_run_star, items))
             elif parallelization == 'processes':
                 with multiprocessing.Pool(threads) as pool:
                     results = list(pool.map(self.copy_and_run_star, items))
             else:
-                raise ValueError("parallelization must be 'threads' or 'processes'")  
+                raise ValueError("parallelization must be 'threads' or 'processes'")
 
             return results
-            
-
-
-        
-        
-
-    
-
-
