@@ -34,4 +34,4 @@ def test_trigger(
     file_reader
 ):
 
-    assert str(2) == '2'
+    assert str(3) == '3'
