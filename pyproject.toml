@@ -43,6 +43,13 @@ Issues = "https://github.com/swat-model/pySWATPlus/issues"
 [tool.setuptools]
 packages = ["pySWATPlus"]
 
+
+[tool.pytest.ini_options]
+addopts = "-rA -Wignore::DeprecationWarning --cov=pySWATPlus --cov-report=html:cov_pySWATPlus --cov-report=term -s"
+testpaths = [
+    "tests"
+]
+
 [tool.setuptools_scm]
 version_scheme = "post-release"
 local_scheme = "no-local-version"
