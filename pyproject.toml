@@ -33,7 +33,8 @@ dependencies = [
     "pymoo",
     "tqdm",
     "dask",
-    "dask-expr"
+    "dask-expr",
+    "pyarrow"
 ]
 
 [project.urls]

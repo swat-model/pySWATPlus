@@ -6,3 +6,4 @@ pymoo
 tqdm
 dask
 dask-expr
+pyarrow
