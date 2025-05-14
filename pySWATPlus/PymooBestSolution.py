@@ -11,33 +11,54 @@ class SolutionManager:
     Class to manage the best solution found during optimization.
     """
 
-    def __init__(self):
+    def __init__(
+        self
+    ):
+
         self.X = None
         self.path = None
         self.error = None
         self.lock = multiprocessing.Lock()
 
-    def add_solution(self, X: np.ndarray, path: Dict[str, str], error: float) -> None:
+    def add_solution(
+        self,
+        X: np.ndarray,
+        path: Dict[str, str],
+        error: float
+    ) -> None:
+
         """
         Add a solution if it is better than the current best solution.
         """
+
         with self.lock:
             if self.error is None or error < self.error:
                 self.X = X
                 self.path = path
                 self.error = error
 
-    def get_solution(self) -> Tuple[np.ndarray, Dict[str, str], float]:
+    def get_solution(
+        self
+    ) -> Tuple[np.ndarray, Dict[str, str], float]:
+
         """
         Retrieve the best solution.
         """
+
         with self.lock:
             return self.X, self.path, self.error
 
-    def add_solutions(self, X_array: np.ndarray, paths_array: List[Dict[str, str]], errors_array: np.ndarray) -> None:
+    def add_solutions(
+        self,
+        X_array: np.ndarray,
+        paths_array: List[Dict[str, str]],
+        errors_array: np.ndarray
+    ) -> None:
+
         """
         Update the best solution based on provided paths and errors. Only the best solution is kept; others are deleted.
         """
+
         if len(errors_array) == 0:
             return
 
