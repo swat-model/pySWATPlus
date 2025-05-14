@@ -28,8 +28,8 @@ def test_get_df(
     df = file_reader.df
 
     assert df.shape[0] == 260
-    
-    
+
+
 def test_trigger(
     file_reader
 ):

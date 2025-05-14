@@ -5,3 +5,4 @@ numpy
 pymoo
 tqdm
 dask
+dask-expr
