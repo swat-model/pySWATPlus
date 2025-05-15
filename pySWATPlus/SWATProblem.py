@@ -4,15 +4,17 @@ from .SWATProblemMultimodel import SWATProblemMultimodel
 
 class SWATProblem(SWATProblemMultimodel):
 
-    def __init__(self,
-                 params: Dict[str, Tuple[str, List[Tuple[str, str, float, float]]]],
-                 function_to_evaluate: Callable,
-                 param_arg_name: str,
-                 n_workers: int = 1,
-                 parallelization: str = 'threads',
-                 debug: bool = False,
-                 **kwargs: Dict[str, Any]
-                 ) -> None:
+    def __init__(
+        self,
+        params: Dict[str, Tuple[str, List[Tuple[str, str, float, float]]]],
+        function_to_evaluate: Callable,
+        param_arg_name: str,
+        n_workers: int = 1,
+        parallelization: str = 'threads',
+        debug: bool = False,
+        **kwargs: Dict[str, Any]
+    ) -> None:
+
         """
         This feature inicializes a SWATProblem instance, which is used to perform optimization of the desired SWAT+ parameters by using the pymoo library.
 
@@ -34,5 +36,4 @@ class SWATProblem(SWATProblemMultimodel):
         None
         """
 
-        # SWATProblemMultimodel.__init__(self, params, function_to_evaluate, param_arg_name, n_workers, parallelization, None, None, None, None, None, debug, **kwargs)
         super().__init__(params, function_to_evaluate, param_arg_name, n_workers, parallelization, None, None, None, None, None, debug, **kwargs)

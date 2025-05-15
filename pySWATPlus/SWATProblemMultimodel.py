@@ -17,6 +17,7 @@ def minimize_pymoo(
         verbose: bool = False,
         callback: Optional[Callable] = None
 ) -> Tuple[Optional[np.ndarray], Optional[str], Optional[float]]:
+
     """
     Perform optimization using the pymoo library.
 
@@ -29,7 +30,8 @@ def minimize_pymoo(
     - callback (Optional[Callable], optional): A callback function that is called after each generation (default is None).
 
     Returns:
-    - Tuple[np.ndarray, Dict[str, str], float]: The best solution found during the optimization process, in the form of a tuple containing the decision variables, the path to the output files with the identifier, and the error.
+    - Tuple[np.ndarray, Dict[str, str], float]: The best solution found during the optimization process, in the form of a tuple containing the decision variables,
+    the path to the output files with the identifier, and the error.
     """
 
     problem.solution_manager = SolutionManager()
@@ -77,7 +79,9 @@ class SWATProblemMultimodel(Problem):
     ) -> None:
 
         """
-        This class serves the same purpose as SWATProblem, with the added capability of running another model before executing SWAT+. This enables running a prior model in the same calibration process, wherein the parameters are calibrated simultaneously. For example, the prior model can modify an input file of SWAT+ before initiating SWAT+ (according to the parameters of the calibration).
+        This class serves the same purpose as SWATProblem, with the added capability of running another model before executing SWAT+.
+        This enables running a prior model in the same calibration process, wherein the parameters are calibrated simultaneously.
+        For example, the prior model can modify an input file of SWAT+ before initiating SWAT+ (according to the parameters of the calibration).
 
         Parameters:
         - params Dict[str, Tuple[str, List[Tuple[str, str, int, int]]]]): A dictionary containing the range of values to optimize.
@@ -136,11 +140,14 @@ class SWATProblemMultimodel(Problem):
         self.solution_manager = None  # it is initialized in the minize_pymoo function
         super().__init__(n_var=n_vars, n_obj=1, n_constr=0, xl=lb, xu=ub, elementwise_evaluation=False)
 
-    def _evaluate(self,
-                  X: np.ndarray,
-                  out: Dict[str, Any],
-                  *args: Any,
-                  **kwargs: Any):
+    def _evaluate(
+        self,
+        X: np.ndarray,
+        out: Dict[str, Any],
+        *args: Any,
+        **kwargs: Any
+    ):
+
         """
         Evaluate the objective function for a given set of input parameters.
 
@@ -153,6 +160,7 @@ class SWATProblemMultimodel(Problem):
         Returns:
         None
         """
+
         if self.debug:
             print('starting _evaluate')
 

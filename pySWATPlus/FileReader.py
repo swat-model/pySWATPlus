@@ -17,6 +17,7 @@ def read_csv(
         engine: Literal['c', 'python'],
         mode: Literal['dask', 'pandas'] = 'dask'
 ) -> Union[pd.DataFrame, dd.DataFrame]:
+
     '''
     Read a CSV file using either Dask or Pandas and filter the data based on criteria.
 
@@ -38,7 +39,16 @@ def read_csv(
         - When `mode` is 'pandas', a Pandas DataFrame is returned.
 
         Example:
-        read_csv('plants.plt', skip_rows=[0], usecols=['name', 'plnt_typ', 'gro_trig'], filter_by={'plnt_typ': 'perennial'}, separator=r"[ ]{2,}", encoding="utf-8", engine='python', mode='dask')
+
+        read_csv(
+            'plants.plt',
+            skip_rows=[0],
+            usecols=['name', 'plnt_typ', 'gro_trig'],
+            filter_by={'plnt_typ': 'perennial'}, separator=r"[ ]{2,}",
+            encoding="utf-8",
+            engine='python',
+            mode='dask'
+        )
     '''
 
     if mode == 'dask':
@@ -93,6 +103,7 @@ class FileReader:
         usecols: List[str] = None,
         filter_by: Dict[str, Union[Any, List[Any], re.Pattern]] = {}
     ):
+
         '''
         Initialize a FileReader instance to read data from a file.
 
@@ -101,7 +112,7 @@ class FileReader:
         has_units (bool): Indicates if the file has units (default is False).
         index (str, optional): The name of the index column (default is None).
         usecols (List[str], optional): A list of column names to read (default is None).
-        filter_by (Dict[str, Union[Any, List[Any], re.Pattern]): A dictionary of column names and values to filter by (default is an empty dictionary).
+        filter_by (Dict[str, Union[Any, List[Any], re.Pattern], optional): A dictionary of column names and values to filter.
 
         Raises:
         FileNotFoundError: If the specified file does not exist.
@@ -118,8 +129,8 @@ class FileReader:
 
         Example:
         FileReader('plants.plt', has_units = False, index = 'name', usecols=['name', 'plnt_typ', 'gro_trig'], filter_by={'plnt_typ': 'perennial'})
-
         '''
+
         if not isinstance(path, (str, os.PathLike)):
             raise TypeError("path must be a string or os.PathLike object")
 
@@ -199,7 +210,10 @@ class FileReader:
         self.df = df
         self.path = path
 
-    def _store_text(self) -> None:
+    def _store_text(
+        self
+    ) -> None:
+
         '''
         Store the DataFrame as a formatted text file.
 
@@ -211,6 +225,7 @@ class FileReader:
         Returns:
         None
         '''
+
         data_str = self.df.to_string(index=False, justify='left', col_space=15)
 
         # Find the length of the longest string in each column
@@ -227,7 +242,10 @@ class FileReader:
             file.write(self.header_file)
             file.write(data_str)
 
-    def _store_csv(self) -> None:
+    def _store_csv(
+        self
+    ) -> None:
+
         '''
         Store the DataFrame as a CSV file.
 
@@ -236,9 +254,13 @@ class FileReader:
         Returns:
         None
         '''
+
         raise TypeError("Not implemented yet")
 
-    def overwrite_file(self) -> None:
+    def overwrite_file(
+        self
+    ) -> None:
+
         '''
         Overwrite the original file with the DataFrame.
 
@@ -247,6 +269,7 @@ class FileReader:
         Returns:
         None
         '''
+
         if self.path.suffix == '.csv':
             self._store_csv()
         else:
