@@ -1,5 +1,9 @@
+pytest
+pytest-cov
 pandas
 numpy
 pymoo
 tqdm
 dask
+dask-expr
+pyarrow
