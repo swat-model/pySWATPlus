@@ -36,5 +36,5 @@ jobs:
     - name: Run tests with pytest
       run: |
         export PYTHONPATH=$(pwd)
-        pytest -rA -Wignore::DeprecationWarning --cov=GeoAnalyze --cov-report=xml  # Run tests and generate coverage report in XML format
+        pytest --cov-report=xml:coverage.xml
 
