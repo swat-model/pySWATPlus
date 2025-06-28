@@ -9,9 +9,9 @@ import re
 
 def read_csv(
         path: Union[str, Path],
-        skip_rows: List[int],
-        usecols: List[str],
-        filter_by: Dict[str, Union[Any, List[Any], re.Pattern]],
+        skip_rows: list[int],
+        usecols: list[str],
+        filter_by: dict[str, Union[Any, list[Any], re.Pattern[str]]],
         separator: str,
         encoding: str,
         engine: Literal['c', 'python'],
@@ -97,11 +97,11 @@ class FileReader:
 
     def __init__(
         self,
-        path: str,
+        path: str | os.PathLike,
         has_units: bool = False,
         index: Optional[str] = None,
-        usecols: List[str] = None,
-        filter_by: Dict[str, Union[Any, List[Any], re.Pattern]] = {}
+        usecols: Optional[List[str]] = None,
+        filter_by: Dict[str, Union[Any, List[Any], re.Pattern[str]]] = {}
     ):
 
         '''

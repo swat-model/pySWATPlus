@@ -2,7 +2,6 @@ import numpy as np
 import itertools
 import shutil
 import multiprocessing
-from typing import Dict, List, Tuple
 
 
 class SolutionManager:
@@ -13,7 +12,7 @@ class SolutionManager:
 
     def __init__(
         self
-    ):
+    ) -> None:
 
         self.X = None
         self.path = None
@@ -23,7 +22,7 @@ class SolutionManager:
     def add_solution(
         self,
         X: np.ndarray,
-        path: Dict[str, str],
+        path: dict[str, str],
         error: float
     ) -> None:
 
@@ -39,7 +38,7 @@ class SolutionManager:
 
     def get_solution(
         self
-    ) -> Tuple[np.ndarray, Dict[str, str], float]:
+    ) -> tuple[np.ndarray, dict[str, str], float]:
 
         """
         Retrieve the best solution.
@@ -51,7 +50,7 @@ class SolutionManager:
     def add_solutions(
         self,
         X_array: np.ndarray,
-        paths_array: List[Dict[str, str]],
+        paths_array: list[dict[str, str]],
         errors_array: np.ndarray
     ) -> None:
 
