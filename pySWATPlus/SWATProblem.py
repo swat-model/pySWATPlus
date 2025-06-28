@@ -1,4 +1,4 @@
-from typing import Callable, Tuple, Any, Dict, List
+import typing
 from .SWATProblemMultimodel import SWATProblemMultimodel
 
 
@@ -6,13 +6,13 @@ class SWATProblem(SWATProblemMultimodel):
 
     def __init__(
         self,
-        params: Dict[str, Tuple[str, List[Tuple[str, str, float, float]]]],
-        function_to_evaluate: Callable,
+        params: dict[str, tuple[str, list[tuple[str, str, float, float]]]],
+        function_to_evaluate: typing.Callable[[dict[typing.Any, typing.Any]], tuple[float, dict[str, str]]],
         param_arg_name: str,
         n_workers: int = 1,
         parallelization: str = 'threads',
         debug: bool = False,
-        **kwargs: Dict[str, Any]
+        **kwargs: dict[str, typing.Any]
     ) -> None:
 
         """

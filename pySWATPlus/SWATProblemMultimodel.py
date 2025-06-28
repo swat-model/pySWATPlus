@@ -146,7 +146,7 @@ class SWATProblemMultimodel(Problem):
         out: Dict[str, Any],
         *args: Any,
         **kwargs: Any
-    ):
+    ) -> None:
 
         """
         Evaluate the objective function for a given set of input parameters.

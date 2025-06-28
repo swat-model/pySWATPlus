@@ -15,7 +15,7 @@ class TxtinoutReader:
 
     def __init__(
         self,
-        path: str
+        path: Union[str, os.PathLike]
     ) -> None:
 
         """
