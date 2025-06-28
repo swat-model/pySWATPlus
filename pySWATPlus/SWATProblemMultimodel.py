@@ -2,7 +2,7 @@ from pymoo.core.problem import Problem
 from .PymooBestSolution import SolutionManager
 import copy
 import numpy as np
-from typing import Optional, Callable, Tuple, Any, Dict, List
+from typing import Optional, Callable, Any
 from pymoo.optimize import minimize
 from concurrent.futures import ThreadPoolExecutor
 import multiprocessing
@@ -16,7 +16,7 @@ def minimize_pymoo(
         seed: Optional[int] = None,
         verbose: bool = False,
         callback: Optional[Callable] = None
-) -> Tuple[Optional[np.ndarray], Optional[str], Optional[float]]:
+) -> tuple[Optional[np.ndarray], Optional[str], Optional[float]]:
 
     """
     Perform optimization using the pymoo library.
@@ -64,18 +64,18 @@ class SWATProblemMultimodel(Problem):
 
     def __init__(
         self,
-        params: Dict[str, Tuple[str, List[Tuple[str, str, float, float]]]],
+        params: dict[str, tuple[str, list[tuple[str, str, float, float]]]],
         function_to_evaluate: Callable,
         param_arg_name: str,
         n_workers: int = 1,
         parallelization: str = 'threads',
-        ub_prior: Optional[List[int]] = None,
-        lb_prior: Optional[List[int]] = None,
+        ub_prior: Optional[list[int]] = None,
+        lb_prior: Optional[list[int]] = None,
         function_to_evaluate_prior: Optional[Callable] = None,
-        args_function_to_evaluate_prior: Optional[Dict[str, Any]] = None,
+        args_function_to_evaluate_prior: Optional[dict[str, Any]] = None,
         param_arg_name_to_modificate_by_prior_function: Optional[str] = None,
         debug: bool = False,
-        **kwargs: Dict[str, Any]
+        **kwargs: dict[str, Any]
     ) -> None:
 
         """
@@ -143,7 +143,7 @@ class SWATProblemMultimodel(Problem):
     def _evaluate(
         self,
         X: np.ndarray,
-        out: Dict[str, Any],
+        out: dict[str, Any],
         *args: Any,
         **kwargs: Any
     ) -> None:

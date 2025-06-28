@@ -11,7 +11,7 @@ def read_csv(
         path: Union[str, Path],
         skip_rows: list[int],
         usecols: list[str],
-        filter_by: dict[str, Union[Any, list[Any], re.Pattern]],
+        filter_by: dict[str, Union[Any, list[Any], re.Pattern[str]]],
         separator: str,
         encoding: str,
         engine: Literal['c', 'python'],
@@ -101,7 +101,7 @@ class FileReader:
         has_units: bool = False,
         index: Optional[str] = None,
         usecols: Optional[List[str]] = None,
-        filter_by: Dict[str, Union[Any, List[Any], re.Pattern]] = {}
+        filter_by: Dict[str, Union[Any, List[Any], re.Pattern[str]]] = {}
     ):
 
         '''
