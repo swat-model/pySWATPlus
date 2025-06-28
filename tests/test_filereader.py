@@ -30,4 +30,6 @@ def test_get_df(
     assert df.shape[0] == 260
 
 
+def test_github():
 
+    assert str(1) == '1'
