@@ -3,7 +3,6 @@ import warnings
 import dask.dataframe as dd
 from pathlib import Path
 from typing import Union, Literal, Optional
-import os
 
 
 def read_csv(
@@ -21,34 +20,33 @@ def read_csv(
     Read a CSV file using either Dask or Pandas and filter the data based on criteria.
 
         Parameters:
-        path (Union[str, Path]): The path to the CSV file.
-        skip_rows (list[int], optional): List of specific row numbers to skip.
-        usecols (list[str], optional): A list of column names to read.
-        filter_by (str, optional): Pandas query string to select applicable rows (default is None).
-        separator (str): The delimiter used in the CSV file.
-        encoding (str): The character encoding to use when reading the file.
-        engine (Literal['c', 'python']): The CSV parsing engine to use (e.g., 'c' for C engine, 'python' for Python engine).
-        mode (Literal['dask', 'pandas']): The mode to use for reading ('dask' or 'pandas').
+            path (Union[str, Path]): The path to the CSV file.
+            skip_rows (list[int], optional): List of specific row numbers to skip.
+            usecols (list[str], optional): A list of column names to read.
+            filter_by (str, optional): Pandas query string to select applicable rows (default is None).
+            separator (str): The delimiter used in the CSV file.
+            encoding (str): The character encoding to use when reading the file.
+            engine (Literal['c', 'python']): The CSV parsing engine to use (e.g., 'c' for C engine, 'python' for Python engine).
+            mode (Literal['dask', 'pandas']): The mode to use for reading ('dask' or 'pandas').
 
         Returns:
-        Union[pd.DataFrame, dd.DataFrame]: A DataFrame containing the filtered data. The type depends on the chosen mode.
+            Union[pd.DataFrame, dd.DataFrame]: A DataFrame containing the filtered data. The type depends on the chosen mode.
 
         Note:
-        - When `mode` is 'dask', a Dask DataFrame is returned.
-        - When `mode` is 'pandas', a Pandas DataFrame is returned.
+            - When `mode` is 'dask', a Dask DataFrame is returned.
+            - When `mode` is 'pandas', a Pandas DataFrame is returned.
 
         Example:
-
-        read_csv(
-            'plants.plt',
-            skip_rows=[0],
-            usecols=['name', 'plnt_typ', 'gro_trig'],
-            filter_by="plnt_typ == 'perennial'", 
-            separator=r"[ ]{2,}",
-            encoding="utf-8",
-            engine='python',
-            mode='dask'
-        )
+            read_csv(
+                'plants.plt',
+                skip_rows=[0],
+                usecols=['name', 'plnt_typ', 'gro_trig'],
+                filter_by="plnt_typ == 'perennial'", 
+                separator=r"[ ]{2,}",
+                encoding="utf-8",
+                engine='python',
+                mode='dask'
+            )
     '''
 
     if mode == 'dask':
@@ -86,7 +84,7 @@ class FileReader:
 
     def __init__(
         self,
-        path: str | os.PathLike,
+        path: str | Path,
         has_units: bool = False,
         index: Optional[str] = None,
         usecols: Optional[list[str]] = None,
@@ -97,31 +95,31 @@ class FileReader:
         Initialize a FileReader instance to read data from a file.
 
         Parameters:
-        path (str, os.PathLike): The path to the file.
-        has_units (bool): Indicates if the file has units (default is False).
-        index (str, optional): The name of the index column (default is None).
-        usecols (list[str], optional): A list of column names to read (default is None).
-        filter_by (str, optional): Pandas query string to select applicable rows (default is None).
+            path (str, Path): The path to the file.
+            has_units (bool): Indicates if the file has units (default is False).
+            index (str, optional): The name of the index column (default is None).
+            usecols (list[str], optional): A list of column names to read (default is None).
+            filter_by (str, optional): Pandas query string to select applicable rows (default is None).
 
         Raises:
-        FileNotFoundError: If the specified file does not exist.
-        TypeError: If there's an issue reading the file or if the resulting DataFrame is not of type pandas.DataFrame.
+            FileNotFoundError: If the specified file does not exist.
+            TypeError: If there's an issue reading the file or if the resulting DataFrame is not of type pandas.DataFrame.
 
         Attributes:
-        df (pd.DataFrame): a dataframe containing the data from the file.
+            df (pd.DataFrame): a dataframe containing the data from the file.
 
 
         Note:
-        - When has_units is True, the file is expected to have units information, and the units_file attribute will be set.
-        - The read_csv method is called with different parameters to attempt reading the file with various delimiters and encodings.
-        - If an index column is specified, it will be used as the index in the DataFrame.
+            - When has_units is True, the file is expected to have units information, and the units_file attribute will be set.
+            - The read_csv method is called with different parameters to attempt reading the file with various delimiters and encodings.
+            - If an index column is specified, it will be used as the index in the DataFrame.
 
         Example:
-        FileReader('plants.plt', has_units = False, index = 'name', usecols=['name', 'plnt_typ', 'gro_trig'], filter_by="plnt_typ == 'perennial'")
+            FileReader('plants.plt', has_units = False, index = 'name', usecols=['name', 'plnt_typ', 'gro_trig'], filter_by="plnt_typ == 'perennial'")
         '''
 
-        if not isinstance(path, (str, os.PathLike)):
-            raise TypeError("path must be a string or os.PathLike object")
+        if not isinstance(path, (str, Path)):
+            raise TypeError("path must be a string or Path object")
 
         path = Path(path).resolve()
 

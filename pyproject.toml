@@ -31,10 +31,7 @@ classifiers = [
 dependencies = [
     "pandas",
     "pymoo",
-    "tqdm",
     "dask",
-    "dask-expr",
-    "pyarrow"
 ]
 
 [project.urls]

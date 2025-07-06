@@ -31,3 +31,5 @@ def test_get_df(
 
 
 
+def test_github():
+    assert str(1) == '1'
