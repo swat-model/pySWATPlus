@@ -3,19 +3,14 @@ import os
 from .FileReader import FileReader
 import shutil
 import tempfile
-import multiprocessing
-import tqdm
 from pathlib import Path
-from typing import List, Dict, Tuple, Optional, Union, Any
-from concurrent.futures import ThreadPoolExecutor
-import re
-
+from typing import Optional, Any, Union
 
 class TxtinoutReader:
 
     def __init__(
         self,
-        path: str
+        path: Union[str, os.PathLike]
     ) -> None:
 
         """
@@ -297,8 +292,8 @@ class TxtinoutReader:
         filename: str,
         has_units: bool = False,
         index: Optional[str] = None,
-        usecols: Optional[List[str]] = None,
-        filter_by: Dict[str, Union[Any, List[Any], re.Pattern]] = {}
+        usecols: Optional[list[str]] = None,
+        filter_by: Optional[str] = None
     ) -> FileReader:
 
         """
@@ -309,7 +304,7 @@ class TxtinoutReader:
         has_units (bool): Indicates if the file has units information (default is False).
         index (str, optional): The name of the index column (default is None).
         usecols (List[str], optional): A list of column names to read (default is None).
-        filter_by (Dict[str, Union[Any, List[Any], re.Pattern]): A dictionary of column names and values to filter by (default is an empty dictionary).
+        filter_by (str, optional): Pandas query string to select applicable rows (default is None).
 
         Returns:
         FileReader: A FileReader instance for the registered file.
@@ -319,9 +314,9 @@ class TxtinoutReader:
 
         return FileReader(file_path, has_units, index, usecols, filter_by)
 
-    def copy_swat(
+    def _copy_swat(
         self,
-        target_dir: str = None,
+        target_dir: Optional[str] = None,
         overwrite: bool = False
     ) -> str:
 
@@ -449,174 +444,158 @@ class TxtinoutReader:
                 if output and show_output:
                     print(output)
 
-    def run_swat(
+
+
+    def run_swat_in_other_dir(
         self,
-        params: Dict[str, Tuple[str, List[Tuple[Union[None, str, List[str], re.Pattern], str, Any]]]] = {},
-        show_output: bool = True
-    ) -> str:
-
-        """
-        Run the SWAT simulation with modified input parameters.
-
-        Parameters:
-        params (Dict[str, Tuple[str, List[Tuple[Union[None, str, List[str], re.Pattern], str, Any]]]], optional):
-            A dictionary containing modifications to input files. Format: {filename: (id_col, [(id, col, value)])}.
-            'id' can be None to apply the value to all rows, a single id or a regex pattern or list to match multiple IDs.
-        show_output (bool, optional): If True, print the simulation output; if False, suppress output (default is True).
-
-        Returns:
-        str: The path to the directory where the SWAT simulation was executed.
-        """
-
-        aux_txtinout = TxtinoutReader(self.root_folder)
-
-        # Modify files for simulation
-        for filename, file_params in params.items():
-
-            id_col, file_mods = file_params
-
-            # get file
-            file = aux_txtinout.register_file(filename, has_units=False, index=id_col)
-
-            # for each col_name in file_params
-            for id, col_name, value in file_mods:   # 'id' can be None, a str or a regex pattern
-                if id is None:
-                    file.df[col_name] = value
-                elif isinstance(id, list):
-                    mask = file.df.index.astype(str).isin(id)
-                    file.df.loc[mask, col_name] = value
-                elif isinstance(id, re.Pattern):
-                    mask = file.df.index.astype(str).str.match(id)
-                    file.df.loc[mask, col_name] = value
-                else:
-                    file.df.loc[id, col_name] = value
-
-            # store file
-            file.overwrite_file()
-
-        # run simulation
-        aux_txtinout._run_swat(show_output=show_output)
-
-        return self.root_folder
-
-    def run_swat_star(
-        self,
-        args: Tuple[Dict[str, Tuple[str, List[Tuple[Union[None, str, List[str], re.Pattern], str, Any]]]], bool]
-    ) -> str:
-
-        """
-        Run the SWAT simulation with modified input parameters using arguments provided as a tuple.
-
-        Parameters:
-        args (Tuple[Dict[str, Tuple[str, List[Tuple[Union[None, str, List[str], re.Pattern], str, Any]]]]], bool]):
-            A tuple containing simulation parameters.
-            The first element is a dictionary with input parameter modifications,
-            the second element is a boolean to show output.
-
-        Returns:
-        str: The path to the directory where the SWAT simulation was executed.
-        """
-
-        return self.run_swat(*args)
-
-    def copy_and_run(
-        self,
-        target_dir: str,
+        target_dir: Optional[str] = None,
         overwrite: bool = False,
-        params: Dict[str, Tuple[str, List[Tuple[Union[None, str, List[str], re.Pattern], str, Any]]]] = {},
-        show_output: bool = True
+        params: Optional[dict[str, dict[str, Any]]] = None,
     ) -> str:
 
         """
         Copy the SWAT model files to a specified directory, modify input parameters, and run the simulation.
 
         Parameters:
-        target_dir (str): The target directory where the SWAT model files will be copied.
-        overwrite (bool, optional): If True, overwrite the content of 'target_dir'; if False, create a new folder inside 'target_dir' (default is False).
-        params (Dict[str, Tuple[str, List[Tuple[Union[None, str, List[str], re.Pattern], str, Any]]]], optional):
-            A dictionary containing modifications to input files. Format: {filename: (id_col, [(id, col, value)])}.
-        Format: {filename: (id_col, [(id, col, value)])}.
-        show_output (bool, optional): If True, print the simulation output; if False, suppress output (default is True).
+        target_dir : str, optional
+            Path to the directory where the SWAT model files will be copied. If None, a temporary directory will be used.
+
+        overwrite : bool, optional
+            If True, allow overwriting the contents of `target_dir`.
+            If False (default), a new subdirectory will be created inside `target_dir`.
+
+        params : dict, optional
+            A dictionary defining parameter modifications per input file. The structure is:
+
+            {
+                'filename.ext': {
+                    'has_units': bool,              # Optional; indicates whether the file contains units
+                    'parameter_name': {
+                        'value': float,         # New value to apply
+                        'change_type': str,     # One of: 'absval', 'abschg', 'pctchg'
+                        'filter_by': str        # Pandas query string to select applicable rows
+                    },
+                    # ... include any other actual parameter names for this 'filename.ext' ...
+                },
+                # ... more files can be added here ...
+            }
+
+            - 'change_type':
+                * 'absval': Replace with absolute value
+                * 'abschg': Add (or subtract) a fixed value
+                * 'pctchg': Apply a percentage change (e.g., 0.10 = +10%)
+
+            - 'filter_by': A string-compatible Pandas `.query()` expression used to filter rows
+            in the input file before applying the parameter change.
 
         Returns:
-        str: The path to the directory where the SWAT simulation was executed.
+        str
+            The path to the directory where the SWAT simulation was executed.
         """
 
-        tmp_path = self.copy_swat(target_dir=target_dir, overwrite=overwrite)
+        tmp_path = self._copy_swat(target_dir=target_dir, overwrite=overwrite)
         reader = TxtinoutReader(tmp_path)
 
-        return reader.run_swat(params, show_output=show_output)
+        return reader.run_swat(params)
 
-    def copy_and_run_star(
+
+
+    
+
+    def run_swat(
         self,
-        args: Tuple[str, bool, Dict[str, Tuple[str, List[Tuple[Union[None, str, List[str], re.Pattern], str, Any]]]], bool]
+        params: Optional[dict[str, dict[str, Any]]] = None,
     ) -> str:
-
         """
-        Copy the SWAT model files to a specified directory, modify input parameters, and run the simulation using arguments provided as a tuple.
+        Run the SWAT simulation with modified input parameters.
 
         Parameters:
-        args (Tuple[Dict[str, Tuple[str, List[Tuple[Union[None, str, List[str], re.Pattern], str, Any]]]]], bool]):
-            A tuple containing simulation parameters.
-            The first element is a dictionary with input parameter modifications,
-            the second element is a boolean to show output.
+        params : dict, optional
+            A dictionary defining parameter modifications per input file. The structure is:
+
+            {
+                'filename.ext': {
+                    'has_units': bool,              # Optional; indicates whether the file contains units
+                    'parameter_name': {
+                        'value': float,         # New value to apply
+                        'change_type': str,     # One of: 'absval', 'abschg', 'pctchg'
+                        'filter_by': str        # Pandas query string to select applicable rows
+                    },
+                    # ... include any other actual parameter names for this 'filename.ext' ...
+                },
+                # ... more files can be added here ...
+            }
+
+            - 'change_type':
+                * 'absval': Replace with absolute value
+                * 'abschg': Add (or subtract) a fixed value
+                * 'pctchg': Apply a percentage change (e.g., 0.10 = +10%)
+
+            - 'filter_by': A string-compatible Pandas `.query()` expression used to filter rows
+            in the input file before applying the parameter change.
 
         Returns:
-        str: The path to the directory where the SWAT simulation was executed.
-        """
+        str
+            The path to the directory where the SWAT simulation was executed.
+        """        
+        aux_txtinout = TxtinoutReader(self.root_folder)
+        
+        _params = params or {}
 
-        return self.copy_and_run(*args)
+        # Modify files for simulation
+        for filename, file_params in _params.items():
 
-    def run_parallel_swat(
-        self,
-        params: List[Dict[str, Tuple[str, List[Tuple[Union[None, str, List[str], re.Pattern], str, Any]]]]],
-        n_workers: int = 1,
-        target_dir: str = None,
-        parallelization: str = 'threads'
-    ) -> List[str]:
+            has_units = file_params.get('has_units', False)
+                        
+            # Read the file
+            file = aux_txtinout.register_file(
+                filename,
+                has_units=has_units,
+            )
+                
+            df = file.df
+            
+            reserved_params = ['has_units']
 
-        """
-        Run SWAT simulations in parallel with modified input parameters.
+            for param_name, param_info in file_params.items():
+                
+                if param_name in reserved_params:
+                    continue  # Skip reserved parameters
+                
+                value = param_info.get('value', None)
+                
+                if value is None:
+                    raise ValueError(f"Parameter '{param_name}' in file '{filename}' must have a 'value' specified.")
+                
+                change_type = param_info.get('change_type', 'absval')
+                if change_type not in ['absval', 'abschg', 'pctchg']:
+                    raise ValueError(f"Parameter '{param_name}' in file '{filename}' has an invalid 'change_type': {change_type}. "
+                                     "Valid options are 'absval', 'abschg', or 'pctchg'.")
+                    
+                filter_by = param_info.get('filter_by', None)
+                
+                if filter_by:
+                    mask = df.query(filter_by).index
+                else:
+                    mask = df.index  # Apply to all rows
 
-        Parameters:
-        params (Dict[str, Tuple[str, List[Tuple[Union[None, str, List[str], re.Pattern], str, Any]]]], optional):
-            A dictionary containing modifications to input files. Format: {filename: (id_col, [(id, col, value)])}.
-        n_workers (int, optional): The number of parallel workers to use (default is 1).
-        target_dir (str, optional): The target directory where the SWAT model files will be copied (default is None).
-        parallelization (str, optional): The parallelization method to use ('threads' or 'processes') (default is 'threads').
+                # Apply the change directly to df using .loc
+                if change_type == 'absval':
+                    df.loc[mask, param_name] = value
+                elif change_type == 'abschg':
+                    df.loc[mask, param_name] += value
+                elif change_type == 'pctchg':
+                    df.loc[mask, param_name] *= (1 + value / 100)
+            
+            # Store the modified file
+            file.overwrite_file()
+            
+        # run simulation
+        aux_txtinout._run_swat()
+        return self.root_folder
 
-        Returns:
-        List[str]: A list of paths to the directories where the SWAT simulations were executed.
-        """
 
-        max_treads = multiprocessing.cpu_count()
-        threads = max(min(n_workers, max_treads), 1)
 
-        if n_workers == 1:
 
-            results_ret = []
 
-            for i in tqdm.tqdm(range(len(params))):
-                results_ret.append(
-                    self.copy_and_run(
-                        target_dir=target_dir,
-                        overwrite=False,
-                        params=params[i],
-                        show_output=False
-                    )
-                )
 
-            return results_ret
-
-        else:
-            items = [[target_dir, False, params[i], False] for i in range(len(params))]
-            if parallelization == 'threads':
-                with ThreadPoolExecutor(max_workers=threads) as executor:
-                    results = list(executor.map(self.copy_and_run_star, items))
-            elif parallelization == 'processes':
-                with multiprocessing.Pool(threads) as pool:
-                    results = list(pool.map(self.copy_and_run_star, items))
-            else:
-                raise ValueError("parallelization must be 'threads' or 'processes'")
-
-            return results

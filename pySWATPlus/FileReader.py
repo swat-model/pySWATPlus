@@ -2,19 +2,18 @@ import pandas as pd
 import warnings
 import dask.dataframe as dd
 from pathlib import Path
-from typing import Union, List, Dict, Literal, Optional, Any
+from typing import Union, Literal, Optional
 import os
-import re
 
 
 def read_csv(
         path: Union[str, Path],
-        skip_rows: List[int],
-        usecols: List[str],
-        filter_by: Dict[str, Union[Any, List[Any], re.Pattern]],
-        separator: str,
-        encoding: str,
-        engine: Literal['c', 'python'],
+        skip_rows: Optional[list[int]] = None,
+        usecols: Optional[list[str]] = None,
+        filter_by: Optional[str] = None,
+        separator: str = ',',
+        encoding: str = 'utf-8',
+        engine: Literal['c', 'python'] = 'python',
         mode: Literal['dask', 'pandas'] = 'dask'
 ) -> Union[pd.DataFrame, dd.DataFrame]:
 
@@ -23,9 +22,9 @@ def read_csv(
 
         Parameters:
         path (Union[str, Path]): The path to the CSV file.
-        skip_rows (List[int]): List of specific row numbers to skip.
-        usecols (List[str]): A list of column names to read
-        filter_by (Dict[str, Union[Any, List[Any], re.Pattern]): A dictionary of column names and values to filter by.
+        skip_rows (list[int], optional): List of specific row numbers to skip.
+        usecols (list[str], optional): A list of column names to read.
+        filter_by (str, optional): Pandas query string to select applicable rows (default is None).
         separator (str): The delimiter used in the CSV file.
         encoding (str): The character encoding to use when reading the file.
         engine (Literal['c', 'python']): The CSV parsing engine to use (e.g., 'c' for C engine, 'python' for Python engine).
@@ -44,7 +43,8 @@ def read_csv(
             'plants.plt',
             skip_rows=[0],
             usecols=['name', 'plnt_typ', 'gro_trig'],
-            filter_by={'plnt_typ': 'perennial'}, separator=r"[ ]{2,}",
+            filter_by="plnt_typ == 'perennial'", 
+            separator=r"[ ]{2,}",
             encoding="utf-8",
             engine='python',
             mode='dask'
@@ -61,14 +61,8 @@ def read_csv(
             encoding=encoding,
             engine=engine
         )
-
-        for column, condition in filter_by.items():
-            if isinstance(condition, list):
-                df = df.loc[df[column].isin(condition)]
-            elif isinstance(condition, re.Pattern):
-                df = df.loc[df[column].str.match(condition)]
-            else:
-                df = df.loc[df[column] == condition]
+        if filter_by:
+            df = df.query(filter_by)
 
         return df.compute().reset_index(drop=True)
 
@@ -82,14 +76,9 @@ def read_csv(
             engine=engine
         )
 
-        for column, condition in filter_by.items():
-            if isinstance(condition, list):
-                df = df.loc[df[column].isin(condition)]
-            elif isinstance(condition, re.Pattern):
-                df = df.loc[df[column].str.match(condition)]
-            else:
-                df = df.loc[df[column] == condition]
-
+        if filter_by:
+            df = df.query(filter_by)
+            
         return df.reset_index(drop=True)
 
 
@@ -97,11 +86,11 @@ class FileReader:
 
     def __init__(
         self,
-        path: str,
+        path: str | os.PathLike,
         has_units: bool = False,
         index: Optional[str] = None,
-        usecols: List[str] = None,
-        filter_by: Dict[str, Union[Any, List[Any], re.Pattern]] = {}
+        usecols: Optional[list[str]] = None,
+        filter_by: Optional[str] = None
     ):
 
         '''
@@ -111,8 +100,8 @@ class FileReader:
         path (str, os.PathLike): The path to the file.
         has_units (bool): Indicates if the file has units (default is False).
         index (str, optional): The name of the index column (default is None).
-        usecols (List[str], optional): A list of column names to read (default is None).
-        filter_by (Dict[str, Union[Any, List[Any], re.Pattern], optional): A dictionary of column names and values to filter.
+        usecols (list[str], optional): A list of column names to read (default is None).
+        filter_by (str, optional): Pandas query string to select applicable rows (default is None).
 
         Raises:
         FileNotFoundError: If the specified file does not exist.
@@ -128,7 +117,7 @@ class FileReader:
         - If an index column is specified, it will be used as the index in the DataFrame.
 
         Example:
-        FileReader('plants.plt', has_units = False, index = 'name', usecols=['name', 'plnt_typ', 'gro_trig'], filter_by={'plnt_typ': 'perennial'})
+        FileReader('plants.plt', has_units = False, index = 'name', usecols=['name', 'plnt_typ', 'gro_trig'], filter_by="plnt_typ == 'perennial'")
         '''
 
         if not isinstance(path, (str, os.PathLike)):
