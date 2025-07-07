@@ -30,8 +30,6 @@ classifiers = [
 ]
 dependencies = [
     "pandas",
-    "pymoo",
-    "dask",
 ]
 
 [project.urls]

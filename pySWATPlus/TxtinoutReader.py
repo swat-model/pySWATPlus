@@ -1,13 +1,12 @@
 import subprocess
 from .FileReader import FileReader
 import shutil
-import tempfile
 from pathlib import Path
 from typing import Optional, Union, Final
 import logging
 from .types import ParamsType
 from .utils import _build_line_to_add, _apply_param_change, _validate_params
-# 
+
 logger = logging.getLogger(__name__)
 
 class TxtinoutReader:
@@ -28,17 +27,14 @@ class TxtinoutReader:
         Initialize a TxtinoutReader instance for working with SWAT model data.
 
         Args:
-            path (str, Path): The path to the SWAT model folder.
+            path (str or Path): The path to the SWAT model folder.
 
         Raises:
-            TypeError: If the provided path is not a string or a Path object, or if the folder does not exist,
-                        or if there is more than one .exe file in the folder, or if no .exe file is found.
-
-        Attributes:
-            root_folder (Path): The path to the root folder of the SWAT model.
-            swat_exe_path (Path): The path to the main SWAT executable file.
+            TypeError: If the provided path is not a string or Path object,
+                    if more than one .exe file is found,
+                    or if no .exe file is found.
+            FileNotFoundError: If the folder does not exist.
         """
-
         # check if path is a string or a path
         if not isinstance(path, (str, Path)):
             raise TypeError("path must be a string or os.PathLike object")
@@ -64,8 +60,8 @@ class TxtinoutReader:
             raise TypeError(".exe not found in parent folder")
 
         # find parent directory
-        self.root_folder = path
-        self.swat_exe_path = path / swat_exe
+        self.root_folder: Path = path
+        self.swat_exe_path: Path = path / swat_exe
 
     def enable_object_in_print_prt(
         self,
@@ -274,57 +270,29 @@ class TxtinoutReader:
         Returns:
             FileReader: A FileReader instance for the registered file.
         """
-
         file_path = self.root_folder / filename
 
         return FileReader(file_path, has_units, index, usecols, filter_by)
 
     def _copy_swat(
         self,
-        target_dir: Optional[Union[str, Path]] = None,
-        overwrite: bool = False
+        target_dir: Union[str, Path],
     ) -> str:
 
         """
         Prepare a working directory containing the necessary SWAT model files.
 
         This function copies the contents of the SWAT model input folder (`self.root_folder`)
-        to a target directory. If `overwrite` is False, a temporary subdirectory is created inside
-        `target_dir` (or in the system temp directory if `target_dir` is None). If `overwrite` is True,
-        the contents of `target_dir` will be deleted before copying.
+        to a target directory.
 
         Parameters:
-            target_dir (str or Path, optional): Destination directory for the SWAT model files.
-                - If None, a new temporary directory will be created.
-                - If provided and `overwrite=False`, a new temp subdirectory will be created inside it.
-                - If provided and `overwrite=True`, the directory will be cleared and reused.
+            target_dir (str or Path): Destination directory for the SWAT model files.
             
-            overwrite (bool, optional): Whether to overwrite the contents of `target_dir`.
-                Defaults to False. Ignored if `target_dir` is None.
-
         Returns:
             str: The path to the directory where the SWAT files were copied.        
         """
         
-        target_path = Path(target_dir) if target_dir else None
-
-        if target_path is None or not overwrite:
-            if target_path and not target_path.exists():
-                target_path.mkdir(parents=True, exist_ok=True)
-            dest_path = Path(tempfile.mkdtemp(dir=target_path))
-        else:
-            target_path.mkdir(parents=True, exist_ok=True)
-            # Clear contents if overwriting
-            for item in target_path.iterdir():
-                try:
-                    if item.is_file() or item.is_symlink():
-                        item.unlink()
-                    elif item.is_dir():
-                        shutil.rmtree(item)
-                except Exception as e:
-                    logger.warning(f"Failed to delete {item}: {e}")
-            dest_path = target_path
-
+        dest_path = Path(target_dir)
 
         # Copy files from source folder
         for file in self.root_folder.iterdir():
@@ -452,33 +420,47 @@ class TxtinoutReader:
 
     def run_swat_in_other_dir(
         self,
-        target_dir: Optional[Union[str, Path]] = None,
-        overwrite: bool = False,
+        target_dir: Union[str, Path],
         params: ParamsType = None,
     ) -> str:
-
         """
         Copy the SWAT model files to a specified directory, modify input parameters, and run the simulation.
 
         Parameters:
-            target_dir : str, Path, optional
+            target_dir : str, Path
                 Path to the directory where the SWAT model files will be copied. 
-                If None, a temporary directory will be used.
-
-            overwrite : bool, optional
-                If True, allow overwriting the contents of `target_dir`.
-                If False (default), a new subdirectory will be created inside `target_dir`.
 
             params : dict, optional
                 Parameter modifications per input file. See `run_swat()` method for detailed structure.
-            
-            Allows modifying SWAT input files before running the simulation.
-        
+                    
         Returns:
             str: The path to the directory where the SWAT simulation was executed.
-        """
+        
+        Example:
+            >>> params = {
+            ...     'plants.plt': {
+            ...         'has_units': False,
+            ...         'bm_e': [
+            ...             {'value': 100, 'change_type': 'absval', 'filter_by': 'name == "agrl"'},
+            ...             {'value': 110, 'change_type': 'absval', 'filter_by': 'name == "almd"'},
+            ...         ],
+            ...     },
+            ... }
+            >>> with tempfile.TemporaryDirectory() as tmp_dir:
+            ...     simulation = pySWATPlus.TxtinoutReader.run_swat_in_other_dir(target_dir=tmp_dir, params=params)
 
-        tmp_path = self._copy_swat(target_dir=target_dir, overwrite=overwrite)
+        
+        """ 
+        # Validate target_dir
+        if not isinstance(target_dir, (str, Path)):
+            raise TypeError("target_dir must be a string or Path object")
+
+        # target dir should exist and be a directory
+        target_dir = Path(target_dir).resolve()
+        if not target_dir.is_dir():
+            raise FileNotFoundError(f"Target directory does not exist: {target_dir}")
+
+        tmp_path = self._copy_swat(target_dir=target_dir)
         reader = TxtinoutReader(tmp_path)
 
         return reader.run_swat(params)

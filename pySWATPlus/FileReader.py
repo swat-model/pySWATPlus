@@ -1,83 +1,6 @@
 import pandas as pd
-import warnings
-import dask.dataframe as dd
 from pathlib import Path
-from typing import Union, Literal, Optional
-
-
-def read_csv(
-        path: Union[str, Path],
-        skip_rows: Optional[list[int]] = None,
-        usecols: Optional[list[str]] = None,
-        filter_by: Optional[str] = None,
-        separator: str = ',',
-        encoding: str = 'utf-8',
-        engine: Literal['c', 'python'] = 'python',
-        mode: Literal['dask', 'pandas'] = 'dask'
-) -> Union[pd.DataFrame, dd.DataFrame]:
-
-    '''
-    Read a CSV file using either Dask or Pandas and filter the data based on criteria.
-
-        Parameters:
-            path (Union[str, Path]): The path to the CSV file.
-            skip_rows (list[int], optional): List of specific row numbers to skip.
-            usecols (list[str], optional): A list of column names to read.
-            filter_by (str, optional): Pandas query string to select applicable rows (default is None).
-            separator (str): The delimiter used in the CSV file.
-            encoding (str): The character encoding to use when reading the file.
-            engine (Literal['c', 'python']): The CSV parsing engine to use (e.g., 'c' for C engine, 'python' for Python engine).
-            mode (Literal['dask', 'pandas']): The mode to use for reading ('dask' or 'pandas').
-
-        Returns:
-            Union[pd.DataFrame, dd.DataFrame]: A DataFrame containing the filtered data. The type depends on the chosen mode.
-
-        Note:
-            - When `mode` is 'dask', a Dask DataFrame is returned.
-            - When `mode` is 'pandas', a Pandas DataFrame is returned.
-
-        Example:
-            read_csv(
-                'plants.plt',
-                skip_rows=[0],
-                usecols=['name', 'plnt_typ', 'gro_trig'],
-                filter_by="plnt_typ == 'perennial'", 
-                separator=r"[ ]{2,}",
-                encoding="utf-8",
-                engine='python',
-                mode='dask'
-            )
-    '''
-
-    if mode == 'dask':
-        df = dd.read_csv(
-            path,
-            sep=separator,
-            skiprows=skip_rows,
-            assume_missing=True,
-            usecols=usecols,
-            encoding=encoding,
-            engine=engine
-        )
-        if filter_by:
-            df = df.query(filter_by)
-
-        return df.compute().reset_index(drop=True)
-
-    elif mode == 'pandas':
-        df = pd.read_csv(
-            path,
-            sep=separator,
-            skiprows=skip_rows,
-            usecols=usecols,
-            encoding=encoding,
-            engine=engine
-        )
-
-        if filter_by:
-            df = df.query(filter_by)
-            
-        return df.reset_index(drop=True)
+from typing import Optional
 
 
 class FileReader:
@@ -108,12 +31,6 @@ class FileReader:
         Attributes:
             df (pd.DataFrame): a dataframe containing the data from the file.
 
-
-        Note:
-            - When has_units is True, the file is expected to have units information, and the units_file attribute will be set.
-            - The read_csv method is called with different parameters to attempt reading the file with various delimiters and encodings.
-            - If an index column is specified, it will be used as the index in the DataFrame.
-
         Example:
             FileReader('plants.plt', has_units = False, index = 'name', usecols=['name', 'plnt_typ', 'gro_trig'], filter_by="plnt_typ == 'perennial'")
         '''
@@ -126,76 +43,34 @@ class FileReader:
         if not path.is_file():
             raise FileNotFoundError("file does not exist")
 
-        df = None
-
         # skips the header
         skip_rows = [0]
-        # skips the units
-        if has_units:
-            skip_rows.append(2)
 
         # if file is txt
         if path.suffix == '.csv':
             raise TypeError("Not implemented yet")
 
-        else:
-            # read only first line of file
-            with open(path, 'r', encoding='latin-1') as file:
-                # Read the first line
-                self.header_file = file.readline()
+        # read only first line of file
+        with open(path, 'r', encoding='latin-1') as file:
+            self.header_file = file.readline()
 
-            if has_units:
-                # read only third line of file
-                with open(path, 'r', encoding='latin-1') as file:
-                    # Use a for loop to iterate through the file, reading lines
-                    for line_number, line in enumerate(file, start=1):
-                        if line_number == 3:
-                            self.units_file = line
-                            break
+        self.df = pd.read_fwf(
+            path,
+            skiprows=skip_rows,
+            usecols=usecols,
+            index_col=index,
+        )
 
-            csv_options = [
-                (r'\s+', 'utf-8', 'c', 'dask'),
-                (r'\s+', 'latin-1', 'c', 'dask'),
-                (r"[ ]{2,}", 'utf-8', 'python', 'dask'),
-                (r"[ ]{2,}", 'latin-1', 'python', 'dask'),
-                (r'\s+', 'utf-8', 'c', 'pandas'),
-                (r'\s+', 'latin-1', 'c', 'pandas'),
-                (r"[ ]{2,}", 'utf-8', 'python', 'pandas'),
-                (r"[ ]{2,}", 'latin-1', 'python', 'pandas')
-            ]
+        if filter_by:
+            self.df = self.df.query(filter_by)
 
-            with warnings.catch_warnings(record=True):
-                warnings.simplefilter("error")
-                last_exception = None
-                for delimiter, encoding, engine, backend in csv_options:
-                    try:
-                        df = read_csv(path, skip_rows, usecols, filter_by, delimiter, encoding, engine, backend)
-                        break
-                    except Exception as e:
-                        last_exception = e
-                else:
-                    raise Exception(f"All combinations of delimiter, encoding, engine, and backend failed. Last exception: {last_exception}")
-
-        # check if df is a pandas dataframe
-        if not isinstance(df, pd.DataFrame):
-            raise TypeError("Something went wrong!")
-
-        df.columns = df.columns.str.replace(' ', '')
-
-        if index is not None:
-            aux_index_name = 'aux_index'
-
-            # Add the copied 'name' column back to the DataFrame
-            df[aux_index_name] = df[index]
-
-            # Set the 'name' column as the index
-            df.set_index(aux_index_name, inplace=True)
-
-            # Change the index name to a default name, such as 'index'
-            df.rename_axis('', inplace=True)
-
-        self.df = df
         self.path = path
+        
+        if has_units:
+            self.units_row = self.df.iloc[0].copy()
+            self.df = self.df.iloc[1:].reset_index(drop=True)
+        else:
+            self.units_row = None
 
     def _store_text(
         self
@@ -207,27 +82,39 @@ class FileReader:
         This method converts the DataFrame to a formatted string with adjusted column widths and writes it to a .txt file.
         The text file will contain the header and the formatted data.
 
-        TODO: This function still does not write the corresponding units, in case the original file had it.
-
         Returns:
         None
         '''
+        
+        if self.units_row is not None:
+            _df = pd.concat([pd.DataFrame([self.units_row]), self.df], ignore_index=True)
+        else:
+            _df = self.df
+ 
+        # Replace NaN with empty strings to avoid printing 'NaN'
+        _df = _df.fillna('')
 
-        data_str = self.df.to_string(index=False, justify='left', col_space=15)
-
-        # Find the length of the longest string in each column
-        max_lengths = self.df.apply(lambda x: x.astype(str).str.len()).max()
-
-        # Define the column widths based on the longest string length
-        column_widths = {column: max_length + 3 for column, max_length in max_lengths.items()}
-
-        # Convert the DataFrame to a formatted string with adjusted column widths
-        data_str = self.df.to_string(index=False, justify='right', col_space=column_widths)
-
-        # Write the string to a .txt file
         with open(self.path, 'w') as file:
+            # Write the header file first
             file.write(self.header_file)
+
+            if _df.empty:
+                # Calculate max width for each column name (or set a minimum if you prefer)
+                col_widths = [max(len(col), 1) + 3 for col in _df.columns]
+
+                # Create format string with fixed widths, right-aligned
+                fmt = ''.join([f'{{:>{w}}}' for w in col_widths])
+
+                # Format and write the header line
+                file.write(fmt.format(*_df.columns) + '\n')
+                return
+            
+            max_lengths = _df.apply(lambda x: x.astype(str).str.len()).max()
+            column_widths = {column: max_length + 3 for column, max_length in max_lengths.items()}
+            data_str = _df.to_string(index=False, justify='right', col_space=column_widths)
             file.write(data_str)
+
+
 
     def _store_csv(
         self
