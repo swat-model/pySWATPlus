@@ -1,5 +1,5 @@
 # types.py
-from typing import TypedDict, Literal, Optional, Union, Dict, List
+from typing import TypedDict, Literal
 
 class ParamChange(TypedDict, total=False):
     """
@@ -20,10 +20,10 @@ class ParamChange(TypedDict, total=False):
     """
     value: float
     change_type: Literal['absval', 'abschg', 'pctchg']
-    filter_by: Optional[str]
+    filter_by: str | None
 
 
-ParamSpec = Union[ParamChange, List[ParamChange]]
+ParamSpec = ParamChange | list[ParamChange]
 """
 Defines one or more changes to apply to a specific parameter.
 
@@ -31,7 +31,7 @@ Defines one or more changes to apply to a specific parameter.
 - Each change is independently applied to the same parameter name.
 """
 
-FileParams = Dict[str, Union[bool, ParamSpec]]
+FileParams = dict[str, bool | ParamSpec]
 """
 Defines modifications for a specific SWAT input file.
 
@@ -44,7 +44,7 @@ Structure:
 - If 'has_units' is omitted, it defaults to False.
 """
 
-ParamsType = Optional[Dict[str, FileParams]]
+ParamsType = dict[str, FileParams] | None
 """
 Top-level structure mapping SWAT input filenames to parameter modifications.
 

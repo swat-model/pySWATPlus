@@ -2,7 +2,7 @@ import subprocess
 from .FileReader import FileReader
 import shutil
 from pathlib import Path
-from typing import Optional, Union, Final
+from typing import Final
 import logging
 from .types import ParamsType
 from .utils import _build_line_to_add, _apply_param_change, _validate_params
@@ -20,7 +20,7 @@ class TxtinoutReader:
     
     def __init__(
         self,
-        path: Union[str, Path]
+        path: str | Path
     ) -> None:
 
         """
@@ -252,9 +252,9 @@ class TxtinoutReader:
         self,
         filename: str,
         has_units: bool = False,
-        index: Optional[str] = None,
-        usecols: Optional[list[str]] = None,
-        filter_by: Optional[str] = None
+        index: str | None = None,
+        usecols: list[str] | None = None,
+        filter_by: str | None = None
     ) -> FileReader:
 
         """
@@ -276,7 +276,7 @@ class TxtinoutReader:
 
     def _copy_swat(
         self,
-        target_dir: Union[str, Path],
+        target_dir: str | Path,
     ) -> str:
 
         """
@@ -420,7 +420,7 @@ class TxtinoutReader:
 
     def run_swat_in_other_dir(
         self,
-        target_dir: Union[str, Path],
+        target_dir: str | Path,
         params: ParamsType = None,
     ) -> str:
         """

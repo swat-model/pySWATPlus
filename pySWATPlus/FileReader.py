@@ -1,6 +1,5 @@
 import pandas as pd
 from pathlib import Path
-from typing import Optional
 
 
 class FileReader:
@@ -9,9 +8,9 @@ class FileReader:
         self,
         path: str | Path,
         has_units: bool = False,
-        index: Optional[str] = None,
-        usecols: Optional[list[str]] = None,
-        filter_by: Optional[str] = None
+        index: str | None = None,
+        usecols: list[str] | None = None,
+        filter_by: str | None = None
     ):
 
         '''
