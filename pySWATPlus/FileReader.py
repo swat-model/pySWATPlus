@@ -61,9 +61,6 @@ class FileReader:
             index_col=index,
         )
 
-        if filter_by:
-            self.df = self.df.query(filter_by)
-
         self.path = path
         
         if has_units:
@@ -71,6 +68,10 @@ class FileReader:
             self.df = self.df.iloc[1:].reset_index(drop=True)
         else:
             self.units_row = None
+        
+        if filter_by:
+            self.df = self.df.query(filter_by)
+
 
     def _store_text(
         self
