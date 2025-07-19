@@ -361,28 +361,25 @@ class TxtinoutReader:
         Run the SWAT simulation with optional parameter changes.
 
         Args:
-            params (dict, optional): Maps input filenames to parameter edits.  
-                Each file dict can include:
-                - 'has_units' (bool, optional): Defaults to False.
-                - parameter names mapped to a change dict or list of change dicts with:
-                    - 'value' (float): New value.
-                    - 'change_type' (str, optional): 'absval' (default), 'abschg', or 'pctchg'.
-                    - 'filter_by' (str, optional): Pandas query to filter rows.
-
+            params (ParamsType, optional): Parameter changes to apply. See [`ParamsType`][pySWATPlus.ParamsType] for full structure.
+        
         Returns:
-            str: Path where the simulation was run.
+            str: The path where the SWAT simulation was executed.
 
         Example:
-            >>> params = {
-            ...     'plants.plt': {
-            ...         'has_units': False,
-            ...         'bm_e': [
-            ...             {'value': 100, 'change_type': 'absval', 'filter_by': 'name == "agrl"'},
-            ...             {'value': 110, 'change_type': 'absval', 'filter_by': 'name == "almd"'},
-            ...         ],
-            ...     },
-            ... }
-            >>> reader.run_swat(params)        
+            ```python
+            params = {
+                'plants.plt': {
+                    'has_units': False,
+                    'bm_e': [
+                        {'value': 100, 'change_type': 'absval', 'filter_by': 'name == "agrl"'},
+                        {'value': 110, 'change_type': 'absval', 'filter_by': 'name == "almd"'},
+                    ],
+                },
+            }
+
+            reader.run_swat(params)
+            ```
         """
         aux_txtinout = TxtinoutReader(self.root_folder)
         _params = params or {}
@@ -426,30 +423,32 @@ class TxtinoutReader:
         """
         Copy the SWAT model files to a specified directory, modify input parameters, and run the simulation.
 
-        Parameters:
-            target_dir : str, Path
-                Path to the directory where the SWAT model files will be copied. 
-
-            params : dict, optional
-                Parameter modifications per input file. See `run_swat()` method for detailed structure.
-                    
+        Args:
+            target_dir (str or Path): Path to the directory where the SWAT model files will be copied.
+            params (ParamsType, optional): Parameter changes to apply. See [`ParamsType`][pySWATPlus.ParamsType] for full structure.
+                        
         Returns:
             str: The path to the directory where the SWAT simulation was executed.
         
         Example:
-            >>> params = {
-            ...     'plants.plt': {
-            ...         'has_units': False,
-            ...         'bm_e': [
-            ...             {'value': 100, 'change_type': 'absval', 'filter_by': 'name == "agrl"'},
-            ...             {'value': 110, 'change_type': 'absval', 'filter_by': 'name == "almd"'},
-            ...         ],
-            ...     },
-            ... }
-            >>> with tempfile.TemporaryDirectory() as tmp_dir:
-            ...     simulation = pySWATPlus.TxtinoutReader.run_swat_in_other_dir(target_dir=tmp_dir, params=params)
+            ```python
+            params = {
+                'plants.plt': {
+                    'has_units': False,
+                    'bm_e': [
+                        {'value': 100, 'change_type': 'absval', 'filter_by': 'name == "agrl"'},
+                        {'value': 110, 'change_type': 'absval', 'filter_by': 'name == "almd"'},
+                    ],
+                },
+            }
 
-        
+            with tempfile.TemporaryDirectory() as tmp_dir:
+                simulation = pySWATPlus.TxtinoutReader.run_swat_in_other_dir(
+                    target_dir=tmp_dir,
+                    params=params
+                )
+            ```
+
         """ 
         # Validate target_dir
         if not isinstance(target_dir, (str, Path)):

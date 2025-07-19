@@ -8,10 +8,26 @@
 
 ---
 
+## ⚠️ Version Compatibility Notice
+
+**Version 1.x introduces breaking changes and is not compatible with the previous 0.x versions.**
+
+- If you're looking for the legacy 0.x version:
+  - 📦 **Install from PyPI**:  
+    ```bash
+    pip install pySWATPlus==0.2.20
+    ```
+  - 🗂️ **Access the source code**:  
+    [https://github.com/swat-model/pySWATPlus/tree/v0.x](https://github.com/swat-model/pySWATPlus/tree/v0.x)
+
+---
+
 ## ✨ Key Features
 
 - **Access and Modify SWAT+ Files**: Navigate, read, modify, and write files in the `TxtInOut` folder used by SWAT+. 📂
 - **Model Calibration**: Optimize SWAT+ input parameters using the [Pymoo](https://pymoo.org/) optimization framework to get the best results. 🎯
+
+> ⚠️ **Note**: The `SWATProblem` and `SWATProblemMultimodel` classes have been removed in version 1.x. Tutorials on how to perform calibration analysis will be updated soon.
 
 ---
 
@@ -21,19 +37,9 @@ pySWATPlus is an open-source software developed and maintained by [ICRA](https:/
 
 ---
 
-## 🛠️ Installation
-
-Before installing pySWATPlus, make sure you have the following dependencies installed:
-
-```py
-pip install pandas numpy pymoo tqdm dask
-```
-
----
-
 ## ⚙️ Requirements
 
-To use this package, a Python version above 3.6 is required.
+To use this package, a Python version above 3.10 is required.
 
 ---
 
@@ -49,14 +55,12 @@ pip install pySWATPlus
 
 ## 🚀 Getting Started
 
-The **[Getting Started](getting-started.md)** page is the perfect place to begin your journey with pySWATPlus. It covers the basics and links to practical examples, from setting up and running a simple SWAT+ project to diving into parameter optimization techniques and sensitivity analysis.
+The **[Getting Started](examples/getting_started.ipynb)** notebook is the perfect place to begin your journey with pySWATPlus. It covers the basics and links to practical examples, from setting up and running a simple SWAT+ project to diving into parameter optimization techniques and sensitivity analysis.
 
 For a deeper dive, check out the **[API Reference](api/txtinoutreader.md)**, which documents all functions, input arguments, and provides short examples on how to use them. The API Reference includes:
 
 - **[TxtinoutReader](api/txtinoutreader.md)**: Work with SWAT+ input and output files.
 - **[FileReader](api/filereader.md)**: Read and manipulate SWAT+ files.
-- **[SWATProblem](api/swatproblem.md)**: Define and solve SWAT+ optimization problems.
-- **[SWATProblemMultimodel](api/swatproblemmultimodel.md)**: Handle multi-model calibration scenarios.
 ---
 
 
@@ -70,7 +74,7 @@ To cite pySWATPlus, use:
   year      = {2023},
   month     = dec,
   publisher = {Zenodo},
-  version   = {0.1.0},
+  version   = {1.0.0},
   doi       = {10.5281/zenodo.14889320},
   url       = {https://doi.org/10.5281/zenodo.14889320}
 }

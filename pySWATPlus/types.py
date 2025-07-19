@@ -1,61 +1,74 @@
 # types.py
-from typing import TypedDict, Literal
+from typing import TypedDict, Literal, List
+from typing_extensions import NotRequired
 
-class ParamChange(TypedDict, total=False):
+
+class ParamChange(TypedDict):
     """
-    Defines a single change to apply to a SWAT input parameter.
+    Describes a single change to apply to a parameter in a SWAT input file.
 
     Attributes:
-        value (float): 
-            The new value to apply.
-
+        value (float): The value to apply to the parameter.
         change_type (Literal['absval', 'abschg', 'pctchg'], optional): 
-            The type of change:
-            - 'absval': Replace with absolute value (default if omitted).
-            - 'abschg': Add or subtract the specified value.
-            - 'pctchg': Apply a percentage change (e.g., 0.10 for +10%).
-
-        filter_by (str, optional): 
-            A pandas `.query()` string used to filter rows before applying the change.
+            - `'absval'`: Use the absolute value (default).
+            - `'abschg'`: Apply an absolute change.
+            - `'pctchg'`: Apply a percentage change.
+        filter_by (str, optional): Pandas `.query()` string to filter the dataframe rows.
     """
     value: float
-    change_type: Literal['absval', 'abschg', 'pctchg']
-    filter_by: str | None
-
+    change_type: NotRequired[Literal['absval', 'abschg', 'pctchg']]
+    filter_by: NotRequired[str]
+    
 
 ParamSpec = ParamChange | list[ParamChange]
 """
-Defines one or more changes to apply to a specific parameter.
+One or more parameter changes to apply to a SWAT variable.
 
-- Can be a single `ParamChange` or a list of them.
-- Each change is independently applied to the same parameter name.
+Can be a single `ParamChange` or a list of them.
 """
 
 FileParams = dict[str, bool | ParamSpec]
 """
-Defines modifications for a specific SWAT input file.
+Maps a SWAT+ input file’s variables to their parameter changes.
 
-Structure:
-    {
-        'has_units': bool,                # Optional. True if file contains unit-separated blocks (e.g., HRUs). Defaults to False.
-        'parameter_name': ParamSpec       # One or more changes to apply to that parameter.
-    }
-- Parameter names (e.g., 'CN2', 'SOL_AWC') map to changes.
-- If 'has_units' is omitted, it defaults to False.
+Special key:
+    - `"has_units"` (bool): Indicates if the file has units (default is False).
+
+All other keys are variable names (e.g., `"bm_e"`, `"CN2"`) mapped to:
+    - A `ParamChange`, or
+    - A list of `ParamChange`s.
+
+Example:
+```python
+{
+    'has_units': False,
+    'bm_e': [
+        {'value': 100, 'change_type': 'absval'},
+        {'value': 110, 'filter_by': 'name == "almd"'}
+    ]
+}
+```
 """
 
 ParamsType = dict[str, FileParams] | None
 """
 Top-level structure mapping SWAT input filenames to parameter modifications.
 
+
+Each file maps to:
+    - `"has_units"`: Whether it contains multiple blocks (optional).
+    - Variable names: Mapped to one or more parameter changes.
+    
 Example:
-    {
-        'plants.plt': {
-            'has_units': False,
-            'bm_e': [
-                {'value': 100, 'change_type': 'absval', 'filter_by': 'name == "agrl"'},
-                {'value': 110, 'change_type': 'absval', 'filter_by': 'name == "almd"'},
-            ],
-        },
-    }
+```python
+params = {
+    'plants.plt': {
+        'has_units': False,
+        'bm_e': [
+            {'value': 100, 'change_type': 'absval', 'filter_by': 'name == "agrl"'},
+            {'value': 110, 'change_type': 'absval', 'filter_by': 'name == "almd"'},
+        ],
+    },
+}
+```
 """

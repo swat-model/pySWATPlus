@@ -21,7 +21,11 @@ plugins:
           options:
             docstring_style: google
             show_signature_annotations: true
-            show_source: false
+            show_root_heading: true
+            show_root_full_path: false
+            filters:
+              - "!^_[^_]"  # exclude members starting with a single underscore, but keep __init__, __str__, etc.
+        
   - mkdocs-jupyter
 
 markdown_extensions:
@@ -32,14 +36,15 @@ markdown_extensions:
 
 nav:
   - Home: index.md
-  - Getting Started:
-    - Basic Usage: examples/basic_examples.ipynb
-    - Calibration: examples/calibration.ipynb
-    - Sensitivy Analysis: examples/sensitivity_analysis.ipynb
+  
+  - Examples:
+    - Getting Started: examples/getting_started.ipynb
+    #- Calibration: examples/calibration.ipynb
+    - Sensitivity Analysis: examples/sensitivity_analysis.ipynb
 
   - API Reference:
     - TxtinoutReader: api/txtinoutreader.md
     - FileReader: api/filereader.md
-    - SWATProblem: api/swatproblem.md
-    - SWATProblemMultimodel: api/swatproblemmultimodel.md
+    - pySWATPlus.types: api/types.md
+
   - Citation: citation.md

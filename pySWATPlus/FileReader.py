@@ -31,7 +31,17 @@ class FileReader:
             df (pd.DataFrame): a dataframe containing the data from the file.
 
         Example:
-            FileReader('plants.plt', has_units = False, index = 'name', usecols=['name', 'plnt_typ', 'gro_trig'], filter_by="plnt_typ == 'perennial'")
+            ```python
+            reader = FileReader(
+                'plants.plt',
+                has_units=False,
+                index='name',
+                usecols=['name', 'plnt_typ', 'gro_trig'],
+                filter_by="plnt_typ == 'perennial'"
+            )
+            ```
+
+
         '''
 
         if not isinstance(path, (str, Path)):

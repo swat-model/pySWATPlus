@@ -24,7 +24,7 @@ pySWATPlus is an open-source software developed and maintained by [ICRA](https:/
 
 ## 📥 Install pySWATPlus
 
-To use this package, a Python version above 3.6 is required. You can install pySWATPlus using this simple command:
+To use this package, a Python version above 3.10 is required. You can install pySWATPlus using this simple command:
 
 ````py
 pip install pySWATPlus
@@ -40,10 +40,6 @@ For detailed documentation, tutorials, and examples, visit the **[pySWATPlus doc
 - **[API Reference](https://swat-model.github.io/pySWATPlus/api/txtinoutreader/)**: Comprehensive documentation of all functions, input arguments, and usage examples.
   - **[TxtinoutReader](https://swat-model.github.io/pySWATPlus/api/txtinoutreader/)**: Work with SWAT+ input and output files.
   - **[FileReader](https://swat-model.github.io/pySWATPlus/api/filereader/)**: Read and manipulate SWAT+ files.
-  - **[SWATProblem](https://swat-model.github.io/pySWATPlus/api/swatproblem/)**: Define and solve SWAT+ optimization problems.
-  - **[SWATProblemMultimodel](https://swat-model.github.io/pySWATPlus/api/swatproblemmultimodel/)**: Handle multi-model calibration scenarios.
-
-
 ---
 
 
@@ -57,7 +53,7 @@ To cite pySWATPlus, use:
   year      = {2023},
   month     = dec,
   publisher = {Zenodo},
-  version   = {0.1.0},
+  version   = {1.0.0},
   doi       = {10.5281/zenodo.14889320},
   url       = {https://doi.org/10.5281/zenodo.14889320}
 }
