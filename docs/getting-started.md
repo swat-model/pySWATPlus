@@ -10,7 +10,7 @@ pip install pySWATPlus
 ## Basic Usage
 
 ```python
-from pySWATPlus.TxtinoutReader import TxtinoutReader
+from pySWATPlus import TxtinoutReader
 
 # Initialize with your SWAT+ project
 reader = TxtinoutReader("path/to/swatplus_project")
