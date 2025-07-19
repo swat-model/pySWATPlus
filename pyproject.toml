@@ -7,7 +7,7 @@ name = "pySWATPlus"
 description = "Running and calibrating default or custom SWAT+ projects with Python"
 dynamic = ["version"]
 readme = "README.md"
-requires-python = ">=3.9"
+requires-python = ">=3.10"
 license = {text = "GPL-3.0"}
 authors = [
     { name = "Joan Saló", email = "joansalograu@gmail.com" }
@@ -55,3 +55,11 @@ testpaths = [
 [tool.setuptools_scm]
 version_scheme = "post-release"
 local_scheme = "no-local-version"
+
+
+[tool.mypy]
+files = [
+    "pySWATPlus"
+]
+ignore_missing_imports = true
+strict = true

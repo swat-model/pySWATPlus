@@ -15,7 +15,7 @@ class TxtinoutReader:
 
     def __init__(
         self,
-        path: str
+        path: Union[str, os.PathLike]
     ) -> None:
 
         """
@@ -298,7 +298,7 @@ class TxtinoutReader:
         has_units: bool = False,
         index: Optional[str] = None,
         usecols: Optional[List[str]] = None,
-        filter_by: Dict[str, Union[Any, List[Any], re.Pattern]] = {}
+        filter_by: dict[str, Union[Any, list[Any], re.Pattern]] = {}
     ) -> FileReader:
 
         """
@@ -451,7 +451,7 @@ class TxtinoutReader:
 
     def run_swat(
         self,
-        params: Dict[str, Tuple[str, List[Tuple[Union[None, str, List[str], re.Pattern], str, Any]]]] = {},
+        params: dict[str, tuple[str, list[tuple[Union[None, str, list[str], re.Pattern[str]], str, Any]]]] = {},
         show_output: bool = True
     ) -> str:
 
@@ -501,7 +501,7 @@ class TxtinoutReader:
 
     def run_swat_star(
         self,
-        args: Tuple[Dict[str, Tuple[str, List[Tuple[Union[None, str, List[str], re.Pattern], str, Any]]]], bool]
+        args: tuple[dict[str, tuple[str, list[tuple[Union[None, str, list[str], re.Pattern[str]], str, Any]]]], bool]
     ) -> str:
 
         """
@@ -523,7 +523,7 @@ class TxtinoutReader:
         self,
         target_dir: str,
         overwrite: bool = False,
-        params: Dict[str, Tuple[str, List[Tuple[Union[None, str, List[str], re.Pattern], str, Any]]]] = {},
+        params: dict[str, tuple[str, list[tuple[Union[None, str, list[str], re.Pattern[str]], str, Any]]]] = {},
         show_output: bool = True
     ) -> str:
 
@@ -549,7 +549,7 @@ class TxtinoutReader:
 
     def copy_and_run_star(
         self,
-        args: Tuple[str, bool, Dict[str, Tuple[str, List[Tuple[Union[None, str, List[str], re.Pattern], str, Any]]]], bool]
+        args: Tuple[str, bool, Dict[str, Tuple[str, List[Tuple[Union[None, str, List[str], re.Pattern[str]], str, Any]]]], bool]
     ) -> str:
 
         """
@@ -569,9 +569,9 @@ class TxtinoutReader:
 
     def run_parallel_swat(
         self,
-        params: List[Dict[str, Tuple[str, List[Tuple[Union[None, str, List[str], re.Pattern], str, Any]]]]],
+        params: list[dict[str, tuple[str, list[tuple[Union[None, str, list[str], re.Pattern[str]], str, Any]]]]],
         n_workers: int = 1,
-        target_dir: str = None,
+        target_dir: Optional[str] = None,
         parallelization: str = 'threads'
     ) -> List[str]:
 
