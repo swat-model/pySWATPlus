@@ -252,7 +252,6 @@ class TxtinoutReader:
         self,
         filename: str,
         has_units: bool = False,
-        index: str | None = None,
         usecols: list[str] | None = None,
         filter_by: str | None = None
     ) -> FileReader:
@@ -263,7 +262,6 @@ class TxtinoutReader:
         Parameters:
             filename (str): The name of the file to register.
             has_units (bool): Indicates if the file has units information (default is False).
-            index (str, optional): The name of the index column (default is None).
             usecols (List[str], optional): A list of column names to read (default is None).
             filter_by (str, optional): Pandas query string to select applicable rows (default is None).
 
@@ -272,7 +270,7 @@ class TxtinoutReader:
         """
         file_path = self.root_folder / filename
 
-        return FileReader(file_path, has_units, index, usecols, filter_by)
+        return FileReader(file_path, has_units, usecols, filter_by)
 
     def _copy_swat(
         self,
@@ -360,8 +358,28 @@ class TxtinoutReader:
         """
         Run the SWAT simulation with optional parameter changes.
 
+        The `params` dictionary follows this nested structure:
+
+        ```python
+        params = {
+            "<input_file>": {
+                "has_units": bool,              # Optional. Whether the file has units information (default if False)
+                "<parameter_name>": [           # One or more changes to apply to the parameter
+                    {
+                        "value": float,         # New value to assign
+                        "change_type": str,     # (Optional) One of: 'absval' (default), 'abschg', 'pctchg'
+                        "filter_by": str        # (Optional) pandas `.query()` filter string to select rows
+                    },
+                    # ... more changes for this parameter
+                ]
+            },
+            # ... more input files
+        }
+        ```
+
         Args:
             params (ParamsType, optional): Parameter changes to apply. See [`ParamsType`][pySWATPlus.ParamsType] for full structure.
+        
         
         Returns:
             str: The path where the SWAT simulation was executed.
@@ -423,6 +441,26 @@ class TxtinoutReader:
         """
         Copy the SWAT model files to a specified directory, modify input parameters, and run the simulation.
 
+        The `params` dictionary follows this nested structure:
+
+        ```python
+        params = {
+            "<input_file>": {
+                "has_units": bool,              # Optional. Whether the file has units information (default if False)
+                "<parameter_name>": [           # One or more changes to apply to the parameter
+                    {
+                        "value": float,         # New value to assign
+                        "change_type": str,     # (Optional) One of: 'absval' (default), 'abschg', 'pctchg'
+                        "filter_by": str        # (Optional) pandas `.query()` filter string to select rows
+                    },
+                    # ... more changes for this parameter
+                ]
+            },
+            # ... more input files
+        }
+        ```
+
+
         Args:
             target_dir (str or Path): Path to the directory where the SWAT model files will be copied.
             params (ParamsType, optional): Parameter changes to apply. See [`ParamsType`][pySWATPlus.ParamsType] for full structure.
@@ -454,10 +492,10 @@ class TxtinoutReader:
         if not isinstance(target_dir, (str, Path)):
             raise TypeError("target_dir must be a string or Path object")
 
-        # target dir should exist and be a directory
         target_dir = Path(target_dir).resolve()
-        if not target_dir.is_dir():
-            raise FileNotFoundError(f"Target directory does not exist: {target_dir}")
+
+        # Create the directory if it does not exist
+        target_dir.mkdir(parents=True, exist_ok=True)
 
         tmp_path = self._copy_swat(target_dir=target_dir)
         reader = TxtinoutReader(tmp_path)

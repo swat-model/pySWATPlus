@@ -8,7 +8,6 @@ class FileReader:
         self,
         path: str | Path,
         has_units: bool = False,
-        index: str | None = None,
         usecols: list[str] | None = None,
         filter_by: str | None = None
     ):
@@ -19,7 +18,6 @@ class FileReader:
         Parameters:
             path (str, Path): The path to the file.
             has_units (bool): Indicates if the file has units (default is False).
-            index (str, optional): The name of the index column (default is None).
             usecols (list[str], optional): A list of column names to read (default is None).
             filter_by (str, optional): Pandas query string to select applicable rows (default is None).
 
@@ -35,7 +33,6 @@ class FileReader:
             reader = FileReader(
                 'plants.plt',
                 has_units=False,
-                index='name',
                 usecols=['name', 'plnt_typ', 'gro_trig'],
                 filter_by="plnt_typ == 'perennial'"
             )
@@ -67,7 +64,6 @@ class FileReader:
             path,
             skiprows=skip_rows,
             usecols=usecols,
-            index_col=index,
         )
 
         self.path = path
