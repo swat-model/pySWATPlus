@@ -1,39 +1,62 @@
-# file_helpers.py
 from .types import ParamsType, ParamChange
 import pandas as pd
 
-def _build_line_to_add(obj: str, daily: bool, monthly: bool, yearly: bool, avann: bool) -> str:
-    """Helper function to format lines for print.prt file"""
+
+def _build_line_to_add(
+    obj: str,
+    daily: bool,
+    monthly: bool,
+    yearly: bool,
+    avann: bool
+) -> str:
+
+    """
+    Helper function to format lines for print.prt file
+    """
+
     print_periodicity = {
         'daily': daily,
         'monthly': monthly,
         'yearly': yearly,
         'avann': avann,
     }
-    
+
     arg_to_add = obj.ljust(29)
     for value in print_periodicity.values():
         periodicity = 'y' if value else 'n'
         arg_to_add += periodicity.ljust(14)
-    
+
     return arg_to_add.rstrip() + '\n'
 
-def _apply_param_change(df: pd.DataFrame, param_name: str, change: ParamChange) -> None:
-    """Apply a single parameter change to a DataFrame"""
+
+def _apply_param_change(
+    df: pd.DataFrame,
+    param_name: str,
+    change: ParamChange
+) -> None:
+
+    """
+    Apply a single parameter change to a DataFrame
+    """
+
     value = change['value']
     change_type = change['change_type']
     filter_by = change.get('filter_by')
-    
+
     mask = df.query(filter_by).index if filter_by else df.index
-    
+
     if change_type == 'absval':
         df.loc[mask, param_name] = value
     elif change_type == 'abschg':
         df.loc[mask, param_name] += value
     elif change_type == 'pctchg':
         df.loc[mask, param_name] *= (1 + value / 100)
-        
-def _validate_params(params: ParamsType) -> None:
+
+
+def _validate_params(
+    params: ParamsType
+) -> None:
+
     """
     Validate the structure and values of SWAT parameter modification input.
 
@@ -48,6 +71,7 @@ def _validate_params(params: ParamsType) -> None:
     -------
     TypeError or ValueError if validation fails.
     """
+
     if params is None:
         return
 

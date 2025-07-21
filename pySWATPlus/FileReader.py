@@ -37,8 +37,6 @@ class FileReader:
                 filter_by="plnt_typ == 'perennial'"
             )
             ```
-
-
         '''
 
         if not isinstance(path, (str, Path)):
@@ -67,16 +65,15 @@ class FileReader:
         )
 
         self.path = path
-        
+
         if has_units:
             self.units_row = self.df.iloc[0].copy()
             self.df = self.df.iloc[1:].reset_index(drop=True)
         else:
             self.units_row = None
-        
+
         if filter_by:
             self.df = self.df.query(filter_by)
-
 
     def _store_text(
         self
@@ -91,12 +88,12 @@ class FileReader:
         Returns:
         None
         '''
-        
+
         if self.units_row is not None:
             _df = pd.concat([pd.DataFrame([self.units_row]), self.df], ignore_index=True)
         else:
             _df = self.df
- 
+
         # Replace NaN with empty strings to avoid printing 'NaN'
         _df = _df.fillna('')
 
@@ -114,13 +111,11 @@ class FileReader:
                 # Format and write the header line
                 file.write(fmt.format(*_df.columns) + '\n')
                 return
-            
+
             max_lengths = _df.apply(lambda x: x.astype(str).str.len()).max()
             column_widths = {column: max_length + 3 for column, max_length in max_lengths.items()}
             data_str = _df.to_string(index=False, justify='right', col_space=column_widths)
             file.write(data_str)
-
-
 
     def _store_csv(
         self

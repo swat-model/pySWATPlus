@@ -9,15 +9,16 @@ from .utils import _build_line_to_add, _apply_param_change, _validate_params
 
 logger = logging.getLogger(__name__)
 
+
 class TxtinoutReader:
-    
+
     RESERVED_PARAMS: Final[list[str]] = ['has_units']
     IGNORED_FILE_PATTERNS: Final[tuple[str, ...]] = tuple(
         f'_{suffix}.{ext}'
         for suffix in ('day', 'mon', 'yr', 'aa')
         for ext in ('txt', 'csv')
     )
-    
+
     def __init__(
         self,
         path: str | Path
@@ -35,6 +36,7 @@ class TxtinoutReader:
                     or if no .exe file is found.
             FileNotFoundError: If the folder does not exist.
         """
+
         # check if path is a string or a path
         if not isinstance(path, (str, Path)):
             raise TypeError("path must be a string or os.PathLike object")
@@ -163,7 +165,7 @@ class TxtinoutReader:
 
         Args:
             warmup (int): The new warmup period value.
-        
+
         Returns:
             None
         """
@@ -285,11 +287,11 @@ class TxtinoutReader:
 
         Parameters:
             target_dir (str or Path): Destination directory for the SWAT model files.
-            
+
         Returns:
-            str: The path to the directory where the SWAT files were copied.        
+            str: The path to the directory where the SWAT files were copied.
         """
-        
+
         dest_path = Path(target_dir)
 
         # Copy files from source folder
@@ -300,17 +302,16 @@ class TxtinoutReader:
 
         return str(dest_path)
 
-
     def _run_swat(
         self,
     ) -> None:
 
         """
         Run the SWAT simulation.
-        
+
         Returns:
             None
-        
+
         Raises:
             subprocess.CalledProcessError: If the SWAT executable fails
             FileNotFoundError: If the SWAT executable is not found
@@ -332,7 +333,7 @@ class TxtinoutReader:
                 clean_line = line.strip()
                 if clean_line:
                     logger.info(clean_line)
- 
+
             # Wait for process and check for errors
             return_code = process.wait()
             if return_code != 0:
@@ -342,19 +343,19 @@ class TxtinoutReader:
                     process.args,
                     stderr=stderr
                 )
-                
-        except FileNotFoundError as e:
+
+        except FileNotFoundError:
             logger.error(f"SWAT executable not found: {self.swat_exe_path}")
             raise
         except Exception as e:
             logger.error(f"Failed to run SWAT: {str(e)}")
             raise
-                
 
     def run_swat(
         self,
         params: ParamsType = None,
     ) -> str:
+
         """
         Run the SWAT simulation with optional parameter changes.
 
@@ -379,8 +380,7 @@ class TxtinoutReader:
 
         Args:
             params (ParamsType, optional): Parameter changes to apply. See [`ParamsType`][pySWATPlus.ParamsType] for full structure.
-        
-        
+
         Returns:
             str: The path where the SWAT simulation was executed.
 
@@ -399,6 +399,7 @@ class TxtinoutReader:
             reader.run_swat(params)
             ```
         """
+
         aux_txtinout = TxtinoutReader(self.root_folder)
         _params = params or {}
 
@@ -412,32 +413,31 @@ class TxtinoutReader:
                 has_units=has_units,
             )
             df = file.df
-            
+
             for param_name, param_spec in file_params.items():
                 if param_name in self.RESERVED_PARAMS:
                     continue  # Skip reserved parameters
-                
+
                 # Normalize to list of changes
                 changes = param_spec if isinstance(param_spec, list) else [param_spec]
-                
+
                 # Process each parameter change
                 for change in changes:
-                    _apply_param_change(df, param_name, change)            
-            
+                    _apply_param_change(df, param_name, change)
+
             # Store the modified file
             file.overwrite_file()
-            
+
         # run simulation
         aux_txtinout._run_swat()
         return self.root_folder
-
-
 
     def run_swat_in_other_dir(
         self,
         target_dir: str | Path,
         params: ParamsType = None,
     ) -> str:
+
         """
         Copy the SWAT model files to a specified directory, modify input parameters, and run the simulation.
 
@@ -460,14 +460,13 @@ class TxtinoutReader:
         }
         ```
 
-
         Args:
             target_dir (str or Path): Path to the directory where the SWAT model files will be copied.
             params (ParamsType, optional): Parameter changes to apply. See [`ParamsType`][pySWATPlus.ParamsType] for full structure.
-                        
+
         Returns:
             str: The path to the directory where the SWAT simulation was executed.
-        
+
         Example:
             ```python
             params = {
@@ -487,7 +486,8 @@ class TxtinoutReader:
                 )
             ```
 
-        """ 
+        """
+
         # Validate target_dir
         if not isinstance(target_dir, (str, Path)):
             raise TypeError("target_dir must be a string or Path object")
@@ -501,6 +501,3 @@ class TxtinoutReader:
         reader = TxtinoutReader(tmp_path)
 
         return reader.run_swat(params)
-
-
-
