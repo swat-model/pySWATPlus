@@ -8,27 +8,31 @@ description = "Running and calibrating default or custom SWAT+ projects with Pyt
 dynamic = ["version"]
 readme = "README.md"
 requires-python = ">=3.10"
-license = {text = "GPL-3.0"}
+license = "GPL-3.0-or-later"
+license-files = ["LICEN[CS]E.*"]
 authors = [
     { name = "Joan Saló", email = "joansalograu@gmail.com" }
 ]
 keywords = [
     "SWAT+",
     "hydrology",
-    "calibration",
     "watershed"
 ]
 classifiers = [
+    "Development Status :: 4 - Beta",
     "Programming Language :: Python :: 3",
     "Programming Language :: Python :: 3.13",
 	"Programming Language :: Python :: 3.12",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.10",
-    "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
-    "Operating System :: OS Independent"
+    "Operating System :: OS Independent",
+    "Intended Audience :: Science/Research",
+    "Topic :: Scientific/Engineering",
+	"Topic :: Scientific/Engineering :: Hydrology"
 ]
 dependencies = [
     "pandas",
+    "typing-extensions"
 ]
 
 [project.urls]
