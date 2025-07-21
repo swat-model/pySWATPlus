@@ -38,10 +38,7 @@ dependencies = [
 
 [project.urls]
 Homepage = "https://github.com/swat-model/pySWATPlus"
-"Documentation" = "https://optidamtool.readthedocs.io/en/latest/"
-
-Homepage = "https://github.com/swat-model/pySWATPlus"
-Documentation = https://swat-model.github.io/pySWATPlus/"
+Documentation = "https://swat-model.github.io/pySWATPlus/"
 
 [tool.setuptools]
 packages = ["pySWATPlus"]
