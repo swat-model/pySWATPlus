@@ -9,7 +9,7 @@
       
       
       
-        <link rel="prev" href="../calibration/">
+        <link rel="prev" href="../getting_started/">
       
       
         <link rel="next" href="../../api/txtinoutreader/">
@@ -190,11 +190,11 @@
     
     
       <li class="md-tabs__item md-tabs__item--active">
-        <a href="../basic_examples/" class="md-tabs__link">
+        <a href="../getting_started/" class="md-tabs__link">
           
   
   
-  Getting Started
+  Examples
 
         </a>
       </li>
@@ -327,7 +327,7 @@
   
   
   <span class="md-ellipsis">
-    Getting Started
+    Examples
     
   </span>
   
@@ -338,7 +338,7 @@
         <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_2">
             <span class="md-nav__icon md-icon"></span>
-            Getting Started
+            Examples
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
@@ -349,35 +349,12 @@
   
   
     <li class="md-nav__item">
-      <a href="../basic_examples/" class="md-nav__link">
+      <a href="../getting_started/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
-    SWAT+ Model Simulation with
-    
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../calibration/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    SWAT+ Calibration Example using pySWATPlus and pymoo
+    Basic examples
     
   </span>
   
@@ -635,35 +612,12 @@
   
   
     <li class="md-nav__item">
-      <a href="../../api/swatproblem/" class="md-nav__link">
+      <a href="../../api/types/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
-    SWATProblem
-    
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../api/swatproblemmultimodel/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    SWATProblemMultimodel
+    pySWATPlus.types
     
   </span>
   
@@ -1280,7 +1234,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div><div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [19]:</div><div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="CodeMirror cm-s-jupyter">
 <div class="zeroclipboard-container">
 <clipboard-copy ,="" aria-label="Copy to Clipboard" for="cell-1">
@@ -1299,6 +1253,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <span class="kn">from</span><span class="w"> </span><span class="nn">SALib.analyze</span><span class="w"> </span><span class="kn">import</span> <span class="n">sobol</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">random</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">tempfile</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">concurrent.futures</span>
 </pre></div>
 <div class="clipboard-copy-txt" id="cell-1">from pySWATPlus import TxtinoutReader
@@ -1307,6 +1262,7 @@ from SALib.sample import saltelli
 from SALib.analyze import sobol
 import numpy as np
 import random
+import tempfile
 import concurrent.futures</div>
 </div>
 </div>
@@ -1331,7 +1287,7 @@ import concurrent.futures</div>
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [5]:</div><div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [20]:</div><div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="CodeMirror cm-s-jupyter">
 <div class="zeroclipboard-container">
 <clipboard-copy ,="" aria-label="Copy to Clipboard" for="cell-2">
@@ -1370,7 +1326,7 @@ import concurrent.futures</div>
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [6]:</div><div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [21]:</div><div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="CodeMirror cm-s-jupyter">
 <div class="zeroclipboard-container">
 <clipboard-copy ,="" aria-label="Copy to Clipboard" for="cell-3">
@@ -1413,7 +1369,7 @@ txtinout_reader.enable_object_in_print_prt('channel_sd', True, False, False, Fal
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [7]:</div><div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [22]:</div><div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="CodeMirror cm-s-jupyter">
 <div class="zeroclipboard-container">
 <clipboard-copy ,="" aria-label="Copy to Clipboard" for="cell-4">
@@ -1438,33 +1394,34 @@ txtinout_reader.enable_object_in_print_prt('channel_sd', True, False, False, Fal
 <span class="sd">        float: A mock error metric (to be replaced with actual evaluation logic).</span>
 <span class="sd">    """</span>
     <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">'Running SWAT with epco = </span><span class="si">{</span><span class="n">epco</span><span class="si">}</span><span class="s1"> and esco = </span><span class="si">{</span><span class="n">esco</span><span class="si">}</span><span class="s1"> </span><span class="se">\\</span><span class="s1">n'</span><span class="p">)</span>
+    
+    <span class="n">params</span> <span class="o">=</span>  <span class="p">{</span>
+        <span class="s1">'hydrology.hyd'</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s1">'has_units'</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+            <span class="s1">'epco'</span><span class="p">:</span> <span class="p">[</span>
+                <span class="p">{</span><span class="s1">'value'</span><span class="p">:</span> <span class="n">epco</span><span class="p">,</span> <span class="s1">'change_type'</span><span class="p">:</span> <span class="s1">'absval'</span><span class="p">},</span>
+            <span class="p">],</span>
+            <span class="s1">'esco'</span><span class="p">:</span> <span class="p">[</span>
+                <span class="p">{</span><span class="s1">'value'</span><span class="p">:</span> <span class="n">esco</span><span class="p">,</span> <span class="s1">'change_type'</span><span class="p">:</span> <span class="s1">'absval'</span><span class="p">},</span>
+            <span class="p">],</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
 
-    <span class="c1"># Copy the SWAT+ project to a temporary directory for parallel execution</span>
-    <span class="n">tmp_path</span> <span class="o">=</span> <span class="n">txtinout_reader</span><span class="o">.</span><span class="n">copy_swat</span><span class="p">()</span>
-    <span class="n">reader</span> <span class="o">=</span> <span class="n">TxtinoutReader</span><span class="p">(</span><span class="n">tmp_path</span><span class="p">)</span>
+    
+    <span class="k">with</span> <span class="n">tempfile</span><span class="o">.</span><span class="n">TemporaryDirectory</span><span class="p">()</span> <span class="k">as</span> <span class="n">tmp_dir</span><span class="p">:</span>
+        <span class="n">simulation</span> <span class="o">=</span> <span class="n">txtinout_reader</span><span class="o">.</span><span class="n">run_swat_in_other_dir</span><span class="p">(</span>
+            <span class="n">target_dir</span><span class="o">=</span><span class="n">tmp_dir</span><span class="p">,</span>
+            <span class="n">params</span><span class="o">=</span><span class="n">params</span>
+        <span class="p">)</span>
 
-    <span class="c1"># Register and modify the 'hydrology.hyd' file</span>
-    <span class="n">hydrology_hyd</span> <span class="o">=</span> <span class="n">reader</span><span class="o">.</span><span class="n">register_file</span><span class="p">(</span><span class="s1">'hydrology.hyd'</span><span class="p">,</span> <span class="n">has_units</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-    <span class="n">hydrology_hyd_df</span> <span class="o">=</span> <span class="n">hydrology_hyd</span><span class="o">.</span><span class="n">df</span>
+        <span class="c1"># Read the results</span>
+        <span class="n">result_reader</span> <span class="o">=</span> <span class="n">TxtinoutReader</span><span class="p">(</span><span class="n">simulation</span><span class="p">)</span>
+        <span class="n">channel_sdmorph</span> <span class="o">=</span> <span class="n">result_reader</span><span class="o">.</span><span class="n">register_file</span><span class="p">(</span><span class="s1">'channel_sdmorph_day.txt'</span><span class="p">,</span> <span class="n">has_units</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">channel_sdmorph_df</span> <span class="o">=</span> <span class="n">channel_sdmorph</span><span class="o">.</span><span class="n">df</span>
 
-    <span class="c1"># Overwrite the values of `epco` and `esco`</span>
-    <span class="n">hydrology_hyd_df</span><span class="p">[</span><span class="s1">'epco'</span><span class="p">]</span> <span class="o">=</span> <span class="n">epco</span>
-    <span class="n">hydrology_hyd_df</span><span class="p">[</span><span class="s1">'esco'</span><span class="p">]</span> <span class="o">=</span> <span class="n">esco</span>
-
-    <span class="c1"># Save the changes</span>
-    <span class="n">hydrology_hyd</span><span class="o">.</span><span class="n">overwrite_file</span><span class="p">()</span>
-
-    <span class="c1"># Run the SWAT+ model</span>
-    <span class="n">txt_in_out_result</span> <span class="o">=</span> <span class="n">reader</span><span class="o">.</span><span class="n">run_swat</span><span class="p">(</span><span class="n">show_output</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-
-    <span class="c1"># Read the results</span>
-    <span class="n">result_reader</span> <span class="o">=</span> <span class="n">TxtinoutReader</span><span class="p">(</span><span class="n">txt_in_out_result</span><span class="p">)</span>
-    <span class="n">channel_sdmorph</span> <span class="o">=</span> <span class="n">result_reader</span><span class="o">.</span><span class="n">register_file</span><span class="p">(</span><span class="s1">'channel_sdmorph_day.txt'</span><span class="p">,</span> <span class="n">has_units</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-    <span class="n">channel_sdmorph_df</span> <span class="o">=</span> <span class="n">channel_sdmorph</span><span class="o">.</span><span class="n">df</span>
-
-    <span class="c1"># Here, you should read your observations and calculate the objective function</span>
-    <span class="c1"># For now, we return a mock value</span>
-    <span class="k">return</span> <span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">()</span>
+        <span class="c1"># Here, you should read your observations and calculate the objective function</span>
+        <span class="c1"># For now, we return a mock value</span>
+        <span class="k">return</span> <span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">()</span>
 
 <span class="c1"># Wrapper function for parallel execution</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">evaluate</span><span class="p">(</span><span class="n">params</span><span class="p">):</span>
@@ -1491,33 +1448,34 @@ txtinout_reader.enable_object_in_print_prt('channel_sd', True, False, False, Fal
         float: A mock error metric (to be replaced with actual evaluation logic).
     """
     print(f'Running SWAT with epco = {epco} and esco = {esco} \\n')
+    
+    params =  {
+        'hydrology.hyd': {
+            'has_units': False,
+            'epco': [
+                {'value': epco, 'change_type': 'absval'},
+            ],
+            'esco': [
+                {'value': esco, 'change_type': 'absval'},
+            ],
+        }
+    }
 
-    # Copy the SWAT+ project to a temporary directory for parallel execution
-    tmp_path = txtinout_reader.copy_swat()
-    reader = TxtinoutReader(tmp_path)
+    
+    with tempfile.TemporaryDirectory() as tmp_dir:
+        simulation = txtinout_reader.run_swat_in_other_dir(
+            target_dir=tmp_dir,
+            params=params
+        )
 
-    # Register and modify the 'hydrology.hyd' file
-    hydrology_hyd = reader.register_file('hydrology.hyd', has_units=False)
-    hydrology_hyd_df = hydrology_hyd.df
+        # Read the results
+        result_reader = TxtinoutReader(simulation)
+        channel_sdmorph = result_reader.register_file('channel_sdmorph_day.txt', has_units=True)
+        channel_sdmorph_df = channel_sdmorph.df
 
-    # Overwrite the values of `epco` and `esco`
-    hydrology_hyd_df['epco'] = epco
-    hydrology_hyd_df['esco'] = esco
-
-    # Save the changes
-    hydrology_hyd.overwrite_file()
-
-    # Run the SWAT+ model
-    txt_in_out_result = reader.run_swat(show_output=False)
-
-    # Read the results
-    result_reader = TxtinoutReader(txt_in_out_result)
-    channel_sdmorph = result_reader.register_file('channel_sdmorph_day.txt', has_units=True)
-    channel_sdmorph_df = channel_sdmorph.df
-
-    # Here, you should read your observations and calculate the objective function
-    # For now, we return a mock value
-    return random.random()
+        # Here, you should read your observations and calculate the objective function
+        # For now, we return a mock value
+        return random.random()
 
 # Wrapper function for parallel execution
 def evaluate(params):
@@ -1554,7 +1512,7 @@ def evaluate(params):
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [8]:</div><div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [23]:</div><div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="CodeMirror cm-s-jupyter">
 <div class="zeroclipboard-container">
 <clipboard-copy ,="" aria-label="Copy to Clipboard" for="cell-5">
@@ -1601,7 +1559,7 @@ def evaluate(params):
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [9]:</div><div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [24]:</div><div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="CodeMirror cm-s-jupyter">
 <div class="zeroclipboard-container">
 <clipboard-copy ,="" aria-label="Copy to Clipboard" for="cell-6">
@@ -1628,7 +1586,7 @@ def evaluate(params):
 <div class="jp-OutputArea-child">
 <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="application/vnd.jupyter.stderr" tabindex="0">
-<pre>/tmp/ipykernel_387433/2689363164.py:1: DeprecationWarning: `salib.sample.saltelli` will be removed in SALib 1.5.1 Please use `salib.sample.sobol`
+<pre>/tmp/ipykernel_145102/2689363164.py:1: DeprecationWarning: `salib.sample.saltelli` will be removed in SALib 1.5.1 Please use `salib.sample.sobol`
   param_values = saltelli.sample(problem, 2)  # Generate parameter samples
 </pre>
 </div>
@@ -1654,7 +1612,7 @@ def evaluate(params):
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [10]:</div><div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [25]:</div><div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="CodeMirror cm-s-jupyter">
 <div class="zeroclipboard-container">
 <clipboard-copy ,="" aria-label="Copy to Clipboard" for="cell-7">
@@ -1685,7 +1643,8 @@ with concurrent.futures.ProcessPoolExecutor() as executor:
 <div class="jp-OutputArea-child">
 <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
-<pre>Running SWAT with epco = 0.46875 and esco = 0.46875 \nRunning SWAT with epco = 0.46875 and esco = 0.46875 \nRunning SWAT with epco = 0.09375 and esco = 0.65625 \nRunning SWAT with epco = 0.09375 and esco = 0.46875 \nRunning SWAT with epco = 0.59375 and esco = 0.15625 \nRunning SWAT with epco = 0.46875 and esco = 0.65625 \nRunning SWAT with epco = 0.59375 and esco = 0.96875 \nRunning SWAT with epco = 0.96875 and esco = 0.96875 \nRunning SWAT with epco = 0.96875 and esco = 0.96875 \nRunning SWAT with epco = 0.96875 and esco = 0.15625 \nRunning SWAT with epco = 0.09375 and esco = 0.65625 \n
+<pre>Running SWAT with epco = 0.46875 and esco = 0.46875 \nRunning SWAT with epco = 0.09375 and esco = 0.46875 \nRunning SWAT with epco = 0.09375 and esco = 0.65625 \nRunning SWAT with epco = 0.09375 and esco = 0.65625 \nRunning SWAT with epco = 0.96875 and esco = 0.96875 \nRunning SWAT with epco = 0.46875 and esco = 0.65625 \nRunning SWAT with epco = 0.59375 and esco = 0.15625 \nRunning SWAT with epco = 0.59375 and esco = 0.15625 \nRunning SWAT with epco = 0.59375 and esco = 0.96875 \nRunning SWAT with epco = 0.46875 and esco = 0.46875 \nRunning SWAT with epco = 0.96875 and esco = 0.96875 \n
+Running SWAT with epco = 0.96875 and esco = 0.15625 \n
 
 
 
@@ -1696,7 +1655,6 @@ with concurrent.futures.ProcessPoolExecutor() as executor:
 
 
 
-Running SWAT with epco = 0.59375 and esco = 0.15625 \n
 </pre>
 </div>
 </div>
@@ -1721,7 +1679,7 @@ Running SWAT with epco = 0.59375 and esco = 0.15625 \n
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [11]:</div><div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [26]:</div><div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="CodeMirror cm-s-jupyter">
 <div class="zeroclipboard-container">
 <clipboard-copy ,="" aria-label="Copy to Clipboard" for="cell-8">
@@ -1774,7 +1732,7 @@ Running SWAT with epco = 0.59375 and esco = 0.15625 \n
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [12]:</div><div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [27]:</div><div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="CodeMirror cm-s-jupyter">
 <div class="zeroclipboard-container">
 <clipboard-copy ,="" aria-label="Copy to Clipboard" for="cell-9">
@@ -1803,8 +1761,8 @@ print("Total-order Sobol indices:", sobol_indices['ST'])</div>
 <div class="jp-OutputArea-child">
 <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
-<pre>First-order Sobol indices: [-0.84706442  1.00546731]
-Total-order Sobol indices: [0.55593247 1.05855786]
+<pre>First-order Sobol indices: [-1.02532203 -0.97771465]
+Total-order Sobol indices: [0.62946208 0.43327959]
 </pre>
 </div>
 </div>

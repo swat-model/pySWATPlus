@@ -10,7 +10,7 @@
       
       
       
-        <link rel="next" href="examples/basic_examples/">
+        <link rel="next" href="examples/getting_started/">
       
       
       <link rel="icon" href="assets/images/favicon.png">
@@ -188,11 +188,11 @@
     
     
       <li class="md-tabs__item">
-        <a href="examples/basic_examples/" class="md-tabs__link">
+        <a href="examples/getting_started/" class="md-tabs__link">
           
   
   
-  Getting Started
+  Examples
 
         </a>
       </li>
@@ -329,6 +329,15 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#version-compatibility-notice" class="md-nav__link">
+    <span class="md-ellipsis">
+      ⚠️ Version Compatibility Notice
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#key-features" class="md-nav__link">
     <span class="md-ellipsis">
       ✨ Key Features
@@ -341,15 +350,6 @@
   <a href="#about" class="md-nav__link">
     <span class="md-ellipsis">
       📦 About
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#installation" class="md-nav__link">
-    <span class="md-ellipsis">
-      🛠️ Installation
     </span>
   </a>
   
@@ -425,7 +425,7 @@
   
   
   <span class="md-ellipsis">
-    Getting Started
+    Examples
     
   </span>
   
@@ -436,7 +436,7 @@
         <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_2">
             <span class="md-nav__icon md-icon"></span>
-            Getting Started
+            Examples
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
@@ -447,35 +447,12 @@
   
   
     <li class="md-nav__item">
-      <a href="examples/basic_examples/" class="md-nav__link">
+      <a href="examples/getting_started/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
-    SWAT+ Model Simulation with
-    
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="examples/calibration/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    SWAT+ Calibration Example using pySWATPlus and pymoo
+    Basic examples
     
   </span>
   
@@ -610,35 +587,12 @@
   
   
     <li class="md-nav__item">
-      <a href="api/swatproblem/" class="md-nav__link">
+      <a href="api/types/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
-    SWATProblem
-    
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="api/swatproblemmultimodel/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    SWATProblemMultimodel
+    pySWATPlus.types
     
   </span>
   
@@ -705,6 +659,15 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#version-compatibility-notice" class="md-nav__link">
+    <span class="md-ellipsis">
+      ⚠️ Version Compatibility Notice
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#key-features" class="md-nav__link">
     <span class="md-ellipsis">
       ✨ Key Features
@@ -717,15 +680,6 @@
   <a href="#about" class="md-nav__link">
     <span class="md-ellipsis">
       📦 About
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#installation" class="md-nav__link">
-    <span class="md-ellipsis">
-      🛠️ Installation
     </span>
   </a>
   
@@ -787,22 +741,31 @@
 <p><a href="https://doi.org/10.5281/zenodo.14889320"><img alt="DOI" src="https://zenodo.org/badge/DOI/10.5281/zenodo.14889320.svg" /></a></p>
 <p><strong>pySWATPlus</strong> is a Python package that makes working with SWAT+ models easier and more powerful. Whether you're running default setups or custom projects, this tool lets you interact with SWAT+ programmatically, so you can focus on optimizing and analyzing your models like a pro! 🚀</p>
 <hr />
+<h2 id="version-compatibility-notice">⚠️ Version Compatibility Notice</h2>
+<p><strong>Version 1.x introduces breaking changes and is not compatible with the previous 0.x versions.</strong></p>
+<ul>
+<li>If you're looking for the legacy 0.x version:</li>
+<li>📦 <strong>Install from PyPI</strong>:<br />
+    <div class="highlight"><pre><span></span><code>pip<span class="w"> </span>install<span class="w"> </span><span class="nv">pySWATPlus</span><span class="o">==</span><span class="m">0</span>.2.20
+</code></pre></div></li>
+<li>🗂️ <strong>Access the source code</strong>:<br />
+<a href="https://github.com/swat-model/pySWATPlus/tree/v0.x">https://github.com/swat-model/pySWATPlus/tree/v0.x</a></li>
+</ul>
+<hr />
 <h2 id="key-features">✨ Key Features</h2>
 <ul>
 <li><strong>Access and Modify SWAT+ Files</strong>: Navigate, read, modify, and write files in the <code>TxtInOut</code> folder used by SWAT+. 📂</li>
 <li><strong>Model Calibration</strong>: Optimize SWAT+ input parameters using the <a href="https://pymoo.org/">Pymoo</a> optimization framework to get the best results. 🎯</li>
 </ul>
+<blockquote>
+<p>⚠️ <strong>Note</strong>: The <code>SWATProblem</code> and <code>SWATProblemMultimodel</code> classes have been removed in version 1.x. Tutorials on how to perform calibration analysis will be updated soon.</p>
+</blockquote>
 <hr />
 <h2 id="about">📦 About</h2>
 <p>pySWATPlus is an open-source software developed and maintained by <a href="https://icra.cat/">ICRA</a>. It’s available for download and installation via <a href="https://pypi.org/project/pySWATPlus/">PyPI</a>. </p>
 <hr />
-<h2 id="installation">🛠️ Installation</h2>
-<p>Before installing pySWATPlus, make sure you have the following dependencies installed:</p>
-<div class="highlight"><pre><span></span><code><span class="n">pip</span> <span class="n">install</span> <span class="n">pandas</span> <span class="n">numpy</span> <span class="n">pymoo</span> <span class="n">tqdm</span> <span class="n">dask</span>
-</code></pre></div>
-<hr />
 <h2 id="requirements">⚙️ Requirements</h2>
-<p>To use this package, a Python version above 3.6 is required.</p>
+<p>To use this package, a Python version above 3.10 is required.</p>
 <hr />
 <h2 id="install-pyswatplus">📥 Install pySWATPlus</h2>
 <p>Once the dependencies are installed, you can install pySWATPlus using this simple command:</p>
@@ -810,13 +773,11 @@
 </code></pre></div>
 <hr />
 <h2 id="getting-started">🚀 Getting Started</h2>
-<p>The <strong><a href="getting-started/">Getting Started</a></strong> page is the perfect place to begin your journey with pySWATPlus. It covers the basics and links to practical examples, from setting up and running a simple SWAT+ project to diving into parameter optimization techniques and sensitivity analysis.</p>
+<p>The <strong><a href="examples/getting_started/">Getting Started</a></strong> notebook is the perfect place to begin your journey with pySWATPlus. It covers the basics and links to practical examples, from setting up and running a simple SWAT+ project to diving into parameter optimization techniques and sensitivity analysis.</p>
 <p>For a deeper dive, check out the <strong><a href="api/txtinoutreader/">API Reference</a></strong>, which documents all functions, input arguments, and provides short examples on how to use them. The API Reference includes:</p>
 <ul>
 <li><strong><a href="api/txtinoutreader/">TxtinoutReader</a></strong>: Work with SWAT+ input and output files.</li>
 <li><strong><a href="api/filereader/">FileReader</a></strong>: Read and manipulate SWAT+ files.</li>
-<li><strong><a href="api/swatproblem/">SWATProblem</a></strong>: Define and solve SWAT+ optimization problems.</li>
-<li><strong><a href="api/swatproblemmultimodel/">SWATProblemMultimodel</a></strong>: Handle multi-model calibration scenarios.</li>
 </ul>
 <hr />
 <h2 id="citation">📖 Citation</h2>
@@ -827,7 +788,7 @@
   year      = <span class="nb">{</span>2023<span class="nb">}</span>,
   month     = dec,
   publisher = <span class="nb">{</span>Zenodo<span class="nb">}</span>,
-  version   = <span class="nb">{</span>0.1.0<span class="nb">}</span>,
+  version   = <span class="nb">{</span>1.0.0<span class="nb">}</span>,
   doi       = <span class="nb">{</span>10.5281/zenodo.14889320<span class="nb">}</span>,
   url       = <span class="nb">{</span>https://doi.org/10.5281/zenodo.14889320<span class="nb">}</span>
 <span class="nb">}</span>
