@@ -9,7 +9,6 @@ def _build_line_to_add(
     yearly: bool,
     avann: bool
 ) -> str:
-
     """
     Helper function to format lines for print.prt file
     """
@@ -34,7 +33,6 @@ def _apply_param_change(
     param_name: str,
     change: ParamChange
 ) -> None:
-
     """
     Apply a single parameter change to a DataFrame
     """
@@ -56,7 +54,6 @@ def _apply_param_change(
 def _validate_params(
     params: ParamsType
 ) -> None:
-
     """
     Validate the structure and values of SWAT parameter modification input.
 

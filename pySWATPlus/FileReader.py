@@ -11,7 +11,6 @@ class FileReader:
         usecols: list[str] | None = None,
         filter_by: str | None = None
     ):
-
         '''
         Initialize a FileReader instance to read data from a file.
 
@@ -78,7 +77,6 @@ class FileReader:
     def _store_text(
         self
     ) -> None:
-
         '''
         Store the DataFrame as a formatted text file.
 
@@ -120,7 +118,6 @@ class FileReader:
     def _store_csv(
         self
     ) -> None:
-
         '''
         Store the DataFrame as a CSV file.
 
@@ -135,7 +132,6 @@ class FileReader:
     def overwrite_file(
         self
     ) -> None:
-
         '''
         Overwrite the original file with the DataFrame.
 

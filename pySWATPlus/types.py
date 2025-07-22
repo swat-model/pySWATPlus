@@ -1,3 +1,4 @@
+# types.py
 from typing import TypedDict, Literal
 from typing_extensions import NotRequired
 
@@ -5,7 +6,6 @@ from typing_extensions import NotRequired
 class ParamChange(
     TypedDict
 ):
-
     """
     Describes a single change to apply to a parameter in a SWAT input file.
 
@@ -23,7 +23,6 @@ class ParamChange(
 
 
 ParamSpec = ParamChange | list[ParamChange]
-
 """
 One or more parameter changes to apply to a SWAT variable.
 
@@ -31,7 +30,6 @@ Can be a single `ParamChange` or a list of them.
 """
 
 FileParams = dict[str, bool | ParamSpec]
-
 """
 Maps a SWAT+ input file’s variables to their parameter changes.
 
@@ -57,12 +55,38 @@ Example:
 ParamsType = dict[str, FileParams] | None
 
 """
-Top-level structure mapping SWAT input filenames to parameter modifications.
+Defines parameter modifications for one or more SWAT+ input files.
 
-Each file maps to:
-    - `"has_units"`: Whether it contains multiple blocks (optional).
-    - Variable names: Mapped to one or more parameter changes.
+Each key is a SWAT+ input filename (e.g., `plants.plt`). The value is a dictionary
+mapping variable names in that file to parameter changes.
 
+The structure is as follows:
+```python
+{
+    "<filename>": {
+        "has_units": bool,  # optional
+        "<variable_name>": {
+            "value": float,
+            "change_type": "absval" | "abschg" | "pctchg",  # optional
+            "filter_by": str  # optional
+        }
+        # OR a list of such dictionaries
+    },
+    ...
+}
+```
+
+Details:
+    - "value": The numeric value to apply.
+    - "change_type" (optional):
+        - "absval": Set the value directly (default).
+        - "abschg": Apply an absolute change (e.g., +10).
+        - "pctchg": Apply a percentage change (e.g., +10%).
+    - "filter_by" (optional): A pandas `.query()` string to filter rows in the input file.
+    - "has_units" (optional): Optional. Whether the file has units information (default is False)
+
+    Set to `None` if no parameter modifications are required.
+    
 Example:
 ```python
 params = {

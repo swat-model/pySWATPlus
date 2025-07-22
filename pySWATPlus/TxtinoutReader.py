@@ -23,7 +23,6 @@ class TxtinoutReader:
         self,
         path: str | Path
     ) -> None:
-
         """
         Initialize a TxtinoutReader instance for working with SWAT model data.
 
@@ -73,7 +72,6 @@ class TxtinoutReader:
         yearly: bool,
         avann: bool
     ) -> None:
-
         """
         Enable or update an object in the 'print.prt' file. If obj is not a default identifier, it will be added at the end of the file.
 
@@ -119,7 +117,6 @@ class TxtinoutReader:
         beginning: int,
         end: int
     ) -> None:
-
         """
         Modify the beginning and end year in the 'time.sim' file.
 
@@ -159,7 +156,6 @@ class TxtinoutReader:
         self,
         warmup: int
     ) -> None:
-
         """
         Modify the warmup period in the 'time.sim' file.
 
@@ -195,7 +191,6 @@ class TxtinoutReader:
         self,
         enable: bool = True
     ) -> None:
-
         """
         Enable or disable CSV print in the 'print.prt' file.
 
@@ -227,7 +222,6 @@ class TxtinoutReader:
     def enable_csv_print(
         self
     ) -> None:
-
         """
         Enable CSV print in the 'print.prt' file.
 
@@ -240,7 +234,6 @@ class TxtinoutReader:
     def disable_csv_print(
         self
     ) -> None:
-
         """
         Disable CSV print in the 'print.prt' file.
 
@@ -257,7 +250,6 @@ class TxtinoutReader:
         usecols: list[str] | None = None,
         filter_by: str | None = None
     ) -> FileReader:
-
         """
         Register a file to work with in the SWAT model.
 
@@ -278,7 +270,6 @@ class TxtinoutReader:
         self,
         target_dir: str | Path,
     ) -> str:
-
         """
         Prepare a working directory containing the necessary SWAT model files.
 
@@ -305,7 +296,6 @@ class TxtinoutReader:
     def _run_swat(
         self,
     ) -> None:
-
         """
         Run the SWAT simulation.
 
@@ -355,31 +345,30 @@ class TxtinoutReader:
         self,
         params: ParamsType = None,
     ) -> str:
-
         """
         Run the SWAT simulation with optional parameter changes.
 
-        The `params` dictionary follows this nested structure:
-
-        ```python
-        params = {
-            "<input_file>": {
-                "has_units": bool,              # Optional. Whether the file has units information (default if False)
-                "<parameter_name>": [           # One or more changes to apply to the parameter
-                    {
-                        "value": float,         # New value to assign
-                        "change_type": str,     # (Optional) One of: 'absval' (default), 'abschg', 'pctchg'
-                        "filter_by": str        # (Optional) pandas `.query()` filter string to select rows
-                    },
-                    # ... more changes for this parameter
-                ]
-            },
-            # ... more input files
-        }
-        ```
-
         Args:
-            params (ParamsType, optional): Parameter changes to apply. See [`ParamsType`][pySWATPlus.ParamsType] for full structure.
+            params (ParamsType, optional): Nested dictionary specifying parameter changes to apply.
+
+                The `params` dictionary should follow this structure:
+
+                ```python
+                params = {
+                    "<input_file>": {
+                        "has_units": bool,              # Optional. Whether the file has units information (default is False)
+                        "<parameter_name>": [           # One or more changes to apply to the parameter
+                            {
+                                "value": float,         # New value to assign
+                                "change_type": str,     # (Optional) One of: 'absval' (default), 'abschg', 'pctchg'
+                                "filter_by": str        # (Optional) pandas `.query()` filter string to select rows
+                            },
+                            # ... more changes
+                        ]
+                    },
+                    # ... more input files
+                }
+                ```
 
         Returns:
             str: The path where the SWAT simulation was executed.
@@ -399,7 +388,6 @@ class TxtinoutReader:
             reader.run_swat(params)
             ```
         """
-
         aux_txtinout = TxtinoutReader(self.root_folder)
         _params = params or {}
 
@@ -432,72 +420,71 @@ class TxtinoutReader:
         aux_txtinout._run_swat()
         return self.root_folder
 
-    def run_swat_in_other_dir(
-        self,
-        target_dir: str | Path,
-        params: ParamsType = None,
-    ) -> str:
 
-        """
-        Copy the SWAT model files to a specified directory, modify input parameters, and run the simulation.
+def run_swat_in_other_dir(
+    self,
+    target_dir: str | Path,
+    params: ParamsType = None,
+) -> str:
+    """
+    Copy the SWAT model files to a specified directory, modify input parameters, and run the simulation.
 
-        The `params` dictionary follows this nested structure:
+    Args:
+        target_dir (str or Path): Path to the directory where the SWAT model files will be copied.
 
-        ```python
-        params = {
-            "<input_file>": {
-                "has_units": bool,              # Optional. Whether the file has units information (default if False)
-                "<parameter_name>": [           # One or more changes to apply to the parameter
-                    {
-                        "value": float,         # New value to assign
-                        "change_type": str,     # (Optional) One of: 'absval' (default), 'abschg', 'pctchg'
-                        "filter_by": str        # (Optional) pandas `.query()` filter string to select rows
-                    },
-                    # ... more changes for this parameter
-                ]
-            },
-            # ... more input files
-        }
-        ```
+        params (ParamsType, optional): Nested dictionary specifying parameter changes.
 
-        Args:
-            target_dir (str or Path): Path to the directory where the SWAT model files will be copied.
-            params (ParamsType, optional): Parameter changes to apply. See [`ParamsType`][pySWATPlus.ParamsType] for full structure.
+            The `params` dictionary should follow this structure:
 
-        Returns:
-            str: The path to the directory where the SWAT simulation was executed.
-
-        Example:
             ```python
             params = {
-                'plants.plt': {
-                    'has_units': False,
-                    'bm_e': [
-                        {'value': 100, 'change_type': 'absval', 'filter_by': 'name == "agrl"'},
-                        {'value': 110, 'change_type': 'absval', 'filter_by': 'name == "almd"'},
-                    ],
+                "<input_file>": {
+                    "has_units": bool,              # Optional. Whether the file has units information (default is False)
+                    "<parameter_name>": [           # One or more changes to apply to the parameter
+                        {
+                            "value": float,         # New value to assign
+                            "change_type": str,     # (Optional) One of: 'absval' (default), 'abschg', 'pctchg'
+                            "filter_by": str        # (Optional) pandas `.query()` filter string to select rows
+                        },
+                        # ... more changes
+                    ]
                 },
+                # ... more input files
             }
-
-            with tempfile.TemporaryDirectory() as tmp_dir:
-                simulation = pySWATPlus.TxtinoutReader.run_swat_in_other_dir(
-                    target_dir=tmp_dir,
-                    params=params
-                )
             ```
 
-        """
+    Returns:
+        str: The path to the directory where the SWAT simulation was executed.
 
-        # Validate target_dir
-        if not isinstance(target_dir, (str, Path)):
-            raise TypeError("target_dir must be a string or Path object")
+    Example:
+        ```python
+        params = {
+            'plants.plt': {
+                'has_units': False,
+                'bm_e': [
+                    {'value': 100, 'change_type': 'absval', 'filter_by': 'name == "agrl"'},
+                    {'value': 110, 'change_type': 'absval', 'filter_by': 'name == "almd"'},
+                ],
+            },
+        }
 
-        target_dir = Path(target_dir).resolve()
+        with tempfile.TemporaryDirectory() as tmp_dir:
+            simulation = pySWATPlus.TxtinoutReader.run_swat_in_other_dir(
+                target_dir=tmp_dir,
+                params=params
+            )
+        ```
+    """
+    # Validate target_dir
+    if not isinstance(target_dir, (str, Path)):
+        raise TypeError("target_dir must be a string or Path object")
 
-        # Create the directory if it does not exist
-        target_dir.mkdir(parents=True, exist_ok=True)
+    target_dir = Path(target_dir).resolve()
 
-        tmp_path = self._copy_swat(target_dir=target_dir)
-        reader = TxtinoutReader(tmp_path)
+    # Create the directory if it does not exist
+    target_dir.mkdir(parents=True, exist_ok=True)
 
-        return reader.run_swat(params)
+    tmp_path = self._copy_swat(target_dir=target_dir)
+    reader = TxtinoutReader(tmp_path)
+
+    return reader.run_swat(params)
