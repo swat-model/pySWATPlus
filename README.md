@@ -3,28 +3,20 @@
 
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.14889320.svg)](https://doi.org/10.5281/zenodo.14889320)
 [![flake8](https://github.com/swat-model/pySWATPlus/actions/workflows/linting.yml/badge.svg)](https://github.com/swat-model/pySWATPlus/actions/workflows/linting.yml)
+[![pytest](https://github.com/swat-model/pySWATPlus/actions/workflows/testing.yml/badge.svg)](https://github.com/swat-model/pySWATPlus/actions/workflows/testing.yml)
 
 
-**pySWATPlus** is a Python package that makes working with SWAT+ models easier and more powerful. Whether you're running default setups or custom projects, this tool lets you interact with SWAT+ programmatically, so you can focus on optimizing and analyzing your models like a pro! 🚀
-
----
-
-## ✨ Key Features
-
-- **Access and Modify SWAT+ Files**: Navigate, read, modify, and write files in the `TxtInOut` folder used by SWAT+. 📂
-- **Model Calibration**: Optimize SWAT+ input parameters using the [Pymoo](https://pymoo.org/) optimization framework to get the best results. 🎯
-
----
 
 ## 📦 About
 
-pySWATPlus is an open-source software developed and maintained by [ICRA](https://icra.cat/). It’s available for download and installation via [PyPI](https://pypi.org/project/pySWATPlus/). 
+`pySWATPlus` is an open-source Python package developed and maintained by [ICRA](https://icra.cat/).
+It provides a programmatic interface to the SWAT+ model, allowing users to run simulations, modify input files, and streamline custom experimentation through the model’s `TxtInOut` folder. 
 
 ---
 
 ## 📥 Install pySWATPlus
 
-To use this package, a Python version above 3.10 is required. You can install pySWATPlus using this simple command:
+To install, run the following command with Python 3.10 or later:
 
 ````py
 pip install pySWATPlus
