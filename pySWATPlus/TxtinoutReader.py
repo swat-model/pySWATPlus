@@ -387,7 +387,6 @@ class TxtinoutReader:
             reader.run_swat(params)
             ```
         """
-        aux_txtinout = TxtinoutReader(self.root_folder)
         _params = params or {}
 
         _validate_params(_params)
@@ -395,7 +394,7 @@ class TxtinoutReader:
         # Modify files for simulation
         for filename, file_params in _params.items():
             has_units = file_params.get('has_units', False)
-            file = aux_txtinout.register_file(
+            file = self.register_file(
                 filename,
                 has_units=has_units,
             )
@@ -416,7 +415,7 @@ class TxtinoutReader:
             file.overwrite_file()
 
         # run simulation
-        aux_txtinout._run_swat()
+        self._run_swat()
         return self.root_folder
 
     def run_swat_in_other_dir(
