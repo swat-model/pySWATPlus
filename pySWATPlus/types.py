@@ -1,4 +1,3 @@
-# types.py
 from typing import TypedDict, Literal
 from typing_extensions import NotRequired
 
@@ -86,7 +85,7 @@ Details:
     - "has_units" (optional): Optional. Whether the file has units information (default is False)
 
     Set to `None` if no parameter modifications are required.
-    
+
 Example:
 ```python
 params = {
