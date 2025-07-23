@@ -11,7 +11,7 @@ def file_reader():
     data_folder = os.path.join(test_folder, 'sample_data')
     data_file = os.path.join(data_folder, 'aquifer_yr.txt')
 
-    # DataFrame from input data file
+    # initializing FileReader class instance
     file_reader = pySWATPlus.FileReader(
         path=data_file,
         has_units=True

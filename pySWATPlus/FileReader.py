@@ -1,5 +1,6 @@
 import pandas as pd
 from pathlib import Path
+import typing
 
 
 class FileReader:
@@ -8,8 +9,8 @@ class FileReader:
         self,
         path: str | Path,
         has_units: bool = False,
-        usecols: list[str] | None = None,
-        filter_by: str | None = None
+        usecols: typing.Optional[list[str]] = None,
+        filter_by: typing.Optional[str] = None
     ):
         '''
         Initialize a FileReader instance to read data from a file.
