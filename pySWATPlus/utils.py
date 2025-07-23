@@ -1,5 +1,5 @@
 from .types import ParamsType, ParamChange
-import pandas as pd
+import pandas
 
 
 def _build_line_to_add(
@@ -29,7 +29,7 @@ def _build_line_to_add(
 
 
 def _apply_param_change(
-    df: pd.DataFrame,
+    df: pandas.DataFrame,
     param_name: str,
     change: ParamChange
 ) -> None:

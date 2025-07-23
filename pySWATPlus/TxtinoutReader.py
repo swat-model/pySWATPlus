@@ -2,7 +2,7 @@ import subprocess
 from .FileReader import FileReader
 import shutil
 from pathlib import Path
-from typing import Final
+import typing
 import logging
 from .types import ParamsType
 from .utils import _build_line_to_add, _apply_param_change, _validate_params
@@ -12,8 +12,8 @@ logger = logging.getLogger(__name__)
 
 class TxtinoutReader:
 
-    RESERVED_PARAMS: Final[list[str]] = ['has_units']
-    IGNORED_FILE_PATTERNS: Final[tuple[str, ...]] = tuple(
+    RESERVED_PARAMS: typing.Final[list[str]] = ['has_units']
+    IGNORED_FILE_PATTERNS: typing.Final[tuple[str, ...]] = tuple(
         f'_{suffix}.{ext}'
         for suffix in ('day', 'mon', 'yr', 'aa')
         for ext in ('txt', 'csv')
@@ -46,23 +46,20 @@ class TxtinoutReader:
         if not path.is_dir():
             raise FileNotFoundError("Folder does not exist")
 
-        # count files that end with .exe
-        count = 0
-        swat_exe = None
-        for file in path.iterdir():
-            if file.suffix == ".exe":
-                if count == 0:
-                    swat_exe = file
-                elif count > 0:
-                    raise TypeError("More than one .exe file found in the parent folder")
-                count += 1
+        # check .exe files in the directory
+        exe_list = [file for file in path.iterdir() if file.suffix == ".exe"]
 
-        if count == 0:
+        # raise error if empty list
+        if not exe_list:
             raise TypeError(".exe not found in parent folder")
+
+        # raise error if more than one .exe file
+        if len(exe_list) > 1:
+            raise TypeError("More than one .exe file found in the parent folder")
 
         # find parent directory
         self.root_folder: Path = path
-        self.swat_exe_path: Path = path / swat_exe
+        self.swat_exe_path: Path = path / exe_list[0]
 
     def enable_object_in_print_prt(
         self,
@@ -112,9 +109,9 @@ class TxtinoutReader:
         with open(print_prt_path, 'w') as file:
             file.write(new_print_prt)
 
-    def set_beginning_and_end_year(
+    def set_begin_and_end_year(
         self,
-        beginning: int,
+        begin: int,
         end: int
     ) -> None:
         """
@@ -141,8 +138,9 @@ class TxtinoutReader:
         # Split the input string by spaces
         elements = year_line.split()
 
-        elements[1] = beginning
-        elements[3] = end
+        # insert years
+        elements[1] = str(begin)
+        elements[3] = str(end)
 
         # Reconstruct the result string while maintaining spaces
         result_string = '{: >8} {: >10} {: >10} {: >10} {: >10} \n'.format(*elements)
@@ -152,7 +150,7 @@ class TxtinoutReader:
         with open(time_sim_path, 'w') as file:
             file.writelines(lines)
 
-    def set_warmup(
+    def set_warmup_year(
         self,
         warmup: int
     ) -> None:
@@ -177,7 +175,8 @@ class TxtinoutReader:
         # Split the input string by spaces
         elements = year_line.split()
 
-        elements[0] = warmup
+        # Modify warmup year
+        elements[0] = str(warmup)
 
         # Reconstruct the result string while maintaining spaces
         result_string = '{: <12} {: <11} {: <11} {: <10} {: <10} {: <10} \n'.format(*elements)
@@ -247,8 +246,8 @@ class TxtinoutReader:
         self,
         filename: str,
         has_units: bool = False,
-        usecols: list[str] | None = None,
-        filter_by: str | None = None
+        usecols: typing.Optional[list[str]] = None,
+        filter_by: typing.Optional[str] = None
     ) -> FileReader:
         """
         Register a file to work with in the SWAT model.
@@ -420,71 +419,70 @@ class TxtinoutReader:
         aux_txtinout._run_swat()
         return self.root_folder
 
+    def run_swat_in_other_dir(
+        self,
+        target_dir: str | Path,
+        params: ParamsType = None,
+    ) -> str:
+        """
+        Copy the SWAT model files to a specified directory, modify input parameters, and run the simulation.
 
-def run_swat_in_other_dir(
-    self,
-    target_dir: str | Path,
-    params: ParamsType = None,
-) -> str:
-    """
-    Copy the SWAT model files to a specified directory, modify input parameters, and run the simulation.
+        Args:
+            target_dir (str or Path): Path to the directory where the SWAT model files will be copied.
 
-    Args:
-        target_dir (str or Path): Path to the directory where the SWAT model files will be copied.
+            params (ParamsType, optional): Nested dictionary specifying parameter changes.
 
-        params (ParamsType, optional): Nested dictionary specifying parameter changes.
+                The `params` dictionary should follow this structure:
 
-            The `params` dictionary should follow this structure:
+                ```python
+                params = {
+                    "<input_file>": {
+                        "has_units": bool,              # Optional. Whether the file has units information (default is False)
+                        "<parameter_name>": [           # One or more changes to apply to the parameter
+                            {
+                                "value": float,         # New value to assign
+                                "change_type": str,     # (Optional) One of: 'absval' (default), 'abschg', 'pctchg'
+                                "filter_by": str        # (Optional) pandas `.query()` filter string to select rows
+                            },
+                            # ... more changes
+                        ]
+                    },
+                    # ... more input files
+                }
+                ```
 
+        Returns:
+            str: The path to the directory where the SWAT simulation was executed.
+
+        Example:
             ```python
             params = {
-                "<input_file>": {
-                    "has_units": bool,              # Optional. Whether the file has units information (default is False)
-                    "<parameter_name>": [           # One or more changes to apply to the parameter
-                        {
-                            "value": float,         # New value to assign
-                            "change_type": str,     # (Optional) One of: 'absval' (default), 'abschg', 'pctchg'
-                            "filter_by": str        # (Optional) pandas `.query()` filter string to select rows
-                        },
-                        # ... more changes
-                    ]
+                'plants.plt': {
+                    'has_units': False,
+                    'bm_e': [
+                        {'value': 100, 'change_type': 'absval', 'filter_by': 'name == "agrl"'},
+                        {'value': 110, 'change_type': 'absval', 'filter_by': 'name == "almd"'},
+                    ],
                 },
-                # ... more input files
             }
+
+            with tempfile.TemporaryDirectory() as tmp_dir:
+                simulation = pySWATPlus.TxtinoutReader.run_swat_in_other_dir(
+                    target_dir=tmp_dir,
+                    params=params
+                )
             ```
+        """
+        # Validate target_dir
+        if not isinstance(target_dir, (str, Path)):
+            raise TypeError("target_dir must be a string or Path object")
 
-    Returns:
-        str: The path to the directory where the SWAT simulation was executed.
+        target_dir = Path(target_dir).resolve()
 
-    Example:
-        ```python
-        params = {
-            'plants.plt': {
-                'has_units': False,
-                'bm_e': [
-                    {'value': 100, 'change_type': 'absval', 'filter_by': 'name == "agrl"'},
-                    {'value': 110, 'change_type': 'absval', 'filter_by': 'name == "almd"'},
-                ],
-            },
-        }
+        # Create the directory if it does not exist
+        target_dir.mkdir(parents=True, exist_ok=True)
 
-        with tempfile.TemporaryDirectory() as tmp_dir:
-            simulation = pySWATPlus.TxtinoutReader.run_swat_in_other_dir(
-                target_dir=tmp_dir,
-                params=params
-            )
-        ```
-    """
-    # Validate target_dir
-    if not isinstance(target_dir, (str, Path)):
-        raise TypeError("target_dir must be a string or Path object")
+        tmp_path = self._copy_swat(target_dir=target_dir)
+        reader = TxtinoutReader(tmp_path)
 
-    target_dir = Path(target_dir).resolve()
-
-    # Create the directory if it does not exist
-    target_dir.mkdir(parents=True, exist_ok=True)
-
-    tmp_path = self._copy_swat(target_dir=target_dir)
-    reader = TxtinoutReader(tmp_path)
-
-    return reader.run_swat(params)
+        return reader.run_swat(params)
