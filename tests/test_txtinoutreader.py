@@ -18,6 +18,27 @@ def txtinout_reader():
     yield txtinout_reader
 
 
+def test_enable_object_in_print_prt(
+    txtinout_reader
+):
+
+    # pass test for enable object for printing
+    txtinout_reader.enable_object_in_print_prt(
+        obj='basin_wb',
+        daily=False,
+        monthly=True,
+        yearly=True,
+        avann=False
+    )
+    output_file = os.path.join(str(txtinout_reader.root_folder), 'print.prt')
+    with open(output_file, 'r') as read_output:
+        target_line = read_output.readlines()[10]
+    assert ' y' in target_line
+    assert target_line.count(' y') == 2
+    assert ' n' in target_line
+    assert target_line.count(' n') == 2
+
+
 def test_set_begin_and_end_year(
     txtinout_reader
 ):

@@ -1,9 +1,9 @@
-from typing import TypedDict, Literal
-from typing_extensions import NotRequired
+import typing
+import typing_extensions
 
 
 class ParamChange(
-    TypedDict
+    typing.TypedDict
 ):
     """
     Describes a single change to apply to a parameter in a SWAT input file.
@@ -17,8 +17,8 @@ class ParamChange(
         filter_by (str, optional): Pandas `.query()` string to filter the dataframe rows.
     """
     value: float
-    change_type: NotRequired[Literal['absval', 'abschg', 'pctchg']]
-    filter_by: NotRequired[str]
+    change_type: typing_extensions.NotRequired[typing.Literal['absval', 'abschg', 'pctchg']]
+    filter_by: typing_extensions.NotRequired[str]
 
 
 ParamSpec = ParamChange | list[ParamChange]

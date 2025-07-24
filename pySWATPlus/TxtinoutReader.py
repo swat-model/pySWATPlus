@@ -1,7 +1,7 @@
 import subprocess
 from .FileReader import FileReader
 import shutil
-from pathlib import Path
+import pathlib
 import typing
 import logging
 from .types import ParamsType
@@ -21,8 +21,9 @@ class TxtinoutReader:
 
     def __init__(
         self,
-        path: str | Path
+        path: str | pathlib.Path
     ) -> None:
+
         """
         Initialize a TxtinoutReader instance for working with SWAT model data.
 
@@ -37,10 +38,10 @@ class TxtinoutReader:
         """
 
         # check if path is a string or a path
-        if not isinstance(path, (str, Path)):
+        if not isinstance(path, (str, pathlib.Path)):
             raise TypeError("path must be a string or os.PathLike object")
 
-        path = Path(path).resolve()
+        path = pathlib.Path(path).resolve()
 
         # check if folder exists
         if not path.is_dir():
@@ -58,8 +59,8 @@ class TxtinoutReader:
             raise TypeError("More than one .exe file found in the parent folder")
 
         # find parent directory
-        self.root_folder: Path = path
-        self.swat_exe_path: Path = path / exe_list[0]
+        self.root_folder = path
+        self.swat_exe_path = path / exe_list[0]
 
     def enable_object_in_print_prt(
         self,
@@ -69,6 +70,7 @@ class TxtinoutReader:
         yearly: bool,
         avann: bool
     ) -> None:
+
         """
         Enable or update an object in the 'print.prt' file. If obj is not a default identifier, it will be added at the end of the file.
 
@@ -84,7 +86,7 @@ class TxtinoutReader:
         """
 
         # check if obj is object itself or file
-        if Path(obj).suffix:
+        if pathlib.Path(obj).suffix:
             arg_to_add = obj.rsplit('_', maxsplit=1)[0]
         else:
             arg_to_add = obj
@@ -114,6 +116,7 @@ class TxtinoutReader:
         begin: int,
         end: int
     ) -> None:
+
         """
         Modify the beginning and end year in the 'time.sim' file.
 
@@ -154,6 +157,7 @@ class TxtinoutReader:
         self,
         warmup: int
     ) -> None:
+
         """
         Modify the warmup period in the 'time.sim' file.
 
@@ -190,6 +194,7 @@ class TxtinoutReader:
         self,
         enable: bool = True
     ) -> None:
+
         """
         Enable or disable CSV print in the 'print.prt' file.
 
@@ -221,6 +226,7 @@ class TxtinoutReader:
     def enable_csv_print(
         self
     ) -> None:
+
         """
         Enable CSV print in the 'print.prt' file.
 
@@ -233,6 +239,7 @@ class TxtinoutReader:
     def disable_csv_print(
         self
     ) -> None:
+
         """
         Disable CSV print in the 'print.prt' file.
 
@@ -249,6 +256,7 @@ class TxtinoutReader:
         usecols: typing.Optional[list[str]] = None,
         filter_by: typing.Optional[str] = None
     ) -> FileReader:
+
         """
         Register a file to work with in the SWAT model.
 
@@ -261,14 +269,16 @@ class TxtinoutReader:
         Returns:
             FileReader: A FileReader instance for the registered file.
         """
+
         file_path = self.root_folder / filename
 
         return FileReader(file_path, has_units, usecols, filter_by)
 
     def _copy_swat(
         self,
-        target_dir: str | Path,
+        target_dir: str | pathlib.Path,
     ) -> str:
+
         """
         Prepare a working directory containing the necessary SWAT model files.
 
@@ -282,7 +292,7 @@ class TxtinoutReader:
             str: The path to the directory where the SWAT files were copied.
         """
 
-        dest_path = Path(target_dir)
+        dest_path = pathlib.Path(target_dir)
 
         # Copy files from source folder
         for file in self.root_folder.iterdir():
@@ -295,6 +305,7 @@ class TxtinoutReader:
     def _run_swat(
         self,
     ) -> None:
+
         """
         Run the SWAT simulation.
 
@@ -318,24 +329,22 @@ class TxtinoutReader:
             )
 
             # Real-time output handling
-            for line in process.stdout:
-                clean_line = line.strip()
-                if clean_line:
-                    logger.info(clean_line)
+            if process.stdout:
+                for line in process.stdout:
+                    clean_line = line.strip()
+                    if clean_line:
+                        logger.info(clean_line)
 
             # Wait for process and check for errors
             return_code = process.wait()
             if return_code != 0:
-                stderr = process.stderr.read()
+                stderr = process.stderr.read() if process.stderr else None
                 raise subprocess.CalledProcessError(
                     return_code,
                     process.args,
                     stderr=stderr
                 )
 
-        except FileNotFoundError:
-            logger.error(f"SWAT executable not found: {self.swat_exe_path}")
-            raise
         except Exception as e:
             logger.error(f"Failed to run SWAT: {str(e)}")
             raise
@@ -343,7 +352,8 @@ class TxtinoutReader:
     def run_swat(
         self,
         params: ParamsType = None,
-    ) -> str:
+    ) -> pathlib.Path:
+
         """
         Run the SWAT simulation with optional parameter changes.
 
@@ -387,6 +397,7 @@ class TxtinoutReader:
             reader.run_swat(params)
             ```
         """
+
         _params = params or {}
 
         _validate_params(_params)
@@ -396,7 +407,7 @@ class TxtinoutReader:
             has_units = file_params.get('has_units', False)
             file = self.register_file(
                 filename,
-                has_units=has_units,
+                has_units=has_units
             )
             df = file.df
 
@@ -416,13 +427,15 @@ class TxtinoutReader:
 
         # run simulation
         self._run_swat()
+
         return self.root_folder
 
     def run_swat_in_other_dir(
         self,
-        target_dir: str | Path,
+        target_dir: str | pathlib.Path,
         params: ParamsType = None,
-    ) -> str:
+    ) -> pathlib.Path:
+
         """
         Copy the SWAT model files to a specified directory, modify input parameters, and run the simulation.
 
@@ -472,11 +485,12 @@ class TxtinoutReader:
                 )
             ```
         """
+
         # Validate target_dir
-        if not isinstance(target_dir, (str, Path)):
+        if not isinstance(target_dir, (str, pathlib.Path)):
             raise TypeError("target_dir must be a string or Path object")
 
-        target_dir = Path(target_dir).resolve()
+        target_dir = pathlib.Path(target_dir).resolve()
 
         # Create the directory if it does not exist
         target_dir.mkdir(parents=True, exist_ok=True)

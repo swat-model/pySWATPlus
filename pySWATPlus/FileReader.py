@@ -1,5 +1,5 @@
-import pandas as pd
-from pathlib import Path
+import pandas
+import pathlib
 import typing
 
 
@@ -7,7 +7,7 @@ class FileReader:
 
     def __init__(
         self,
-        path: str | Path,
+        path: str | pathlib.Path,
         has_units: bool = False,
         usecols: typing.Optional[list[str]] = None,
         filter_by: typing.Optional[str] = None
@@ -26,7 +26,7 @@ class FileReader:
             TypeError: If there's an issue reading the file or if the resulting DataFrame is not of type pandas.DataFrame.
 
         Attributes:
-            df (pd.DataFrame): a dataframe containing the data from the file.
+            df (pandas.DataFrame): a dataframe containing the data from the file.
 
         Example:
             ```python
@@ -39,10 +39,10 @@ class FileReader:
             ```
         '''
 
-        if not isinstance(path, (str, Path)):
+        if not isinstance(path, (str, pathlib.Path)):
             raise TypeError("path must be a string or Path object")
 
-        path = Path(path).resolve()
+        path = pathlib.Path(path).resolve()
 
         if not path.is_file():
             raise FileNotFoundError("file does not exist")
@@ -58,10 +58,10 @@ class FileReader:
         with open(path, 'r', encoding='latin-1') as file:
             self.header_file = file.readline()
 
-        self.df = pd.read_fwf(
+        self.df = pandas.read_fwf(
             path,
             skiprows=skip_rows,
-            usecols=usecols,
+            usecols=usecols
         )
 
         self.path = path
@@ -89,7 +89,7 @@ class FileReader:
         '''
 
         if self.units_row is not None:
-            _df = pd.concat([pd.DataFrame([self.units_row]), self.df], ignore_index=True)
+            _df = pandas.concat([pandas.DataFrame([self.units_row]), self.df], ignore_index=True)
         else:
             _df = self.df
 
