@@ -3,8 +3,8 @@
 
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.14889320.svg)](https://doi.org/10.5281/zenodo.14889320)
 [![flake8](https://github.com/swat-model/pySWATPlus/actions/workflows/linting.yml/badge.svg)](https://github.com/swat-model/pySWATPlus/actions/workflows/linting.yml)
+[![mypy](https://github.com/swat-model/pySWATPlus/actions/workflows/typing.yml/badge.svg)](https://github.com/swat-model/pySWATPlus/actions/workflows/typing.yml)
 [![pytest](https://github.com/swat-model/pySWATPlus/actions/workflows/testing.yml/badge.svg)](https://github.com/swat-model/pySWATPlus/actions/workflows/testing.yml)
-
 
 
 ## 📦 About
