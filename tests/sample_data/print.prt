@@ -8,7 +8,7 @@ n             n             n
 crop_yld      mgtout        hydcon        fdcout        
 b             n             n             n             
 objects                  daily       monthly        yearly         avann  
-basin_wb                     n             n             y             y  
+basin_wb                     n             y             y             n
 basin_nb                     n             n             y             y  
 basin_ls                     n             n             y             y  
 basin_pw                     n             n             y             y  
