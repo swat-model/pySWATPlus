@@ -87,6 +87,10 @@ def _validate_params(
                     raise TypeError(f"`has_units` for file '{filename}' must be a boolean.")
                 continue
 
+            # For any other key, value should NOT be bool
+            if isinstance(value, bool):
+                raise TypeError(f"Unexpected bool value for key '{key}' in file '{filename}'")
+
             param_changes = value if isinstance(value, list) else [value]
 
             for change in param_changes:

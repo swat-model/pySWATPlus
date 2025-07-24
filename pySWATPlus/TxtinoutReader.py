@@ -23,7 +23,6 @@ class TxtinoutReader:
         self,
         path: str | pathlib.Path
     ) -> None:
-
         """
         Initialize a TxtinoutReader instance for working with SWAT model data.
 
@@ -70,7 +69,6 @@ class TxtinoutReader:
         yearly: bool,
         avann: bool
     ) -> None:
-
         """
         Enable or update an object in the 'print.prt' file. If obj is not a default identifier, it will be added at the end of the file.
 
@@ -116,7 +114,6 @@ class TxtinoutReader:
         begin: int,
         end: int
     ) -> None:
-
         """
         Modify the beginning and end year in the 'time.sim' file.
 
@@ -157,7 +154,6 @@ class TxtinoutReader:
         self,
         warmup: int
     ) -> None:
-
         """
         Modify the warmup period in the 'time.sim' file.
 
@@ -194,7 +190,6 @@ class TxtinoutReader:
         self,
         enable: bool = True
     ) -> None:
-
         """
         Enable or disable CSV print in the 'print.prt' file.
 
@@ -226,7 +221,6 @@ class TxtinoutReader:
     def enable_csv_print(
         self
     ) -> None:
-
         """
         Enable CSV print in the 'print.prt' file.
 
@@ -239,7 +233,6 @@ class TxtinoutReader:
     def disable_csv_print(
         self
     ) -> None:
-
         """
         Disable CSV print in the 'print.prt' file.
 
@@ -256,7 +249,6 @@ class TxtinoutReader:
         usecols: typing.Optional[list[str]] = None,
         filter_by: typing.Optional[str] = None
     ) -> FileReader:
-
         """
         Register a file to work with in the SWAT model.
 
@@ -278,7 +270,6 @@ class TxtinoutReader:
         self,
         target_dir: str | pathlib.Path,
     ) -> str:
-
         """
         Prepare a working directory containing the necessary SWAT model files.
 
@@ -305,7 +296,6 @@ class TxtinoutReader:
     def _run_swat(
         self,
     ) -> None:
-
         """
         Run the SWAT simulation.
 
@@ -353,7 +343,6 @@ class TxtinoutReader:
         self,
         params: ParamsType = None,
     ) -> pathlib.Path:
-
         """
         Run the SWAT simulation with optional parameter changes.
 
@@ -405,6 +394,11 @@ class TxtinoutReader:
         # Modify files for simulation
         for filename, file_params in _params.items():
             has_units = file_params.get('has_units', False)
+
+            # adding block only for mypy validation, as it's already validated in _validate_params
+            if not isinstance(has_units, bool):
+                raise TypeError(f"`has_units` for file '{filename}' must be a boolean.")
+
             file = self.register_file(
                 filename,
                 has_units=has_units
@@ -414,6 +408,10 @@ class TxtinoutReader:
             for param_name, param_spec in file_params.items():
                 if param_name in self.RESERVED_PARAMS:
                     continue  # Skip reserved parameters
+
+                # adding block only for mypy validation, as it's already validated in _validate_params
+                if isinstance(param_spec, bool):
+                    raise TypeError(f"Unexpected bool value for parameter '{param_name}' in file '{filename}'")
 
                 # Normalize to list of changes
                 changes = param_spec if isinstance(param_spec, list) else [param_spec]
@@ -435,7 +433,6 @@ class TxtinoutReader:
         target_dir: str | pathlib.Path,
         params: ParamsType = None,
     ) -> pathlib.Path:
-
         """
         Copy the SWAT model files to a specified directory, modify input parameters, and run the simulation.
 

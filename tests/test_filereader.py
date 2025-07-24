@@ -1,10 +1,11 @@
 import os
 import pySWATPlus
 import pytest
+import typing
 
 
 @pytest.fixture(scope='class')
-def file_reader():
+def file_reader() -> typing.Generator[pySWATPlus.FileReader, None, None]:
 
     # set up file path
     test_folder = os.path.dirname(__file__)
@@ -21,8 +22,8 @@ def file_reader():
 
 
 def test_get_df(
-    file_reader
-):
+    file_reader: pySWATPlus.FileReader
+) -> None:
 
     # read DataFrame
     df = file_reader.df
@@ -30,7 +31,7 @@ def test_get_df(
     assert df.shape[0] == 260
 
 
-def test_github():
+def test_github() -> None:
 
     # regular GitHub trigger test function when no code is changed
     assert str(1) == '1'

@@ -1,10 +1,11 @@
 import os
 import pySWATPlus
 import pytest
+import typing
 
 
 @pytest.fixture(scope='class')
-def txtinout_reader():
+def txtinout_reader() -> typing.Generator[pySWATPlus.TxtinoutReader, None, None]:
 
     # set up file path
     test_folder = os.path.dirname(__file__)
@@ -19,8 +20,8 @@ def txtinout_reader():
 
 
 def test_enable_object_in_print_prt(
-    txtinout_reader
-):
+    txtinout_reader: pySWATPlus.TxtinoutReader
+) -> None:
 
     # pass test for enable object for printing
     txtinout_reader.enable_object_in_print_prt(
@@ -40,8 +41,8 @@ def test_enable_object_in_print_prt(
 
 
 def test_set_begin_and_end_year(
-    txtinout_reader
-):
+    txtinout_reader: pySWATPlus.TxtinoutReader
+) -> None:
 
     # pass test for begining and end year
     txtinout_reader.set_begin_and_end_year(
@@ -69,8 +70,8 @@ def test_set_begin_and_end_year(
 
 
 def test_set_warmup_year(
-    txtinout_reader
-):
+    txtinout_reader: pySWATPlus.TxtinoutReader
+) -> None:
 
     # pass test for warmup year
     txtinout_reader.set_warmup_year(
@@ -80,4 +81,4 @@ def test_set_warmup_year(
     with open(output_file, 'r') as read_output:
         target_line = read_output.readlines()[2]
     assert target_line[0] == str(3)
-    assert target_line[0] != 5
+    assert target_line[0] != '5'
