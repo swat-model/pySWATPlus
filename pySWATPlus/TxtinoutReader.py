@@ -1,9 +1,9 @@
 import subprocess
-from .FileReader import FileReader
 import shutil
 import pathlib
 import typing
 import logging
+from .FileReader import FileReader
 from .types import ParamsType
 from .utils import _build_line_to_add, _apply_param_change, _validate_params
 
@@ -24,10 +24,10 @@ class TxtinoutReader:
         path: str | pathlib.Path
     ) -> None:
         """
-        Initialize a TxtinoutReader instance for working with SWAT model data.
+        Initialize a TxtinoutReader instance for working with SWAT+ model data.
 
         Args:
-            path (str or Path): The path to the SWAT model folder.
+            path (str or Path): The path to the SWAT+ model `TxtinOut` folder.
 
         Raises:
             TypeError: If the provided path is not a string or Path object,
@@ -114,16 +114,17 @@ class TxtinoutReader:
         begin: int,
         end: int
     ) -> None:
-        """
-        Modify the beginning and end year in the 'time.sim' file.
+
+        '''
+        Modify the simulation period by updating the begin and end years in the `time.sim` file.
 
         Parameters:
-            beginning (int): The new beginning year.
-            end (int): The new end year.
+            begin (int): Beginning year of the simulation (e.g., 2010).
+            end (int): Ending year of the simulation (e.g., 2016).
 
         Returns:
             None
-        """
+        '''
 
         nth_line = 3
 
@@ -154,15 +155,18 @@ class TxtinoutReader:
         self,
         warmup: int
     ) -> None:
-        """
-        Modify the warmup period in the 'time.sim' file.
+
+        '''
+        Modify the warm-up years in the `time.sim` file.
 
         Args:
-            warmup (int): The new warmup period value.
+            warmup (int): A positive integer representing the number of years
+                the simulation will use for warm-up (e.g., 1).
 
         Returns:
             None
-        """
+        '''
+
         time_sim_path = self.root_folder / 'print.prt'
 
         # Open the file in read mode and read its contents
@@ -250,7 +254,7 @@ class TxtinoutReader:
         filter_by: typing.Optional[str] = None
     ) -> FileReader:
         """
-        Register a file to work with in the SWAT model.
+        Register a file to work with in the SWAT+ model.
 
         Parameters:
             filename (str): The name of the file to register.
@@ -271,7 +275,7 @@ class TxtinoutReader:
         target_dir: str | pathlib.Path,
     ) -> str:
         """
-        Prepare a working directory containing the necessary SWAT model files.
+        Prepare a working directory containing the necessary SWAT+ model files.
 
         This function copies the contents of the SWAT model input folder (`self.root_folder`)
         to a target directory.
@@ -297,7 +301,7 @@ class TxtinoutReader:
         self,
     ) -> None:
         """
-        Run the SWAT simulation.
+        Run the SWAT+ simulation.
 
         Returns:
             None
@@ -344,7 +348,7 @@ class TxtinoutReader:
         params: ParamsType = None,
     ) -> pathlib.Path:
         """
-        Run the SWAT simulation with optional parameter changes.
+        Run the SWAT+ simulation with optional parameter changes.
 
         Args:
             params (ParamsType, optional): Nested dictionary specifying parameter changes to apply.
@@ -434,7 +438,7 @@ class TxtinoutReader:
         params: ParamsType = None,
     ) -> pathlib.Path:
         """
-        Copy the SWAT model files to a specified directory, modify input parameters, and run the simulation.
+        Copy the SWAT+ model files to a specified directory, modify input parameters, and run the simulation.
 
         Args:
             target_dir (str or Path): Path to the directory where the SWAT model files will be copied.
