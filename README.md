@@ -2,9 +2,26 @@
 
 
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.14889320.svg)](https://doi.org/10.5281/zenodo.14889320)
+
+
+![PyPI - Version](https://img.shields.io/pypi/v/pySWATPlus)
+![PyPI - Python Version](https://img.shields.io/pypi/pyversions/pySWATPlus)
+![PyPI - Status](https://img.shields.io/pypi/status/pySWATPlus)
+
+![Pepy Total Downloads](https://img.shields.io/pepy/dt/pySWATPLus)
+
 [![flake8](https://github.com/swat-model/pySWATPlus/actions/workflows/linting.yml/badge.svg)](https://github.com/swat-model/pySWATPlus/actions/workflows/linting.yml)
 [![mypy](https://github.com/swat-model/pySWATPlus/actions/workflows/typing.yml/badge.svg)](https://github.com/swat-model/pySWATPlus/actions/workflows/typing.yml)
 [![pytest](https://github.com/swat-model/pySWATPlus/actions/workflows/testing.yml/badge.svg)](https://github.com/swat-model/pySWATPlus/actions/workflows/testing.yml)
+
+![GitHub last commit](https://img.shields.io/github/last-commit/swat-model/pySWATPlus)
+![GitHub Repo stars](https://img.shields.io/github/stars/swat-model/pySWATPlus)
+![GitHub forks](https://img.shields.io/github/forks/swat-model/pySWATPlus)
+![GitHub Created At](https://img.shields.io/github/created-at/swat-model/pySWATPlus)
+
+
+![PyPI - License](https://img.shields.io/pypi/l/pySWATPlus)
+
 
 
 ## 📦 About
