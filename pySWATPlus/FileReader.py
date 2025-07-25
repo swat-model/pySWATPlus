@@ -75,17 +75,16 @@ class FileReader:
         if filter_by:
             self.df = self.df.query(filter_by)
 
-    def _store_text(
+    def overwrite_file(
         self
     ) -> None:
-        '''
-        Store the DataFrame as a formatted text file.
 
-        This method converts the DataFrame to a formatted string with adjusted column widths and writes it to a .txt file.
-        The text file will contain the header and the formatted data.
+        '''
+        Overwrites the TXT file after converting the content DataFrame
+        to a formatted string with adjusted column widths.
 
         Returns:
-        None
+            None
         '''
 
         if self.units_row is not None:
@@ -115,34 +114,3 @@ class FileReader:
             column_widths = {column: max_length + 3 for column, max_length in max_lengths.items()}
             data_str = _df.to_string(index=False, justify='right', col_space=column_widths)
             file.write(data_str)
-
-    def _store_csv(
-        self
-    ) -> None:
-        '''
-        Store the DataFrame as a CSV file.
-
-        This method raises a TypeError to indicate that storing as a CSV file is not implemented yet.
-
-        Returns:
-        None
-        '''
-
-        raise TypeError("Not implemented yet")
-
-    def overwrite_file(
-        self
-    ) -> None:
-        '''
-        Overwrite the original file with the DataFrame.
-
-        This method checks the file extension and calls the appropriate storage method (_store_csv or _store_text).
-
-        Returns:
-        None
-        '''
-
-        if self.path.suffix == '.csv':
-            self._store_csv()
-        else:
-            self._store_text()
