@@ -729,7 +729,7 @@
           <tr class="doc-section-item">
             <td><code><span title="pySWATPlus.types.ParamChange.change_type">change_type</span></code></td>
             <td>
-                  <code><span title="typing.Literal">Literal</span>[&#39;absval&#39;, &#39;abschg&#39;, &#39;pctchg&#39;]</code>
+                  <code><span title="Literal">Literal</span>[<span title="absval">absval</span>, <span title="abschg">abschg</span>, <span title="pctchg">pctchg</span>]</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -780,7 +780,7 @@
 <span class="normal">19</span>
 <span class="normal">20</span>
 <span class="normal">21</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">ParamChange</span><span class="p">(</span>
-    <span class="n">TypedDict</span>
+    <span class="n">typing</span><span class="o">.</span><span class="n">TypedDict</span>
 <span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Describes a single change to apply to a parameter in a SWAT input file.</span>
@@ -794,8 +794,8 @@
 <span class="sd">        filter_by (str, optional): Pandas `.query()` string to filter the dataframe rows.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">value</span><span class="p">:</span> <span class="nb">float</span>
-    <span class="n">change_type</span><span class="p">:</span> <span class="n">NotRequired</span><span class="p">[</span><span class="n">Literal</span><span class="p">[</span><span class="s1">&#39;absval&#39;</span><span class="p">,</span> <span class="s1">&#39;abschg&#39;</span><span class="p">,</span> <span class="s1">&#39;pctchg&#39;</span><span class="p">]]</span>
-    <span class="n">filter_by</span><span class="p">:</span> <span class="n">NotRequired</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>
+    <span class="n">change_type</span><span class="p">:</span> <span class="n">typing_extensions</span><span class="o">.</span><span class="n">NotRequired</span><span class="p">[</span><span class="n">typing</span><span class="o">.</span><span class="n">Literal</span><span class="p">[</span><span class="s1">&#39;absval&#39;</span><span class="p">,</span> <span class="s1">&#39;abschg&#39;</span><span class="p">,</span> <span class="s1">&#39;pctchg&#39;</span><span class="p">]]</span>
+    <span class="n">filter_by</span><span class="p">:</span> <span class="n">typing_extensions</span><span class="o">.</span><span class="n">NotRequired</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>
 </code></pre></div></td></tr></table></div>
               </details>
 
@@ -888,7 +888,7 @@
 
 
 <h2 id="pySWATPlus.types.ParamsType" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">ParamsType</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">FileParams</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span></code>
+            <code class="highlight language-python"><span class="n">ParamsType</span> <span class="o">=</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">FileParams</span><span class="p">]]</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-module-attribute"><code>module-attribute</code></small>
