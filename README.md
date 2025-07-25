@@ -15,6 +15,7 @@
 [![pytest](https://github.com/swat-model/pySWATPlus/actions/workflows/testing.yml/badge.svg)](https://github.com/swat-model/pySWATPlus/actions/workflows/testing.yml)
 
 ![GitHub last commit](https://img.shields.io/github/last-commit/swat-model/pySWATPlus)
+![GitHub commit activity](https://img.shields.io/github/commit-activity/t/swat-model/pySWATPlus)
 ![GitHub Repo stars](https://img.shields.io/github/stars/swat-model/pySWATPlus)
 ![GitHub forks](https://img.shields.io/github/forks/swat-model/pySWATPlus)
 ![GitHub Created At](https://img.shields.io/github/created-at/swat-model/pySWATPlus)
