@@ -50,44 +50,44 @@ jobs:
         include-hidden-files: true
         if-no-files-found: error
 
-coverage:
-    name: Combine & check coverage
-    if: always()
-    needs: tests
-    runs-on: ubuntu-latest
+  coverage:
+      name: Combine & check coverage
+      if: always()
+      needs: tests
+      runs-on: ubuntu-latest
 
-    steps:
-      - uses: actions/checkout@v4
+      steps:
+        - uses: actions/checkout@v4
 
-      - uses: actions/setup-python@v5
-        with:
-          python-version: "3.13"
+        - uses: actions/setup-python@v5
+          with:
+            python-version: "3.13"
 
-      - name: Download coverage data
-        uses: actions/download-artifact@v4
-        with:
-          pattern: coverage-data-*
-          merge-multiple: true
-          path: coverage-data
+        - name: Download coverage data
+          uses: actions/download-artifact@v4
+          with:
+            pattern: coverage-data-*
+            merge-multiple: true
+            path: coverage-data
 
-      - name: Combine and check coverage
-        run: |
-          pip install coverage[toml]
+        - name: Combine and check coverage
+          run: |
+            pip install coverage[toml]
 
-          # Move all coverage files into root
-          find coverage-data -name ".coverage.*" -exec mv {} . \;
+            # Move all coverage files into root
+            find coverage-data -name ".coverage.*" -exec mv {} . \;
 
-          coverage combine
-          coverage html --skip-covered --skip-empty
+            coverage combine
+            coverage html --skip-covered --skip-empty
 
-          echo "### Coverage Report" >> $GITHUB_STEP_SUMMARY
-          coverage report --format=markdown >> $GITHUB_STEP_SUMMARY
+            echo "### Coverage Report" >> $GITHUB_STEP_SUMMARY
+            coverage report --format=markdown >> $GITHUB_STEP_SUMMARY
 
-          coverage report --fail-under=100
+            coverage report --fail-under=100
 
-      - name: Upload HTML report if check failed
-        if: ${{ failure() }}
-        uses: actions/upload-artifact@v4
-        with:
-          name: html-report
-          path: htmlcov
+        - name: Upload HTML report if check failed
+          if: ${{ failure() }}
+          uses: actions/upload-artifact@v4
+          with:
+            name: html-report
+            path: htmlcov
