@@ -34,4 +34,4 @@ def test_get_df(
 def test_github() -> None:
 
     # regular GitHub trigger test function when no code is changed
-    assert str(1) == '1'
+    assert str(2) == '2'
