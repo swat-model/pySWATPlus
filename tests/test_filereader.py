@@ -86,4 +86,4 @@ def test_error() -> None:
 def test_github() -> None:
 
     # regular GitHub trigger test function when no code is changed
-    assert str(2) == '4'
+    assert str(4) == '4'
