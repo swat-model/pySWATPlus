@@ -1,0 +1,25 @@
+# Required
+version: 2
+
+# Set the OS, Python version, and other tools you might need
+build:
+  os: ubuntu-lts-latest
+  tools:
+    python: latest
+
+# Build documentation with Mkdocs
+mkdocs:
+   configuration: mkdocs.yml
+
+# declare the Python requirements required to build your documentation
+python:
+  install:
+    - requirements: docs/requirements-docs.txt
+
+formats:
+  - pdf
+  - epub
+        
+ 
+
+
