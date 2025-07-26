@@ -5,6 +5,11 @@ import typing
 
 class FileReader:
 
+    '''
+    Provide functionality to read, filter, and write data
+    from a TXT file located in the `TxtInOut` folder.
+    '''
+
     def __init__(
         self,
         path: str | pathlib.Path,
@@ -12,26 +17,27 @@ class FileReader:
         usecols: typing.Optional[list[str]] = None,
         filter_by: typing.Optional[str] = None
     ):
+
         '''
-        Initialize a FileReader instance to read data from a file.
+        Initialize a FileReader instance to read data from a TXT file.
 
         Parameters:
-            path (str, Path): The path to the file.
-            has_units (bool): Indicates if the file has units (default is False).
-            usecols (list[str], optional): A list of column names to read (default is None).
-            filter_by (str, optional): Pandas query string to select applicable rows (default is None).
+            path (str or Path): Path to the TXT file to be read.
+            has_units (bool, optional): If `True`, the second row of the file contains units.
+            usecols (list[str], optional): List of column names to read from the file.
+            filter_by (str, optional): A pandas query string to filter rows from the file.
 
         Raises:
-            FileNotFoundError: If the specified file does not exist.
-            TypeError: If there's an issue reading the file or if the resulting DataFrame is not of type pandas.DataFrame.
+            TypeError: If the path is not a valid string or Path, or if the file is a CSV.
+            FileNotFoundError: If the specified file path does not exist.
 
         Attributes:
-            df (pandas.DataFrame): a dataframe containing the data from the file.
+            df (pandas.DataFrame): A DataFrame containing the loaded and optionally filtered data.
 
         Example:
             ```python
             reader = FileReader(
-                'plants.plt',
+                path='C:\\users\\username\\project\\Scenarios\\Default\\TxtInOut\\plants.plt',
                 has_units=False,
                 usecols=['name', 'plnt_typ', 'gro_trig'],
                 filter_by="plnt_typ == 'perennial'"
@@ -80,11 +86,9 @@ class FileReader:
     ) -> None:
 
         '''
-        Overwrites the TXT file after converting the content DataFrame
-        to a formatted string with adjusted column widths.
-
-        Returns:
-            None
+        Overwrite the original TXT file with the modified DataFrame content.
+        If the file originally contained a unit row (below the header),
+        it will be preserved and written back as part of the output.
         '''
 
         if self.units_row is not None:
