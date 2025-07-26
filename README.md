@@ -12,6 +12,7 @@
 [![flake8](https://github.com/swat-model/pySWATPlus/actions/workflows/linting.yml/badge.svg)](https://github.com/swat-model/pySWATPlus/actions/workflows/linting.yml)
 [![mypy](https://github.com/swat-model/pySWATPlus/actions/workflows/typing.yml/badge.svg)](https://github.com/swat-model/pySWATPlus/actions/workflows/typing.yml)
 [![pytest](https://github.com/swat-model/pySWATPlus/actions/workflows/testing.yml/badge.svg)](https://github.com/swat-model/pySWATPlus/actions/workflows/testing.yml)
+[![codecov](https://codecov.io/gh/debpal/pySWATPlus/graph/badge.svg?token=0XJ89FRID9)](https://codecov.io/gh/debpal/pySWATPlus)
 
 ![GitHub last commit](https://img.shields.io/github/last-commit/swat-model/pySWATPlus)
 ![GitHub commit activity](https://img.shields.io/github/commit-activity/t/swat-model/pySWATPlus)
