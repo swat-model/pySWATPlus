@@ -51,7 +51,7 @@ Example:
 ```
 """
 
-ParamsType = typing.Optional[dict[str, FileParams]]
+ParamsType = dict[str, FileParams]
 
 """
 Defines parameter modifications for one or more SWAT+ input files.

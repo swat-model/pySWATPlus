@@ -329,14 +329,14 @@ class TxtinoutReader:
 
     def run_swat(
         self,
-        params: ParamsType = None,
+        params: typing.Optional[ParamsType] = None,
     ) -> pathlib.Path:
 
         '''
         Run the SWAT+ simulation with optional parameter changes.
 
         Args:
-            params (ParamsType): Nested dictionary specifying parameter changes to apply.
+            params (ParamsType, optional): Nested dictionary specifying parameter changes to apply.
 
                 The `params` dictionary should follow this structure:
 
@@ -423,7 +423,7 @@ class TxtinoutReader:
     def run_swat_in_other_dir(
         self,
         target_dir: str | pathlib.Path,
-        params: ParamsType = None,
+        params: typing.Optional[ParamsType] = None,
     ) -> pathlib.Path:
 
         '''
@@ -435,7 +435,7 @@ class TxtinoutReader:
         Args:
             target_dir (str or Path): Path to the directory where the simulation will be done.
 
-            params (ParamsType): Nested dictionary specifying parameter changes.
+            params (ParamsType, optional): Nested dictionary specifying parameter changes.
 
                 The `params` dictionary should follow this structure:
 
