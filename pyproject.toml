@@ -12,7 +12,7 @@ license = "GPL-3.0-or-later"
 license-files = ["LICEN[CS]E.*"]
 authors = [
     {name = "Joan Saló", email = "joansalograu@gmail.com"},
-    {name = "Debasish Pla", email = "bestdebasish@gmail.com"}
+    {name = "Debasish Pal", email = "bestdebasish@gmail.com"}
 ]
 keywords = [
     "SWAT+",
