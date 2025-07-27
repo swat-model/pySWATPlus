@@ -13,7 +13,7 @@ on:
       - '**/*.py'  # Trigger for changes in Python files
 
 jobs:
-  tests:
+  build:
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
@@ -32,62 +32,14 @@ jobs:
       run: |
         python -m pip install --upgrade pip
         python -m pip install -r requirements.txt  # Install dependencies
-        pip install coverage pytest
 
     - name: Run tests with pytest
       run: |
-          coverage run -m pytest
-          coverage xml -o coverage.xml
-          mv .coverage .coverage.${{ matrix.python-version }}
-          
-    - name: Upload coverage data
-      uses: actions/upload-artifact@v4
+        export PYTHONPATH=$(pwd)
+        pytest -rA -Wignore::DeprecationWarning --cov=pySWATPlus --cov-report=xml  # Run tests and generate coverage report in XML format
+
+    - name: Upload coverage to Codecov  # Upload coverage report to Codecov
+      uses: codecov/codecov-action@v4.2.0
       with:
-        name: coverage-data-${{ matrix.python-version }}
-        path: |
-          .coverage.${{ matrix.python-version }}
-          coverage.xml
-        include-hidden-files: true
-        if-no-files-found: error
+        token: ${{ secrets.CODECOV_TOKEN }}  # This secret token should be added in your repository settings
 
-  coverage:
-      name: Combine & check coverage
-      if: always()
-      needs: tests
-      runs-on: ubuntu-latest
-
-      steps:
-        - uses: actions/checkout@v4
-
-        - uses: actions/setup-python@v5
-          with:
-            python-version: "3.13"
-
-        - name: Download coverage data
-          uses: actions/download-artifact@v4
-          with:
-            pattern: coverage-data-*
-            merge-multiple: true
-            path: coverage-data
-
-        - name: Combine and check coverage
-          run: |
-            pip install coverage[toml]
-
-            # Move all coverage files into root
-            find coverage-data -name ".coverage.*" -exec mv {} . \;
-
-            coverage combine
-            coverage html --skip-covered --skip-empty
-
-            echo "### Coverage Report" >> $GITHUB_STEP_SUMMARY
-            coverage report --format=markdown >> $GITHUB_STEP_SUMMARY
-
-            coverage report --fail-under=100
-
-        - name: Upload HTML report if check failed
-          if: ${{ failure() }}
-          uses: actions/upload-artifact@v4
-          with:
-            name: html-report
-            path: htmlcov

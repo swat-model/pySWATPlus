@@ -12,6 +12,11 @@ logger = logging.getLogger(__name__)
 
 class TxtinoutReader:
 
+    '''
+    Provide functionality for seamless reading, editing, and writing of
+    SWAT+ model files located in the `TxtInOut` folder.
+    '''
+
     RESERVED_PARAMS: typing.Final[list[str]] = ['has_units']
     IGNORED_FILE_PATTERNS: typing.Final[tuple[str, ...]] = tuple(
         f'_{suffix}.{ext}'
@@ -23,18 +28,19 @@ class TxtinoutReader:
         self,
         path: str | pathlib.Path
     ) -> None:
-        """
-        Initialize a TxtinoutReader instance for working with SWAT+ model data.
+
+        '''
+        Create a TxtinoutReader instance for accessing SWAT+ model files.
 
         Args:
-            path (str or Path): The path to the SWAT+ model `TxtinOut` folder.
+            path (str or Path): Path to the `TxtInOut` folder, which must contain
+                exactly one SWAT+ executable `.exe` file.
 
         Raises:
-            TypeError: If the provided path is not a string or Path object,
-                    if more than one .exe file is found,
-                    or if no .exe file is found.
-            FileNotFoundError: If the folder does not exist.
-        """
+            TypeError: If the path is not a valid string or Path, or if the folder contains
+                zero or multiple `.exe` files.
+            FileNotFoundError: If the specified folder does not exist.
+        '''
 
         # check if path is a string or a path
         if not isinstance(path, (str, pathlib.Path)):
@@ -69,19 +75,23 @@ class TxtinoutReader:
         yearly: bool,
         avann: bool
     ) -> None:
-        """
-        Enable or update an object in the 'print.prt' file. If obj is not a default identifier, it will be added at the end of the file.
+
+        '''
+        Update an object in the `print.prt` file by setting its value to `True`.
+        If the object does not exist in the file, it will be added at the end.
+
+        Note:
+            This input does not provide complete control over `print.prt` outputs.
+            Some files are internally linked in the SWAT+ model and may still be
+            generated even when disabled.
 
         Args:
-            obj (str): The object name or identifier.
-            daily (bool): Flag for daily print frequency.
-            monthly (bool): Flag for monthly print frequency.
-            yearly (bool): Flag for yearly print frequency.
-            avann (bool): Flag for average annual print frequency.
-
-        Returns:
-            None
-        """
+            obj (str): The object name or identifier to update or add.
+            daily (bool): If `True`, enable daily frequency output.
+            monthly (bool): If `True`, enable monthly frequency output.
+            yearly (bool): If `True`, enable yearly frequency output.
+            avann (bool): If `True`, enable average annual frequency output.
+        '''
 
         # check if obj is object itself or file
         if pathlib.Path(obj).suffix:
@@ -116,14 +126,12 @@ class TxtinoutReader:
     ) -> None:
 
         '''
-        Modify the simulation period by updating the begin and end years in the `time.sim` file.
+        Modify the simulation period by updating
+        the begin and end years in the `time.sim` file.
 
         Parameters:
             begin (int): Beginning year of the simulation (e.g., 2010).
             end (int): Ending year of the simulation (e.g., 2016).
-
-        Returns:
-            None
         '''
 
         nth_line = 3
@@ -162,9 +170,6 @@ class TxtinoutReader:
         Args:
             warmup (int): A positive integer representing the number of years
                 the simulation will use for warm-up (e.g., 1).
-
-        Returns:
-            None
         '''
 
         time_sim_path = self.root_folder / 'print.prt'
@@ -194,15 +199,10 @@ class TxtinoutReader:
         self,
         enable: bool = True
     ) -> None:
-        """
-        Enable or disable CSV print in the 'print.prt' file.
 
-        Parameters:
-            enable (bool): True to enable CSV print, False to disable (default is True).
-
-        Returns:
-            None
-        """
+        '''
+        Enable or disable print in the `print.prt` file.
+        '''
 
         # read
         nth_line = 7
@@ -225,24 +225,20 @@ class TxtinoutReader:
     def enable_csv_print(
         self
     ) -> None:
-        """
-        Enable CSV print in the 'print.prt' file.
 
-        Returns:
-            None
-        """
+        '''
+        Enable print in the `print.prt` file.
+        '''
 
         self._enable_disable_csv_print(enable=True)
 
     def disable_csv_print(
         self
     ) -> None:
-        """
-        Disable CSV print in the 'print.prt' file.
 
-        Returns:
-            None
-        """
+        '''
+        Disable print in the `print.prt` file.
+        '''
 
         self._enable_disable_csv_print(enable=False)
 
@@ -253,18 +249,19 @@ class TxtinoutReader:
         usecols: typing.Optional[list[str]] = None,
         filter_by: typing.Optional[str] = None
     ) -> FileReader:
-        """
+
+        '''
         Register a file to work with in the SWAT+ model.
 
         Parameters:
-            filename (str): The name of the file to register.
-            has_units (bool): Indicates if the file has units information (default is False).
-            usecols (List[str], optional): A list of column names to read (default is None).
-            filter_by (str, optional): Pandas query string to select applicable rows (default is None).
+            filename (str): Path to the file to register, located in the `TxtInOut` folder.
+            has_units (bool): If True, the second row of the file contains units.
+            usecols (list[str]): List of column names to read from the file.
+            filter_by (str): A pandas query string to filter rows from the file.
 
         Returns:
             FileReader: A FileReader instance for the registered file.
-        """
+        '''
 
         file_path = self.root_folder / filename
 
@@ -274,18 +271,11 @@ class TxtinoutReader:
         self,
         target_dir: str | pathlib.Path,
     ) -> str:
-        """
-        Prepare a working directory containing the necessary SWAT+ model files.
 
-        This function copies the contents of the SWAT model input folder (`self.root_folder`)
-        to a target directory.
-
-        Parameters:
-            target_dir (str or Path): Destination directory for the SWAT model files.
-
-        Returns:
-            str: The path to the directory where the SWAT files were copied.
-        """
+        '''
+        Copy the required contents from the input folder associated with this
+        `TxtinoutReader` instance to a target directory for SWAT+ simulation.
+        '''
 
         dest_path = pathlib.Path(target_dir)
 
@@ -300,16 +290,10 @@ class TxtinoutReader:
     def _run_swat(
         self,
     ) -> None:
-        """
+
+        '''
         Run the SWAT+ simulation.
-
-        Returns:
-            None
-
-        Raises:
-            subprocess.CalledProcessError: If the SWAT executable fails
-            FileNotFoundError: If the SWAT executable is not found
-        """
+        '''
 
         # Run simulation
         try:
@@ -347,11 +331,12 @@ class TxtinoutReader:
         self,
         params: ParamsType = None,
     ) -> pathlib.Path:
-        """
+
+        '''
         Run the SWAT+ simulation with optional parameter changes.
 
         Args:
-            params (ParamsType, optional): Nested dictionary specifying parameter changes to apply.
+            params (ParamsType): Nested dictionary specifying parameter changes to apply.
 
                 The `params` dictionary should follow this structure:
 
@@ -372,8 +357,11 @@ class TxtinoutReader:
                 }
                 ```
 
+        Raises:
+            subprocess.CalledProcessError: If the SWAT+ executable fails.
+
         Returns:
-            str: The path where the SWAT simulation was executed.
+            pathlib.Path: Path where the SWAT+ simulation was executed.
 
         Example:
             ```python
@@ -389,7 +377,7 @@ class TxtinoutReader:
 
             reader.run_swat(params)
             ```
-        """
+        '''
 
         _params = params or {}
 
@@ -437,13 +425,17 @@ class TxtinoutReader:
         target_dir: str | pathlib.Path,
         params: ParamsType = None,
     ) -> pathlib.Path:
-        """
-        Copy the SWAT+ model files to a specified directory, modify input parameters, and run the simulation.
+
+        '''
+        Run the SWAT+ model in a specified directory, with optional parameter modifications.
+        This method copies the necessary input files from the current project into the
+        given `target_dir`, applies any parameter changes specified in `params`, and
+        executes the SWAT+ simulation there.
 
         Args:
-            target_dir (str or Path): Path to the directory where the SWAT model files will be copied.
+            target_dir (str or Path): Path to the directory where the simulation will be done.
 
-            params (ParamsType, optional): Nested dictionary specifying parameter changes.
+            params (ParamsType): Nested dictionary specifying parameter changes.
 
                 The `params` dictionary should follow this structure:
 
@@ -464,8 +456,11 @@ class TxtinoutReader:
                 }
                 ```
 
+        Raises:
+            subprocess.CalledProcessError: If the SWAT+ executable fails.
+
         Returns:
-            str: The path to the directory where the SWAT simulation was executed.
+            pathlib.Path: The path to the directory where the SWAT+ simulation was executed.
 
         Example:
             ```python
@@ -485,7 +480,7 @@ class TxtinoutReader:
                     params=params
                 )
             ```
-        """
+        '''
 
         # Validate target_dir
         if not isinstance(target_dir, (str, pathlib.Path)):

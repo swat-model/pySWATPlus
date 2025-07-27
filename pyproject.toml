@@ -11,7 +11,8 @@ requires-python = ">=3.10"
 license = "GPL-3.0-or-later"
 license-files = ["LICEN[CS]E.*"]
 authors = [
-    { name = "Joan Saló", email = "joansalograu@gmail.com" }
+    {name = "Joan Saló", email = "joansalograu@gmail.com"},
+    {name = "Debasish Pal", email = "bestdebasish@gmail.com"}
 ]
 keywords = [
     "SWAT+",
@@ -38,7 +39,7 @@ dependencies = [
 
 [project.urls]
 Homepage = "https://github.com/swat-model/pySWATPlus"
-Documentation = "https://swat-model.github.io/pySWATPlus/"
+Documentation = "https://pyswatplus.readthedocs.io/en/latest/"
 
 [tool.setuptools]
 packages = ["pySWATPlus"]
