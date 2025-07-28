@@ -9,9 +9,10 @@ def _build_line_to_add(
     yearly: bool,
     avann: bool
 ) -> str:
-    """
-    Helper function to format lines for print.prt file
-    """
+
+    '''
+    Helper function to format lines for `print.prt` file
+    '''
 
     print_periodicity = {
         'daily': daily,
@@ -33,9 +34,10 @@ def _apply_param_change(
     param_name: str,
     change: ParamChange
 ) -> None:
-    """
-    Apply a single parameter change to a DataFrame
-    """
+
+    '''
+    Apply parameter change to a DataFrame
+    '''
 
     value = change['value']
     change_type = change['change_type']
@@ -54,28 +56,18 @@ def _apply_param_change(
 def _validate_params(
     params: ParamsType
 ) -> None:
-    """
-    Validate the structure and values of SWAT parameter modification input.
 
-    Ensures:
-    - `params` is a dictionary with the expected nested structure.
-    - `change_type`, if provided, is one of: 'absval', 'abschg', 'pctchg'.
-    - Each ParamChange has a numeric 'value'.
-    - 'filter_by' is a string, if present.
-    - `has_units`, if present, is a boolean.
-
-    Raises:
-    -------
-    TypeError or ValueError if validation fails.
-    """
+    '''
+    Validate the structure and values of SWAT+ parameter modification input.
+    '''
 
     if params is None:
         return
 
     if not isinstance(params, dict):
-        raise TypeError("`params` must be a dictionary mapping filenames to parameter specs.")
+        raise TypeError("'params' must be a dictionary mapping filenames to parameter specs.")
 
-    valid_change_types = {"absval", "abschg", "pctchg"}
+    valid_change_types = ["absval", "abschg", "pctchg"]
 
     for filename, file_params in params.items():
         if not isinstance(file_params, dict):
@@ -84,7 +76,7 @@ def _validate_params(
         for key, value in file_params.items():
             if key == "has_units":
                 if not isinstance(value, bool):
-                    raise TypeError(f"`has_units` for file '{filename}' must be a boolean.")
+                    raise TypeError(f"'{key}' for file '{filename}' must be a boolean.")
                 continue
 
             # For any other key, value should NOT be bool
@@ -95,21 +87,20 @@ def _validate_params(
 
             for change in param_changes:
                 if not isinstance(change, dict):
-                    raise TypeError(f"Each parameter change must be a dict in file '{filename}', got {type(change).__name__}")
+                    raise TypeError(f"'{key}' for file '{filename}' must be either a dictinary or a list of dictionaries, got {type(change).__name__}")
 
                 if "value" not in change:
-                    raise ValueError(f"Missing 'value' for parameter '{key}' in file '{filename}'.")
+                    raise ValueError(f"Missing 'value' key for '{key}' in file '{filename}'.")
 
                 if not isinstance(change["value"], (int, float)):
-                    raise TypeError(f"'value' for parameter '{key}' in file '{filename}' must be numeric.")
+                    raise TypeError(f"'value' for '{key}' in file '{filename}' must be numeric.")
 
                 change_type = change.get("change_type", "absval")
                 if change_type not in valid_change_types:
                     raise ValueError(
-                        f"Invalid 'change_type' '{change_type}' for parameter '{key}' in file '{filename}'. "
-                        f"Expected one of: {', '.join(valid_change_types)}."
+                        f"Invalid 'change_type' value '{change_type}' for '{key}' in file '{filename}'. Expected one of: {', '.join(valid_change_types)}."
                     )
 
                 filter_by = change.get("filter_by")
                 if filter_by is not None and not isinstance(filter_by, str):
-                    raise TypeError(f"'filter_by' for parameter '{key}' in file '{filename}' must be a string if provided.")
+                    raise TypeError(f"'filter_by' for '{key}' in file '{filename}' must be a string.")
