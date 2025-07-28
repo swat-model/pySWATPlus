@@ -30,11 +30,28 @@ It provides a programmatic interface to the SWAT+ model, allowing users to run s
 
 ## 📥 Install pySWATPlus
 
-To install, run the following command with Python 3.10 or later:
+To install from PyPI repository, run the following command:
 
-````py
+```bash
 pip install pySWATPlus
-````
+```
+
+To Install from source code in editable mode, first create a `Conda` environment and then run the following command:
+
+```bash
+# Create and activate a Conda environment
+conda create --name swatplus python=3.11
+conda activate swatplus
+# Install required tools and clone the repository
+pip install build
+cd C:\Users\YourUsername\YourFolder  # Replace with your actual path
+git clone https://github.com/swat-model/pySWATPlus.git
+cd pySWATPlus
+# Build the package
+python -m build
+# Install in editable mode
+pip install --editable .
+```
 
 
 ## 📚 Documentation
