@@ -10,36 +10,27 @@ def file_reader() -> typing.Generator[pySWATPlus.FileReader, None, None]:
     # set up file path
     test_folder = os.path.dirname(__file__)
     data_folder = os.path.join(test_folder, 'sample_data')
-    data_file = os.path.join(data_folder, 'aquifer_yr.txt')
+    data_file = os.path.join(data_folder, 'hydrology.hyd')
 
     # initializing FileReader class instance
     file_reader = pySWATPlus.FileReader(
         path=data_file,
-        has_units=True
+        has_units=False
     )
 
     yield file_reader
 
 
-def test_attr_df(
+def test_dataframe(
     file_reader: pySWATPlus.FileReader
 ) -> None:
 
     # read DataFrame
     df = file_reader.df
-
-    assert df.shape[0] == 260
-
-
-def test_method_dataframe(
-    file_reader: pySWATPlus.FileReader
-) -> None:
-
-    # read DataFrame
-    df = file_reader.df
+    assert df.shape[0] == 771
 
     # change varibale value
-    variable = 'minp'
+    variable = 'orgp_enrich'
     value = 0.3
     df[variable] = value
 
@@ -47,9 +38,32 @@ def test_method_dataframe(
     file_reader.overwrite_file()
 
     # read the new DataFrame
-    new_df = file_reader.df
+    df = file_reader.df
+    assert df[variable].unique()[0] == value
 
-    assert new_df[variable].unique()[0] == value
+    # DataFrame parameter value change by 'absval'
+    pySWATPlus.utils._apply_param_change(
+        df=df,
+        param_name='latq_co',
+        change={'value': 0.6, 'change_type': 'absval', 'filter_by': 'name == "hyd001"'}
+    )
+    assert df.iloc[0, -1] == 0.6
+
+    # DataFrame parameter value change by 'abschg'
+    pySWATPlus.utils._apply_param_change(
+        df=df,
+        param_name='pet_co',
+        change={'value': 0.6, 'change_type': 'abschg', 'filter_by': 'name == "hyd002"'}
+    )
+    assert df.loc[1, 'pet_co'] == 1.6
+
+    # DataFrame parameter value change by 'pctchg'
+    pySWATPlus.utils._apply_param_change(
+        df=df,
+        param_name='perco',
+        change={'value': 50, 'change_type': 'pctchg', 'filter_by': 'name == "hyd003"'}
+    )
+    assert round(df.loc[2, 'perco'], 2) == 0.75
 
 
 def test_error() -> None:
