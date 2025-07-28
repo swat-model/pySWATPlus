@@ -40,15 +40,18 @@ To Install from source code in editable mode, first create a `Conda` environment
 
 ```bash
 # Create and activate a Conda environment
-conda create --name swatplus python=3.11
+conda create --name swatplus # Replace swatplus by your choice
 conda activate swatplus
+
 # Install required tools and clone the repository
 pip install build
 cd C:\Users\YourUsername\YourFolder  # Replace with your actual path
 git clone https://github.com/swat-model/pySWATPlus.git
 cd pySWATPlus
+
 # Build the package
 python -m build
+
 # Install in editable mode
 pip install --editable .
 ```
