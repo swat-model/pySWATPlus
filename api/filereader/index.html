@@ -16,7 +16,7 @@
       
       
       <link rel="icon" href="../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.15">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.16">
     
     
       
@@ -24,7 +24,7 @@
       
     
     
-      <link rel="stylesheet" href="../../assets/stylesheets/main.342714a4.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.7e37652d.min.css">
       
         
         <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
@@ -219,25 +219,6 @@
         </a>
       </li>
     
-  
-
-      
-        
-  
-  
-  
-  
-    <li class="md-tabs__item">
-      <a href="../../citation/" class="md-tabs__link">
-        
-  
-  
-    
-  
-  Citation
-
-      </a>
-    </li>
   
 
       
@@ -598,28 +579,6 @@
   
 
     
-      
-      
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../citation/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    Citation
-    
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-    
   </ul>
 </nav>
                   </div>
@@ -753,6 +712,9 @@
     <div class="doc doc-contents ">
 
 
+        <p>Provide functionality to read, filter, and write data
+from a TXT file located in the <code>TxtInOut</code> folder.</p>
+
 
 
 
@@ -871,7 +833,16 @@
 <span class="normal">113</span>
 <span class="normal">114</span>
 <span class="normal">115</span>
-<span class="normal">116</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">FileReader</span><span class="p">:</span>
+<span class="normal">116</span>
+<span class="normal">117</span>
+<span class="normal">118</span>
+<span class="normal">119</span>
+<span class="normal">120</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">FileReader</span><span class="p">:</span>
+
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Provide functionality to read, filter, and write data</span>
+<span class="sd">    from a TXT file located in the `TxtInOut` folder.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
@@ -880,26 +851,27 @@
         <span class="n">usecols</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">filter_by</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="p">):</span>
+
 <span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">        Initialize a FileReader instance to read data from a file.</span>
+<span class="sd">        Initialize a FileReader instance to read data from a TXT file.</span>
 
 <span class="sd">        Parameters:</span>
-<span class="sd">            path (str, Path): The path to the file.</span>
-<span class="sd">            has_units (bool): Indicates if the file has units (default is False).</span>
-<span class="sd">            usecols (list[str], optional): A list of column names to read (default is None).</span>
-<span class="sd">            filter_by (str, optional): Pandas query string to select applicable rows (default is None).</span>
+<span class="sd">            path (str or Path): Path to the TXT file to be read.</span>
+<span class="sd">            has_units (bool, optional): If `True`, the second row of the file contains units.</span>
+<span class="sd">            usecols (list[str], optional): List of column names to read from the file.</span>
+<span class="sd">            filter_by (str, optional): A pandas query string to filter rows from the file.</span>
 
 <span class="sd">        Raises:</span>
-<span class="sd">            FileNotFoundError: If the specified file does not exist.</span>
-<span class="sd">            TypeError: If there&#39;s an issue reading the file or if the resulting DataFrame is not of type pandas.DataFrame.</span>
+<span class="sd">            TypeError: If the path is not a valid string or Path, or if the file is a CSV.</span>
+<span class="sd">            FileNotFoundError: If the specified file path does not exist.</span>
 
 <span class="sd">        Attributes:</span>
-<span class="sd">            df (pandas.DataFrame): a dataframe containing the data from the file.</span>
+<span class="sd">            df (pandas.DataFrame): A DataFrame containing the loaded and optionally filtered data.</span>
 
 <span class="sd">        Example:</span>
 <span class="sd">            ```python</span>
 <span class="sd">            reader = FileReader(</span>
-<span class="sd">                &#39;plants.plt&#39;,</span>
+<span class="sd">                path=&#39;C:\\users\\username\\project\\Scenarios\\Default\\TxtInOut\\plants.plt&#39;,</span>
 <span class="sd">                has_units=False,</span>
 <span class="sd">                usecols=[&#39;name&#39;, &#39;plnt_typ&#39;, &#39;gro_trig&#39;],</span>
 <span class="sd">                filter_by=&quot;plnt_typ == &#39;perennial&#39;&quot;</span>
@@ -948,11 +920,9 @@
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 
 <span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">        Overwrites the TXT file after converting the content DataFrame</span>
-<span class="sd">        to a formatted string with adjusted column widths.</span>
-
-<span class="sd">        Returns:</span>
-<span class="sd">            None</span>
+<span class="sd">        Overwrite the original TXT file with the modified DataFrame content.</span>
+<span class="sd">        If the file originally contained a unit row (below the header),</span>
+<span class="sd">        it will be preserved and written back as part of the output.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">units_row</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
@@ -1008,7 +978,7 @@
 
     <div class="doc doc-contents ">
 
-        <p>Initialize a FileReader instance to read data from a file.</p>
+        <p>Initialize a FileReader instance to read data from a TXT file.</p>
 
 
 <p><span class="doc-section-title">Parameters:</span></p>
@@ -1027,11 +997,11 @@
                 <code>path</code>
             </td>
             <td>
-                  <code>(<span title="str">str</span>, <span title="Path">Path</span>)</code>
+                  <code><span title="str">str</span> or <span title="Path">Path</span></code>
             </td>
             <td>
               <div class="doc-md-description">
-                <p>The path to the file.</p>
+                <p>Path to the TXT file to be read.</p>
               </div>
             </td>
             <td>
@@ -1047,7 +1017,7 @@
             </td>
             <td>
               <div class="doc-md-description">
-                <p>Indicates if the file has units (default is False).</p>
+                <p>If <code>True</code>, the second row of the file contains units.</p>
               </div>
             </td>
             <td>
@@ -1063,7 +1033,7 @@
             </td>
             <td>
               <div class="doc-md-description">
-                <p>A list of column names to read (default is None).</p>
+                <p>List of column names to read from the file.</p>
               </div>
             </td>
             <td>
@@ -1079,7 +1049,7 @@
             </td>
             <td>
               <div class="doc-md-description">
-                <p>Pandas query string to select applicable rows (default is None).</p>
+                <p>A pandas query string to filter rows from the file.</p>
               </div>
             </td>
             <td>
@@ -1101,21 +1071,21 @@
       <tbody>
           <tr class="doc-section-item">
             <td>
-                  <code><span title="FileNotFoundError">FileNotFoundError</span></code>
+                  <code><span title="TypeError">TypeError</span></code>
             </td>
             <td>
               <div class="doc-md-description">
-                <p>If the specified file does not exist.</p>
+                <p>If the path is not a valid string or Path, or if the file is a CSV.</p>
               </div>
             </td>
           </tr>
           <tr class="doc-section-item">
             <td>
-                  <code><span title="TypeError">TypeError</span></code>
+                  <code><span title="FileNotFoundError">FileNotFoundError</span></code>
             </td>
             <td>
               <div class="doc-md-description">
-                <p>If there's an issue reading the file or if the resulting DataFrame is not of type pandas.DataFrame.</p>
+                <p>If the specified file path does not exist.</p>
               </div>
             </td>
           </tr>
@@ -1140,7 +1110,7 @@
             </td>
             <td>
               <div class="doc-md-description">
-                <p>a dataframe containing the data from the file.</p>
+                <p>A DataFrame containing the loaded and optionally filtered data.</p>
               </div>
             </td>
           </tr>
@@ -1151,7 +1121,7 @@
 <details class="example" open>
   <summary>Example</summary>
   <div class="highlight"><pre><span></span><code><span class="n">reader</span> <span class="o">=</span> <span class="n">FileReader</span><span class="p">(</span>
-    <span class="s1">&#39;plants.plt&#39;</span><span class="p">,</span>
+    <span class="n">path</span><span class="o">=</span><span class="s1">&#39;C:\users\username\project\Scenarios\Default\TxtInOut\plants.plt&#39;</span><span class="p">,</span>
     <span class="n">has_units</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
     <span class="n">usecols</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="s1">&#39;plnt_typ&#39;</span><span class="p">,</span> <span class="s1">&#39;gro_trig&#39;</span><span class="p">],</span>
     <span class="n">filter_by</span><span class="o">=</span><span class="s2">&quot;plnt_typ == &#39;perennial&#39;&quot;</span>
@@ -1161,12 +1131,7 @@
 
             <details class="quote">
               <summary>Source code in <code>pySWATPlus/FileReader.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 8</span>
-<span class="normal"> 9</span>
-<span class="normal">10</span>
-<span class="normal">11</span>
-<span class="normal">12</span>
-<span class="normal">13</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">13</span>
 <span class="normal">14</span>
 <span class="normal">15</span>
 <span class="normal">16</span>
@@ -1229,33 +1194,40 @@
 <span class="normal">73</span>
 <span class="normal">74</span>
 <span class="normal">75</span>
-<span class="normal">76</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
+<span class="normal">76</span>
+<span class="normal">77</span>
+<span class="normal">78</span>
+<span class="normal">79</span>
+<span class="normal">80</span>
+<span class="normal">81</span>
+<span class="normal">82</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">path</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">,</span>
     <span class="n">has_units</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
     <span class="n">usecols</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">filter_by</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
 <span class="p">):</span>
+
 <span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">    Initialize a FileReader instance to read data from a file.</span>
+<span class="sd">    Initialize a FileReader instance to read data from a TXT file.</span>
 
 <span class="sd">    Parameters:</span>
-<span class="sd">        path (str, Path): The path to the file.</span>
-<span class="sd">        has_units (bool): Indicates if the file has units (default is False).</span>
-<span class="sd">        usecols (list[str], optional): A list of column names to read (default is None).</span>
-<span class="sd">        filter_by (str, optional): Pandas query string to select applicable rows (default is None).</span>
+<span class="sd">        path (str or Path): Path to the TXT file to be read.</span>
+<span class="sd">        has_units (bool, optional): If `True`, the second row of the file contains units.</span>
+<span class="sd">        usecols (list[str], optional): List of column names to read from the file.</span>
+<span class="sd">        filter_by (str, optional): A pandas query string to filter rows from the file.</span>
 
 <span class="sd">    Raises:</span>
-<span class="sd">        FileNotFoundError: If the specified file does not exist.</span>
-<span class="sd">        TypeError: If there&#39;s an issue reading the file or if the resulting DataFrame is not of type pandas.DataFrame.</span>
+<span class="sd">        TypeError: If the path is not a valid string or Path, or if the file is a CSV.</span>
+<span class="sd">        FileNotFoundError: If the specified file path does not exist.</span>
 
 <span class="sd">    Attributes:</span>
-<span class="sd">        df (pandas.DataFrame): a dataframe containing the data from the file.</span>
+<span class="sd">        df (pandas.DataFrame): A DataFrame containing the loaded and optionally filtered data.</span>
 
 <span class="sd">    Example:</span>
 <span class="sd">        ```python</span>
 <span class="sd">        reader = FileReader(</span>
-<span class="sd">            &#39;plants.plt&#39;,</span>
+<span class="sd">            path=&#39;C:\\users\\username\\project\\Scenarios\\Default\\TxtInOut\\plants.plt&#39;,</span>
 <span class="sd">            has_units=False,</span>
 <span class="sd">            usecols=[&#39;name&#39;, &#39;plnt_typ&#39;, &#39;gro_trig&#39;],</span>
 <span class="sd">            filter_by=&quot;plnt_typ == &#39;perennial&#39;&quot;</span>
@@ -1315,42 +1287,14 @@
 
     <div class="doc doc-contents ">
 
-        <p>Overwrites the TXT file after converting the content DataFrame
-to a formatted string with adjusted column widths.</p>
-
-
-    <p><span class="doc-section-title">Returns:</span></p>
-    <table>
-      <thead>
-        <tr>
-          <th>Type</th>
-          <th>Description</th>
-        </tr>
-      </thead>
-      <tbody>
-          <tr class="doc-section-item">
-            <td>
-                  <code>None</code>
-            </td>
-            <td>
-              <div class="doc-md-description">
-                <p>None</p>
-              </div>
-            </td>
-          </tr>
-      </tbody>
-    </table>
+        <p>Overwrite the original TXT file with the modified DataFrame content.
+If the file originally contained a unit row (below the header),
+it will be preserved and written back as part of the output.</p>
 
 
             <details class="quote">
               <summary>Source code in <code>pySWATPlus/FileReader.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 78</span>
-<span class="normal"> 79</span>
-<span class="normal"> 80</span>
-<span class="normal"> 81</span>
-<span class="normal"> 82</span>
-<span class="normal"> 83</span>
-<span class="normal"> 84</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 84</span>
 <span class="normal"> 85</span>
 <span class="normal"> 86</span>
 <span class="normal"> 87</span>
@@ -1382,16 +1326,18 @@ to a formatted string with adjusted column widths.</p>
 <span class="normal">113</span>
 <span class="normal">114</span>
 <span class="normal">115</span>
-<span class="normal">116</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">overwrite_file</span><span class="p">(</span>
+<span class="normal">116</span>
+<span class="normal">117</span>
+<span class="normal">118</span>
+<span class="normal">119</span>
+<span class="normal">120</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">overwrite_file</span><span class="p">(</span>
     <span class="bp">self</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 
 <span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">    Overwrites the TXT file after converting the content DataFrame</span>
-<span class="sd">    to a formatted string with adjusted column widths.</span>
-
-<span class="sd">    Returns:</span>
-<span class="sd">        None</span>
+<span class="sd">    Overwrite the original TXT file with the modified DataFrame content.</span>
+<span class="sd">    If the file originally contained a unit row (below the header),</span>
+<span class="sd">    it will be preserved and written back as part of the output.</span>
 <span class="sd">    &#39;&#39;&#39;</span>
 
     <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">units_row</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
@@ -1494,7 +1440,7 @@ to a formatted string with adjusted column widths.</p>
       <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.tabs", "content.code.annotate"], "search": "../../assets/javascripts/workers/search.d50fe291.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
-      <script src="../../assets/javascripts/bundle.56ea9cef.min.js"></script>
+      <script src="../../assets/javascripts/bundle.50899def.min.js"></script>
       
     
   </body>

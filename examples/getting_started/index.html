@@ -16,7 +16,7 @@
       
       
       <link rel="icon" href="../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.15">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.16">
     
     
       
@@ -24,7 +24,7 @@
       
     
     
-      <link rel="stylesheet" href="../../assets/stylesheets/main.342714a4.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.7e37652d.min.css">
       
         
         <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
@@ -219,25 +219,6 @@
         </a>
       </li>
     
-  
-
-      
-        
-  
-  
-  
-  
-    <li class="md-tabs__item">
-      <a href="../../citation/" class="md-tabs__link">
-        
-  
-  
-    
-  
-  Citation
-
-      </a>
-    </li>
   
 
       
@@ -631,28 +612,6 @@
           </ul>
         </nav>
       
-    </li>
-  
-
-    
-      
-      
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../citation/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    Citation
-    
-  </span>
-  
-
-      </a>
     </li>
   
 
@@ -1922,7 +1881,7 @@ plants_reader.df.head()</div>
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [34]:</div><div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div><div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="CodeMirror cm-s-jupyter">
 <div class="zeroclipboard-container">
 <clipboard-copy ,="" aria-label="Copy to Clipboard" for="cell-8">
@@ -1936,10 +1895,10 @@ plants_reader.df.head()</div>
 </clipboard-copy>
 </div>
 <div class="highlight-ipynb hl-python"><pre><span></span><span class="c1"># Set the beginning and end years for the simulation</span>
-<span class="n">reader</span><span class="o">.</span><span class="n">set_beginning_and_end_year</span><span class="p">(</span><span class="mi">2009</span><span class="p">,</span> <span class="mi">2011</span><span class="p">)</span>
+<span class="n">reader</span><span class="o">.</span><span class="n">set_begin_and_end_year</span><span class="p">(</span><span class="mi">2009</span><span class="p">,</span> <span class="mi">2011</span><span class="p">)</span>
 
 <span class="c1"># Set the warmup period (in years)</span>
-<span class="n">reader</span><span class="o">.</span><span class="n">set_warmup</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">reader</span><span class="o">.</span><span class="n">set_warmup_year</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
 
 <span class="c1"># Enable the 'channel_sd' object in the 'print.prt' file for daily output</span>
 <span class="n">reader</span><span class="o">.</span><span class="n">enable_object_in_print_prt</span><span class="p">(</span><span class="n">obj</span><span class="o">=</span><span class="s1">'channel_sd'</span><span class="p">,</span> <span class="n">daily</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">monthly</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">yearly</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">avann</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
@@ -1948,10 +1907,10 @@ plants_reader.df.head()</div>
 <span class="n">reader</span><span class="o">.</span><span class="n">run_swat</span><span class="p">()</span>
 </pre></div>
 <div class="clipboard-copy-txt" id="cell-8"># Set the beginning and end years for the simulation
-reader.set_beginning_and_end_year(2009, 2011)
+reader.set_begin_and_end_year(2009, 2011)
 
 # Set the warmup period (in years)
-reader.set_warmup(1)
+reader.set_warmup_year(1)
 
 # Enable the 'channel_sd' object in the 'print.prt' file for daily output
 reader.enable_object_in_print_prt(obj='channel_sd', daily=True, monthly=False, yearly=False, avann=False)
@@ -1967,7 +1926,7 @@ reader.run_swat()</div>
 </div>
 <div class="jp-OutputArea jp-Cell-outputArea">
 <div class="jp-OutputArea-child jp-OutputArea-executeResult">
-<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[34]:</div>
+<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[ ]:</div>
 <div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain" tabindex="0">
 <pre>PosixPath('/mnt/c/Users/joans/OneDrive/Escriptori/icra/muga_windows')</pre>
 </div>
@@ -2555,7 +2514,7 @@ Simulation run in: /tmp/tmp1r1951kq
       <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.tabs", "content.code.annotate"], "search": "../../assets/javascripts/workers/search.d50fe291.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
-      <script src="../../assets/javascripts/bundle.56ea9cef.min.js"></script>
+      <script src="../../assets/javascripts/bundle.50899def.min.js"></script>
       
     
   </body>
