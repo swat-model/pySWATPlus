@@ -44,7 +44,7 @@ class TxtinoutReader:
 
         # check if path is a string or a path
         if not isinstance(path, (str, pathlib.Path)):
-            raise TypeError("path must be a string or os.PathLike object")
+            raise TypeError("path must be a string or Path object")
 
         path = pathlib.Path(path).resolve()
 
@@ -55,13 +55,9 @@ class TxtinoutReader:
         # check .exe files in the directory
         exe_list = [file for file in path.iterdir() if file.suffix == ".exe"]
 
-        # raise error if empty list
-        if not exe_list:
-            raise TypeError(".exe not found in parent folder")
-
-        # raise error if more than one .exe file
-        if len(exe_list) > 1:
-            raise TypeError("More than one .exe file found in the parent folder")
+        # raise error on .exe file
+        if len(exe_list) != 1:
+            raise TypeError("Expected exactly one .exe file in the parent folder, but found none or multiple.")
 
         # find parent directory
         self.root_folder = path
@@ -270,7 +266,7 @@ class TxtinoutReader:
     def _copy_swat(
         self,
         target_dir: str | pathlib.Path,
-    ) -> str:
+    ) -> pathlib.Path:
 
         '''
         Copy the required contents from the input folder associated with this
@@ -285,7 +281,7 @@ class TxtinoutReader:
                 continue
             shutil.copy2(file, dest_path / file.name)
 
-        return str(dest_path)
+        return dest_path
 
     def _run_swat(
         self,
