@@ -35,7 +35,7 @@ jobs:
 
     - name: Run tests with pytest
       run: |
-        export PYTHONPATH=$(pwd)
+        $env:PYTHONPATH = "${{ github.workspace }}"
         pytest -rA -Wignore::DeprecationWarning --cov=pySWATPlus --cov-report=xml  # Run tests and generate coverage report in XML format
 
     - name: Upload coverage to Codecov  # Upload coverage report to Codecov
