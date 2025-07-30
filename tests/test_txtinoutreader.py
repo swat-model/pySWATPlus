@@ -79,7 +79,6 @@ def test_run_swat_in_other_dir(
 
     # pass test for run SWAT+ model in other direcotry
     with tempfile.TemporaryDirectory() as tmp_dir:
-        str_dir = str(tmp_dir)
         output = txtinout_reader.run_swat_in_other_dir(
             target_dir=tmp_dir,
             params={
@@ -88,7 +87,7 @@ def test_run_swat_in_other_dir(
                 }
             }
         )
-        assert str(output) == str_dir
+        assert os.path.samefile(output, tmp_dir)
 
     # error test for invalid input
     with pytest.raises(Exception) as exc_info:
