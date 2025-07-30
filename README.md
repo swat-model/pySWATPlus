@@ -91,13 +91,13 @@ refere to the [pySWATPlus documentation](https://pyswatplus.readthedocs.io/en/la
 
 Version 1.x includes breaking changes, including the `SWATProblem` and `SWATProblemMultimodel` classes have been removed. Updated tutorials for calibration analysis are coming soon.
 
--- To get the old 0.x version from the PyPI repository:
+- To get the old 0.x version from the PyPI repository:
 
 ```bash
 pip install pySWATPlus==0.2.20
 ```
 
--- [Access the source code of the 0.x version](https://github.com/swat-model/pySWATPlus/tree/v0.x)
+- [Access the source code of the 0.x version](https://github.com/swat-model/pySWATPlus/tree/v0.x)
 
 
 ## 📖 Citation
