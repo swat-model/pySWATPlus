@@ -25,27 +25,41 @@
 ## 📦 About
 
 `pySWATPlus` is an open-source Python package developed and maintained by [ICRA](https://icra.cat/).
-It provides a programmatic interface to the SWAT+ model, allowing users to run simulations, modify input files, and streamline custom experimentation through the model’s `TxtInOut` folder. 
+It provides a programmatic interface to the SWAT+ model, allowing users to run simulations, modify input files, and streamline custom experimentation through the model’s `TxtInOut` folder.
+
+
+## ✨ Key Features
+
+- Navigate and read files in the SWAT+ `TxtInOut` folder.
+- Modify input parameters and save the updated files.
+- Run SWAT+ simulations either in the main `TxtInOut` folder or in a user-specified directory.
+- Perform sensitivity analysis on model parameters using [SALib](https://github.com/SALib/SALib), with support for parallel computation.
+
 
 
 ## 📥 Install pySWATPlus
 
-To install from PyPI repository, run the following command:
+To install from PyPI repository:
 
 ```bash
 pip install pySWATPlus
 ```
 
-To Install from source code in editable mode, first create a `Conda` environment and then run the following command:
+To install the latest development version from GitHub:
 
 ```bash
-# Create and activate a Conda environment
-conda create --name swatplus # Replace swatplus by your choice
-conda activate swatplus
+pip install git+https://github.com/swat-model/pySWATPlus.git
+```
+
+To install from source in editable mode within your desired `conda` environment:
+
+```bash
+# Activate your Conda environment
+conda activate <environment_name>
 
 # Install required tools and clone the repository
 pip install build
-cd C:\Users\YourUsername\YourFolder  # Replace with your actual path
+cd C:\Users\Username\Folder  # Replace with your actual path
 git clone https://github.com/swat-model/pySWATPlus.git
 cd pySWATPlus
 
@@ -56,10 +70,34 @@ python -m build
 pip install --editable .
 ```
 
+## 🚀 Quickstart
+A brief example of how to start:
+
+```python
+import pySWATPlus
+txtinout = pySWATPlus.TxtinoutReader(
+    path=r"C:\Users\Username\TxtInOut" # Replace with your actual path
+)
+```
 
 ## 📚 Documentation
 
-For a guide to setting up first SWAT+ project and other functionalities with examples, refere to the **[pySWATPlus documentation](https://pyswatplus.readthedocs.io/en/latest/)**. 
+For a guide to setting up first SWAT+ project and other functionalities with examples,
+refere to the [pySWATPlus documentation](https://pyswatplus.readthedocs.io/en/latest/).
+
+
+
+## ⚠️ Legacy Version Notice
+
+Version 1.x includes breaking changes, including the `SWATProblem` and `SWATProblemMultimodel` classes have been removed. Updated tutorials for calibration analysis are coming soon.
+
+-- To get the old 0.x version from the PyPI repository:
+
+```bash
+pip install pySWATPlus==0.2.20
+```
+
+-- [Access the source code of the 0.x version](https://github.com/swat-model/pySWATPlus/tree/v0.x)
 
 
 ## 📖 Citation
