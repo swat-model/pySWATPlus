@@ -1,5 +1,2 @@
 # Ignore Gnuplot files for language statistics
-*.aqu linguist-detectable=false
-*.cal linguist-detectable=false
-*.con linguist-detectable=false
-*.plt linguist-detectable=false
+tests/sample_data/TxtInOut/* linguist-detectable=false
