@@ -39,12 +39,9 @@ nav:
   
   - Examples:
     - Getting Started: examples/getting_started.ipynb
-    #- Calibration: examples/calibration.ipynb
     - Sensitivity Analysis: examples/sensitivity_analysis.ipynb
 
   - API Reference:
     - TxtinoutReader: api/txtinoutreader.md
     - FileReader: api/filereader.md
     - pySWATPlus.types: api/types.md
-
-  - Citation: citation.md
