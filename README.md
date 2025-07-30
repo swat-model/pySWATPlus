@@ -1,7 +1,7 @@
 # pySWATPlus
 
 
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.16380058.svg)](https://doi.org/10.5281/zenodo.16380058)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.14889319.svg)](https://doi.org/110.5281/zenodo.14889319)
 ![PyPI - Version](https://img.shields.io/pypi/v/pySWATPlus)
 ![PyPI - Python Version](https://img.shields.io/pypi/pyversions/pySWATPlus)
 ![PyPI - Status](https://img.shields.io/pypi/status/pySWATPlus)
@@ -101,25 +101,32 @@ pip install pySWATPlus==0.2.20
 
 
 ## 📖 Citation
-To cite pySWATPlus, use:
+If you use **pySWATPlus** in your research or project, please cite the **specific version** you used. For general citation of the project (which always points to the latest version), use the **concept DOI** provided below.
 
-```tex
-@software{joan_salo_2025_16380058,
+---
+
+### 🔹 Citing a Specific Version
+
+Each release of pySWATPlus is archived on [Zenodo](https://zenodo.org/) with its own DOI. To cite a specific version:
+
+1. Visit the Zenodo project page: [https://doi.org/10.5281/zenodo.14889319](https://doi.org/10.5281/zenodo.14889319)
+2. Under **Versions**, click the release you used (e.g., `v1.0.1`)
+3. Copy the citation format provided there (BibTeX, APA, etc.)
+
+### 🔹 Citing the Latest Version (Concept DOI)
+
+To cite the most recent version (not tied to a specific release):
+
+```bibtex
+@software{joan_salo_pyswatplus_latest,
   author       = {Joan Saló and
                   Debasish Pal and
                   Oliu Llorente},
-  title        = {swat-model/pySWATPlus: Release v1.0.1},
-  month        = jul,
+  title        = {swat-model/pySWATPlus},
   year         = 2025,
   publisher    = {Zenodo},
-  version      = {v1.0.1},
-  doi          = {10.5281/zenodo.16380058},
-  url          = {https://doi.org/10.5281/zenodo.16380058},
-  swhid        = {swh:1:dir:22ad2f4e620c3ef99bc62dd880cbc05c0be3c2b8
-                   ;origin=https://doi.org/10.5281/zenodo.14889319;vi
-                   sit=swh:1:snp:4dc18853eb47c828caa36afd324ab58c8c8c
-                   02b2;anchor=swh:1:rel:c2e6bc6de431c7201ab6f484fc30
-                   96b43cb5a90e;path=swat-model-pySWATPlus-022f59a
-                  },
+  doi          = {10.5281/zenodo.14889319},
+  url          = {https://doi.org/10.5281/zenodo.14889319},
+  note         = {This DOI always points to the latest version of pySWATPlus.},
 }
 ```
