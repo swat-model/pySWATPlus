@@ -1,0 +1,2 @@
+# Ignore Gnuplot files for language statistics
+tests/sample_data/TxtInOut/* linguist-detectable=false

@@ -40,7 +40,7 @@ def _apply_param_change(
     '''
 
     value = change['value']
-    change_type = change['change_type']
+    change_type = change['change_type'] if 'change_type' in change else 'absval'
     filter_by = change.get('filter_by')
 
     mask = df.query(filter_by).index if filter_by else df.index

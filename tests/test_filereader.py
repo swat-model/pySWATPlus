@@ -9,13 +9,12 @@ def file_reader() -> typing.Generator[pySWATPlus.FileReader, None, None]:
 
     # set up file path
     test_folder = os.path.dirname(__file__)
-    data_folder = os.path.join(test_folder, 'sample_data')
+    data_folder = os.path.join(test_folder, 'sample_data', 'TxtInOut')
     data_file = os.path.join(data_folder, 'hydrology.hyd')
 
     # initializing FileReader class instance
     file_reader = pySWATPlus.FileReader(
-        path=data_file,
-        has_units=False
+        path=data_file
     )
 
     yield file_reader
@@ -27,11 +26,11 @@ def test_dataframe(
 
     # read DataFrame
     df = file_reader.df
-    assert df.shape[0] == 771
+    assert df.shape[0] == 561
 
     # change varibale value
-    variable = 'orgp_enrich'
-    value = 0.3
+    variable = 'epco'
+    value = 0.75
     df[variable] = value
 
     # rewrite the file
@@ -63,36 +62,51 @@ def test_dataframe(
         param_name='perco',
         change={'value': 50, 'change_type': 'pctchg', 'filter_by': 'name == "hyd003"'}
     )
-    assert round(df.loc[2, 'perco'], 2) == 0.75
+    assert round(df.loc[2, 'perco'], 2) == 0.08
+
+
+def test_dataframe_filterby(
+) -> None:
+
+    # set up file path
+    test_folder = os.path.dirname(__file__)
+    data_folder = os.path.join(test_folder, 'sample_data', 'TxtInOut')
+    data_file = os.path.join(data_folder, 'plants.plt')
+
+    # initializing FileReader class instance
+    file_reader = pySWATPlus.FileReader(
+        path=data_file,
+        filter_by='plnt_typ == "cold_annual"'
+    )
+
+    # DataFrame
+    df = file_reader.df
+    assert len(df) == 37
 
 
 def test_error() -> None:
 
     # set up folder path
     test_folder = os.path.dirname(__file__)
-    data_folder = os.path.join(test_folder, 'sample_data')
 
     # error test for string or pathlib.Path object
     with pytest.raises(Exception) as exc_info:
         pySWATPlus.FileReader(
-            path=1,
-            has_units=True
+            path=1
         )
     assert exc_info.value.args[0] == 'path must be a string or Path object'
 
     # error test for non-existence of file
     with pytest.raises(Exception) as exc_info:
         pySWATPlus.FileReader(
-            path='not_exist_yr.txt',
-            has_units=True
+            path='not_exist_yr.txt'
         )
     assert exc_info.value.args[0] == 'file does not exist'
 
     # error test for CSV file extension
     with pytest.raises(Exception) as exc_info:
         pySWATPlus.FileReader(
-            path=os.path.join(data_folder, 'error_sample.csv'),
-            has_units=True
+            path=os.path.join(test_folder, 'sample_data', 'no_exe', 'error_file.csv')
         )
     assert exc_info.value.args[0] == 'Not implemented yet'
 
