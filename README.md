@@ -1,7 +1,7 @@
 # pySWATPlus
 
 
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.14889319.svg)](https://doi.org/110.5281/zenodo.14889319)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.14889319.svg)](https://doi.org/10.5281/zenodo.14889319)
 ![PyPI - Version](https://img.shields.io/pypi/v/pySWATPlus)
 ![PyPI - Python Version](https://img.shields.io/pypi/pyversions/pySWATPlus)
 ![PyPI - Status](https://img.shields.io/pypi/status/pySWATPlus)

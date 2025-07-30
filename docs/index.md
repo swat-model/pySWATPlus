@@ -1,7 +1,7 @@
 # pySWATPlus
 
 
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.14889320.svg)](https://doi.org/10.5281/zenodo.14889320)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.14889319.svg)](https://doi.org/10.5281/zenodo.14889319)
 
 
 `pySWATPlus` is an open-source Python package developed and maintained by [ICRA](https://icra.cat/).
