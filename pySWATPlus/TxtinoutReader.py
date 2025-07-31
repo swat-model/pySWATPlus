@@ -89,6 +89,18 @@ class TxtinoutReader:
             avann (bool): If `True`, enable average annual frequency output.
         '''
 
+        # Time frequency dictionary
+        time_dict = {
+            'daily': daily,
+            'monthly': monthly,
+            'yearly': yearly,
+            'avann': avann
+        }
+
+        for key, val in time_dict.items():
+            if not isinstance(val, bool):
+                raise TypeError(f'Variable "{key}" for "{obj}" must be a bool value')
+
         # check if obj is object itself or file
         if pathlib.Path(obj).suffix:
             arg_to_add = obj.rsplit('_', maxsplit=1)[0]
@@ -126,9 +138,24 @@ class TxtinoutReader:
         the begin and end years in the `time.sim` file.
 
         Parameters:
-            begin (int): Beginning year of the simulation (e.g., 2010).
-            end (int): Ending year of the simulation (e.g., 2016).
+            begin (int): Beginning year of the simulation in YYYY format (e.g., 2010).
+            end (int): Ending year of the simulation in YYYY format (e.g., 2016).
+
+        Raises:
+            ValueError: If the begin year is greater than or equal to the end year.
         '''
+
+        year_dict = {
+            'begin': begin,
+            'end': end
+        }
+
+        for key, val in year_dict.items():
+            if not isinstance(val, int):
+                raise TypeError(f'"{key}" year must be an integer value')
+
+        if begin >= end:
+            raise ValueError("begin year must be less than end year")
 
         nth_line = 3
 
@@ -167,6 +194,9 @@ class TxtinoutReader:
             warmup (int): A positive integer representing the number of years
                 the simulation will use for warm-up (e.g., 1).
         '''
+
+        if not isinstance(warmup, int):
+            raise TypeError('Variable "warmup" must be an integer value')
 
         time_sim_path = self.root_folder / 'print.prt'
 
@@ -491,3 +521,96 @@ class TxtinoutReader:
         reader = TxtinoutReader(tmp_path)
 
         return reader.run_swat(params)
+
+    def _run_swat_in_other_dir_new_method(
+        self,
+        target_dir: str | pathlib.Path,
+        params: typing.Optional[ParamsType] = None,
+        begin_and_end_year: typing.Optional[tuple[int, int]] = None,
+        warmup: typing.Optional[int] = None,
+        disable_print_prt: typing.Optional[dict[str, dict[str, bool]]] = None
+    ) -> pathlib.Path:
+
+        '''
+        disable_print_prt : dict, optional
+        A dictionary used to update the `print.prt` file.
+        The default is None. The outer keys represent object from `print.prt` file,
+        and the inner keys can be any of 'daily', 'monthly', 'yearly', or 'avann'.
+        All inner options default to `True` (i.e., those outputs will be written)
+        unless explicitly set to `False`. Error will be raised if empty value of a
+        outer key will be provided.
+
+        Example:
+            disable_print_prt = {
+                'channel_sdmorph': {'daily': False}
+            }
+
+        Note: This input does not provide complete control over `print.prt` outputs. Some files are internally linked
+            in the SWAT+ model and may still be generated even when disabled.
+        '''
+
+        # Validate target directory
+        if not isinstance(target_dir, (str, pathlib.Path)):
+            raise TypeError('target_dir must be a string or Path object')
+
+        target_dir = pathlib.Path(target_dir).resolve()
+
+        # Create the directory if it does not exist and copy necessary files
+        target_dir.mkdir(parents=True, exist_ok=True)
+        tmp_path = self._copy_swat(target_dir=target_dir)
+
+        # Initialize new TxtinoutReader class
+        reader = TxtinoutReader(tmp_path)
+
+        # Set simulation range time
+        if begin_and_end_year is not None:
+            if not isinstance(begin_and_end_year, tuple):
+                raise TypeError('begin_end_years must be a tuple')
+            if len(begin_and_end_year) != 2:
+                raise ValueError('begin_end_years must contain exactly two elements')
+            begin, end = begin_and_end_year
+            reader.set_begin_and_end_year(
+                begin=begin,
+                end=end
+            )
+
+        # Set warmup period
+        if warmup is not None:
+            reader.set_warmup_year(
+                warmup=warmup
+            )
+
+        # update print.prt file to write output
+        if disable_print_prt is not None:
+            if not isinstance(disable_print_prt, dict):
+                raise TypeError('disable_print_prt must be a dictionary')
+            if len(disable_print_prt) == 0:
+                raise ValueError('disable_print_prt cannot be an empty dictionary')
+            default_dict = {
+                'daily': True,
+                'monthly': True,
+                'yearly': True,
+                'avann': True
+            }
+            for key, val in disable_print_prt.items():
+                if not isinstance(val, dict):
+                    raise ValueError(f'Value of key "{key}" must be a dictionary')
+                if len(val) == 0:
+                    raise ValueError(f'Value of key "{key}" cannot be an empty dictionary')
+                key_dict = default_dict.copy()
+                for sub_key, sub_val in val.items():
+                    if sub_key not in key_dict:
+                        raise ValueError(f'Sub-key "{sub_key}" for key "{key}" is not valid')
+                    key_dict[sub_key] = sub_val
+                reader.enable_object_in_print_prt(
+                    obj=key,
+                    daily=key_dict['daily'],
+                    monthly=key_dict['monthly'],
+                    yearly=key_dict['yearly'],
+                    avann=key_dict['avann']
+                )
+
+        # run the SWAT+ simulation
+        output = reader.run_swat(params=params)
+
+        return output
