@@ -57,13 +57,6 @@ The installation is successful if no error is raised when importing the module u
 import pySWATPlus
 ```
 
-## 📚 Documentation
-
-For a guide to setting up first SWAT+ project and other functionalities with examples,
-refere to the [pySWATPlus documentation](https://pyswatplus.readthedocs.io/en/latest/).
-
-
-
 ## 📖 Citation
 
 If you use `pySWATPlus` in your research, please cite it using the following **concept DOI**, which always points to the latest version:
