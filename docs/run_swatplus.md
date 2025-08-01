@@ -139,7 +139,9 @@ param_sets = [
     {
         'hydrology.hyd': {
             'has_units': False,
-            'epco': {'value': 0.7},
+            'epco': [
+                {'value': 0.7, 'change_type': 'absval'}
+            ],
         }
     },
     {
