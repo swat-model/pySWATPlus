@@ -193,10 +193,15 @@ class TxtinoutReader:
         Args:
             warmup (int): A positive integer representing the number of years
                 the simulation will use for warm-up (e.g., 1).
+
+        Raises:
+            ValueError: If the warmup year is less than or equal to 0.
         '''
 
         if not isinstance(warmup, int):
-            raise TypeError('Variable "warmup" must be an integer value')
+            raise TypeError('"warmup" must be an integer value')
+        if warmup <= 0:
+            raise ValueError('"warmup" must be a positive integer')
 
         time_sim_path = self.root_folder / 'print.prt'
 
@@ -286,7 +291,7 @@ class TxtinoutReader:
             filter_by (str): A pandas query string to filter rows from the file.
 
         Returns:
-            FileReader: A FileReader instance for the registered file.
+            A FileReader instance for the registered file.
         '''
 
         file_path = self.root_folder / filename
@@ -383,11 +388,8 @@ class TxtinoutReader:
                 }
                 ```
 
-        Raises:
-            subprocess.CalledProcessError: If the SWAT+ executable fails.
-
         Returns:
-            pathlib.Path: Path where the SWAT+ simulation was executed.
+            Path where the SWAT+ simulation was executed.
 
         Example:
             ```python
@@ -482,11 +484,8 @@ class TxtinoutReader:
                 }
                 ```
 
-        Raises:
-            subprocess.CalledProcessError: If the SWAT+ executable fails.
-
         Returns:
-            pathlib.Path: The path to the directory where the SWAT+ simulation was executed.
+            The path to the directory where the SWAT+ simulation was executed.
 
         Example:
             ```python
@@ -522,7 +521,7 @@ class TxtinoutReader:
 
         return reader.run_swat(params)
 
-    def _run_swat_in_other_dir_new_method(
+    def _run_swat_in_other_dir_unified(
         self,
         target_dir: str | pathlib.Path,
         params: typing.Optional[ParamsType] = None,
@@ -532,21 +531,69 @@ class TxtinoutReader:
     ) -> pathlib.Path:
 
         '''
-        disable_print_prt : dict, optional
-        A dictionary used to update the `print.prt` file.
-        The default is None. The outer keys represent object from `print.prt` file,
-        and the inner keys can be any of 'daily', 'monthly', 'yearly', or 'avann'.
-        All inner options default to `True` (i.e., those outputs will be written)
-        unless explicitly set to `False`. Error will be raised if empty value of a
-        outer key will be provided.
+        Run the SWAT+ model in a specified directory, with optional parameter modifications.
+        This method copies the necessary input files from the current project into the
+        given `target_dir`, applies any parameter changes, and executes the SWAT+ simulation there.
+
+        Args:
+            target_dir (str or Path): Path to the directory where the simulation will be done.
+
+            params (ParamsType): Nested dictionary specifying parameter changes.
+
+                The `params` dictionary should follow this structure:
+
+                ```python
+                params = {
+                    "<input_file>": {
+                        "has_units": bool,              # Optional. Whether the file has units information (default is False)
+                        "<parameter_name>": [           # One or more changes to apply to the parameter
+                            {
+                                "value": float,         # New value to assign
+                                "change_type": str,     # (Optional) One of: 'absval' (default), 'abschg', 'pctchg'
+                                "filter_by": str        # (Optional) pandas `.query()` filter string to select rows
+                            },
+                            # ... more changes
+                        ]
+                    },
+                    # ... more input files
+                }
+                ```
+
+            begin_and_end_year (tuple[int, int]): A tuple of begin and end years of the simulation in YYYY format.
+
+            warmup (int): A positive integer representing the number of warm-up years (e.g., 1).
+
+            disable_print_prt (dict[str, dict[str, bool]]):
+                A dictionary where each outer key represents an object from the `print.prt` file,
+                    and the corresponding value is a dictionary with inner keys:
+                    `daily`, `monthly`, `yearly`, or `avann`. All inner options default to `True`
+                    unless explicitly set to `False`. An error will be raised if an outer key
+                    is provided with an empty dictionary.
+
+        Returns:
+            The path to the directory where the SWAT+ simulation was executed.
 
         Example:
-            disable_print_prt = {
-                'channel_sdmorph': {'daily': False}
-            }
-
-        Note: This input does not provide complete control over `print.prt` outputs. Some files are internally linked
-            in the SWAT+ model and may still be generated even when disabled.
+            ```python
+            simulation = pySWATPlus.TxtinoutReader.run_swat_in_other_dir_new_method(
+                target_dir="C:\\\\Users\\\\Username\\\\simulation_folder",
+                params={
+                    'plants.plt': {
+                        'has_units': False,
+                        'bm_e': [
+                            {'value': 100, 'change_type': 'absval', 'filter_by': 'name == "agrl"'},
+                            {'value': 110, 'change_type': 'absval', 'filter_by': 'name == "almd"'},
+                        ],
+                    },
+                },
+                begin_and_end_year=(2012, 2016),
+                warmup=1,
+                disable_print_prt = {
+                    'channel_sd': {'daily': False},
+                    'channel_sdmorph': {'monthly': False}
+                }
+            )
+            ```
         '''
 
         # Validate target directory
