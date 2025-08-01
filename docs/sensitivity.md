@@ -17,7 +17,7 @@ import random
 import tempfile
 ```
 
-## Input Varibales
+## Input Variables
 
 Here, we configure the SWAT+ model environment by specifying the `TxtInOut` folder path, simulation time period, warm-up years, and the output files to be generated.
 
@@ -49,6 +49,15 @@ txtinout_reader.enable_object_in_print_prt(
     yearly=False,
     avann=False
 )
+
+# Fix any value, if necessary, other that sensitive paramters (optional)
+hyd_register = simulation_reader.register_file(
+    filename='hydrology.hyd',
+    has_units=False
+)
+hyd_df = hyd_register.df
+hyd_df['perco'] = 0.1
+hyd_register.overwrite_file()
 ```
 
 ## Evaluation Function
