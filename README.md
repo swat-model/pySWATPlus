@@ -33,7 +33,7 @@ It provides a programmatic interface to the [SWAT+](https://swat.tamu.edu/softwa
 - Navigate and read files in the SWAT+ `TxtInOut` folder.
 - Modify input parameters and save the updated files.
 - Run SWAT+ simulations either in the main `TxtInOut` folder or in a user-specified directory.
-- Perform sensitivity analysis on model parameters using [SALib](https://github.com/SALib/SALib), with support for parallel computation.
+- Perform sensitivity analysis on model parameters using the [SALib](https://github.com/SALib/SALib) Python package, with support for parallel computation.
 
 
 
