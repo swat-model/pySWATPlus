@@ -1,5 +1,4 @@
 mkdocs
 mkdocstrings-python
-mkdocs-jupyter
 pandas
 typing-extensions
