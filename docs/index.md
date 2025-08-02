@@ -5,7 +5,7 @@
 
 
 `pySWATPlus` is an open-source Python package developed and maintained by [ICRA](https://icra.cat/).
-It provides a programmatic interface to the SWAT+ model, allowing users to run simulations, modify input files, and streamline custom experimentation through the model’s `TxtInOut` folder.
+It provides a programmatic interface to the [SWAT+](https://swat.tamu.edu/software/plus/) model, allowing users to run simulations, modify input files, and streamline custom experimentation through the model’s `TxtInOut` folder.
 
 
 ## ✨ Key Features
@@ -13,8 +13,7 @@ It provides a programmatic interface to the SWAT+ model, allowing users to run s
 - Navigate and read files in the SWAT+ `TxtInOut` folder.
 - Modify input parameters and save the updated files.
 - Run SWAT+ simulations either in the main `TxtInOut` folder or in a user-specified directory.
-- Perform sensitivity analysis on model parameters using [SALib](https://github.com/SALib/SALib), with support for parallel computation.
-
+- Perform sensitivity analysis on model parameters using the [SALib](https://github.com/SALib/SALib) Pyhton package, with support for parallel computation.
 
 
 ## 📥 Install pySWATPlus
@@ -50,39 +49,17 @@ python -m build
 pip install --editable .
 ```
 
-## 🚀 Quickstart
-A brief example of how to start:
+## ✅ Verify Installation
+
+The installation is successful if no error is raised when importing the module using the following command:
 
 ```python
 import pySWATPlus
-txtinout = pySWATPlus.TxtinoutReader(
-    path=r"C:\Users\Username\TxtInOut" # Replace with your actual path
-)
 ```
 
-## 📚 Documentation
-
-For a guide to setting up first SWAT+ project and other functionalities with examples,
-refere to the [pySWATPlus documentation](https://pyswatplus.readthedocs.io/en/latest/).
-
-
-
 ## 📖 Citation
-If you use **pySWATPlus** in your research or project, please cite the **specific version** you used. For general citation of the project (which always points to the latest version), use the **concept DOI** provided below.
 
----
-
-### 🔹 Citing a Specific Version
-
-Each release of pySWATPlus is archived on [Zenodo](https://zenodo.org/) with its own DOI. To cite a specific version:
-
-1. Visit the Zenodo project page: [https://doi.org/10.5281/zenodo.14889319](https://doi.org/10.5281/zenodo.14889319)
-2. Under **Versions**, click the release you used (e.g., `v1.0.1`)
-3. Copy the citation format provided there (BibTeX, APA, etc.)
-
-### 🔹 Citing the Latest Version (Concept DOI)
-
-To cite the most recent version (not tied to a specific release):
+If you use `pySWATPlus` in your research, please cite it using the following **concept DOI**, which always points to the latest version:
 
 ```bibtex
 @software{joan_salo_pyswatplus_latest,
@@ -97,3 +74,10 @@ To cite the most recent version (not tied to a specific release):
   note         = {This DOI always points to the latest version of pySWATPlus.},
 }
 ```
+
+
+To cite a specific version:
+
+- Visit the [Zenodo project page](https://doi.org/10.5281/zenodo.14889319).
+- Select the specific version you used (e.g., `v1.0.1`).
+- Copy the appropriate citation format (BibTeX, APA, etc.).

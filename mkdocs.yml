@@ -25,8 +25,6 @@ plugins:
             show_root_full_path: false
             filters:
               - "!^_[^_]"  # exclude members starting with a single underscore, but keep __init__, __str__, etc.
-        
-  - mkdocs-jupyter
 
 markdown_extensions:
   - admonition
@@ -36,10 +34,10 @@ markdown_extensions:
 
 nav:
   - Home: index.md
-  
-  - Examples:
-    - Getting Started: examples/getting_started.ipynb
-    - Sensitivity Analysis: examples/sensitivity_analysis.ipynb
+
+  - Run SWAT+: run_swatplus.md
+
+  - Sensitivity Analysis: sensitivity.md
 
   - API Reference:
     - TxtinoutReader: api/txtinoutreader.md

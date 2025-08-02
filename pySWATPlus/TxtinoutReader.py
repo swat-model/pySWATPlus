@@ -89,6 +89,18 @@ class TxtinoutReader:
             avann (bool): If `True`, enable average annual frequency output.
         '''
 
+        # Time frequency dictionary
+        time_dict = {
+            'daily': daily,
+            'monthly': monthly,
+            'yearly': yearly,
+            'avann': avann
+        }
+
+        for key, val in time_dict.items():
+            if not isinstance(val, bool):
+                raise TypeError(f'Variable "{key}" for "{obj}" must be a bool value')
+
         # check if obj is object itself or file
         if pathlib.Path(obj).suffix:
             arg_to_add = obj.rsplit('_', maxsplit=1)[0]
@@ -126,9 +138,24 @@ class TxtinoutReader:
         the begin and end years in the `time.sim` file.
 
         Parameters:
-            begin (int): Beginning year of the simulation (e.g., 2010).
-            end (int): Ending year of the simulation (e.g., 2016).
+            begin (int): Beginning year of the simulation in YYYY format (e.g., 2010).
+            end (int): Ending year of the simulation in YYYY format (e.g., 2016).
+
+        Raises:
+            ValueError: If the begin year is greater than or equal to the end year.
         '''
+
+        year_dict = {
+            'begin': begin,
+            'end': end
+        }
+
+        for key, val in year_dict.items():
+            if not isinstance(val, int):
+                raise TypeError(f'"{key}" year must be an integer value')
+
+        if begin >= end:
+            raise ValueError("begin year must be less than end year")
 
         nth_line = 3
 
@@ -166,7 +193,15 @@ class TxtinoutReader:
         Args:
             warmup (int): A positive integer representing the number of years
                 the simulation will use for warm-up (e.g., 1).
+
+        Raises:
+            ValueError: If the warmup year is less than or equal to 0.
         '''
+
+        if not isinstance(warmup, int):
+            raise TypeError('"warmup" must be an integer value')
+        if warmup <= 0:
+            raise ValueError('"warmup" must be a positive integer')
 
         time_sim_path = self.root_folder / 'print.prt'
 
@@ -256,7 +291,7 @@ class TxtinoutReader:
             filter_by (str): A pandas query string to filter rows from the file.
 
         Returns:
-            FileReader: A FileReader instance for the registered file.
+            A FileReader instance for the registered file.
         '''
 
         file_path = self.root_folder / filename
@@ -353,11 +388,8 @@ class TxtinoutReader:
                 }
                 ```
 
-        Raises:
-            subprocess.CalledProcessError: If the SWAT+ executable fails.
-
         Returns:
-            pathlib.Path: Path where the SWAT+ simulation was executed.
+            Path where the SWAT+ simulation was executed.
 
         Example:
             ```python
@@ -452,11 +484,8 @@ class TxtinoutReader:
                 }
                 ```
 
-        Raises:
-            subprocess.CalledProcessError: If the SWAT+ executable fails.
-
         Returns:
-            pathlib.Path: The path to the directory where the SWAT+ simulation was executed.
+            The path to the directory where the SWAT+ simulation was executed.
 
         Example:
             ```python
@@ -491,3 +520,144 @@ class TxtinoutReader:
         reader = TxtinoutReader(tmp_path)
 
         return reader.run_swat(params)
+
+    def _run_swat_in_other_dir_unified(
+        self,
+        target_dir: str | pathlib.Path,
+        params: typing.Optional[ParamsType] = None,
+        begin_and_end_year: typing.Optional[tuple[int, int]] = None,
+        warmup: typing.Optional[int] = None,
+        disable_print_prt: typing.Optional[dict[str, dict[str, bool]]] = None
+    ) -> pathlib.Path:
+
+        '''
+        Run the SWAT+ model in a specified directory, with optional parameter modifications.
+        This method copies the necessary input files from the current project into the
+        given `target_dir`, applies any parameter changes, and executes the SWAT+ simulation there.
+
+        Args:
+            target_dir (str or Path): Path to the directory where the simulation will be done.
+
+            params (ParamsType): Nested dictionary specifying parameter changes.
+
+                The `params` dictionary should follow this structure:
+
+                ```python
+                params = {
+                    "<input_file>": {
+                        "has_units": bool,              # Optional. Whether the file has units information (default is False)
+                        "<parameter_name>": [           # One or more changes to apply to the parameter
+                            {
+                                "value": float,         # New value to assign
+                                "change_type": str,     # (Optional) One of: 'absval' (default), 'abschg', 'pctchg'
+                                "filter_by": str        # (Optional) pandas `.query()` filter string to select rows
+                            },
+                            # ... more changes
+                        ]
+                    },
+                    # ... more input files
+                }
+                ```
+
+            begin_and_end_year (tuple[int, int]): A tuple of begin and end years of the simulation in YYYY format.
+
+            warmup (int): A positive integer representing the number of warm-up years (e.g., 1).
+
+            disable_print_prt (dict[str, dict[str, bool]]):
+                A dictionary where each outer key represents an object from the `print.prt` file,
+                    and the corresponding value is a dictionary with inner keys:
+                    `daily`, `monthly`, `yearly`, or `avann`. All inner options default to `True`
+                    unless explicitly set to `False`. An error will be raised if an outer key
+                    is provided with an empty dictionary.
+
+        Returns:
+            The path to the directory where the SWAT+ simulation was executed.
+
+        Example:
+            ```python
+            simulation = pySWATPlus.TxtinoutReader.run_swat_in_other_dir_new_method(
+                target_dir="C:\\\\Users\\\\Username\\\\simulation_folder",
+                params={
+                    'plants.plt': {
+                        'has_units': False,
+                        'bm_e': [
+                            {'value': 100, 'change_type': 'absval', 'filter_by': 'name == "agrl"'},
+                            {'value': 110, 'change_type': 'absval', 'filter_by': 'name == "almd"'},
+                        ],
+                    },
+                },
+                begin_and_end_year=(2012, 2016),
+                warmup=1,
+                disable_print_prt = {
+                    'channel_sd': {'daily': False},
+                    'channel_sdmorph': {'monthly': False}
+                }
+            )
+            ```
+        '''
+
+        # Validate target directory
+        if not isinstance(target_dir, (str, pathlib.Path)):
+            raise TypeError('target_dir must be a string or Path object')
+
+        target_dir = pathlib.Path(target_dir).resolve()
+
+        # Create the directory if it does not exist and copy necessary files
+        target_dir.mkdir(parents=True, exist_ok=True)
+        tmp_path = self._copy_swat(target_dir=target_dir)
+
+        # Initialize new TxtinoutReader class
+        reader = TxtinoutReader(tmp_path)
+
+        # Set simulation range time
+        if begin_and_end_year is not None:
+            if not isinstance(begin_and_end_year, tuple):
+                raise TypeError('begin_end_years must be a tuple')
+            if len(begin_and_end_year) != 2:
+                raise ValueError('begin_end_years must contain exactly two elements')
+            begin, end = begin_and_end_year
+            reader.set_begin_and_end_year(
+                begin=begin,
+                end=end
+            )
+
+        # Set warmup period
+        if warmup is not None:
+            reader.set_warmup_year(
+                warmup=warmup
+            )
+
+        # update print.prt file to write output
+        if disable_print_prt is not None:
+            if not isinstance(disable_print_prt, dict):
+                raise TypeError('disable_print_prt must be a dictionary')
+            if len(disable_print_prt) == 0:
+                raise ValueError('disable_print_prt cannot be an empty dictionary')
+            default_dict = {
+                'daily': True,
+                'monthly': True,
+                'yearly': True,
+                'avann': True
+            }
+            for key, val in disable_print_prt.items():
+                if not isinstance(val, dict):
+                    raise ValueError(f'Value of key "{key}" must be a dictionary')
+                if len(val) == 0:
+                    raise ValueError(f'Value of key "{key}" cannot be an empty dictionary')
+                key_dict = default_dict.copy()
+                for sub_key, sub_val in val.items():
+                    if sub_key not in key_dict:
+                        raise ValueError(f'Sub-key "{sub_key}" for key "{key}" is not valid')
+                    key_dict[sub_key] = sub_val
+                reader.enable_object_in_print_prt(
+                    obj=key,
+                    daily=key_dict['daily'],
+                    monthly=key_dict['monthly'],
+                    yearly=key_dict['yearly'],
+                    avann=key_dict['avann']
+                )
+
+        # run the SWAT+ simulation
+        output = reader.run_swat(params=params)
+
+        return output
