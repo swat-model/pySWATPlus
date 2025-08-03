@@ -1,0 +1,813 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+        <link rel="prev" href="../run_swatplus/">
+      
+      
+        <link rel="next" href="../api/txtinoutreader/">
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.16">
+    
+    
+      
+        <title>Sensitivity Analysis - pySWATPlus</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.7e37652d.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/_mkdocstrings.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#sensitivity-analysis" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="pySWATPlus" class="md-header__button md-logo" aria-label="pySWATPlus" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            pySWATPlus
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Sensitivity Analysis
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 6H7c-3.31 0-6 2.69-6 6s2.69 6 6 6h10c3.31 0 6-2.69 6-6s-2.69-6-6-6m0 10H7c-2.21 0-4-1.79-4-4s1.79-4 4-4h10c2.21 0 4 1.79 4 4s-1.79 4-4 4M7 9c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 7H7a5 5 0 0 0-5 5 5 5 0 0 0 5 5h10a5 5 0 0 0 5-5 5 5 0 0 0-5-5m0 8a3 3 0 0 1-3-3 3 3 0 0 1 3-3 3 3 0 0 1 3 3 3 3 0 0 1-3 3"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href=".." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../run_swatplus/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Run SWAT+
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    <li class="md-tabs__item md-tabs__item--active">
+      <a href="./" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Sensitivity Analysis
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../api/txtinoutreader/" class="md-tabs__link">
+          
+  
+  
+  API Reference
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="pySWATPlus" class="md-nav__button md-logo" aria-label="pySWATPlus" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    pySWATPlus
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Home
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../run_swatplus/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Run SWAT+
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    Sensitivity Analysis
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    Sensitivity Analysis
+    
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#required-packages" class="md-nav__link">
+    <span class="md-ellipsis">
+      Required Packages
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#input-variables" class="md-nav__link">
+    <span class="md-ellipsis">
+      Input Variables
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#evaluation-function" class="md-nav__link">
+    <span class="md-ellipsis">
+      Evaluation Function
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sample-sensitive-parameters" class="md-nav__link">
+    <span class="md-ellipsis">
+      Sample Sensitive Parameters
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#result-analysis" class="md-nav__link">
+    <span class="md-ellipsis">
+      Result Analysis
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    API Reference
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            API Reference
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/txtinoutreader/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    TxtinoutReader
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/filereader/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    FileReader
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/types/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    pySWATPlus.types
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#required-packages" class="md-nav__link">
+    <span class="md-ellipsis">
+      Required Packages
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#input-variables" class="md-nav__link">
+    <span class="md-ellipsis">
+      Input Variables
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#evaluation-function" class="md-nav__link">
+    <span class="md-ellipsis">
+      Evaluation Function
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sample-sensitive-parameters" class="md-nav__link">
+    <span class="md-ellipsis">
+      Sample Sensitive Parameters
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#result-analysis" class="md-nav__link">
+    <span class="md-ellipsis">
+      Result Analysis
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="sensitivity-analysis">Sensitivity Analysis</h1>
+<p>This tutorial demonstrates how to perform a sensitivity analysis on SWAT+ model parameters using the <a href="https://github.com/SALib/SALib">SALib</a> Python package. The analysis focuses on two parameters, <code>epco</code> and <code>esco</code>, located in the <code>hydrology.hyd</code> file.</p>
+<h3 id="required-packages">Required Packages</h3>
+<p>This section imports the essential libraries needed to interact with the SWAT+ model, generate parameter samples, execute simulations, handle data, and perform sensitivity analysis.</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># Import required packages</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pySWATPlus</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">SALib.sample.sobol</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">SALib.analyze.sobol</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">concurrent.futures</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">random</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">tempfile</span>
+</code></pre></div>
+<h2 id="input-variables">Input Variables</h2>
+<p>Here, we configure the SWAT+ model environment by specifying the <code>TxtInOut</code> folder path, simulation time period, warm-up years, and the output files to be generated.</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># Input TxtInOut folder path</span>
+<span class="n">txtinout_path</span> <span class="o">=</span> <span class="sa">r</span><span class="s2">&quot;C:\Users\Username\project\Scenarios\Default\TxtInOut&quot;</span>
+
+<span class="c1"># Intialize the TxtinoutReader class</span>
+<span class="n">txtinout_reader</span> <span class="o">=</span> <span class="n">pySWATPlus</span><span class="o">.</span><span class="n">TxtinoutReader</span><span class="p">(</span>
+    <span class="n">path</span><span class="o">=</span><span class="n">txtinout_path</span>
+<span class="p">)</span>
+
+<span class="c1"># Set simulation timeline (optional)</span>
+<span class="n">txtinout_reader</span><span class="o">.</span><span class="n">set_begin_and_end_year</span><span class="p">(</span>
+    <span class="n">begin</span><span class="o">=</span><span class="mi">2010</span><span class="p">,</span>
+    <span class="n">end</span><span class="o">=</span><span class="mi">2012</span>
+<span class="p">)</span>
+
+<span class="c1"># Set warm-up year (optional)</span>
+<span class="n">txtinout_reader</span><span class="o">.</span><span class="n">set_warmup_year</span><span class="p">(</span>
+    <span class="n">warmup</span><span class="o">=</span><span class="mi">1</span>
+<span class="p">)</span>
+
+<span class="c1"># Enable output for channel_sd_day.txt (optional)</span>
+<span class="n">txtinout_reader</span><span class="o">.</span><span class="n">enable_object_in_print_prt</span><span class="p">(</span>
+    <span class="n">obj</span><span class="o">=</span><span class="s1">&#39;channel_sd&#39;</span><span class="p">,</span>
+    <span class="n">daily</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">monthly</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">yearly</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">avann</span><span class="o">=</span><span class="kc">False</span>
+<span class="p">)</span>
+
+<span class="c1"># Fix any value, if necessary, other that sensitive paramters (optional)</span>
+<span class="n">hyd_register</span> <span class="o">=</span> <span class="n">simulation_reader</span><span class="o">.</span><span class="n">register_file</span><span class="p">(</span>
+    <span class="n">filename</span><span class="o">=</span><span class="s1">&#39;hydrology.hyd&#39;</span><span class="p">,</span>
+    <span class="n">has_units</span><span class="o">=</span><span class="kc">False</span>
+<span class="p">)</span>
+<span class="n">hyd_df</span> <span class="o">=</span> <span class="n">hyd_register</span><span class="o">.</span><span class="n">df</span>
+<span class="n">hyd_df</span><span class="p">[</span><span class="s1">&#39;perco&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.1</span>
+<span class="n">hyd_register</span><span class="o">.</span><span class="n">overwrite_file</span><span class="p">()</span>
+</code></pre></div>
+<h2 id="evaluation-function">Evaluation Function</h2>
+<p>This section sets up the core logic to run the SWAT+ model with different values of <code>epco</code> and <code>esco</code>, and reads the resulting output. The current implementation returns a random value for demonstration; in practice, this should be replaced with a proper objective function using simulated and observed data.</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># Define a function whose output will be used in sensitivity analysis</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">run_and_evaluate_swat</span><span class="p">(</span>
+    <span class="n">epco</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+    <span class="n">esco</span><span class="p">:</span> <span class="nb">float</span>
+<span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Running SWAT with epco = </span><span class="si">{</span><span class="n">epco</span><span class="si">}</span><span class="s1"> and esco = </span><span class="si">{</span><span class="n">esco</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+
+    <span class="c1"># Construct &#39;params&#39; dictionary</span>
+    <span class="n">params</span> <span class="o">=</span>  <span class="p">{</span>
+        <span class="s1">&#39;hydrology.hyd&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s1">&#39;has_units&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+            <span class="s1">&#39;epco&#39;</span><span class="p">:</span> <span class="p">[</span>
+                <span class="p">{</span><span class="s1">&#39;value&#39;</span><span class="p">:</span> <span class="n">epco</span><span class="p">,</span> <span class="s1">&#39;change_type&#39;</span><span class="p">:</span> <span class="s1">&#39;absval&#39;</span><span class="p">},</span>
+            <span class="p">],</span>
+            <span class="s1">&#39;esco&#39;</span><span class="p">:</span> <span class="p">[</span>
+                <span class="p">{</span><span class="s1">&#39;value&#39;</span><span class="p">:</span> <span class="n">esco</span><span class="p">,</span> <span class="s1">&#39;change_type&#39;</span><span class="p">:</span> <span class="s1">&#39;absval&#39;</span><span class="p">},</span>
+            <span class="p">],</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="c1"># Temporary directory creation</span>
+    <span class="k">with</span> <span class="n">tempfile</span><span class="o">.</span><span class="n">TemporaryDirectory</span><span class="p">()</span> <span class="k">as</span> <span class="n">tmp_dir</span><span class="p">:</span>
+
+        <span class="c1"># Run simulation</span>
+        <span class="n">simulation_reader</span> <span class="o">=</span> <span class="n">txtinout_reader</span><span class="o">.</span><span class="n">run_swat_in_other_dir</span><span class="p">(</span>
+            <span class="n">target_dir</span><span class="o">=</span><span class="n">tmp_dir</span><span class="p">,</span>
+            <span class="n">params</span><span class="o">=</span><span class="n">params</span>
+        <span class="p">)</span>
+
+        <span class="c1"># Read results</span>
+        <span class="n">file_register</span> <span class="o">=</span> <span class="n">simulation_reader</span><span class="o">.</span><span class="n">register_file</span><span class="p">(</span>
+            <span class="n">filename</span><span class="o">=</span><span class="s1">&#39;channel_sdmorph_day.txt&#39;</span><span class="p">,</span>
+            <span class="n">has_units</span><span class="o">=</span><span class="kc">True</span>
+        <span class="p">)</span>
+
+        <span class="c1"># Get DataFrame</span>
+        <span class="n">file_df</span> <span class="o">=</span> <span class="n">file_register</span><span class="o">.</span><span class="n">df</span>
+
+        <span class="c1"># Return a random value (replace with real evaluation logic)</span>
+        <span class="k">return</span> <span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">()</span>
+
+<span class="c1"># Wrapper function for parallel execution</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">evaluate</span><span class="p">(</span><span class="n">params</span><span class="p">):</span>
+
+    <span class="k">return</span> <span class="n">run_and_evaluate_swat</span><span class="p">(</span><span class="o">*</span><span class="n">params</span><span class="p">)</span>
+</code></pre></div>
+<h2 id="sample-sensitive-parameters">Sample Sensitive Parameters</h2>
+<p>We define the sensitivity problem, including the parameter names and bounds, and use <code>Sobol</code> sampling to generate test combinations for the analysis.</p>
+<div class="highlight"><pre><span></span><code><span class="n">problem</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;num_vars&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>  <span class="c1"># Number of parameters</span>
+    <span class="s1">&#39;names&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;epco&#39;</span><span class="p">,</span> <span class="s1">&#39;esco&#39;</span><span class="p">],</span>  <span class="c1"># Parameter names</span>
+    <span class="s1">&#39;bounds&#39;</span><span class="p">:</span> <span class="p">[[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]]</span> <span class="o">*</span> <span class="mi">2</span>  <span class="c1"># Parameter bounds</span>
+<span class="p">}</span>
+
+<span class="c1"># Generate parameter samples</span>
+<span class="n">param_values</span> <span class="o">=</span> <span class="n">SALib</span><span class="o">.</span><span class="n">sample</span><span class="o">.</span><span class="n">sobol</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="n">problem</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>  
+</code></pre></div>
+<h2 id="result-analysis">Result Analysis</h2>
+<p>We run the model simulations in parallel using the parameter samples and analyze the sensitivity of each parameter using <code>Sobol</code> indices. </p>
+<div class="highlight"><pre><span></span><code><span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+
+    <span class="c1"># Parallel evaluation of Sensitive Parameters</span>
+    <span class="k">with</span> <span class="n">concurrent</span><span class="o">.</span><span class="n">futures</span><span class="o">.</span><span class="n">ProcessPoolExecutor</span><span class="p">()</span> <span class="k">as</span> <span class="n">executor</span><span class="p">:</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">executor</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">evaluate</span><span class="p">,</span> <span class="n">param_values</span><span class="p">)))</span>
+
+    <span class="c1"># Analyze results</span>
+    <span class="n">sobol_indices</span> <span class="o">=</span> <span class="n">SALib</span><span class="o">.</span><span class="n">analyze</span><span class="o">.</span><span class="n">sobol</span><span class="o">.</span><span class="n">analyze</span><span class="p">(</span><span class="n">problem</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;First-order Sobol indices:&#39;</span><span class="p">,</span> <span class="n">sobol_indices</span><span class="p">[</span><span class="s1">&#39;S1&#39;</span><span class="p">])</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Total-order Sobol indices:&#39;</span><span class="p">,</span> <span class="n">sobol_indices</span><span class="p">[</span><span class="s1">&#39;ST&#39;</span><span class="p">])</span>
+</code></pre></div>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      <script id="__config" type="application/json">{"base": "..", "features": ["navigation.tabs", "content.code.annotate"], "search": "../assets/javascripts/workers/search.d50fe291.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.50899def.min.js"></script>
+      
+    
+  </body>
+</html>

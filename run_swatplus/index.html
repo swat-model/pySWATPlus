@@ -1,0 +1,899 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+        <link rel="prev" href="..">
+      
+      
+        <link rel="next" href="../sensitivity/">
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.16">
+    
+    
+      
+        <title>Run SWAT+ - pySWATPlus</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.7e37652d.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/_mkdocstrings.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#swat-simulation-guide" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="pySWATPlus" class="md-header__button md-logo" aria-label="pySWATPlus" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            pySWATPlus
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Run SWAT+
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 6H7c-3.31 0-6 2.69-6 6s2.69 6 6 6h10c3.31 0 6-2.69 6-6s-2.69-6-6-6m0 10H7c-2.21 0-4-1.79-4-4s1.79-4 4-4h10c2.21 0 4 1.79 4 4s-1.79 4-4 4M7 9c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 7H7a5 5 0 0 0-5 5 5 5 0 0 0 5 5h10a5 5 0 0 0 5-5 5 5 0 0 0-5-5m0 8a3 3 0 0 1-3-3 3 3 0 0 1 3-3 3 3 0 0 1 3 3 3 3 0 0 1-3 3"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href=".." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    <li class="md-tabs__item md-tabs__item--active">
+      <a href="./" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Run SWAT+
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../sensitivity/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Sensitivity Analysis
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../api/txtinoutreader/" class="md-tabs__link">
+          
+  
+  
+  API Reference
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="pySWATPlus" class="md-nav__button md-logo" aria-label="pySWATPlus" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    pySWATPlus
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Home
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    Run SWAT+
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    Run SWAT+
+    
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#initializing-the-txtinoutreader-class" class="md-nav__link">
+    <span class="md-ellipsis">
+      Initializing the TxtinoutReader Class
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#a-trial-simulation-with-no-parameter-changes" class="md-nav__link">
+    <span class="md-ellipsis">
+      A Trial Simulation with No Parameter Changes
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#simulation-in-a-separate-directory-recommended" class="md-nav__link">
+    <span class="md-ellipsis">
+      Simulation in a Separate Directory (Recommended)
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#simulation-after-modified-timelines" class="md-nav__link">
+    <span class="md-ellipsis">
+      Simulation After Modified Timelines
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#simulation-after-enabling-a-specific-print-object" class="md-nav__link">
+    <span class="md-ellipsis">
+      Simulation After Enabling a Specific Print Object
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#simulation-after-parameter-modifications" class="md-nav__link">
+    <span class="md-ellipsis">
+      Simulation After Parameter Modifications
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#run-configurable-simulations-in-a-single-function" class="md-nav__link">
+    <span class="md-ellipsis">
+      Run Configurable Simulations in a Single Function
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#parallel-swat-simulations" class="md-nav__link">
+    <span class="md-ellipsis">
+      Parallel SWAT+ Simulations
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sensitivity/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Sensitivity Analysis
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    API Reference
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            API Reference
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/txtinoutreader/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    TxtinoutReader
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/filereader/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    FileReader
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/types/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    pySWATPlus.types
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#initializing-the-txtinoutreader-class" class="md-nav__link">
+    <span class="md-ellipsis">
+      Initializing the TxtinoutReader Class
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#a-trial-simulation-with-no-parameter-changes" class="md-nav__link">
+    <span class="md-ellipsis">
+      A Trial Simulation with No Parameter Changes
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#simulation-in-a-separate-directory-recommended" class="md-nav__link">
+    <span class="md-ellipsis">
+      Simulation in a Separate Directory (Recommended)
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#simulation-after-modified-timelines" class="md-nav__link">
+    <span class="md-ellipsis">
+      Simulation After Modified Timelines
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#simulation-after-enabling-a-specific-print-object" class="md-nav__link">
+    <span class="md-ellipsis">
+      Simulation After Enabling a Specific Print Object
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#simulation-after-parameter-modifications" class="md-nav__link">
+    <span class="md-ellipsis">
+      Simulation After Parameter Modifications
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#run-configurable-simulations-in-a-single-function" class="md-nav__link">
+    <span class="md-ellipsis">
+      Run Configurable Simulations in a Single Function
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#parallel-swat-simulations" class="md-nav__link">
+    <span class="md-ellipsis">
+      Parallel SWAT+ Simulations
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="swat-simulation-guide">SWAT+ Simulation Guide</h1>
+<p>SWAT+ simulations can be performed while modifying multiple optional input parameters. These parameters can be changed either individually or simultaneously for a simulation. Some examples are shown below:</p>
+<h2 id="initializing-the-txtinoutreader-class">Initializing the <code>TxtinoutReader</code> Class</h2>
+<p>The <code>TxtinoutReader</code> class is used to interact with the SWAT+ model via the <code>TxtInOut</code> folder generated by the <a href="https://github.com/swat-model/QSWATPlus">QSWAT+</a>. This folder must include the necessary files generated during a simulation using the <a href="https://github.com/swat-model/swatplus-editor">SWAT+ Editor</a>. The class allows you to modify input parameters and run simulations.</p>
+<p>The TxtInOut folder must also contain the SWAT+ executable file. Its location can be found in the <strong><code>Run SWAT+</code></strong> tab of the SWAT+ Editor. If the executable is missing, an error will occur.</p>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">pySWATPlus</span>
+
+<span class="c1"># Replace this with your actual path</span>
+<span class="n">txtinout_path</span> <span class="o">=</span> <span class="sa">r</span><span class="s2">&quot;C:\Users\Username\project\Scenarios\Default\TxtInOut&quot;</span> 
+
+<span class="n">txtinout_reader</span> <span class="o">=</span> <span class="n">pySWATPlus</span><span class="o">.</span><span class="n">TxtinoutReader</span><span class="p">(</span>
+    <span class="n">path</span><span class="o">=</span><span class="n">txtinout_path</span>
+<span class="p">)</span>
+</code></pre></div>
+<h2 id="a-trial-simulation-with-no-parameter-changes">A Trial Simulation with No Parameter Changes</h2>
+<p>This simple code checks whether the executable file runs the SWAT+ model correctly. </p>
+<div class="highlight"><pre><span></span><code><span class="n">txtinout_reader</span><span class="o">.</span><span class="n">run_swat</span><span class="p">()</span>
+</code></pre></div>
+<h2 id="simulation-in-a-separate-directory-recommended">Simulation in a Separate Directory (Recommended)</h2>
+<p>Instead of modifying the files in the input <code>TxtInOut</code> folder, it is recommended to run the SWAT+ simulation in a seperate direcotry. </p>
+<div class="highlight"><pre><span></span><code><span class="c1"># Replace this with your actual path</span>
+<span class="n">target_dir</span> <span class="o">=</span> <span class="sa">r</span><span class="s2">&quot;C:\Users\Username\simulation_folder&quot;</span> 
+
+<span class="n">reader</span> <span class="o">=</span> <span class="n">txtinout_reader</span><span class="o">.</span><span class="n">run_swat_in_other_dir</span><span class="p">(</span>
+    <span class="n">target_dir</span><span class="o">=</span><span class="n">target_dir</span>
+<span class="p">)</span>
+</code></pre></div>
+<h2 id="simulation-after-modified-timelines">Simulation After Modified Timelines</h2>
+<p>The following example demonstrates how to run the SWAT+ model after modifying the simulation timelines.</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># Set the begin and end years for the simulation</span>
+<span class="n">reader</span><span class="o">.</span><span class="n">set_begin_and_end_year</span><span class="p">(</span><span class="mi">2012</span><span class="p">,</span> <span class="mi">2016</span><span class="p">)</span>
+
+<span class="c1"># Set the warm-up period in years</span>
+<span class="n">reader</span><span class="o">.</span><span class="n">set_warmup_year</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="c1"># Run the simulation</span>
+<span class="n">reader</span><span class="o">.</span><span class="n">run_swat</span><span class="p">()</span>
+</code></pre></div>
+<h2 id="simulation-after-enabling-a-specific-print-object">Simulation After Enabling a Specific Print Object</h2>
+<p>Suppose the daily simulation data for channel output is required, but the file <a href="https://swatplus.gitbook.io/io-docs/swat+-output-files/channel">channel_sd_day.txt</a> is missing after the simulation. The following example shows how to enable it and generate the expected output:</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># Enable the &#39;channel_sd&#39; object in the print.prt file</span>
+<span class="n">reader</span><span class="o">.</span><span class="n">enable_object_in_print_prt</span><span class="p">(</span>
+    <span class="n">obj</span><span class="o">=</span><span class="s1">&#39;channel_sd&#39;</span><span class="p">,</span>
+    <span class="n">daily</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">monthly</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">yearly</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">avann</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="c1"># Run the simulation</span>
+<span class="n">reader</span><span class="o">.</span><span class="n">run_swat</span><span class="p">()</span>
+</code></pre></div>
+<h2 id="simulation-after-parameter-modifications">Simulation After Parameter Modifications</h2>
+<div class="highlight"><pre><span></span><code><span class="c1"># Register the hydrology.hyd file</span>
+<span class="n">hyd_register</span> <span class="o">=</span> <span class="n">reader</span><span class="o">.</span><span class="n">register_file</span><span class="p">(</span>
+    <span class="n">filename</span><span class="o">=</span><span class="s1">&#39;hydrology.hyd&#39;</span>
+<span class="p">)</span>
+
+<span class="c1"># Get the DataFrame</span>
+<span class="n">hyd_df</span> <span class="o">=</span> <span class="n">hyd_register</span><span class="o">.</span><span class="n">df</span>
+
+<span class="c1"># Modify the &#39;esco&#39; parameter value</span>
+<span class="n">hyd_df</span><span class="p">[</span><span class="s1">&#39;esco&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.6</span>
+
+<span class="c1"># rewrite hydrology.hyd file</span>
+<span class="n">hyd_register</span><span class="o">.</span><span class="n">overwrite_file</span><span class="p">()</span>
+
+<span class="c1"># View the modified DataFrame (optional)</span>
+<span class="n">hyd_register</span><span class="o">.</span><span class="n">df</span>
+
+<span class="c1"># Run the simulation</span>
+<span class="n">reader</span><span class="o">.</span><span class="n">run_swat</span><span class="p">()</span>
+</code></pre></div>
+<h2 id="run-configurable-simulations-in-a-single-function">Run Configurable Simulations in a Single Function</h2>
+<p>Instead of calling <code>set_begin_and_end_year()</code>, <code>set_warmup_year()</code>, and <code>enable_object_in_print_prt()</code> separately, you can pass all these options directly into a single call to <code>run_swat_in_other_dir()</code>. You can also modify input values in specific files prior to running a simulation.</p>
+<p>Supported configuration options include:</p>
+<ul>
+<li><code>params</code>: Dictionary to modify one or more input files before the run.</li>
+<li><code>begin_and_end_year</code>: Tuple like <code>(2012, 2016)</code> to control the simulation period.</li>
+<li><code>warmup</code>: Number of years used for model warm-up.</li>
+<li><code>print_prt_control</code>: Dictionary to control which outputs are written.</li>
+</ul>
+<p>This is recommended for batch or reproducible simulations.</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># Modify parameters in the plants.plt file</span>
+<span class="n">params</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;plants.plt&#39;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s1">&#39;has_units&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="s1">&#39;bm_e&#39;</span><span class="p">:</span> <span class="p">[</span>
+            <span class="p">{</span><span class="s1">&#39;value&#39;</span><span class="p">:</span> <span class="mi">100</span><span class="p">,</span> <span class="s1">&#39;change_type&#39;</span><span class="p">:</span> <span class="s1">&#39;absval&#39;</span><span class="p">,</span> <span class="s1">&#39;filter_by&#39;</span><span class="p">:</span> <span class="s1">&#39;name == &quot;agrl&quot;&#39;</span><span class="p">},</span>
+            <span class="p">{</span><span class="s1">&#39;value&#39;</span><span class="p">:</span> <span class="mi">110</span><span class="p">,</span> <span class="s1">&#39;change_type&#39;</span><span class="p">:</span> <span class="s1">&#39;absval&#39;</span><span class="p">,</span> <span class="s1">&#39;filter_by&#39;</span><span class="p">:</span> <span class="s1">&#39;name == &quot;almd&quot;&#39;</span><span class="p">},</span>
+        <span class="p">],</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+
+<span class="n">txtinout_reader</span><span class="o">.</span><span class="n">run_swat_in_other_dir</span><span class="p">(</span>
+    <span class="n">target_dir</span><span class="o">=</span><span class="sa">r</span><span class="s2">&quot;C:\Users\Username\simulation_1&quot;</span><span class="p">,</span>
+    <span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">,</span>
+    <span class="n">begin_and_end_year</span><span class="o">=</span><span class="p">(</span><span class="mi">2010</span><span class="p">,</span> <span class="mi">2015</span><span class="p">),</span>
+    <span class="n">warmup</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+    <span class="n">print_prt_control</span><span class="o">=</span><span class="p">{</span>
+        <span class="s1">&#39;channel_sd&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;daily&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span> <span class="s1">&#39;monthly&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">)</span>
+</code></pre></div>
+<blockquote>
+<p>⚠️ <strong>Note:</strong> The <code>run_swat()</code> method supports only the <code>params</code> argument for in-place simulations and does not allow <code>begin_and_end_year</code>, <code>warmup</code>, or <code>print_prt_control</code>. Use <code>run_swat_in_other_dir()</code> for these options to avoid modifying the original <code>TxtInOut</code> folder, or use <code>set_begin_and_end_year()</code>, <code>set_warmup_year()</code>, and <code>enable_object_in_print_prt()</code> separately.</p>
+</blockquote>
+<h2 id="parallel-swat-simulations">Parallel SWAT+ Simulations</h2>
+<p>To run multiple SWAT+ simulations in parallel with modified parameters, the following example provides a quick guide to get started:</p>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">multiprocessing</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">tempfile</span>
+
+<span class="c1"># Define multiple parameter sets</span>
+<span class="n">param_sets</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">{</span>
+        <span class="s1">&#39;hydrology.hyd&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s1">&#39;has_units&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+            <span class="s1">&#39;epco&#39;</span><span class="p">:</span> <span class="p">[</span>
+                <span class="p">{</span><span class="s1">&#39;value&#39;</span><span class="p">:</span> <span class="mf">0.7</span><span class="p">,</span> <span class="s1">&#39;change_type&#39;</span><span class="p">:</span> <span class="s1">&#39;absval&#39;</span><span class="p">}</span>
+            <span class="p">],</span>
+        <span class="p">}</span>
+    <span class="p">},</span>
+    <span class="p">{</span>
+        <span class="s1">&#39;plants.plt&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s1">&#39;has_units&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+            <span class="s1">&#39;bm_e&#39;</span><span class="p">:</span> <span class="p">[</span>
+                <span class="p">{</span><span class="s1">&#39;value&#39;</span><span class="p">:</span> <span class="mi">120</span><span class="p">,</span> <span class="s1">&#39;change_type&#39;</span><span class="p">:</span> <span class="s1">&#39;absval&#39;</span><span class="p">,</span> <span class="s1">&#39;filter_by&#39;</span><span class="p">:</span> <span class="s1">&#39;name == &quot;agrl&quot;&#39;</span><span class="p">},</span>
+                <span class="p">{</span><span class="s1">&#39;value&#39;</span><span class="p">:</span> <span class="mi">130</span><span class="p">,</span> <span class="s1">&#39;change_type&#39;</span><span class="p">:</span> <span class="s1">&#39;absval&#39;</span><span class="p">,</span> <span class="s1">&#39;filter_by&#39;</span><span class="p">:</span> <span class="s1">&#39;name == &quot;almd&quot;&#39;</span><span class="p">},</span>
+            <span class="p">],</span>
+        <span class="p">}</span>
+    <span class="p">},</span>
+<span class="p">]</span>
+
+<span class="c1"># Define the function</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">run_simulation</span><span class="p">(</span><span class="n">params</span><span class="p">):</span>
+
+    <span class="k">with</span> <span class="n">tempfile</span><span class="o">.</span><span class="n">TemporaryDirectory</span><span class="p">()</span> <span class="k">as</span> <span class="n">tmp_dir</span><span class="p">:</span>
+        <span class="n">reader</span> <span class="o">=</span> <span class="n">pySWATPlus</span><span class="o">.</span><span class="n">TxtinoutReader</span><span class="p">(</span>
+            <span class="n">path</span><span class="o">=</span><span class="n">txtinout_path</span>
+        <span class="p">)</span>
+        <span class="n">output</span> <span class="o">=</span> <span class="n">reader</span><span class="o">.</span><span class="n">run_swat_in_other_dir</span><span class="p">(</span>
+            <span class="n">target_dir</span><span class="o">=</span><span class="n">tmp_dir</span><span class="p">,</span>
+            <span class="n">params</span><span class="o">=</span><span class="n">params</span>
+        <span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">output</span>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="c1"># Run simulations in parallel</span>
+    <span class="k">with</span> <span class="n">multiprocessing</span><span class="o">.</span><span class="n">Pool</span><span class="p">(</span><span class="n">processes</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span> <span class="k">as</span> <span class="n">pool</span><span class="p">:</span>
+        <span class="n">results</span> <span class="o">=</span> <span class="n">pool</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">run_simulation</span><span class="p">,</span> <span class="n">param_sets</span><span class="p">)</span>
+    <span class="c1"># Print output directories</span>
+    <span class="k">for</span> <span class="n">path</span> <span class="ow">in</span> <span class="n">results</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Simulation directory:&quot;</span><span class="p">,</span> <span class="n">path</span><span class="p">)</span>
+</code></pre></div>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      <script id="__config" type="application/json">{"base": "..", "features": ["navigation.tabs", "content.code.annotate"], "search": "../assets/javascripts/workers/search.d50fe291.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.50899def.min.js"></script>
+      
+    
+  </body>
+</html>
