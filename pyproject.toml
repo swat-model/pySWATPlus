@@ -39,7 +39,7 @@ dependencies = [
 
 [project.urls]
 Homepage = "https://github.com/swat-model/pySWATPlus"
-Documentation = "https://pyswatplus.readthedocs.io/en/latest/"
+Documentation = "https://swat-model.github.io/pySWATPlus/"
 
 [tool.setuptools]
 packages = ["pySWATPlus"]

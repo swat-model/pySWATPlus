@@ -17,7 +17,6 @@
 ![GitHub forks](https://img.shields.io/github/forks/swat-model/pySWATPlus)
 ![GitHub Created At](https://img.shields.io/github/created-at/swat-model/pySWATPlus)
 
-![Read the Docs](https://img.shields.io/readthedocs/pySWATPlus)
 ![Pepy Total Downloads](https://img.shields.io/pepy/dt/pySWATPLus)
 ![PyPI - License](https://img.shields.io/pypi/l/pySWATPlus)
 
@@ -81,7 +80,7 @@ import pySWATPlus
 ## 📚 Documentation
 
 For a guide to setting up first SWAT+ project and other functionalities with examples,
-refere to the [pySWATPlus documentation](https://pyswatplus.readthedocs.io/en/latest/).
+refere to the [pySWATPlus documentation](https://swat-model.github.io/pySWATPlus/).
 
 
 
