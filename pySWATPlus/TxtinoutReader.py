@@ -452,82 +452,9 @@ class TxtinoutReader:
         self,
         target_dir: str | pathlib.Path,
         params: typing.Optional[ParamsType] = None,
-    ) -> pathlib.Path:
-
-        '''
-        Run the SWAT+ model in a specified directory, with optional parameter modifications.
-        This method copies the necessary input files from the current project into the
-        given `target_dir`, applies any parameter changes specified in `params`, and
-        executes the SWAT+ simulation there.
-
-        Args:
-            target_dir (str or Path): Path to the directory where the simulation will be done.
-
-            params (ParamsType, optional): Nested dictionary specifying parameter changes.
-
-                The `params` dictionary should follow this structure:
-
-                ```python
-                params = {
-                    "<input_file>": {
-                        "has_units": bool,              # Optional. Whether the file has units information (default is False)
-                        "<parameter_name>": [           # One or more changes to apply to the parameter
-                            {
-                                "value": float,         # New value to assign
-                                "change_type": str,     # (Optional) One of: 'absval' (default), 'abschg', 'pctchg'
-                                "filter_by": str        # (Optional) pandas `.query()` filter string to select rows
-                            },
-                            # ... more changes
-                        ]
-                    },
-                    # ... more input files
-                }
-                ```
-
-        Returns:
-            The path to the directory where the SWAT+ simulation was executed.
-
-        Example:
-            ```python
-            params = {
-                'plants.plt': {
-                    'has_units': False,
-                    'bm_e': [
-                        {'value': 100, 'change_type': 'absval', 'filter_by': 'name == "agrl"'},
-                        {'value': 110, 'change_type': 'absval', 'filter_by': 'name == "almd"'},
-                    ],
-                },
-            }
-
-            with tempfile.TemporaryDirectory() as tmp_dir:
-                simulation = pySWATPlus.TxtinoutReader.run_swat_in_other_dir(
-                    target_dir=tmp_dir,
-                    params=params
-                )
-            ```
-        '''
-
-        # Validate target_dir
-        if not isinstance(target_dir, (str, pathlib.Path)):
-            raise TypeError("target_dir must be a string or Path object")
-
-        target_dir = pathlib.Path(target_dir).resolve()
-
-        # Create the directory if it does not exist
-        target_dir.mkdir(parents=True, exist_ok=True)
-
-        tmp_path = self._copy_swat(target_dir=target_dir)
-        reader = TxtinoutReader(tmp_path)
-
-        return reader.run_swat(params)
-
-    def _run_swat_in_other_dir_unified(
-        self,
-        target_dir: str | pathlib.Path,
-        params: typing.Optional[ParamsType] = None,
         begin_and_end_year: typing.Optional[tuple[int, int]] = None,
         warmup: typing.Optional[int] = None,
-        disable_print_prt: typing.Optional[dict[str, dict[str, bool]]] = None
+        print_prt_control: typing.Optional[dict[str, dict[str, bool]]] = None
     ) -> pathlib.Path:
 
         '''
@@ -559,16 +486,20 @@ class TxtinoutReader:
                 }
                 ```
 
-            begin_and_end_year (tuple[int, int]): A tuple of begin and end years of the simulation in YYYY format.
+            begin_and_end_year (tuple[int, int]): A tuple of begin and end years of the simulation in YYYY format. For example, (2012, 2016).
 
             warmup (int): A positive integer representing the number of warm-up years (e.g., 1).
 
-            disable_print_prt (dict[str, dict[str, bool]]):
-                A dictionary where each outer key represents an object from the `print.prt` file,
-                    and the corresponding value is a dictionary with inner keys:
-                    `daily`, `monthly`, `yearly`, or `avann`. All inner options default to `True`
-                    unless explicitly set to `False`. An error will be raised if an outer key
-                    is provided with an empty dictionary.
+            print_prt_control (dict[str, dict[str, bool]], optional): A dictionary to control output printing in the `print.prt` file.
+                Each outer key is an object name from `print.prt` (e.g., 'channel_sd', 'basin_wb').
+                Each value is a dictionary with keys `daily`, `monthly`, `yearly`, or `avann`, mapped to boolean values.
+                Set to `False` to disable printing for that time step; defaults to `True` if not specified.
+                An error is raised if an outer key has an empty dictionary.
+                The time step keys represent:
+                - `daily`: Output for each day of the simulation.
+                - `monthly`: Output aggregated for each month.
+                - `yearly`: Output aggregated for each year.
+                - `avann`: Average annual output over the entire simulation period.
 
         Returns:
             The path to the directory where the SWAT+ simulation was executed.
@@ -588,7 +519,7 @@ class TxtinoutReader:
                 },
                 begin_and_end_year=(2012, 2016),
                 warmup=1,
-                disable_print_prt = {
+                print_prt_control = {
                     'channel_sd': {'daily': False},
                     'channel_sdmorph': {'monthly': False}
                 }
@@ -628,18 +559,18 @@ class TxtinoutReader:
             )
 
         # update print.prt file to write output
-        if disable_print_prt is not None:
-            if not isinstance(disable_print_prt, dict):
-                raise TypeError('disable_print_prt must be a dictionary')
-            if len(disable_print_prt) == 0:
-                raise ValueError('disable_print_prt cannot be an empty dictionary')
+        if print_prt_control is not None:
+            if not isinstance(print_prt_control, dict):
+                raise TypeError('print_control must be a dictionary')
+            if len(print_prt_control) == 0:
+                raise ValueError('print_prt_control cannot be an empty dictionary')
             default_dict = {
                 'daily': True,
                 'monthly': True,
                 'yearly': True,
                 'avann': True
             }
-            for key, val in disable_print_prt.items():
+            for key, val in print_prt_control.items():
                 if not isinstance(val, dict):
                     raise ValueError(f'Value of key "{key}" must be a dictionary')
                 if len(val) == 0:

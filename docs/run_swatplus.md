@@ -77,32 +77,6 @@ reader.run_swat()
 
 ## Simulation After Parameter Modifications
 
-There are two ways to modify input parameters before running a SWAT+ simulation:
-
-### Case 1: Use the `params` argument in [`run_swat()`](https://pyswatplus.readthedocs.io/en/latest/api/txtinoutreader/#pySWATPlus.TxtinoutReader.TxtinoutReader.run_swat) methods
-
-The `params` dictionary allows you to modify input values in specific files prior to running a simulation.
-
-```python
-# Modify parameters in the plants.plt file
-params = {
-    'plants.plt': {
-        'has_units': False,
-        'bm_e': [
-            {'value': 100, 'change_type': 'absval', 'filter_by': 'name == "agrl"'},
-            {'value': 110, 'change_type': 'absval', 'filter_by': 'name == "almd"'},
-        ],
-    }
-}
-
-# Run the simulation
-reader.run_swat(params=params)
-```
-
-### Case 2: Use [`register_file()`](https://pyswatplus.readthedocs.io/en/latest/api/txtinoutreader/#pySWATPlus.TxtinoutReader.TxtinoutReader.register_file) method
-
-This method allows for more fine-grained control by registering a file, editing its contents as a DataFrame, and then writing the changes back before running a simulation.
-
 ```python
 # Register the hydrology.hyd file
 hyd_register = reader.register_file(
@@ -124,6 +98,45 @@ hyd_register.df
 # Run the simulation
 reader.run_swat()
 ```
+
+## Run Configurable Simulations in a Single Function
+Instead of calling `set_begin_and_end_year()`, `set_warmup_year()`, and `enable_object_in_print_prt()` separately, you can pass all these options directly into a single call to `run_swat_in_other_dir()`. You can also modify input values in specific files prior to running a simulation.
+
+Supported configuration options include:
+
+- `params`: Dictionary to modify one or more input files before the run.
+- `begin_and_end_year`: Tuple like `(2012, 2016)` to control the simulation period.
+- `warmup`: Number of years used for model warm-up.
+- `print_prt_control`: Dictionary to control which outputs are written.
+
+This is recommended for batch or reproducible simulations.
+
+
+```python
+# Modify parameters in the plants.plt file
+params = {
+    'plants.plt': {
+        'has_units': False,
+        'bm_e': [
+            {'value': 100, 'change_type': 'absval', 'filter_by': 'name == "agrl"'},
+            {'value': 110, 'change_type': 'absval', 'filter_by': 'name == "almd"'},
+        ],
+    }
+}
+
+
+txtinout_reader.run_swat_in_other_dir(
+    target_dir=r"C:\Users\Username\simulation_1",
+    params=params,
+    begin_and_end_year=(2010, 2015),
+    warmup=1,
+    print_prt_control={
+        'channel_sd': {'daily': True, 'monthly': False}
+    }
+)
+```
+> ⚠️ **Note:** The `run_swat()` method supports only the `params` argument for in-place simulations and does not allow `begin_and_end_year`, `warmup`, or `print_prt_control`. Use `run_swat_in_other_dir()` for these options to avoid modifying the original `TxtInOut` folder, or use `set_begin_and_end_year()`, `set_warmup_year()`, and `enable_object_in_print_prt()` separately.
+
 
 ## Parallel SWAT+ Simulations
 
