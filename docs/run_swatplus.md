@@ -135,7 +135,8 @@ txtinout_reader.run_swat_in_other_dir(
     }
 )
 ```
-> ⚠️ **Note:** The `run_swat()` method supports only the `params` argument for in-place simulations and does not allow `begin_and_end_year`, `warmup`, or `print_prt_control`. Use `run_swat_in_other_dir()` for these options to avoid modifying the original `TxtInOut` folder, or use `set_begin_and_end_year()`, `set_warmup_year()`, and `enable_object_in_print_prt()` separately.
+> ⚠️ **Note:** The `run_swat()` method only supports the `params` argument for in-place simulations. 
+It does **not** accept `begin_and_end_year`, `warmup`, or `print_prt_control`. To modify these settings within the original `TxtInOut` folder, use: `set_begin_and_end_year()`, `set_warmup_year()`, and `enable_object_in_print_prt()`. If you want to avoid changing the original `TxtInOut` directory, use `run_swat_in_other_dir()`, which supports all of these options in a separate working directory.
 
 
 ## Parallel SWAT+ Simulations
