@@ -790,7 +790,8 @@
 <span class="p">)</span>
 </code></pre></div>
 <blockquote>
-<p>⚠️ <strong>Note:</strong> The <code>run_swat()</code> method supports only the <code>params</code> argument for in-place simulations and does not allow <code>begin_and_end_year</code>, <code>warmup</code>, or <code>print_prt_control</code>. Use <code>run_swat_in_other_dir()</code> for these options to avoid modifying the original <code>TxtInOut</code> folder, or use <code>set_begin_and_end_year()</code>, <code>set_warmup_year()</code>, and <code>enable_object_in_print_prt()</code> separately.</p>
+<p>⚠️ <strong>Note:</strong> The <code>run_swat()</code> method only supports the <code>params</code> argument for in-place simulations. 
+It does <strong>not</strong> accept <code>begin_and_end_year</code>, <code>warmup</code>, or <code>print_prt_control</code>. To modify these settings within the original <code>TxtInOut</code> folder, use: <code>set_begin_and_end_year()</code>, <code>set_warmup_year()</code>, and <code>enable_object_in_print_prt()</code>. If you want to avoid changing the original <code>TxtInOut</code> directory, use <code>run_swat_in_other_dir()</code>, which supports all of these options in a separate working directory.</p>
 </blockquote>
 <h2 id="parallel-swat-simulations">Parallel SWAT+ Simulations</h2>
 <p>To run multiple SWAT+ simulations in parallel with modified parameters, the following example provides a quick guide to get started:</p>
