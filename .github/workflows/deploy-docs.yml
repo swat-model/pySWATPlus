@@ -1,4 +1,4 @@
-name: Publish to PyPI and GitHub Release
+name: docs
 
 on:
   push:
