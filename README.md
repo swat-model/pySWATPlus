@@ -6,7 +6,7 @@
 ![PyPI - Python Version](https://img.shields.io/pypi/pyversions/pySWATPlus)
 ![PyPI - Status](https://img.shields.io/pypi/status/pySWATPlus)
 
-[![docs](https://github.com/debpal/pySWATPlus/actions/workflows/deploy-docs.yml/badge.svg)](https://github.com/debpal/pySWATPlus/actions/workflows/deploy-docs.yml)
+[![docs](https://github.com/swat-model/pySWATPlus/actions/workflows/deploy-docs.yml/badge.svg)](https://github.com/swat-model/pySWATPlus/actions/workflows/deploy-docs.yml)
 [![flake8](https://github.com/swat-model/pySWATPlus/actions/workflows/linting.yml/badge.svg)](https://github.com/swat-model/pySWATPlus/actions/workflows/linting.yml)
 [![mypy](https://github.com/swat-model/pySWATPlus/actions/workflows/typing.yml/badge.svg)](https://github.com/swat-model/pySWATPlus/actions/workflows/typing.yml)
 [![pytest](https://github.com/swat-model/pySWATPlus/actions/workflows/testing.yml/badge.svg)](https://github.com/swat-model/pySWATPlus/actions/workflows/testing.yml)
