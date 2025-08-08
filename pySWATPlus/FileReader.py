@@ -21,15 +21,14 @@ class FileReader:
         '''
         Initialize a FileReader instance to read data from a TXT file.
 
-        Parameters:
+        Args:
             path (str or Path): Path to the TXT file to be read.
-            has_units (bool, optional): If `True`, the second row of the file contains units.
-            usecols (list[str], optional): List of column names to read from the file.
-            filter_by (str, optional): A pandas query string to filter rows from the file.
+            has_units (bool): If `True`, the second row of the file contains units.
+            usecols (list[str]): List of column names to read from the file.
+            filter_by (str): A pandas query string to filter rows from the file.
 
         Raises:
-            TypeError: If the path is not a valid string or Path, or if the file is a CSV.
-            FileNotFoundError: If the specified file path does not exist.
+            TypeError: If the input file has a `.csv` extension.
 
         Attributes:
             df (pandas.DataFrame): A DataFrame containing the loaded and optionally filtered data.
@@ -57,7 +56,7 @@ class FileReader:
         skip_rows = [0]
 
         # if file is txt
-        if path.suffix == '.csv':
+        if path.suffix.lower() == '.csv':
             raise TypeError("Not implemented yet")
 
         # read only first line of file
