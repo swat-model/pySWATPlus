@@ -42,4 +42,5 @@ nav:
   - API Reference:
     - TxtinoutReader: api/txtinoutreader.md
     - FileReader: api/filereader.md
+    - Scenario: api/scenario.md
     - pySWATPlus.types: api/types.md
