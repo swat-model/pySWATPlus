@@ -1,0 +1,4 @@
+ Oulanka_absent_lake_clima SWAT+ Jul 2 2024        MODULAR Rev 2024.61.0.1                                
+ BSN_TOTC                basin_totc.txt
+        jday          yr        unit    soil_tot_c   plant_tot_c     rsd_tot_c 
+          --          --          --          kg/ha         kg/ha         kg/ha
