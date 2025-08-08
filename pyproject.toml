@@ -33,7 +33,7 @@ classifiers = [
 	"Topic :: Scientific/Engineering :: Hydrology"
 ]
 dependencies = [
-    "pandas",
+    "SALib",
     "typing-extensions"
 ]
 

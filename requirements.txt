@@ -1,4 +1,4 @@
 pytest
 pytest-cov
-pandas
+SALib
 typing-extensions
