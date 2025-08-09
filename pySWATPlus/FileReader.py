@@ -3,6 +3,24 @@ import pathlib
 import typing
 
 
+def _load_file(path, skip_rows=None, usecols=None) -> pandas.DataFrame:
+    '''
+    Attempt to load a dataframe from `path` using multiple parsing strategies.
+    '''
+    strategies = [
+        lambda: pandas.read_csv(path, sep=r"\s+", skiprows=skip_rows, usecols=usecols),
+        lambda: pandas.read_csv(path, sep=r"[ ]{2,}", skiprows=skip_rows, usecols=usecols),
+        lambda: pandas.read_fwf(path, skiprows=skip_rows, usecols=usecols),
+    ]
+    for attempt in strategies:
+        try:
+            return attempt()
+        except Exception:
+            pass
+
+    raise ValueError(f"Error reading the file: {path}")
+
+
 class FileReader:
 
     '''
@@ -17,7 +35,6 @@ class FileReader:
         usecols: typing.Optional[list[str]] = None,
         filter_by: typing.Optional[str] = None
     ):
-
         '''
         Initialize a FileReader instance to read data from a TXT file.
 
@@ -64,11 +81,7 @@ class FileReader:
         with open(path, 'r', encoding='latin-1') as file:
             self.header_file = file.readline()
 
-        self.df = pandas.read_fwf(
-            path,
-            skiprows=skip_rows,
-            usecols=usecols
-        )
+        self.df = _load_file(path, skip_rows=skip_rows, usecols=usecols)
 
         self.path = path
 
@@ -84,7 +97,6 @@ class FileReader:
     def overwrite_file(
         self
     ) -> None:
-
         '''
         Overwrite the original TXT file with the modified DataFrame content.
         If the file originally contained a unit row (below the header),
