@@ -1,13 +1,16 @@
 # Sensitivity Analysis
 
-This tutorial demonstrates how to perform a sensitivity analysis on SWAT+ model parameters using the [SALib](https://github.com/SALib/SALib) Python package. The analysis focuses on two parameters, `epco` and `esco`, located in the `hydrology.hyd` file.
+Sensitivity analysis helps quantify how variation in input parameters affects model outputs. This tutorial demonstrates how to perform sensitivity analysis on SWAT+ model parameters. Two approaches are provided: a **custom, user-defined workflow** and a **high-level automated interface**, both using the [SALib](https://github.com/SALib/SALib) Python package based on [Sobol](https://doi.org/10.1016/S0378-4754(00)00270-6) sampling from a defined parameter space.
 
-### Required Packages
 
-This section imports the essential libraries needed to interact with the SWAT+ model, generate parameter samples, execute simulations, handle data, and perform sensitivity analysis.
+## Custom Workflow
+
+This approach allows users to define the sampling strategy, number of simulations, and custom performance metrics. It is ideal for those seeking fine control over the sensitivity analysis process, tailored to specific research or operational goals. In this example, we focus on two parameters, `epco` and `esco`, located in the `hydrology.hyd` file.
+
+Import the necessary packages and initialize the `TxtinoutReader` class.
 
 ```python
-# Import required packages
+# Import packages
 import pySWATPlus
 import SALib.sample.sobol
 import SALib.analyze.sobol
@@ -15,31 +18,21 @@ import concurrent.futures
 import numpy
 import random
 import tempfile
+
+# Initialize the TxtinoutReader class
+txtinout_reader = pySWATPlus.TxtinoutReader(
+    path=r"C:\Users\Username\project\Scenarios\Default\TxtInOut"
+)
 ```
 
-## Input Variables
-
-Here, we configure the SWAT+ model environment by specifying the `TxtInOut` folder path, simulation time period, warm-up years, and the output files to be generated.
+Optionally specify the simulation time period, warm-up years, enable outputs via the `print.prt` file, and fix any parameter values not involved in the sensitivity analysis.
 
 ```python
-# Input TxtInOut folder path
-txtinout_path = r"C:\Users\Username\project\Scenarios\Default\TxtInOut"
-
-# Intialize the TxtinoutReader class
-txtinout_reader = pySWATPlus.TxtinoutReader(
-    path=txtinout_path
-)
-
 # Set simulation timeline (optional)
-txtinout_reader.set_begin_and_end_year(
-    begin=2010,
-    end=2012
-)
+txtinout_reader.set_begin_and_end_year(begin=2010, end=2016)
 
 # Set warm-up year (optional)
-txtinout_reader.set_warmup_year(
-    warmup=1
-)
+txtinout_reader.set_warmup_year(warmup=1)
 
 # Enable output for channel_sd_day.txt (optional)
 txtinout_reader.enable_object_in_print_prt(
@@ -50,7 +43,7 @@ txtinout_reader.enable_object_in_print_prt(
     avann=False
 )
 
-# Fix any value, if necessary, other that sensitive paramters (optional)
+# Fix non-sensitive parameters (optional)
 hyd_register = simulation_reader.register_file(
     filename='hydrology.hyd',
     has_units=False
@@ -60,13 +53,10 @@ hyd_df['perco'] = 0.1
 hyd_register.overwrite_file()
 ```
 
-## Evaluation Function
-
-This section sets up the core logic to run the SWAT+ model with different values of `epco` and `esco`, and reads the resulting output. The current implementation returns a random value for demonstration; in practice, this should be replaced with a proper objective function using simulated and observed data.
+Define an evaluation function that runs the SWAT+ model with the specified parameter values and returns an evaluation metric. The current example returns a random value for demonstration purposes. Replace this with a proper objective function using simulated and observed data.
 
 ```python
-# Define a function whose output will be used in sensitivity analysis
-def run_and_evaluate_swat(
+def run_swat_and_evaluate_metric(
     epco: float,
     esco: float
 ):
@@ -110,46 +100,87 @@ def run_and_evaluate_swat(
 # Wrapper function for parallel execution
 def evaluate(params):
 
-    return run_and_evaluate_swat(*params)
+    return run_swat_and_evaluate_metric(*params)
 ```
 
-## Sample Sensitive Parameters
-We define the sensitivity problem, including the parameter names and bounds, and use `Sobol` sampling to generate test combinations for the analysis.
+Define the sensitivity problem and generate samples using `Sobol` sampling.
 
 ```python
 problem = {
-    'num_vars': 2,  # Number of parameters
-    'names': ['epco', 'esco'],  # Parameter names
-    'bounds': [[0, 1]] * 2  # Parameter bounds
+    'num_vars': 2,
+    'names': ['epco', 'esco'],
+    'bounds': [[0, 1]] * 2
 }
 
-# Generate parameter samples
-param_values = SALib.sample.sobol.sample(problem, 2)  
+# Generate Sobol samples
+param_values = SALib.sample.sobol.sample(problem, 2)
 ```
 
-
-## Result Analysis
-We run the model simulations in parallel using the parameter samples and analyze the sensitivity of each parameter using `Sobol` indices. 
+Run simulations in parallel and compute Sobol indices to analyze parameter influence.
 
 ```python
 if __name__ == '__main__':
-    
-    # Parallel evaluation of Sensitive Parameters
     with concurrent.futures.ProcessPoolExecutor() as executor:
-        y = numpy.array(list(executor.map(evaluate, param_values)))
+        simulation_output = numpy.array(list(executor.map(evaluate, param_values)))
 
-    # Analyze results
-    sobol_indices = SALib.analyze.sobol.analyze(problem, y)
+    sobol_indices = SALib.analyze.sobol.analyze(problem, simulation_output)
+
     print('First-order Sobol indices:', sobol_indices['S1'])
     print('Total-order Sobol indices:', sobol_indices['ST'])
 ```
 
 
+## High-Level Sobol-Based Sensitivity Simulation Interface
+
+This high-level interface automates the sensitivity simulation workflow. It includes:
+
+- Automatic generation of Sobol samples for the defined parameter space
+- Parallel computation to accelerate simulation runs
+- Output extraction from target data files with filtering options (by date, column values, etc.)
+- Structured export of results for downstream analysis
+
+The output data can be used to compute performance metrics, compare with observed data, and estimate Sobol indices to quantify parameter influence.
+
+This interface is ideal for users seeking a scalable, low-configuration solution.
 
 
+```python
+import pySWATPlus
+
+if __name__ == '__main__':
+    output = pySWATPlus.Scenario().simulation_by_sobol_sample(
+        var_names=[
+            'esco',
+            '|'.join(['bm_e', 'name == "agrl"'])
+        ],
+        var_bounds=[
+            [0, 1],
+            [30, 40]
+        ],
+        sample_number=1,
+        simulation_folder=r"C:\Users\Username\simulation_folder",
+        txtinout_folder=r"C:\Users\Username\project\Scenarios\Default\TxtInOut",
+        params={
+            'hydrology.hyd': {
+                'has_units': False,
+                'esco': {'value': 0}
+            },
+            'plants.plt': {
+                'has_units': False,
+                'bm_e': {'value': 0, 'filter_by': 'name == "agrl"'}
+            }
+        },
+        data_file='channel_sd_yr.txt',
+        unit_row=True,
+        start_date='2012-01-01',
+        end_date='2015-12-31',
+        filter_rows={'name': ['cha561']},
+        retain_cols=['name', 'flo_out'],
+        max_workers=4,
+        clean_setup=False
+    )
+```
 
 
-
-
-
+> ⚠️ **Note:** Before using this high-level interface, configure the `TxtInOut` folder with the simulation time period, warm-up years, `print.prt` file settings, and any fixed parameter values not involved in sensitivity analysis.
 

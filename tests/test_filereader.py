@@ -1,30 +1,21 @@
 import os
+import shutil
 import pySWATPlus
 import pytest
-import typing
+import tempfile
 
 
-@pytest.fixture(scope='class')
-def file_reader() -> typing.Generator[pySWATPlus.FileReader, None, None]:
+def test_filereader_and_error():
 
-    # set up file path
-    test_folder = os.path.dirname(__file__)
-    data_folder = os.path.join(test_folder, 'sample_data', 'TxtInOut')
-    data_file = os.path.join(data_folder, 'hydrology.hyd')
+    # set up TxtInOut folder path
+    txtinout_folder = os.path.join(os.path.dirname(__file__), 'TxtInOut')
 
     # initializing FileReader class instance
     file_reader = pySWATPlus.FileReader(
-        path=data_file
+        path=os.path.join(txtinout_folder, 'hydrology.hyd')
     )
 
-    yield file_reader
-
-
-def test_dataframe(
-    file_reader: pySWATPlus.FileReader
-) -> None:
-
-    # read DataFrame
+    # pass test for DataFrame attribute
     df = file_reader.df
     assert df.shape[0] == 561
 
@@ -40,15 +31,15 @@ def test_dataframe(
     df = file_reader.df
     assert df[variable].unique()[0] == value
 
-    # DataFrame parameter value change by 'absval'
+    # pass test for DataFrame parameter value change by 'absval'
     pySWATPlus.utils._apply_param_change(
         df=df,
         param_name='latq_co',
-        change={'value': 0.6, 'change_type': 'absval', 'filter_by': 'name == "hyd001"'}
+        change={'value': 0.6, 'filter_by': 'name == "hyd001"'}
     )
     assert df.iloc[0, -1] == 0.6
 
-    # DataFrame parameter value change by 'abschg'
+    # pass test for DataFrame parameter value change by 'abschg'
     pySWATPlus.utils._apply_param_change(
         df=df,
         param_name='pet_co',
@@ -56,7 +47,7 @@ def test_dataframe(
     )
     assert df.loc[1, 'pet_co'] == 1.6
 
-    # DataFrame parameter value change by 'pctchg'
+    # pass test for DataFrame parameter value change by 'pctchg'
     pySWATPlus.utils._apply_param_change(
         df=df,
         param_name='perco',
@@ -64,54 +55,65 @@ def test_dataframe(
     )
     assert round(df.loc[2, 'perco'], 2) == 0.08
 
-
-def test_dataframe_filterby(
-) -> None:
-
-    # set up file path
-    test_folder = os.path.dirname(__file__)
-    data_folder = os.path.join(test_folder, 'sample_data', 'TxtInOut')
-    data_file = os.path.join(data_folder, 'plants.plt')
-
-    # initializing FileReader class instance
+    # pass test for filtering DataFrame by query string
     file_reader = pySWATPlus.FileReader(
-        path=data_file,
+        path=os.path.join(txtinout_folder, 'plants.plt'),
         filter_by='plnt_typ == "cold_annual"'
     )
-
-    # DataFrame
     df = file_reader.df
     assert len(df) == 37
 
-
-def test_error() -> None:
-
-    # set up folder path
-    test_folder = os.path.dirname(__file__)
-
-    # error test for string or pathlib.Path object
-    with pytest.raises(Exception) as exc_info:
-        pySWATPlus.FileReader(
-            path=1
+    with tempfile.TemporaryDirectory() as tmp_dir:
+        # pass test for rewriting empty DataFrame in a TXT file
+        file_name = 'topography.hyd'
+        shutil.copy2(
+            src=os.path.join(txtinout_folder, file_name),
+            dst=os.path.join(tmp_dir, file_name)
         )
-    assert exc_info.value.args[0] == 'path must be a string or Path object'
-
-    # error test for non-existence of file
-    with pytest.raises(Exception) as exc_info:
-        pySWATPlus.FileReader(
-            path='not_exist_yr.txt'
+        file_reader = pySWATPlus.FileReader(
+            path=os.path.join(tmp_dir, file_name),
+            filter_by='name == "topohru000"'
         )
-    assert exc_info.value.args[0] == 'file does not exist'
-
-    # error test for CSV file extension
-    with pytest.raises(Exception) as exc_info:
-        pySWATPlus.FileReader(
-            path=os.path.join(test_folder, 'sample_data', 'no_exe', 'error_file.csv')
+        df = file_reader.df
+        assert len(df) == 0
+        file_reader.overwrite_file()
+        # pass test for rewriting DataFrame with 'has_units' key in a TXT file
+        file_name = 'basin_carbon_all.txt'
+        shutil.copy2(
+            src=os.path.join(txtinout_folder, file_name),
+            dst=os.path.join(tmp_dir, file_name)
         )
-    assert exc_info.value.args[0] == 'Not implemented yet'
+        file_reader = pySWATPlus.FileReader(
+            path=os.path.join(tmp_dir, file_name),
+            has_units=True
+        )
+        df = file_reader.df
+        assert len(df) == 0
+        file_reader.overwrite_file()
+
+        # error test for string or pathlib.Path object
+        with pytest.raises(Exception) as exc_info:
+            pySWATPlus.FileReader(
+                path=1
+            )
+        assert exc_info.value.args[0] == 'path must be a string or Path object'
+
+        # error test for non-existence of file
+        with pytest.raises(Exception) as exc_info:
+            pySWATPlus.FileReader(
+                path='not_exist_yr.txt'
+            )
+        assert exc_info.value.args[0] == 'file does not exist'
+
+        # error test for CSV file extension
+        with pytest.raises(Exception) as exc_info:
+            pySWATPlus.FileReader(
+                path=os.path.join(txtinout_folder, 'zerror_aa.csv')
+            )
+        assert exc_info.value.args[0] == 'Not implemented yet'
 
 
-def test_github() -> None:
+def test_github():
 
     # regular GitHub trigger test function when no code is changed
-    assert str(1) == '1'
+    assert str(2) == '2'
