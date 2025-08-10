@@ -2,18 +2,25 @@
 
 
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.14889319.svg)](https://doi.org/10.5281/zenodo.14889319)
+
 ![PyPI - Version](https://img.shields.io/pypi/v/pySWATPlus)
+![GitHub Release Date](https://img.shields.io/github/release-date/swat-model/pySWATPlus?display_date=published_at)
+
 ![PyPI - Python Version](https://img.shields.io/pypi/pyversions/pySWATPlus)
 ![PyPI - Status](https://img.shields.io/pypi/status/pySWATPlus)
+![PyPI - Format](https://img.shields.io/pypi/format/pySWATPlus)
+
+
+![GitHub last commit](https://img.shields.io/github/last-commit/swat-model/pySWATPlus)
+![GitHub commit activity](https://img.shields.io/github/commit-activity/t/swat-model/pySWATPlus)
+
 
 [![docs](https://github.com/swat-model/pySWATPlus/actions/workflows/deploy-docs.yml/badge.svg)](https://github.com/swat-model/pySWATPlus/actions/workflows/deploy-docs.yml)
 [![flake8](https://github.com/swat-model/pySWATPlus/actions/workflows/linting.yml/badge.svg)](https://github.com/swat-model/pySWATPlus/actions/workflows/linting.yml)
 [![mypy](https://github.com/swat-model/pySWATPlus/actions/workflows/typing.yml/badge.svg)](https://github.com/swat-model/pySWATPlus/actions/workflows/typing.yml)
 [![pytest](https://github.com/swat-model/pySWATPlus/actions/workflows/testing.yml/badge.svg)](https://github.com/swat-model/pySWATPlus/actions/workflows/testing.yml)
-[![codecov](https://codecov.io/gh/debpal/pySWATPlus/graph/badge.svg?token=0XJ89FRID9)](https://codecov.io/gh/debpal/pySWATPlus)
+![Codecov](https://img.shields.io/codecov/c/github/debpal/pySWATPlus)
 
-![GitHub last commit](https://img.shields.io/github/last-commit/swat-model/pySWATPlus)
-![GitHub commit activity](https://img.shields.io/github/commit-activity/t/swat-model/pySWATPlus)
 ![GitHub Repo stars](https://img.shields.io/github/stars/swat-model/pySWATPlus)
 ![GitHub forks](https://img.shields.io/github/forks/swat-model/pySWATPlus)
 ![GitHub Created At](https://img.shields.io/github/created-at/swat-model/pySWATPlus)
