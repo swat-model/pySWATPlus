@@ -670,11 +670,26 @@
           <tr class="doc-section-item">
             <td><code><span title="pySWATPlus.types.ParamChange.filter_by">filter_by</span></code></td>
             <td>
-                  <code><span title="str">str</span></code>
+                  <code><span title="str">str</span> | <span title="dict">dict</span>[<span title="str">str</span>, <span title="list">list</span>[<span title="int">int</span> | <span title="str">str</span>]]</code>
             </td>
             <td>
               <div class="doc-md-description">
-                <p>An optional key with a string value that filters <code>DataFrame</code> rows using <code>.query()</code> syntax.</p>
+                <p>An optional key that filters <code>DataFrame</code> rows.</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code><span title="pySWATPlus.types.ParamChange.It">It</span></code></td>
+            <td>
+                  <code>can be either</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <ul>
+<li>a string using <code>.query()</code> syntax</li>
+<li>a dictionary where the keys are column names and the values are lists of allowed values.<br />
+Rows must match all the columns you list, and for each column, the value has to be one of the allowed values.</li>
+</ul>
               </div>
             </td>
           </tr>
@@ -710,7 +725,16 @@
 <span class="normal">23</span>
 <span class="normal">24</span>
 <span class="normal">25</span>
-<span class="normal">26</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">ParamChange</span><span class="p">(</span>
+<span class="normal">26</span>
+<span class="normal">27</span>
+<span class="normal">28</span>
+<span class="normal">29</span>
+<span class="normal">30</span>
+<span class="normal">31</span>
+<span class="normal">32</span>
+<span class="normal">33</span>
+<span class="normal">34</span>
+<span class="normal">35</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">ParamChange</span><span class="p">(</span>
     <span class="n">typing</span><span class="o">.</span><span class="n">TypedDict</span>
 <span class="p">):</span>
 
@@ -726,12 +750,21 @@
 <span class="sd">            - `&#39;abschg&#39;`: Apply an absolute change (e.g., -0.5).</span>
 <span class="sd">            - `&#39;pctchg&#39;`: Apply a percentage change (e.g., +10%).</span>
 
-<span class="sd">        filter_by (str): An optional key with a string value that filters `DataFrame` rows using `.query()` syntax.</span>
+<span class="sd">        filter_by (str | dict[str, list[int | str]]): An optional key that filters `DataFrame` rows.</span>
+<span class="sd">        It can be either:</span>
+<span class="sd">            - a string using `.query()` syntax</span>
+<span class="sd">            - a dictionary where the keys are column names and the values are lists of allowed values.  </span>
+<span class="sd">            Rows must match all the columns you list, and for each column, the value has to be one of the allowed values.</span>
 <span class="sd">    &#39;&#39;&#39;</span>
 
     <span class="n">value</span><span class="p">:</span> <span class="nb">float</span>
     <span class="n">change_type</span><span class="p">:</span> <span class="n">typing_extensions</span><span class="o">.</span><span class="n">NotRequired</span><span class="p">[</span><span class="n">typing</span><span class="o">.</span><span class="n">Literal</span><span class="p">[</span><span class="s1">&#39;absval&#39;</span><span class="p">,</span> <span class="s1">&#39;abschg&#39;</span><span class="p">,</span> <span class="s1">&#39;pctchg&#39;</span><span class="p">]]</span>
-    <span class="n">filter_by</span><span class="p">:</span> <span class="n">typing_extensions</span><span class="o">.</span><span class="n">NotRequired</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>
+    <span class="n">filter_by</span><span class="p">:</span> <span class="n">typing_extensions</span><span class="o">.</span><span class="n">NotRequired</span><span class="p">[</span>
+        <span class="n">typing</span><span class="o">.</span><span class="n">Union</span><span class="p">[</span>
+            <span class="nb">str</span><span class="p">,</span>
+            <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="n">typing</span><span class="o">.</span><span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]]</span>
+        <span class="p">]</span>
+    <span class="p">]</span>
 </code></pre></div></td></tr></table></div>
               </details>
 
@@ -805,7 +838,7 @@ to the SWAT+ model as either a single <code>ParamChange</code> or a list of them
         input file contains a row of units for columns (default is False).</li>
 </ul>
 </details>        <p>Example:
-<div class="highlight"><pre><span></span><code><span class="c1"># Example from `plants.plt` file with a list of `ParamChange` objects</span>
+<div class="highlight"><pre><span></span><code><span class="c1"># Example from `plants.plt` file with a list of `ParamChange` objects and filtering columns using pd.query string:</span>
 <span class="p">{</span>
     <span class="s1">&#39;has_units&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
     <span class="s1">&#39;bm_e&#39;</span><span class="p">:</span> <span class="p">[</span>
@@ -814,10 +847,14 @@ to the SWAT+ model as either a single <code>ParamChange</code> or a list of them
     <span class="p">]</span>
 <span class="p">}</span>
 
-<span class="c1"># Example from `hydrology.hyd` file with a single `ParamChange` object</span>
+<span class="c1"># Example from `hydrology.hyd` file with a single `ParamChange` object and filtering columns using dict:</span>
 <span class="p">{</span>
     <span class="s1">&#39;has_units&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
-    <span class="s1">&#39;epco&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;value&#39;</span><span class="p">:</span> <span class="mf">0.5</span><span class="p">,</span> <span class="s1">&#39;change_type&#39;</span><span class="p">:</span> <span class="s1">&#39;absval&#39;</span><span class="p">}</span>
+    <span class="s1">&#39;epco&#39;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s1">&#39;value&#39;</span><span class="p">:</span> <span class="mf">0.5</span><span class="p">,</span>
+        <span class="s1">&#39;change_type&#39;</span><span class="p">:</span> <span class="s1">&#39;absval&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;filter_by&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;hyd0001&#39;</span><span class="p">,</span> <span class="s1">&#39;hyd0002&#39;</span><span class="p">]}</span>
+    <span class="p">}</span>
 <span class="p">}</span>
 </code></pre></div></p>
 
@@ -875,7 +912,7 @@ Each key is a input filename and the value is a <code>FileParams</code> object.<
         <span class="s1">&#39;has_units&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
         <span class="s1">&#39;bm_e&#39;</span><span class="p">:</span> <span class="p">[</span>
             <span class="p">{</span><span class="s1">&#39;value&#39;</span><span class="p">:</span> <span class="mi">100</span><span class="p">,</span> <span class="s1">&#39;change_type&#39;</span><span class="p">:</span> <span class="s1">&#39;absval&#39;</span><span class="p">,</span> <span class="s1">&#39;filter_by&#39;</span><span class="p">:</span> <span class="s1">&#39;name == &quot;agrl&quot;&#39;</span><span class="p">},</span>
-            <span class="p">{</span><span class="s1">&#39;value&#39;</span><span class="p">:</span> <span class="mi">110</span><span class="p">,</span> <span class="s1">&#39;change_type&#39;</span><span class="p">:</span> <span class="s1">&#39;absval&#39;</span><span class="p">,</span> <span class="s1">&#39;filter_by&#39;</span><span class="p">:</span> <span class="s1">&#39;name == &quot;almd&quot;&#39;</span><span class="p">},</span>
+            <span class="p">{</span><span class="s1">&#39;value&#39;</span><span class="p">:</span> <span class="mi">110</span><span class="p">,</span> <span class="s1">&#39;change_type&#39;</span><span class="p">:</span> <span class="s1">&#39;absval&#39;</span><span class="p">,</span> <span class="s1">&#39;filter_by&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;almd&#39;</span><span class="p">]}},</span>
         <span class="p">],</span>
     <span class="p">},</span>
     <span class="s1">&#39;hydrology.hyd&#39;</span><span class="p">:</span> <span class="p">{</span>
