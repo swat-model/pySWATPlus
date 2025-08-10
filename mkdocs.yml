@@ -44,3 +44,5 @@ nav:
     - FileReader: api/filereader.md
     - Scenario: api/scenario.md
     - pySWATPlus.types: api/types.md
+
+  - Release Notes: changelog.md
