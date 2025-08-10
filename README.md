@@ -5,7 +5,6 @@
 
 ![PyPI - Version](https://img.shields.io/pypi/v/pySWATPlus)
 ![GitHub Release Date](https://img.shields.io/github/release-date/swat-model/pySWATPlus?display_date=published_at)
-
 ![PyPI - Python Version](https://img.shields.io/pypi/pyversions/pySWATPlus)
 ![PyPI - Status](https://img.shields.io/pypi/status/pySWATPlus)
 ![PyPI - Format](https://img.shields.io/pypi/format/pySWATPlus)
