@@ -1,26 +1,7 @@
 import pandas
 import pathlib
 import typing
-from collections.abc import Callable
-
-
-def _load_file(path: str | pathlib.Path, skip_rows: typing.Optional[list[int]] = None, usecols: typing.Optional[list[str]] = None) -> pandas.DataFrame:
-    '''
-    Attempt to load a dataframe from `path` using multiple parsing strategies.
-    '''
-    strategies: list[Callable[[], pandas.DataFrame]] = [
-        lambda: pandas.read_csv(path, sep=r"\s+", skiprows=skip_rows, usecols=usecols),
-        lambda: pandas.read_csv(path, sep=r"[ ]{2,}", skiprows=skip_rows, usecols=usecols),
-        lambda: pandas.read_fwf(path, skiprows=skip_rows, usecols=usecols),
-    ]
-    for attempt in strategies:
-        try:
-            df: pandas.DataFrame = attempt()
-            return df
-        except Exception:
-            pass
-
-    raise ValueError(f"Error reading the file: {path}")
+from .utils import _load_file
 
 
 class FileReader:

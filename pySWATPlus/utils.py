@@ -1,5 +1,8 @@
 from .types import ParamsType, ParamChange
 import pandas
+from collections.abc import Callable
+import pathlib
+import typing
 
 
 def _build_line_to_add(
@@ -9,7 +12,6 @@ def _build_line_to_add(
     yearly: bool,
     avann: bool
 ) -> str:
-
     '''
     Helper function to format lines for `print.prt` file
     '''
@@ -34,7 +36,6 @@ def _apply_param_change(
     param_name: str,
     change: ParamChange
 ) -> None:
-
     '''
     Apply parameter change to a DataFrame
     '''
@@ -56,7 +57,6 @@ def _apply_param_change(
 def _validate_params(
     params: ParamsType
 ) -> None:
-
     '''
     Validate the structure and values of SWAT+ parameter modification input.
     '''
@@ -104,3 +104,22 @@ def _validate_params(
                 filter_by = change.get("filter_by")
                 if filter_by is not None and not isinstance(filter_by, str):
                     raise TypeError(f"'filter_by' for '{key}' in file '{filename}' must be a string.")
+
+
+def _load_file(path: str | pathlib.Path, skip_rows: typing.Optional[list[int]] = None, usecols: typing.Optional[list[str]] = None) -> pandas.DataFrame:
+    '''
+    Attempt to load a dataframe from `path` using multiple parsing strategies.
+    '''
+    strategies: list[Callable[[], pandas.DataFrame]] = [
+        lambda: pandas.read_csv(path, sep=r"\s+", skiprows=skip_rows, usecols=usecols),
+        lambda: pandas.read_csv(path, sep=r"[ ]{2,}", skiprows=skip_rows, usecols=usecols),
+        lambda: pandas.read_fwf(path, skiprows=skip_rows, usecols=usecols),
+    ]
+    for attempt in strategies:
+        try:
+            df: pandas.DataFrame = attempt()
+            return df
+        except Exception:
+            pass
+
+    raise ValueError(f"Error reading the file: {path}")
