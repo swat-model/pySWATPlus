@@ -12,7 +12,7 @@
         <link rel="prev" href="../txtinoutreader/">
       
       
-        <link rel="next" href="../types/">
+        <link rel="next" href="../scenario/">
       
       
       <link rel="icon" href="../../assets/images/favicon.png">
@@ -237,6 +237,25 @@
         </a>
       </li>
     
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../changelog/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Release Notes
+
+      </a>
+    </li>
   
 
       
@@ -524,6 +543,29 @@
   
   
     <li class="md-nav__item">
+      <a href="../scenario/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Scenario
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../types/" class="md-nav__link">
         
   
@@ -543,6 +585,28 @@
           </ul>
         </nav>
       
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../changelog/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Release Notes
+    
+  </span>
+  
+
+      </a>
     </li>
   
 
@@ -798,8 +862,7 @@ from a TXT file located in the <code>TxtInOut</code> folder.</p>
 <span class="normal">111</span>
 <span class="normal">112</span>
 <span class="normal">113</span>
-<span class="normal">114</span>
-<span class="normal">115</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">FileReader</span><span class="p">:</span>
+<span class="normal">114</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">FileReader</span><span class="p">:</span>
 
 <span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    Provide functionality to read, filter, and write data</span>
@@ -816,15 +879,14 @@ from a TXT file located in the <code>TxtInOut</code> folder.</p>
 <span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">        Initialize a FileReader instance to read data from a TXT file.</span>
 
-<span class="sd">        Parameters:</span>
+<span class="sd">        Args:</span>
 <span class="sd">            path (str or Path): Path to the TXT file to be read.</span>
-<span class="sd">            has_units (bool, optional): If `True`, the second row of the file contains units.</span>
-<span class="sd">            usecols (list[str], optional): List of column names to read from the file.</span>
-<span class="sd">            filter_by (str, optional): A pandas query string to filter rows from the file.</span>
+<span class="sd">            has_units (bool): If `True`, the second row of the file contains units.</span>
+<span class="sd">            usecols (list[str]): List of column names to read from the file.</span>
+<span class="sd">            filter_by (str): A pandas query string to filter rows from the file.</span>
 
 <span class="sd">        Raises:</span>
-<span class="sd">            TypeError: If the path is not a valid string or Path, or if the file is a CSV.</span>
-<span class="sd">            FileNotFoundError: If the specified file path does not exist.</span>
+<span class="sd">            TypeError: If the input file has a `.csv` extension.</span>
 
 <span class="sd">        Attributes:</span>
 <span class="sd">            df (pandas.DataFrame): A DataFrame containing the loaded and optionally filtered data.</span>
@@ -852,7 +914,7 @@ from a TXT file located in the <code>TxtInOut</code> folder.</p>
         <span class="n">skip_rows</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 
         <span class="c1"># if file is txt</span>
-        <span class="k">if</span> <span class="n">path</span><span class="o">.</span><span class="n">suffix</span> <span class="o">==</span> <span class="s1">&#39;.csv&#39;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">path</span><span class="o">.</span><span class="n">suffix</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s1">&#39;.csv&#39;</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;Not implemented yet&quot;</span><span class="p">)</span>
 
         <span class="c1"># read only first line of file</span>
@@ -1031,17 +1093,7 @@ from a TXT file located in the <code>TxtInOut</code> folder.</p>
             </td>
             <td>
               <div class="doc-md-description">
-                <p>If the path is not a valid string or Path, or if the file is a CSV.</p>
-              </div>
-            </td>
-          </tr>
-          <tr class="doc-section-item">
-            <td>
-                  <code><span title="FileNotFoundError">FileNotFoundError</span></code>
-            </td>
-            <td>
-              <div class="doc-md-description">
-                <p>If the specified file path does not exist.</p>
+                <p>If the input file has a <code>.csv</code> extension.</p>
               </div>
             </td>
           </tr>
@@ -1150,8 +1202,7 @@ from a TXT file located in the <code>TxtInOut</code> folder.</p>
 <span class="normal">74</span>
 <span class="normal">75</span>
 <span class="normal">76</span>
-<span class="normal">77</span>
-<span class="normal">78</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
+<span class="normal">77</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">path</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">,</span>
     <span class="n">has_units</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
@@ -1161,15 +1212,14 @@ from a TXT file located in the <code>TxtInOut</code> folder.</p>
 <span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    Initialize a FileReader instance to read data from a TXT file.</span>
 
-<span class="sd">    Parameters:</span>
+<span class="sd">    Args:</span>
 <span class="sd">        path (str or Path): Path to the TXT file to be read.</span>
-<span class="sd">        has_units (bool, optional): If `True`, the second row of the file contains units.</span>
-<span class="sd">        usecols (list[str], optional): List of column names to read from the file.</span>
-<span class="sd">        filter_by (str, optional): A pandas query string to filter rows from the file.</span>
+<span class="sd">        has_units (bool): If `True`, the second row of the file contains units.</span>
+<span class="sd">        usecols (list[str]): List of column names to read from the file.</span>
+<span class="sd">        filter_by (str): A pandas query string to filter rows from the file.</span>
 
 <span class="sd">    Raises:</span>
-<span class="sd">        TypeError: If the path is not a valid string or Path, or if the file is a CSV.</span>
-<span class="sd">        FileNotFoundError: If the specified file path does not exist.</span>
+<span class="sd">        TypeError: If the input file has a `.csv` extension.</span>
 
 <span class="sd">    Attributes:</span>
 <span class="sd">        df (pandas.DataFrame): A DataFrame containing the loaded and optionally filtered data.</span>
@@ -1197,7 +1247,7 @@ from a TXT file located in the <code>TxtInOut</code> folder.</p>
     <span class="n">skip_rows</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 
     <span class="c1"># if file is txt</span>
-    <span class="k">if</span> <span class="n">path</span><span class="o">.</span><span class="n">suffix</span> <span class="o">==</span> <span class="s1">&#39;.csv&#39;</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">path</span><span class="o">.</span><span class="n">suffix</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s1">&#39;.csv&#39;</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;Not implemented yet&quot;</span><span class="p">)</span>
 
     <span class="c1"># read only first line of file</span>
@@ -1240,7 +1290,8 @@ it will be preserved and written back as part of the output.</p>
 
             <details class="quote">
               <summary>Source code in <code>pySWATPlus/FileReader.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 80</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 79</span>
+<span class="normal"> 80</span>
 <span class="normal"> 81</span>
 <span class="normal"> 82</span>
 <span class="normal"> 83</span>
@@ -1274,8 +1325,7 @@ it will be preserved and written back as part of the output.</p>
 <span class="normal">111</span>
 <span class="normal">112</span>
 <span class="normal">113</span>
-<span class="normal">114</span>
-<span class="normal">115</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">overwrite_file</span><span class="p">(</span>
+<span class="normal">114</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">overwrite_file</span><span class="p">(</span>
     <span class="bp">self</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>

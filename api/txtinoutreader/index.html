@@ -240,6 +240,25 @@
   
 
       
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../changelog/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Release Notes
+
+      </a>
+    </li>
+  
+
+      
     </ul>
   </div>
 </nav>
@@ -587,6 +606,29 @@
   
   
     <li class="md-nav__item">
+      <a href="../scenario/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Scenario
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../types/" class="md-nav__link">
         
   
@@ -606,6 +648,28 @@
           </ul>
         </nav>
       
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../changelog/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Release Notes
+    
+  </span>
+  
+
+      </a>
     </li>
   
 
@@ -1394,11 +1458,7 @@ SWAT+ model files located in the <code>TxtInOut</code> folder.</p>
 <span class="normal">587</span>
 <span class="normal">588</span>
 <span class="normal">589</span>
-<span class="normal">590</span>
-<span class="normal">591</span>
-<span class="normal">592</span>
-<span class="normal">593</span>
-<span class="normal">594</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">TxtinoutReader</span><span class="p">:</span>
+<span class="normal">590</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">TxtinoutReader</span><span class="p">:</span>
 
 <span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    Provide functionality for seamless reading, editing, and writing of</span>
@@ -1432,20 +1492,20 @@ SWAT+ model files located in the <code>TxtInOut</code> folder.</p>
 
         <span class="c1"># check if path is a string or a path</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">)):</span>
-            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;path must be a string or Path object&quot;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s1">&#39;path must be a string or Path object&#39;</span><span class="p">)</span>
 
         <span class="n">path</span> <span class="o">=</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="n">path</span><span class="p">)</span><span class="o">.</span><span class="n">resolve</span><span class="p">()</span>
 
         <span class="c1"># check if folder exists</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">path</span><span class="o">.</span><span class="n">is_dir</span><span class="p">():</span>
-            <span class="k">raise</span> <span class="ne">FileNotFoundError</span><span class="p">(</span><span class="s2">&quot;Folder does not exist&quot;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">FileNotFoundError</span><span class="p">(</span><span class="s1">&#39;Folder does not exist&#39;</span><span class="p">)</span>
 
         <span class="c1"># check .exe files in the directory</span>
         <span class="n">exe_list</span> <span class="o">=</span> <span class="p">[</span><span class="n">file</span> <span class="k">for</span> <span class="n">file</span> <span class="ow">in</span> <span class="n">path</span><span class="o">.</span><span class="n">iterdir</span><span class="p">()</span> <span class="k">if</span> <span class="n">file</span><span class="o">.</span><span class="n">suffix</span> <span class="o">==</span> <span class="s2">&quot;.exe&quot;</span><span class="p">]</span>
 
         <span class="c1"># raise error on .exe file</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">exe_list</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;Expected exactly one .exe file in the parent folder, but found none or multiple.&quot;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s1">&#39;Expected exactly one .exe file in the parent folder, but found none or multiple.&#39;</span><span class="p">)</span>
 
         <span class="c1"># find parent directory</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">root_folder</span> <span class="o">=</span> <span class="n">path</span>
@@ -1525,7 +1585,7 @@ SWAT+ model files located in the <code>TxtInOut</code> folder.</p>
 <span class="sd">        Modify the simulation period by updating</span>
 <span class="sd">        the begin and end years in the `time.sim` file.</span>
 
-<span class="sd">        Parameters:</span>
+<span class="sd">        Args:</span>
 <span class="sd">            begin (int): Beginning year of the simulation in YYYY format (e.g., 2010).</span>
 <span class="sd">            end (int): Ending year of the simulation in YYYY format (e.g., 2016).</span>
 
@@ -1543,7 +1603,7 @@ SWAT+ model files located in the <code>TxtInOut</code> folder.</p>
                 <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;&quot;</span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s1">&quot; year must be an integer value&#39;</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="n">begin</span> <span class="o">&gt;=</span> <span class="n">end</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;begin year must be less than end year&quot;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;begin year must be less than end year&#39;</span><span class="p">)</span>
 
         <span class="n">nth_line</span> <span class="o">=</span> <span class="mi">3</span>
 
@@ -1587,9 +1647,9 @@ SWAT+ model files located in the <code>TxtInOut</code> folder.</p>
 <span class="sd">        &#39;&#39;&#39;</span>
 
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">warmup</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
-            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s1">&#39;&quot;warmup&quot; must be an integer value&#39;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s1">&#39;warmup must be an integer value&#39;</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">warmup</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;&quot;warmup&quot; must be a positive integer&#39;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;warmup must be a positive integer&#39;</span><span class="p">)</span>
 
         <span class="n">time_sim_path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">root_folder</span> <span class="o">/</span> <span class="s1">&#39;print.prt&#39;</span>
 
@@ -1672,7 +1732,7 @@ SWAT+ model files located in the <code>TxtInOut</code> folder.</p>
 <span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">        Register a file to work with in the SWAT+ model.</span>
 
-<span class="sd">        Parameters:</span>
+<span class="sd">        Args:</span>
 <span class="sd">            filename (str): Path to the file to register, located in the `TxtInOut` folder.</span>
 <span class="sd">            has_units (bool): If True, the second row of the file contains units.</span>
 <span class="sd">            usecols (list[str]): List of column names to read from the file.</span>
@@ -1801,11 +1861,8 @@ SWAT+ model files located in the <code>TxtInOut</code> folder.</p>
 
         <span class="c1"># Modify files for simulation</span>
         <span class="k">for</span> <span class="n">filename</span><span class="p">,</span> <span class="n">file_params</span> <span class="ow">in</span> <span class="n">_params</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-            <span class="n">has_units</span> <span class="o">=</span> <span class="n">file_params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;has_units&#39;</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
 
-            <span class="c1"># adding block only for mypy validation, as it&#39;s already validated in _validate_params</span>
-            <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">has_units</span><span class="p">,</span> <span class="nb">bool</span><span class="p">):</span>
-                <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;`has_units` for file &#39;</span><span class="si">{</span><span class="n">filename</span><span class="si">}</span><span class="s2">&#39; must be a boolean.&quot;</span><span class="p">)</span>
+            <span class="n">has_units</span> <span class="o">=</span> <span class="n">file_params</span><span class="p">[</span><span class="s1">&#39;has_units&#39;</span><span class="p">]</span> <span class="k">if</span> <span class="s1">&#39;has_units&#39;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">RESERVED_PARAMS</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">file_params</span><span class="p">[</span><span class="s1">&#39;has_units&#39;</span><span class="p">],</span> <span class="nb">bool</span><span class="p">)</span> <span class="k">else</span> <span class="kc">False</span>
 
             <span class="n">file</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">register_file</span><span class="p">(</span>
                 <span class="n">filename</span><span class="p">,</span>
@@ -1814,12 +1871,10 @@ SWAT+ model files located in the <code>TxtInOut</code> folder.</p>
             <span class="n">df</span> <span class="o">=</span> <span class="n">file</span><span class="o">.</span><span class="n">df</span>
 
             <span class="k">for</span> <span class="n">param_name</span><span class="p">,</span> <span class="n">param_spec</span> <span class="ow">in</span> <span class="n">file_params</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-                <span class="k">if</span> <span class="n">param_name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">RESERVED_PARAMS</span><span class="p">:</span>
-                    <span class="k">continue</span>  <span class="c1"># Skip reserved parameters</span>
 
-                <span class="c1"># adding block only for mypy validation, as it&#39;s already validated in _validate_params</span>
+                <span class="c1"># Continue for bool varibale</span>
                 <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">param_spec</span><span class="p">,</span> <span class="nb">bool</span><span class="p">):</span>
-                    <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unexpected bool value for parameter &#39;</span><span class="si">{</span><span class="n">param_name</span><span class="si">}</span><span class="s2">&#39; in file &#39;</span><span class="si">{</span><span class="n">filename</span><span class="si">}</span><span class="s2">&#39;&quot;</span><span class="p">)</span>
+                    <span class="k">continue</span>
 
                 <span class="c1"># Normalize to list of changes</span>
                 <span class="n">changes</span> <span class="o">=</span> <span class="n">param_spec</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">param_spec</span><span class="p">,</span> <span class="nb">list</span><span class="p">)</span> <span class="k">else</span> <span class="p">[</span><span class="n">param_spec</span><span class="p">]</span>
@@ -1831,7 +1886,7 @@ SWAT+ model files located in the <code>TxtInOut</code> folder.</p>
             <span class="c1"># Store the modified file</span>
             <span class="n">file</span><span class="o">.</span><span class="n">overwrite_file</span><span class="p">()</span>
 
-        <span class="c1"># run simulation</span>
+        <span class="c1"># Run simulation</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_run_swat</span><span class="p">()</span>
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">root_folder</span>
@@ -1884,6 +1939,7 @@ SWAT+ model files located in the <code>TxtInOut</code> folder.</p>
 <span class="sd">                Set to `False` to disable printing for that time step; defaults to `True` if not specified.</span>
 <span class="sd">                An error is raised if an outer key has an empty dictionary.</span>
 <span class="sd">                The time step keys represent:</span>
+
 <span class="sd">                - `daily`: Output for each day of the simulation.</span>
 <span class="sd">                - `monthly`: Output aggregated for each month.</span>
 <span class="sd">                - `yearly`: Output aggregated for each year.</span>
@@ -1931,9 +1987,9 @@ SWAT+ model files located in the <code>TxtInOut</code> folder.</p>
         <span class="c1"># Set simulation range time</span>
         <span class="k">if</span> <span class="n">begin_and_end_year</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">begin_and_end_year</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">):</span>
-                <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s1">&#39;begin_end_years must be a tuple&#39;</span><span class="p">)</span>
+                <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s1">&#39;begin_and_end_year must be a tuple&#39;</span><span class="p">)</span>
             <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">begin_and_end_year</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">2</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;begin_end_years must contain exactly two elements&#39;</span><span class="p">)</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;begin_and_end_year must contain exactly two elements&#39;</span><span class="p">)</span>
             <span class="n">begin</span><span class="p">,</span> <span class="n">end</span> <span class="o">=</span> <span class="n">begin_and_end_year</span>
             <span class="n">reader</span><span class="o">.</span><span class="n">set_begin_and_end_year</span><span class="p">(</span>
                 <span class="n">begin</span><span class="o">=</span><span class="n">begin</span><span class="p">,</span>
@@ -1946,10 +2002,10 @@ SWAT+ model files located in the <code>TxtInOut</code> folder.</p>
                 <span class="n">warmup</span><span class="o">=</span><span class="n">warmup</span>
             <span class="p">)</span>
 
-        <span class="c1"># update print.prt file to write output</span>
+        <span class="c1"># Update print.prt file to write output</span>
         <span class="k">if</span> <span class="n">print_prt_control</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">print_prt_control</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
-                <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s1">&#39;print_control must be a dictionary&#39;</span><span class="p">)</span>
+                <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s1">&#39;print_prt_control must be a dictionary&#39;</span><span class="p">)</span>
             <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">print_prt_control</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;print_prt_control cannot be an empty dictionary&#39;</span><span class="p">)</span>
             <span class="n">default_dict</span> <span class="o">=</span> <span class="p">{</span>
@@ -1976,7 +2032,7 @@ SWAT+ model files located in the <code>TxtInOut</code> folder.</p>
                     <span class="n">avann</span><span class="o">=</span><span class="n">key_dict</span><span class="p">[</span><span class="s1">&#39;avann&#39;</span><span class="p">]</span>
                 <span class="p">)</span>
 
-        <span class="c1"># run the SWAT+ simulation</span>
+        <span class="c1"># Run the SWAT+ simulation</span>
         <span class="n">output</span> <span class="o">=</span> <span class="n">reader</span><span class="o">.</span><span class="n">run_swat</span><span class="p">(</span><span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="n">output</span>
@@ -2134,20 +2190,20 @@ zero or multiple <code>.exe</code> files.</p>
 
     <span class="c1"># check if path is a string or a path</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">)):</span>
-        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;path must be a string or Path object&quot;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s1">&#39;path must be a string or Path object&#39;</span><span class="p">)</span>
 
     <span class="n">path</span> <span class="o">=</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="n">path</span><span class="p">)</span><span class="o">.</span><span class="n">resolve</span><span class="p">()</span>
 
     <span class="c1"># check if folder exists</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">path</span><span class="o">.</span><span class="n">is_dir</span><span class="p">():</span>
-        <span class="k">raise</span> <span class="ne">FileNotFoundError</span><span class="p">(</span><span class="s2">&quot;Folder does not exist&quot;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">FileNotFoundError</span><span class="p">(</span><span class="s1">&#39;Folder does not exist&#39;</span><span class="p">)</span>
 
     <span class="c1"># check .exe files in the directory</span>
     <span class="n">exe_list</span> <span class="o">=</span> <span class="p">[</span><span class="n">file</span> <span class="k">for</span> <span class="n">file</span> <span class="ow">in</span> <span class="n">path</span><span class="o">.</span><span class="n">iterdir</span><span class="p">()</span> <span class="k">if</span> <span class="n">file</span><span class="o">.</span><span class="n">suffix</span> <span class="o">==</span> <span class="s2">&quot;.exe&quot;</span><span class="p">]</span>
 
     <span class="c1"># raise error on .exe file</span>
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">exe_list</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;Expected exactly one .exe file in the parent folder, but found none or multiple.&quot;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s1">&#39;Expected exactly one .exe file in the parent folder, but found none or multiple.&#39;</span><span class="p">)</span>
 
     <span class="c1"># find parent directory</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">root_folder</span> <span class="o">=</span> <span class="n">path</span>
@@ -2638,7 +2694,7 @@ generated even when disabled.</p>
 <span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    Register a file to work with in the SWAT+ model.</span>
 
-<span class="sd">    Parameters:</span>
+<span class="sd">    Args:</span>
 <span class="sd">        filename (str): Path to the file to register, located in the `TxtInOut` folder.</span>
 <span class="sd">        has_units (bool): If True, the second row of the file contains units.</span>
 <span class="sd">        usecols (list[str]): List of column names to read from the file.</span>
@@ -2846,12 +2902,7 @@ generated even when disabled.</p>
 <span class="normal">441</span>
 <span class="normal">442</span>
 <span class="normal">443</span>
-<span class="normal">444</span>
-<span class="normal">445</span>
-<span class="normal">446</span>
-<span class="normal">447</span>
-<span class="normal">448</span>
-<span class="normal">449</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">run_swat</span><span class="p">(</span>
+<span class="normal">444</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">run_swat</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">params</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">ParamsType</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">:</span>
@@ -2906,11 +2957,8 @@ generated even when disabled.</p>
 
     <span class="c1"># Modify files for simulation</span>
     <span class="k">for</span> <span class="n">filename</span><span class="p">,</span> <span class="n">file_params</span> <span class="ow">in</span> <span class="n">_params</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-        <span class="n">has_units</span> <span class="o">=</span> <span class="n">file_params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;has_units&#39;</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
 
-        <span class="c1"># adding block only for mypy validation, as it&#39;s already validated in _validate_params</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">has_units</span><span class="p">,</span> <span class="nb">bool</span><span class="p">):</span>
-            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;`has_units` for file &#39;</span><span class="si">{</span><span class="n">filename</span><span class="si">}</span><span class="s2">&#39; must be a boolean.&quot;</span><span class="p">)</span>
+        <span class="n">has_units</span> <span class="o">=</span> <span class="n">file_params</span><span class="p">[</span><span class="s1">&#39;has_units&#39;</span><span class="p">]</span> <span class="k">if</span> <span class="s1">&#39;has_units&#39;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">RESERVED_PARAMS</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">file_params</span><span class="p">[</span><span class="s1">&#39;has_units&#39;</span><span class="p">],</span> <span class="nb">bool</span><span class="p">)</span> <span class="k">else</span> <span class="kc">False</span>
 
         <span class="n">file</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">register_file</span><span class="p">(</span>
             <span class="n">filename</span><span class="p">,</span>
@@ -2919,12 +2967,10 @@ generated even when disabled.</p>
         <span class="n">df</span> <span class="o">=</span> <span class="n">file</span><span class="o">.</span><span class="n">df</span>
 
         <span class="k">for</span> <span class="n">param_name</span><span class="p">,</span> <span class="n">param_spec</span> <span class="ow">in</span> <span class="n">file_params</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-            <span class="k">if</span> <span class="n">param_name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">RESERVED_PARAMS</span><span class="p">:</span>
-                <span class="k">continue</span>  <span class="c1"># Skip reserved parameters</span>
 
-            <span class="c1"># adding block only for mypy validation, as it&#39;s already validated in _validate_params</span>
+            <span class="c1"># Continue for bool varibale</span>
             <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">param_spec</span><span class="p">,</span> <span class="nb">bool</span><span class="p">):</span>
-                <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unexpected bool value for parameter &#39;</span><span class="si">{</span><span class="n">param_name</span><span class="si">}</span><span class="s2">&#39; in file &#39;</span><span class="si">{</span><span class="n">filename</span><span class="si">}</span><span class="s2">&#39;&quot;</span><span class="p">)</span>
+                <span class="k">continue</span>
 
             <span class="c1"># Normalize to list of changes</span>
             <span class="n">changes</span> <span class="o">=</span> <span class="n">param_spec</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">param_spec</span><span class="p">,</span> <span class="nb">list</span><span class="p">)</span> <span class="k">else</span> <span class="p">[</span><span class="n">param_spec</span><span class="p">]</span>
@@ -2936,7 +2982,7 @@ generated even when disabled.</p>
         <span class="c1"># Store the modified file</span>
         <span class="n">file</span><span class="o">.</span><span class="n">overwrite_file</span><span class="p">()</span>
 
-    <span class="c1"># run simulation</span>
+    <span class="c1"># Run simulation</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">_run_swat</span><span class="p">()</span>
 
     <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">root_folder</span>
@@ -3071,11 +3117,13 @@ Each outer key is an object name from <code>print.prt</code> (e.g., 'channel_sd'
 Each value is a dictionary with keys <code>daily</code>, <code>monthly</code>, <code>yearly</code>, or <code>avann</code>, mapped to boolean values.
 Set to <code>False</code> to disable printing for that time step; defaults to <code>True</code> if not specified.
 An error is raised if an outer key has an empty dictionary.
-The time step keys represent:
-- <code>daily</code>: Output for each day of the simulation.
-- <code>monthly</code>: Output aggregated for each month.
-- <code>yearly</code>: Output aggregated for each year.
-- <code>avann</code>: Average annual output over the entire simulation period.</p>
+The time step keys represent:</p>
+<ul>
+<li><code>daily</code>: Output for each day of the simulation.</li>
+<li><code>monthly</code>: Output aggregated for each month.</li>
+<li><code>yearly</code>: Output aggregated for each year.</li>
+<li><code>avann</code>: Average annual output over the entire simulation period.</li>
+</ul>
               </div>
             </td>
             <td>
@@ -3134,7 +3182,12 @@ The time step keys represent:
 
             <details class="quote">
               <summary>Source code in <code>pySWATPlus/TxtinoutReader.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">451</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">446</span>
+<span class="normal">447</span>
+<span class="normal">448</span>
+<span class="normal">449</span>
+<span class="normal">450</span>
+<span class="normal">451</span>
 <span class="normal">452</span>
 <span class="normal">453</span>
 <span class="normal">454</span>
@@ -3273,11 +3326,7 @@ The time step keys represent:
 <span class="normal">587</span>
 <span class="normal">588</span>
 <span class="normal">589</span>
-<span class="normal">590</span>
-<span class="normal">591</span>
-<span class="normal">592</span>
-<span class="normal">593</span>
-<span class="normal">594</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">run_swat_in_other_dir</span><span class="p">(</span>
+<span class="normal">590</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">run_swat_in_other_dir</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">target_dir</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">,</span>
     <span class="n">params</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">ParamsType</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -3325,6 +3374,7 @@ The time step keys represent:
 <span class="sd">            Set to `False` to disable printing for that time step; defaults to `True` if not specified.</span>
 <span class="sd">            An error is raised if an outer key has an empty dictionary.</span>
 <span class="sd">            The time step keys represent:</span>
+
 <span class="sd">            - `daily`: Output for each day of the simulation.</span>
 <span class="sd">            - `monthly`: Output aggregated for each month.</span>
 <span class="sd">            - `yearly`: Output aggregated for each year.</span>
@@ -3372,9 +3422,9 @@ The time step keys represent:
     <span class="c1"># Set simulation range time</span>
     <span class="k">if</span> <span class="n">begin_and_end_year</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">begin_and_end_year</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">):</span>
-            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s1">&#39;begin_end_years must be a tuple&#39;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s1">&#39;begin_and_end_year must be a tuple&#39;</span><span class="p">)</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">begin_and_end_year</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">2</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;begin_end_years must contain exactly two elements&#39;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;begin_and_end_year must contain exactly two elements&#39;</span><span class="p">)</span>
         <span class="n">begin</span><span class="p">,</span> <span class="n">end</span> <span class="o">=</span> <span class="n">begin_and_end_year</span>
         <span class="n">reader</span><span class="o">.</span><span class="n">set_begin_and_end_year</span><span class="p">(</span>
             <span class="n">begin</span><span class="o">=</span><span class="n">begin</span><span class="p">,</span>
@@ -3387,10 +3437,10 @@ The time step keys represent:
             <span class="n">warmup</span><span class="o">=</span><span class="n">warmup</span>
         <span class="p">)</span>
 
-    <span class="c1"># update print.prt file to write output</span>
+    <span class="c1"># Update print.prt file to write output</span>
     <span class="k">if</span> <span class="n">print_prt_control</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">print_prt_control</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
-            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s1">&#39;print_control must be a dictionary&#39;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s1">&#39;print_prt_control must be a dictionary&#39;</span><span class="p">)</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">print_prt_control</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;print_prt_control cannot be an empty dictionary&#39;</span><span class="p">)</span>
         <span class="n">default_dict</span> <span class="o">=</span> <span class="p">{</span>
@@ -3417,7 +3467,7 @@ The time step keys represent:
                 <span class="n">avann</span><span class="o">=</span><span class="n">key_dict</span><span class="p">[</span><span class="s1">&#39;avann&#39;</span><span class="p">]</span>
             <span class="p">)</span>
 
-    <span class="c1"># run the SWAT+ simulation</span>
+    <span class="c1"># Run the SWAT+ simulation</span>
     <span class="n">output</span> <span class="o">=</span> <span class="n">reader</span><span class="o">.</span><span class="n">run_swat</span><span class="p">(</span><span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">output</span>
@@ -3577,7 +3627,7 @@ the begin and end years in the <code>time.sim</code> file.</p>
 <span class="sd">    Modify the simulation period by updating</span>
 <span class="sd">    the begin and end years in the `time.sim` file.</span>
 
-<span class="sd">    Parameters:</span>
+<span class="sd">    Args:</span>
 <span class="sd">        begin (int): Beginning year of the simulation in YYYY format (e.g., 2010).</span>
 <span class="sd">        end (int): Ending year of the simulation in YYYY format (e.g., 2016).</span>
 
@@ -3595,7 +3645,7 @@ the begin and end years in the <code>time.sim</code> file.</p>
             <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;&quot;</span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s1">&quot; year must be an integer value&#39;</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="n">begin</span> <span class="o">&gt;=</span> <span class="n">end</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;begin year must be less than end year&quot;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;begin year must be less than end year&#39;</span><span class="p">)</span>
 
     <span class="n">nth_line</span> <span class="o">=</span> <span class="mi">3</span>
 
@@ -3757,9 +3807,9 @@ the simulation will use for warm-up (e.g., 1).</p>
 <span class="sd">    &#39;&#39;&#39;</span>
 
     <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">warmup</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
-        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s1">&#39;&quot;warmup&quot; must be an integer value&#39;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s1">&#39;warmup must be an integer value&#39;</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">warmup</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;&quot;warmup&quot; must be a positive integer&#39;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;warmup must be a positive integer&#39;</span><span class="p">)</span>
 
     <span class="n">time_sim_path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">root_folder</span> <span class="o">/</span> <span class="s1">&#39;print.prt&#39;</span>
 
