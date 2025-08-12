@@ -3,6 +3,7 @@ import shutil
 import pySWATPlus
 import pytest
 import tempfile
+import pandas
 
 
 def test_simulation_by_sobol_sample():
@@ -172,6 +173,36 @@ def test_simulated_timeseries_df():
             filter_rows={'name': 1}
         )
     assert exc_info.value.args[0] == 'Filter values for column "name" must be provided as a list'
+
+    # error test for invalid start_date format
+    with pytest.raises(Exception) as exc_info:
+        pySWATPlus.Scenario().simulated_timeseries_df(
+            data_file=os.path.join(txtinout_folder, 'zrecall_yr.txt'),
+            start_date='2025/01/01'  # wrong format
+        )
+    assert exc_info.value.args[0] == "Invalid date format: '2025/01/01'. Expected 'YYYY-MM-DD'."
+
+    # error test for invalid start_date format
+    with pytest.raises(Exception) as exc_info:
+        pySWATPlus.Scenario().simulated_timeseries_df(
+            data_file=os.path.join(txtinout_folder, 'zrecall_yr.txt'),
+            start_date='2025/01/01'  # wrong format
+        )
+    assert exc_info.value.args[0] == "Invalid date format: '2025/01/01'. Expected 'YYYY-MM-DD'."
+
+    # Use a date range that you know does NOT exist in the data
+    bad_start_date = '1900-01-01'
+    bad_end_date = '1900-12-31'
+
+    with pytest.raises(ValueError) as exc_info:
+        pySWATPlus.Scenario().simulated_timeseries_df(
+            data_file=os.path.join(txtinout_folder, 'zrecall_yr.txt'),
+            start_date=bad_start_date,
+            end_date=bad_end_date
+        )
+
+    expected_msg = f'No data available between {pandas.to_datetime(bad_start_date).date()} and {pandas.to_datetime(bad_end_date).date()} in file "zrecall_yr.txt"'
+    assert exc_info.value.args[0] == expected_msg
 
 
 if __name__ == '__main__':

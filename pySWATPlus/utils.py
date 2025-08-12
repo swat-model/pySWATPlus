@@ -3,6 +3,7 @@ import pandas
 from collections.abc import Callable
 import pathlib
 import typing
+from datetime import datetime
 
 
 def _build_line_to_add(
@@ -123,3 +124,14 @@ def _load_file(path: str | pathlib.Path, skip_rows: typing.Optional[list[int]] =
             pass
 
     raise ValueError(f"Error reading the file: {path}")
+
+
+def _validate_date_str(date_str: str) -> None:
+    '''
+    Validates a date string in 'YYYY-MM-DD' format.
+    Raises ValueError if invalid.
+    '''
+    try:
+        datetime.strptime(date_str, "%Y-%m-%d").date()
+    except ValueError:
+        raise ValueError(f"Invalid date format: '{date_str}'. Expected 'YYYY-MM-DD'.")

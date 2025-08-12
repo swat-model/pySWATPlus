@@ -1,7 +1,6 @@
 import pandas
 import numpy
 import time
-import datetime
 import functools
 import SALib.sample.sobol
 import typing
@@ -13,6 +12,7 @@ import concurrent.futures
 from .types import ParamsType
 from .FileReader import FileReader
 from .TxtinoutReader import TxtinoutReader
+from .utils import _validate_date_str
 
 
 class Scenario:
@@ -20,20 +20,6 @@ class Scenario:
     '''
     Provides functionality for running scenario simulations and analyzing simulated data.
     '''
-
-    def _str2date(
-        self,
-        str_date: str
-    ) -> datetime.date:
-
-        '''
-        Converts a date string in the format '%Y-%m-%d' to a `datetime.date` object.
-        '''
-
-        output = datetime.datetime.strptime(str_date, '%Y-%m-%d').date()
-
-        return output
-
     def simulated_timeseries_df(
         self,
         data_file: str,
@@ -43,7 +29,6 @@ class Scenario:
         filter_rows: dict[str, list[typing.Any]] = {},
         retain_cols: typing.Optional[list[str]] = None
     ) -> pandas.DataFrame:
-
         '''
         Extracts data from an input file produced by a simulation and generates
         a time series `DataFrame` by constructing a new `date` column
@@ -68,12 +53,19 @@ class Scenario:
         '''
 
         # DataFrame from input file
-        skiprows = [0, 2] if unit_row else [0]
-        df = pandas.read_csv(
-            filepath_or_buffer=data_file,
-            sep=r'\s+',
-            skiprows=skiprows
+        file_reader = FileReader(
+            path=data_file,
+            has_units=unit_row,
+            usecols=retain_cols,
         )
+
+        # check that dates are in correct format
+        if start_date is not None:
+            _validate_date_str(start_date)
+        if end_date is not None:
+            _validate_date_str(end_date)
+
+        df = file_reader.df
 
         # Create date column
         date_col = 'date'
@@ -84,19 +76,20 @@ class Scenario:
             raise ValueError(
                 f'Missing required time series columns "{missing_cols}" in file "{os.path.basename(data_file)}"'
             )
-        df[date_col] = df.apply(
-            lambda row: datetime.date(
-                year=int(row['yr']),
-                month=int(row['mon']),
-                day=int(row['day'])
-            ),
-            axis=1
-        )
+        df[date_col] = pandas.to_datetime(
+            df[['yr', 'mon', 'day']].rename(columns={'yr': 'year', 'mon': 'month', 'day': 'day'})
+        ).dt.date
 
         # filter DataFrame by date
-        start_do = df[date_col].iloc[0] if start_date is None else self._str2date(start_date)
-        end_do = df[date_col].iloc[-1] if end_date is None else self._str2date(end_date)
-        df = df[(df[date_col] >= start_do) & (df[date_col] <= end_do)].reset_index(drop=True)
+        start_do = pandas.to_datetime(start_date).date() if start_date else df[date_col].iloc[0]
+        end_do = pandas.to_datetime(end_date).date() if end_date else df[date_col].iloc[-1]
+        df = df.loc[df[date_col].between(start_do, end_do)].reset_index(drop=True)
+
+        # Check if filtering by date removed all rows
+        if df.empty:
+            raise ValueError(
+                f'No data available between {start_do} and {end_do} in file "{os.path.basename(data_file)}"'
+            )
 
         # filter by row values
         for col, val in filter_rows.items():
@@ -107,9 +100,13 @@ class Scenario:
             df = df.loc[df[col].isin(val)].reset_index(drop=True)
 
         # DataFrame with selected columns
-        final_cols = [date_col] + list(df.columns[:-1]) if retain_cols is None else [date_col] + retain_cols
+        if retain_cols is None:
+            original_cols = [col for col in df.columns if col != date_col]
+            final_cols = [date_col] + original_cols
+        else:
+            final_cols = [date_col] + retain_cols
+            
         df = df[final_cols]
-
         return df
 
     def _simulation_in_cpu(
@@ -129,7 +126,6 @@ class Scenario:
         retain_cols: list[str] | None,
         clean_setup: bool
     ) -> dict[str, typing.Any]:
-
         '''
         Private function that runs a SWAT+ simulation asynchronously on a dedicated logical CPU.
         '''
@@ -219,7 +215,6 @@ class Scenario:
         save_output: bool = True,
         clean_setup: bool = True
     ) -> dict[str, typing.Any]:
-
         '''
         Provides a high-level interface for performing sensitivity simulations through parallel computing.
 
