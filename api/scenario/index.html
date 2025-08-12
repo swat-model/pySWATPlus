@@ -1261,30 +1261,11 @@
 <span class="normal">522</span>
 <span class="normal">523</span>
 <span class="normal">524</span>
-<span class="normal">525</span>
-<span class="normal">526</span>
-<span class="normal">527</span>
-<span class="normal">528</span>
-<span class="normal">529</span>
-<span class="normal">530</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Scenario</span><span class="p">:</span>
+<span class="normal">525</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Scenario</span><span class="p">:</span>
 
 <span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    Provides functionality for running scenario simulations and analyzing simulated data.</span>
 <span class="sd">    &#39;&#39;&#39;</span>
-
-    <span class="k">def</span><span class="w"> </span><span class="nf">_str2date</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span>
-        <span class="n">str_date</span><span class="p">:</span> <span class="nb">str</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">datetime</span><span class="o">.</span><span class="n">date</span><span class="p">:</span>
-
-<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">        Converts a date string in the format &#39;%Y-%m-%d&#39; to a `datetime.date` object.</span>
-<span class="sd">        &#39;&#39;&#39;</span>
-
-        <span class="n">output</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">strptime</span><span class="p">(</span><span class="n">str_date</span><span class="p">,</span> <span class="s1">&#39;%Y-%m-</span><span class="si">%d</span><span class="s1">&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">date</span><span class="p">()</span>
-
-        <span class="k">return</span> <span class="n">output</span>
-
     <span class="k">def</span><span class="w"> </span><span class="nf">simulated_timeseries_df</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">data_file</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
@@ -1294,7 +1275,6 @@
         <span class="n">filter_rows</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="n">typing</span><span class="o">.</span><span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="p">{},</span>
         <span class="n">retain_cols</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pandas</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
-
 <span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">        Extracts data from an input file produced by a simulation and generates</span>
 <span class="sd">        a time series `DataFrame` by constructing a new `date` column</span>
@@ -1319,12 +1299,19 @@
 <span class="sd">        &#39;&#39;&#39;</span>
 
         <span class="c1"># DataFrame from input file</span>
-        <span class="n">skiprows</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span> <span class="k">if</span> <span class="n">unit_row</span> <span class="k">else</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-        <span class="n">df</span> <span class="o">=</span> <span class="n">pandas</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span>
-            <span class="n">filepath_or_buffer</span><span class="o">=</span><span class="n">data_file</span><span class="p">,</span>
-            <span class="n">sep</span><span class="o">=</span><span class="sa">r</span><span class="s1">&#39;\s+&#39;</span><span class="p">,</span>
-            <span class="n">skiprows</span><span class="o">=</span><span class="n">skiprows</span>
+        <span class="n">file_reader</span> <span class="o">=</span> <span class="n">FileReader</span><span class="p">(</span>
+            <span class="n">path</span><span class="o">=</span><span class="n">data_file</span><span class="p">,</span>
+            <span class="n">has_units</span><span class="o">=</span><span class="n">unit_row</span><span class="p">,</span>
+            <span class="n">usecols</span><span class="o">=</span><span class="n">retain_cols</span><span class="p">,</span>
         <span class="p">)</span>
+
+        <span class="c1"># check that dates are in correct format</span>
+        <span class="k">if</span> <span class="n">start_date</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">_validate_date_str</span><span class="p">(</span><span class="n">start_date</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">end_date</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">_validate_date_str</span><span class="p">(</span><span class="n">end_date</span><span class="p">)</span>
+
+        <span class="n">df</span> <span class="o">=</span> <span class="n">file_reader</span><span class="o">.</span><span class="n">df</span>
 
         <span class="c1"># Create date column</span>
         <span class="n">date_col</span> <span class="o">=</span> <span class="s1">&#39;date&#39;</span>
@@ -1335,19 +1322,20 @@
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
                 <span class="sa">f</span><span class="s1">&#39;Missing required time series columns &quot;</span><span class="si">{</span><span class="n">missing_cols</span><span class="si">}</span><span class="s1">&quot; in file &quot;</span><span class="si">{</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">data_file</span><span class="p">)</span><span class="si">}</span><span class="s1">&quot;&#39;</span>
             <span class="p">)</span>
-        <span class="n">df</span><span class="p">[</span><span class="n">date_col</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span>
-            <span class="k">lambda</span> <span class="n">row</span><span class="p">:</span> <span class="n">datetime</span><span class="o">.</span><span class="n">date</span><span class="p">(</span>
-                <span class="n">year</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="s1">&#39;yr&#39;</span><span class="p">]),</span>
-                <span class="n">month</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="s1">&#39;mon&#39;</span><span class="p">]),</span>
-                <span class="n">day</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="s1">&#39;day&#39;</span><span class="p">])</span>
-            <span class="p">),</span>
-            <span class="n">axis</span><span class="o">=</span><span class="mi">1</span>
-        <span class="p">)</span>
+        <span class="n">df</span><span class="p">[</span><span class="n">date_col</span><span class="p">]</span> <span class="o">=</span> <span class="n">pandas</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span>
+            <span class="n">df</span><span class="p">[[</span><span class="s1">&#39;yr&#39;</span><span class="p">,</span> <span class="s1">&#39;mon&#39;</span><span class="p">,</span> <span class="s1">&#39;day&#39;</span><span class="p">]]</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;yr&#39;</span><span class="p">:</span> <span class="s1">&#39;year&#39;</span><span class="p">,</span> <span class="s1">&#39;mon&#39;</span><span class="p">:</span> <span class="s1">&#39;month&#39;</span><span class="p">,</span> <span class="s1">&#39;day&#39;</span><span class="p">:</span> <span class="s1">&#39;day&#39;</span><span class="p">})</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">dt</span><span class="o">.</span><span class="n">date</span>
 
         <span class="c1"># filter DataFrame by date</span>
-        <span class="n">start_do</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">date_col</span><span class="p">]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">if</span> <span class="n">start_date</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">_str2date</span><span class="p">(</span><span class="n">start_date</span><span class="p">)</span>
-        <span class="n">end_do</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">date_col</span><span class="p">]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="k">if</span> <span class="n">end_date</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">_str2date</span><span class="p">(</span><span class="n">end_date</span><span class="p">)</span>
-        <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="p">[(</span><span class="n">df</span><span class="p">[</span><span class="n">date_col</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="n">start_do</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">date_col</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="n">end_do</span><span class="p">)]</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">start_do</span> <span class="o">=</span> <span class="n">pandas</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">start_date</span><span class="p">)</span><span class="o">.</span><span class="n">date</span><span class="p">()</span> <span class="k">if</span> <span class="n">start_date</span> <span class="k">else</span> <span class="n">df</span><span class="p">[</span><span class="n">date_col</span><span class="p">]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">end_do</span> <span class="o">=</span> <span class="n">pandas</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">end_date</span><span class="p">)</span><span class="o">.</span><span class="n">date</span><span class="p">()</span> <span class="k">if</span> <span class="n">end_date</span> <span class="k">else</span> <span class="n">df</span><span class="p">[</span><span class="n">date_col</span><span class="p">]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="n">date_col</span><span class="p">]</span><span class="o">.</span><span class="n">between</span><span class="p">(</span><span class="n">start_do</span><span class="p">,</span> <span class="n">end_do</span><span class="p">)]</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+        <span class="c1"># Check if filtering by date removed all rows</span>
+        <span class="k">if</span> <span class="n">df</span><span class="o">.</span><span class="n">empty</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s1">&#39;No data available between </span><span class="si">{</span><span class="n">start_do</span><span class="si">}</span><span class="s1"> and </span><span class="si">{</span><span class="n">end_do</span><span class="si">}</span><span class="s1"> in file &quot;</span><span class="si">{</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">data_file</span><span class="p">)</span><span class="si">}</span><span class="s1">&quot;&#39;</span>
+            <span class="p">)</span>
 
         <span class="c1"># filter by row values</span>
         <span class="k">for</span> <span class="n">col</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">filter_rows</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
@@ -1358,9 +1346,13 @@
             <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="n">col</span><span class="p">]</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">val</span><span class="p">)]</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
         <span class="c1"># DataFrame with selected columns</span>
-        <span class="n">final_cols</span> <span class="o">=</span> <span class="p">[</span><span class="n">date_col</span><span class="p">]</span> <span class="o">+</span> <span class="nb">list</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span> <span class="k">if</span> <span class="n">retain_cols</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="p">[</span><span class="n">date_col</span><span class="p">]</span> <span class="o">+</span> <span class="n">retain_cols</span>
-        <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">final_cols</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">retain_cols</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">original_cols</span> <span class="o">=</span> <span class="p">[</span><span class="n">col</span> <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span> <span class="k">if</span> <span class="n">col</span> <span class="o">!=</span> <span class="n">date_col</span><span class="p">]</span>
+            <span class="n">final_cols</span> <span class="o">=</span> <span class="p">[</span><span class="n">date_col</span><span class="p">]</span> <span class="o">+</span> <span class="n">original_cols</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">final_cols</span> <span class="o">=</span> <span class="p">[</span><span class="n">date_col</span><span class="p">]</span> <span class="o">+</span> <span class="n">retain_cols</span>
 
+        <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">final_cols</span><span class="p">]</span>
         <span class="k">return</span> <span class="n">df</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_simulation_in_cpu</span><span class="p">(</span>
@@ -1380,7 +1372,6 @@
         <span class="n">retain_cols</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">clean_setup</span><span class="p">:</span> <span class="nb">bool</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">typing</span><span class="o">.</span><span class="n">Any</span><span class="p">]:</span>
-
 <span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">        Private function that runs a SWAT+ simulation asynchronously on a dedicated logical CPU.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
@@ -1470,7 +1461,6 @@
         <span class="n">save_output</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
         <span class="n">clean_setup</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">typing</span><span class="o">.</span><span class="n">Any</span><span class="p">]:</span>
-
 <span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">        Provides a high-level interface for performing sensitivity simulations through parallel computing.</span>
 
@@ -1952,7 +1942,21 @@ all columns from the input file are retained.</p>
 
             <details class="quote">
               <summary>Source code in <code>pySWATPlus/Scenario.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 37</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 23</span>
+<span class="normal"> 24</span>
+<span class="normal"> 25</span>
+<span class="normal"> 26</span>
+<span class="normal"> 27</span>
+<span class="normal"> 28</span>
+<span class="normal"> 29</span>
+<span class="normal"> 30</span>
+<span class="normal"> 31</span>
+<span class="normal"> 32</span>
+<span class="normal"> 33</span>
+<span class="normal"> 34</span>
+<span class="normal"> 35</span>
+<span class="normal"> 36</span>
+<span class="normal"> 37</span>
 <span class="normal"> 38</span>
 <span class="normal"> 39</span>
 <span class="normal"> 40</span>
@@ -2025,10 +2029,7 @@ all columns from the input file are retained.</p>
 <span class="normal">107</span>
 <span class="normal">108</span>
 <span class="normal">109</span>
-<span class="normal">110</span>
-<span class="normal">111</span>
-<span class="normal">112</span>
-<span class="normal">113</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">simulated_timeseries_df</span><span class="p">(</span>
+<span class="normal">110</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">simulated_timeseries_df</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">data_file</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
     <span class="n">unit_row</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
@@ -2037,7 +2038,6 @@ all columns from the input file are retained.</p>
     <span class="n">filter_rows</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="n">typing</span><span class="o">.</span><span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="p">{},</span>
     <span class="n">retain_cols</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pandas</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
-
 <span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    Extracts data from an input file produced by a simulation and generates</span>
 <span class="sd">    a time series `DataFrame` by constructing a new `date` column</span>
@@ -2062,12 +2062,19 @@ all columns from the input file are retained.</p>
 <span class="sd">    &#39;&#39;&#39;</span>
 
     <span class="c1"># DataFrame from input file</span>
-    <span class="n">skiprows</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span> <span class="k">if</span> <span class="n">unit_row</span> <span class="k">else</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-    <span class="n">df</span> <span class="o">=</span> <span class="n">pandas</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span>
-        <span class="n">filepath_or_buffer</span><span class="o">=</span><span class="n">data_file</span><span class="p">,</span>
-        <span class="n">sep</span><span class="o">=</span><span class="sa">r</span><span class="s1">&#39;\s+&#39;</span><span class="p">,</span>
-        <span class="n">skiprows</span><span class="o">=</span><span class="n">skiprows</span>
+    <span class="n">file_reader</span> <span class="o">=</span> <span class="n">FileReader</span><span class="p">(</span>
+        <span class="n">path</span><span class="o">=</span><span class="n">data_file</span><span class="p">,</span>
+        <span class="n">has_units</span><span class="o">=</span><span class="n">unit_row</span><span class="p">,</span>
+        <span class="n">usecols</span><span class="o">=</span><span class="n">retain_cols</span><span class="p">,</span>
     <span class="p">)</span>
+
+    <span class="c1"># check that dates are in correct format</span>
+    <span class="k">if</span> <span class="n">start_date</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">_validate_date_str</span><span class="p">(</span><span class="n">start_date</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">end_date</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">_validate_date_str</span><span class="p">(</span><span class="n">end_date</span><span class="p">)</span>
+
+    <span class="n">df</span> <span class="o">=</span> <span class="n">file_reader</span><span class="o">.</span><span class="n">df</span>
 
     <span class="c1"># Create date column</span>
     <span class="n">date_col</span> <span class="o">=</span> <span class="s1">&#39;date&#39;</span>
@@ -2078,19 +2085,20 @@ all columns from the input file are retained.</p>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
             <span class="sa">f</span><span class="s1">&#39;Missing required time series columns &quot;</span><span class="si">{</span><span class="n">missing_cols</span><span class="si">}</span><span class="s1">&quot; in file &quot;</span><span class="si">{</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">data_file</span><span class="p">)</span><span class="si">}</span><span class="s1">&quot;&#39;</span>
         <span class="p">)</span>
-    <span class="n">df</span><span class="p">[</span><span class="n">date_col</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span>
-        <span class="k">lambda</span> <span class="n">row</span><span class="p">:</span> <span class="n">datetime</span><span class="o">.</span><span class="n">date</span><span class="p">(</span>
-            <span class="n">year</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="s1">&#39;yr&#39;</span><span class="p">]),</span>
-            <span class="n">month</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="s1">&#39;mon&#39;</span><span class="p">]),</span>
-            <span class="n">day</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="s1">&#39;day&#39;</span><span class="p">])</span>
-        <span class="p">),</span>
-        <span class="n">axis</span><span class="o">=</span><span class="mi">1</span>
-    <span class="p">)</span>
+    <span class="n">df</span><span class="p">[</span><span class="n">date_col</span><span class="p">]</span> <span class="o">=</span> <span class="n">pandas</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span>
+        <span class="n">df</span><span class="p">[[</span><span class="s1">&#39;yr&#39;</span><span class="p">,</span> <span class="s1">&#39;mon&#39;</span><span class="p">,</span> <span class="s1">&#39;day&#39;</span><span class="p">]]</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;yr&#39;</span><span class="p">:</span> <span class="s1">&#39;year&#39;</span><span class="p">,</span> <span class="s1">&#39;mon&#39;</span><span class="p">:</span> <span class="s1">&#39;month&#39;</span><span class="p">,</span> <span class="s1">&#39;day&#39;</span><span class="p">:</span> <span class="s1">&#39;day&#39;</span><span class="p">})</span>
+    <span class="p">)</span><span class="o">.</span><span class="n">dt</span><span class="o">.</span><span class="n">date</span>
 
     <span class="c1"># filter DataFrame by date</span>
-    <span class="n">start_do</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">date_col</span><span class="p">]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">if</span> <span class="n">start_date</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">_str2date</span><span class="p">(</span><span class="n">start_date</span><span class="p">)</span>
-    <span class="n">end_do</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">date_col</span><span class="p">]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="k">if</span> <span class="n">end_date</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">_str2date</span><span class="p">(</span><span class="n">end_date</span><span class="p">)</span>
-    <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="p">[(</span><span class="n">df</span><span class="p">[</span><span class="n">date_col</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="n">start_do</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">date_col</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="n">end_do</span><span class="p">)]</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">start_do</span> <span class="o">=</span> <span class="n">pandas</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">start_date</span><span class="p">)</span><span class="o">.</span><span class="n">date</span><span class="p">()</span> <span class="k">if</span> <span class="n">start_date</span> <span class="k">else</span> <span class="n">df</span><span class="p">[</span><span class="n">date_col</span><span class="p">]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">end_do</span> <span class="o">=</span> <span class="n">pandas</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">end_date</span><span class="p">)</span><span class="o">.</span><span class="n">date</span><span class="p">()</span> <span class="k">if</span> <span class="n">end_date</span> <span class="k">else</span> <span class="n">df</span><span class="p">[</span><span class="n">date_col</span><span class="p">]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="n">date_col</span><span class="p">]</span><span class="o">.</span><span class="n">between</span><span class="p">(</span><span class="n">start_do</span><span class="p">,</span> <span class="n">end_do</span><span class="p">)]</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="c1"># Check if filtering by date removed all rows</span>
+    <span class="k">if</span> <span class="n">df</span><span class="o">.</span><span class="n">empty</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s1">&#39;No data available between </span><span class="si">{</span><span class="n">start_do</span><span class="si">}</span><span class="s1"> and </span><span class="si">{</span><span class="n">end_do</span><span class="si">}</span><span class="s1"> in file &quot;</span><span class="si">{</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">data_file</span><span class="p">)</span><span class="si">}</span><span class="s1">&quot;&#39;</span>
+        <span class="p">)</span>
 
     <span class="c1"># filter by row values</span>
     <span class="k">for</span> <span class="n">col</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">filter_rows</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
@@ -2101,9 +2109,13 @@ all columns from the input file are retained.</p>
         <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="n">col</span><span class="p">]</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">val</span><span class="p">)]</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
     <span class="c1"># DataFrame with selected columns</span>
-    <span class="n">final_cols</span> <span class="o">=</span> <span class="p">[</span><span class="n">date_col</span><span class="p">]</span> <span class="o">+</span> <span class="nb">list</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span> <span class="k">if</span> <span class="n">retain_cols</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="p">[</span><span class="n">date_col</span><span class="p">]</span> <span class="o">+</span> <span class="n">retain_cols</span>
-    <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">final_cols</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">retain_cols</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">original_cols</span> <span class="o">=</span> <span class="p">[</span><span class="n">col</span> <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span> <span class="k">if</span> <span class="n">col</span> <span class="o">!=</span> <span class="n">date_col</span><span class="p">]</span>
+        <span class="n">final_cols</span> <span class="o">=</span> <span class="p">[</span><span class="n">date_col</span><span class="p">]</span> <span class="o">+</span> <span class="n">original_cols</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">final_cols</span> <span class="o">=</span> <span class="p">[</span><span class="n">date_col</span><span class="p">]</span> <span class="o">+</span> <span class="n">retain_cols</span>
 
+    <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">final_cols</span><span class="p">]</span>
     <span class="k">return</span> <span class="n">df</span>
 </code></pre></div></td></tr></table></div>
             </details>
@@ -2513,7 +2525,11 @@ will be deleted dynamically after collecting the required data.</p>
 
             <details class="quote">
               <summary>Source code in <code>pySWATPlus/Scenario.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">204</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">200</span>
+<span class="normal">201</span>
+<span class="normal">202</span>
+<span class="normal">203</span>
+<span class="normal">204</span>
 <span class="normal">205</span>
 <span class="normal">206</span>
 <span class="normal">207</span>
@@ -2834,12 +2850,7 @@ will be deleted dynamically after collecting the required data.</p>
 <span class="normal">522</span>
 <span class="normal">523</span>
 <span class="normal">524</span>
-<span class="normal">525</span>
-<span class="normal">526</span>
-<span class="normal">527</span>
-<span class="normal">528</span>
-<span class="normal">529</span>
-<span class="normal">530</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">simulation_by_sobol_sample</span><span class="p">(</span>
+<span class="normal">525</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">simulation_by_sobol_sample</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">var_names</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
     <span class="n">var_bounds</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="nb">float</span><span class="p">]],</span>
@@ -2857,7 +2868,6 @@ will be deleted dynamically after collecting the required data.</p>
     <span class="n">save_output</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
     <span class="n">clean_setup</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">typing</span><span class="o">.</span><span class="n">Any</span><span class="p">]:</span>
-
 <span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    Provides a high-level interface for performing sensitivity simulations through parallel computing.</span>
 
