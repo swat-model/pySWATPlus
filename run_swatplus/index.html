@@ -761,30 +761,8 @@
 <p>Instead of calling <code>set_begin_and_end_year()</code>, <code>set_warmup_year()</code>, and <code>enable_object_in_print_prt()</code> separately, you can pass all these options directly into a single call to <code>run_swat_in_other_dir()</code>. You can also modify input values in specific files prior to running a simulation.</p>
 <p>Supported configuration options include:</p>
 <ul>
-<li>
-<p><strong><code>params</code></strong> (<code>ParamsType</code>): Nested dictionary specifying parameter changes before running the simulation.  </p>
-<p>The <code>params</code> dictionary should follow this structure:</p>
-<ul>
-<li><code>&lt;input_file&gt;</code>: Name of the input file (string).<ul>
-<li><code>has_units</code> (bool, optional): Whether the file has units info (default: False).</li>
-<li><code>&lt;parameter_name&gt;</code>: List of one or more parameter change dicts.
-    Each dict can include:<ul>
-<li><code>value</code> (float): New value to assign.</li>
-<li><code>change_type</code> (str, optional): One of 'absval' (default), 'abschg', or 'pctchg'.</li>
-<li><code>filter_by</code> (str or dict, optional): Filters DataFrame rows.<ul>
-<li>If string, it uses pandas <code>.query()</code> syntax.</li>
-<li>If dict, keys are column names, values are lists of allowed values.</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>
-<p><code>begin_and_end_year</code>: Tuple like <code>(2012, 2016)</code> to control the simulation period.</p>
-</li>
+<li><code>params</code>: Dictionary to modify one or more input files before the run.</li>
+<li><code>begin_and_end_year</code>: Tuple like <code>(2012, 2016)</code> to control the simulation period.</li>
 <li><code>warmup</code>: Number of years used for model warm-up.</li>
 <li><code>print_prt_control</code>: Dictionary to control which outputs are written.</li>
 </ul>
@@ -794,8 +772,8 @@
     <span class="s1">&#39;plants.plt&#39;</span><span class="p">:</span> <span class="p">{</span>
         <span class="s1">&#39;has_units&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
         <span class="s1">&#39;bm_e&#39;</span><span class="p">:</span> <span class="p">[</span>
-            <span class="p">{</span><span class="s1">&#39;value&#39;</span><span class="p">:</span> <span class="mi">100</span><span class="p">,</span> <span class="s1">&#39;change_type&#39;</span><span class="p">:</span> <span class="s1">&#39;absval&#39;</span><span class="p">,</span> <span class="s1">&#39;filter_by&#39;</span><span class="p">:</span> <span class="s1">&#39;name == &quot;agrl&quot;&#39;</span><span class="p">},</span>  <span class="c1"># using pd.query string</span>
-            <span class="p">{</span><span class="s1">&#39;value&#39;</span><span class="p">:</span> <span class="mi">110</span><span class="p">,</span> <span class="s1">&#39;change_type&#39;</span><span class="p">:</span> <span class="s1">&#39;absval&#39;</span><span class="p">,</span> <span class="s1">&#39;filter_by&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;almd&#39;</span><span class="p">,</span> <span class="s1">&#39;barl&#39;</span><span class="p">]}},</span>  <span class="c1"># using dict</span>
+            <span class="p">{</span><span class="s1">&#39;value&#39;</span><span class="p">:</span> <span class="mi">100</span><span class="p">,</span> <span class="s1">&#39;change_type&#39;</span><span class="p">:</span> <span class="s1">&#39;absval&#39;</span><span class="p">,</span> <span class="s1">&#39;filter_by&#39;</span><span class="p">:</span> <span class="s1">&#39;name == &quot;agrl&quot;&#39;</span><span class="p">},</span>
+            <span class="p">{</span><span class="s1">&#39;value&#39;</span><span class="p">:</span> <span class="mi">110</span><span class="p">,</span> <span class="s1">&#39;change_type&#39;</span><span class="p">:</span> <span class="s1">&#39;absval&#39;</span><span class="p">,</span> <span class="s1">&#39;filter_by&#39;</span><span class="p">:</span> <span class="s1">&#39;name == &quot;almd&quot;&#39;</span><span class="p">},</span>
         <span class="p">],</span>
     <span class="p">}</span>
 <span class="p">}</span>
