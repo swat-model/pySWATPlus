@@ -44,20 +44,20 @@ class TxtinoutReader:
 
         # check if path is a string or a path
         if not isinstance(path, (str, pathlib.Path)):
-            raise TypeError("path must be a string or Path object")
+            raise TypeError('path must be a string or Path object')
 
         path = pathlib.Path(path).resolve()
 
         # check if folder exists
         if not path.is_dir():
-            raise FileNotFoundError("Folder does not exist")
+            raise FileNotFoundError('Folder does not exist')
 
         # check .exe files in the directory
         exe_list = [file for file in path.iterdir() if file.suffix == ".exe"]
 
         # raise error on .exe file
         if len(exe_list) != 1:
-            raise TypeError("Expected exactly one .exe file in the parent folder, but found none or multiple.")
+            raise TypeError('Expected exactly one .exe file in the parent folder, but found none or multiple.')
 
         # find parent directory
         self.root_folder = path
@@ -137,7 +137,7 @@ class TxtinoutReader:
         Modify the simulation period by updating
         the begin and end years in the `time.sim` file.
 
-        Parameters:
+        Args:
             begin (int): Beginning year of the simulation in YYYY format (e.g., 2010).
             end (int): Ending year of the simulation in YYYY format (e.g., 2016).
 
@@ -155,7 +155,7 @@ class TxtinoutReader:
                 raise TypeError(f'"{key}" year must be an integer value')
 
         if begin >= end:
-            raise ValueError("begin year must be less than end year")
+            raise ValueError('begin year must be less than end year')
 
         nth_line = 3
 
@@ -199,9 +199,9 @@ class TxtinoutReader:
         '''
 
         if not isinstance(warmup, int):
-            raise TypeError('"warmup" must be an integer value')
+            raise TypeError('warmup must be an integer value')
         if warmup <= 0:
-            raise ValueError('"warmup" must be a positive integer')
+            raise ValueError('warmup must be a positive integer')
 
         time_sim_path = self.root_folder / 'print.prt'
 
@@ -284,7 +284,7 @@ class TxtinoutReader:
         '''
         Register a file to work with in the SWAT+ model.
 
-        Parameters:
+        Args:
             filename (str): Path to the file to register, located in the `TxtInOut` folder.
             has_units (bool): If True, the second row of the file contains units.
             usecols (list[str]): List of column names to read from the file.
@@ -413,11 +413,8 @@ class TxtinoutReader:
 
         # Modify files for simulation
         for filename, file_params in _params.items():
-            has_units = file_params.get('has_units', False)
 
-            # adding block only for mypy validation, as it's already validated in _validate_params
-            if not isinstance(has_units, bool):
-                raise TypeError(f"`has_units` for file '{filename}' must be a boolean.")
+            has_units = file_params['has_units'] if 'has_units' in self.RESERVED_PARAMS and isinstance(file_params['has_units'], bool) else False
 
             file = self.register_file(
                 filename,
@@ -426,12 +423,10 @@ class TxtinoutReader:
             df = file.df
 
             for param_name, param_spec in file_params.items():
-                if param_name in self.RESERVED_PARAMS:
-                    continue  # Skip reserved parameters
 
-                # adding block only for mypy validation, as it's already validated in _validate_params
+                # Continue for bool varibale
                 if isinstance(param_spec, bool):
-                    raise TypeError(f"Unexpected bool value for parameter '{param_name}' in file '{filename}'")
+                    continue
 
                 # Normalize to list of changes
                 changes = param_spec if isinstance(param_spec, list) else [param_spec]
@@ -443,7 +438,7 @@ class TxtinoutReader:
             # Store the modified file
             file.overwrite_file()
 
-        # run simulation
+        # Run simulation
         self._run_swat()
 
         return self.root_folder
@@ -496,6 +491,7 @@ class TxtinoutReader:
                 Set to `False` to disable printing for that time step; defaults to `True` if not specified.
                 An error is raised if an outer key has an empty dictionary.
                 The time step keys represent:
+
                 - `daily`: Output for each day of the simulation.
                 - `monthly`: Output aggregated for each month.
                 - `yearly`: Output aggregated for each year.
@@ -543,9 +539,9 @@ class TxtinoutReader:
         # Set simulation range time
         if begin_and_end_year is not None:
             if not isinstance(begin_and_end_year, tuple):
-                raise TypeError('begin_end_years must be a tuple')
+                raise TypeError('begin_and_end_year must be a tuple')
             if len(begin_and_end_year) != 2:
-                raise ValueError('begin_end_years must contain exactly two elements')
+                raise ValueError('begin_and_end_year must contain exactly two elements')
             begin, end = begin_and_end_year
             reader.set_begin_and_end_year(
                 begin=begin,
@@ -558,10 +554,10 @@ class TxtinoutReader:
                 warmup=warmup
             )
 
-        # update print.prt file to write output
+        # Update print.prt file to write output
         if print_prt_control is not None:
             if not isinstance(print_prt_control, dict):
-                raise TypeError('print_control must be a dictionary')
+                raise TypeError('print_prt_control must be a dictionary')
             if len(print_prt_control) == 0:
                 raise ValueError('print_prt_control cannot be an empty dictionary')
             default_dict = {
@@ -588,7 +584,7 @@ class TxtinoutReader:
                     avann=key_dict['avann']
                 )
 
-        # run the SWAT+ simulation
+        # Run the SWAT+ simulation
         output = reader.run_swat(params=params)
 
         return output

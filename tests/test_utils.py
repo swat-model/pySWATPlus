@@ -2,7 +2,7 @@ import pySWATPlus
 import pytest
 
 
-def test_validate_params() -> None:
+def test_validate_params():
 
     # pass test for None input
     output = pySWATPlus.utils._validate_params(

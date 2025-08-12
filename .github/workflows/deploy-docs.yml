@@ -4,6 +4,9 @@ on:
   push:
     branches:
       - main  # Trigger when pushing to the main branch
+    paths:
+      - '**/*.py'  # Any Python file anywhere in the repo
+      - 'docs/**'  # Any file inside the docs folder
 
 jobs:
   deploy-docs:
