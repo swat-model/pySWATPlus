@@ -20,6 +20,7 @@ class Scenario:
     '''
     Provides functionality for running scenario simulations and analyzing simulated data.
     '''
+
     def simulated_timeseries_df(
         self,
         data_file: str,
@@ -52,11 +53,19 @@ class Scenario:
                 `datetime.date` objects created from the `yr`, `mon`, and `day` columns.
         '''
 
+        time_cols = ['yr', 'mon', 'day']
+        if retain_cols is not None:
+            # Remove any time_cols from retain_cols to avoid duplicates
+            rest_cols = [col for col in retain_cols if col not in time_cols]
+            _usecols = time_cols + rest_cols
+        else:
+            _usecols = None
+
         # DataFrame from input file
         file_reader = FileReader(
             path=data_file,
             has_units=unit_row,
-            usecols=retain_cols,
+            usecols=_usecols,
         )
 
         # check that dates are in correct format
@@ -70,7 +79,7 @@ class Scenario:
         # Create date column
         date_col = 'date'
         df_cols = list(df.columns)
-        time_cols = ['yr', 'mon', 'day']
+
         missing_cols = [col for col in time_cols if col not in df_cols]
         if len(missing_cols) > 0:
             raise ValueError(
@@ -101,11 +110,10 @@ class Scenario:
 
         # DataFrame with selected columns
         if retain_cols is None:
-            original_cols = [col for col in df.columns if col != date_col]
-            final_cols = [date_col] + original_cols
+            final_cols = [date_col] + [col for col in df.columns if col != date_col]
         else:
             final_cols = [date_col] + retain_cols
-            
+
         df = df[final_cols]
         return df
 
