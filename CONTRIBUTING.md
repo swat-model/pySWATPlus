@@ -1,19 +1,28 @@
 # Contributing to pySWATPlus
 
-Thank you for considering contributing to `pySWATPlus`, an open-source Python package to provide a programmatic interface to the SWAT+ model. We welcome contributions to enhance its functionality for navigating `TxtInOut` folders, modifying input parameters, running simulations, and performing sensitivity analysis and calibration. This document outlines how to contribute effectively.
+Thank you for considering contributing to `pySWATPlus`! This document outlines how to contribute effectively.
 
-## Getting Started
+## Kinds of Contribution
+There are many ways to contribute to this project. To name a few:
 
-### Prerequisites
+- File bug reports or feature requests as GitHub issues
+- Contribute a bug fix as a pull request
+- Improve the [documentation](https://swat-model.github.io/pySWATPlus/) with new tutorials, better descriptions, or even just by fixing typos
 
-To contribute, ensure you have the following installed:
+The following sections will give some more guidance for each of these options.
 
-- **Python**: Version 3.10 or higher.
-- **Git**: For version control.
-- **pip** or **conda** (if using Conda environments).
-- A code editor (e.g., VS Code, PyCharm).
+## Reporting Bugs and feature requests
+If you've come across some behavior that you think is a bug or a missing feature, the first step is to check if it's already known. For this, take a look at the [GitHub Issues](https://github.com/swat-model/pySWATPlus/issues) page.
 
-### Setting Up the Development Environment
+If you can't find anything related there, you're welcome to create your own issue. You are also welcome to propose new features.
+
+## Contributing code with a pull request
+
+If you wrote some code to fix a bug or provide some new functionality, we use use pull requests (PRs) to merge these changes into the project.
+
+In a PR, please provide a small description of the changes you made, including a reference to the issue that your PR solves (if one exists). We'll take a look at your PR and do a small code review, where we might outline changes that are necessary before we can merge your PR into the project. Please don't feel overwhelmed by our change requests---it's entirely normal to have a code review go back and forth a few times before the code is ready to be merged.
+
+Once everyone is happy with the changes in the PR, we'll approve and merge it into the master branch.
 
 1. **Fork the Repository**:
 
@@ -60,23 +69,7 @@ To contribute, ensure you have the following installed:
      ```bash
      pip install --editable .
      ```
-
-5. **Verify Setup**:
-
-- Open Python and ensure the package can be imported without errors:
-
-  ```python
-  import pySWATPlus
-  ```
-
-## How to Contribute
-
-1. **Find an Issue**:
-
-   - Browse the Issues page for open tasks.
-   - Propose new features or bug fixes by creating an issue to discuss with maintainers.
-
-2. **Create a Branch**:
+5. **Create a Branch**:
 
    - Create a descriptive branch for your work:
 
@@ -85,12 +78,12 @@ To contribute, ensure you have the following installed:
      ```
      - Examples: `fix/txtinout-parsing-error`, `feature/add-parallel-sensitivity`.
 
-3. **Make Changes**:
+6. **Make Changes**:
 
    - Follow the Coding Guidelines below.
    - Write clear commit messages (e.g., `Add support for parallel SALib analysis`).
 
-4. **Run Tests and Linting**:
+7. **Run Tests and Linting**:
 
    - Run tests with coverage report:
 
@@ -104,7 +97,7 @@ To contribute, ensure you have the following installed:
      mypy pySWATPlus
      ```
 
-5. **Commit and Push**:
+8. **Commit and Push**:
 
    - Commit your changes:
 
@@ -114,17 +107,12 @@ To contribute, ensure you have the following installed:
      git push origin feature/your-feature-name
      ```
 
-6. **Submit a Pull Request**:
+9. **Submit a Pull Request**:
 
    - Create a pull request (PR) on GitHub from your branch.
    - Reference the relevant issue (e.g., `Closes #123`).
    - Describe your changes, including their purpose and impact.
    - Ensure CI checks (if set up) pass.
-
-7. **Code Review**:
-
-   - Respond to maintainer feedback promptly.
-   - Update your PR with requested changes.
 
 ## Coding Guidelines
 
@@ -165,15 +153,18 @@ To contribute, ensure you have the following installed:
 
   - Reference issue numbers (e.g., `Fix #123: Resolve simulation crash`).
 
+## Documentation
+
+The pySWATPlus documentation is automatically generated from the files located in the `docs/` folder. If your PR introduces any changes that should be documented, you'll find the relevant files there.
+
+To build the documentation webpage locally and see if everything is rendered correctly, use MkDocs by running the following command in the `docs/` folder:
+
+```bash
+mkdocs serve
+```
+
+This will start a local development server, typically accessible at `localhost:8000` in your browser. Please check the output of this command to ensure there are no broken links or other issues (these will appear as red warnings or errors in the terminal).
+
 ## Code of Conduct
 
 Please follow our Code of Conduct to maintain a welcoming and inclusive environment for all contributors.
-
-## Questions?
-
-For help or clarification:
-
-- Open an issue on GitHub.
-- Contact the maintainers via [GitHub Issues](https://github.com/swat-model/pySWATPlus/issues).
-
-Thank you for contributing to `pySWATPlus`!
