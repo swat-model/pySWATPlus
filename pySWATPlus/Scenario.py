@@ -12,7 +12,7 @@ import concurrent.futures
 from .types import ParamsType
 from .FileReader import FileReader
 from .TxtinoutReader import TxtinoutReader
-from .utils import _validate_date_str
+from . import utils
 
 
 class Scenario:
@@ -70,9 +70,9 @@ class Scenario:
 
         # check that dates are in correct format
         if start_date is not None:
-            _validate_date_str(start_date)
+            utils._validate_date_str(start_date)
         if end_date is not None:
-            _validate_date_str(end_date)
+            utils._validate_date_str(end_date)
 
         df = file_reader.df
 

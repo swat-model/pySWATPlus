@@ -5,7 +5,7 @@ import typing
 import logging
 from .FileReader import FileReader
 from .types import ParamsType
-from .utils import _build_line_to_add, _apply_param_change, _validate_params
+from . import utils
 
 logger = logging.getLogger(__name__)
 
@@ -117,11 +117,11 @@ class TxtinoutReader:
                     new_print_prt += line
                 else:
                     # obj already exist, replace it in same position
-                    new_print_prt += _build_line_to_add(arg_to_add, daily, monthly, yearly, avann)
+                    new_print_prt += utils._build_line_to_add(arg_to_add, daily, monthly, yearly, avann)
                     found = True
 
         if not found:
-            new_print_prt += _build_line_to_add(arg_to_add, daily, monthly, yearly, avann)
+            new_print_prt += utils._build_line_to_add(arg_to_add, daily, monthly, yearly, avann)
 
         # store new print_prt
         with open(print_prt_path, 'w') as file:
@@ -409,7 +409,7 @@ class TxtinoutReader:
 
         _params = params or {}
 
-        _validate_params(_params)
+        utils._validate_params(_params)
 
         # Modify files for simulation
         for filename, file_params in _params.items():
@@ -433,7 +433,7 @@ class TxtinoutReader:
 
                 # Process each parameter change
                 for change in changes:
-                    _apply_param_change(df, param_name, change)
+                    utils._apply_param_change(df, param_name, change)
 
             # Store the modified file
             file.overwrite_file()

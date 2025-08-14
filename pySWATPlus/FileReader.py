@@ -1,7 +1,7 @@
 import pandas
 import pathlib
 import typing
-from .utils import _load_file
+from . import utils
 
 
 class FileReader:
@@ -63,7 +63,7 @@ class FileReader:
         with open(path, 'r', encoding='latin-1') as file:
             self.header_file = file.readline()
 
-        self.df = _load_file(path, skip_rows=skip_rows, usecols=usecols)
+        self.df = utils._load_file(path, skip_rows=skip_rows, usecols=usecols)
 
         self.path = path
 
