@@ -28,7 +28,6 @@ class TxtinoutReader:
         self,
         path: str | pathlib.Path
     ) -> None:
-
         '''
         Create a TxtinoutReader instance for accessing SWAT+ model files.
 
@@ -71,7 +70,6 @@ class TxtinoutReader:
         yearly: bool,
         avann: bool
     ) -> None:
-
         '''
         Update an object in the `print.prt` file by setting its value to `True`.
         If the object does not exist in the file, it will be added at the end.
@@ -132,7 +130,6 @@ class TxtinoutReader:
         begin: int,
         end: int
     ) -> None:
-
         '''
         Modify the simulation period by updating
         the begin and end years in the `time.sim` file.
@@ -186,7 +183,6 @@ class TxtinoutReader:
         self,
         warmup: int
     ) -> None:
-
         '''
         Modify the warm-up years in the `time.sim` file.
 
@@ -230,7 +226,6 @@ class TxtinoutReader:
         self,
         enable: bool = True
     ) -> None:
-
         '''
         Enable or disable print in the `print.prt` file.
         '''
@@ -256,7 +251,6 @@ class TxtinoutReader:
     def enable_csv_print(
         self
     ) -> None:
-
         '''
         Enable print in the `print.prt` file.
         '''
@@ -266,7 +260,6 @@ class TxtinoutReader:
     def disable_csv_print(
         self
     ) -> None:
-
         '''
         Disable print in the `print.prt` file.
         '''
@@ -280,7 +273,6 @@ class TxtinoutReader:
         usecols: typing.Optional[list[str]] = None,
         filter_by: typing.Optional[str] = None
     ) -> FileReader:
-
         '''
         Register a file to work with in the SWAT+ model.
 
@@ -302,7 +294,6 @@ class TxtinoutReader:
         self,
         target_dir: str | pathlib.Path,
     ) -> pathlib.Path:
-
         '''
         Copy the required contents from the input folder associated with this
         `TxtinoutReader` instance to a target directory for SWAT+ simulation.
@@ -321,7 +312,6 @@ class TxtinoutReader:
     def _run_swat(
         self,
     ) -> None:
-
         '''
         Run the SWAT+ simulation.
         '''
@@ -362,7 +352,6 @@ class TxtinoutReader:
         self,
         params: typing.Optional[ParamsType] = None,
     ) -> pathlib.Path:
-
         '''
         Run the SWAT+ simulation with optional parameter changes.
 
@@ -451,7 +440,6 @@ class TxtinoutReader:
         warmup: typing.Optional[int] = None,
         print_prt_control: typing.Optional[dict[str, dict[str, bool]]] = None
     ) -> pathlib.Path:
-
         '''
         Run the SWAT+ model in a specified directory, with optional parameter modifications.
         This method copies the necessary input files from the current project into the
