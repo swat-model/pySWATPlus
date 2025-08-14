@@ -1565,11 +1565,11 @@ SWAT+ model files located in the <code>TxtInOut</code> folder.</p>
                     <span class="n">new_print_prt</span> <span class="o">+=</span> <span class="n">line</span>
                 <span class="k">else</span><span class="p">:</span>
                     <span class="c1"># obj already exist, replace it in same position</span>
-                    <span class="n">new_print_prt</span> <span class="o">+=</span> <span class="n">_build_line_to_add</span><span class="p">(</span><span class="n">arg_to_add</span><span class="p">,</span> <span class="n">daily</span><span class="p">,</span> <span class="n">monthly</span><span class="p">,</span> <span class="n">yearly</span><span class="p">,</span> <span class="n">avann</span><span class="p">)</span>
+                    <span class="n">new_print_prt</span> <span class="o">+=</span> <span class="n">utils</span><span class="o">.</span><span class="n">_build_line_to_add</span><span class="p">(</span><span class="n">arg_to_add</span><span class="p">,</span> <span class="n">daily</span><span class="p">,</span> <span class="n">monthly</span><span class="p">,</span> <span class="n">yearly</span><span class="p">,</span> <span class="n">avann</span><span class="p">)</span>
                     <span class="n">found</span> <span class="o">=</span> <span class="kc">True</span>
 
         <span class="k">if</span> <span class="ow">not</span> <span class="n">found</span><span class="p">:</span>
-            <span class="n">new_print_prt</span> <span class="o">+=</span> <span class="n">_build_line_to_add</span><span class="p">(</span><span class="n">arg_to_add</span><span class="p">,</span> <span class="n">daily</span><span class="p">,</span> <span class="n">monthly</span><span class="p">,</span> <span class="n">yearly</span><span class="p">,</span> <span class="n">avann</span><span class="p">)</span>
+            <span class="n">new_print_prt</span> <span class="o">+=</span> <span class="n">utils</span><span class="o">.</span><span class="n">_build_line_to_add</span><span class="p">(</span><span class="n">arg_to_add</span><span class="p">,</span> <span class="n">daily</span><span class="p">,</span> <span class="n">monthly</span><span class="p">,</span> <span class="n">yearly</span><span class="p">,</span> <span class="n">avann</span><span class="p">)</span>
 
         <span class="c1"># store new print_prt</span>
         <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">print_prt_path</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
@@ -1857,7 +1857,7 @@ SWAT+ model files located in the <code>TxtInOut</code> folder.</p>
 
         <span class="n">_params</span> <span class="o">=</span> <span class="n">params</span> <span class="ow">or</span> <span class="p">{}</span>
 
-        <span class="n">_validate_params</span><span class="p">(</span><span class="n">_params</span><span class="p">)</span>
+        <span class="n">utils</span><span class="o">.</span><span class="n">_validate_params</span><span class="p">(</span><span class="n">_params</span><span class="p">)</span>
 
         <span class="c1"># Modify files for simulation</span>
         <span class="k">for</span> <span class="n">filename</span><span class="p">,</span> <span class="n">file_params</span> <span class="ow">in</span> <span class="n">_params</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
@@ -1881,7 +1881,7 @@ SWAT+ model files located in the <code>TxtInOut</code> folder.</p>
 
                 <span class="c1"># Process each parameter change</span>
                 <span class="k">for</span> <span class="n">change</span> <span class="ow">in</span> <span class="n">changes</span><span class="p">:</span>
-                    <span class="n">_apply_param_change</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">param_name</span><span class="p">,</span> <span class="n">change</span><span class="p">)</span>
+                    <span class="n">utils</span><span class="o">.</span><span class="n">_apply_param_change</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">param_name</span><span class="p">,</span> <span class="n">change</span><span class="p">)</span>
 
             <span class="c1"># Store the modified file</span>
             <span class="n">file</span><span class="o">.</span><span class="n">overwrite_file</span><span class="p">()</span>
@@ -2527,11 +2527,11 @@ generated even when disabled.</p>
                 <span class="n">new_print_prt</span> <span class="o">+=</span> <span class="n">line</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="c1"># obj already exist, replace it in same position</span>
-                <span class="n">new_print_prt</span> <span class="o">+=</span> <span class="n">_build_line_to_add</span><span class="p">(</span><span class="n">arg_to_add</span><span class="p">,</span> <span class="n">daily</span><span class="p">,</span> <span class="n">monthly</span><span class="p">,</span> <span class="n">yearly</span><span class="p">,</span> <span class="n">avann</span><span class="p">)</span>
+                <span class="n">new_print_prt</span> <span class="o">+=</span> <span class="n">utils</span><span class="o">.</span><span class="n">_build_line_to_add</span><span class="p">(</span><span class="n">arg_to_add</span><span class="p">,</span> <span class="n">daily</span><span class="p">,</span> <span class="n">monthly</span><span class="p">,</span> <span class="n">yearly</span><span class="p">,</span> <span class="n">avann</span><span class="p">)</span>
                 <span class="n">found</span> <span class="o">=</span> <span class="kc">True</span>
 
     <span class="k">if</span> <span class="ow">not</span> <span class="n">found</span><span class="p">:</span>
-        <span class="n">new_print_prt</span> <span class="o">+=</span> <span class="n">_build_line_to_add</span><span class="p">(</span><span class="n">arg_to_add</span><span class="p">,</span> <span class="n">daily</span><span class="p">,</span> <span class="n">monthly</span><span class="p">,</span> <span class="n">yearly</span><span class="p">,</span> <span class="n">avann</span><span class="p">)</span>
+        <span class="n">new_print_prt</span> <span class="o">+=</span> <span class="n">utils</span><span class="o">.</span><span class="n">_build_line_to_add</span><span class="p">(</span><span class="n">arg_to_add</span><span class="p">,</span> <span class="n">daily</span><span class="p">,</span> <span class="n">monthly</span><span class="p">,</span> <span class="n">yearly</span><span class="p">,</span> <span class="n">avann</span><span class="p">)</span>
 
     <span class="c1"># store new print_prt</span>
     <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">print_prt_path</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
@@ -2953,7 +2953,7 @@ generated even when disabled.</p>
 
     <span class="n">_params</span> <span class="o">=</span> <span class="n">params</span> <span class="ow">or</span> <span class="p">{}</span>
 
-    <span class="n">_validate_params</span><span class="p">(</span><span class="n">_params</span><span class="p">)</span>
+    <span class="n">utils</span><span class="o">.</span><span class="n">_validate_params</span><span class="p">(</span><span class="n">_params</span><span class="p">)</span>
 
     <span class="c1"># Modify files for simulation</span>
     <span class="k">for</span> <span class="n">filename</span><span class="p">,</span> <span class="n">file_params</span> <span class="ow">in</span> <span class="n">_params</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
@@ -2977,7 +2977,7 @@ generated even when disabled.</p>
 
             <span class="c1"># Process each parameter change</span>
             <span class="k">for</span> <span class="n">change</span> <span class="ow">in</span> <span class="n">changes</span><span class="p">:</span>
-                <span class="n">_apply_param_change</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">param_name</span><span class="p">,</span> <span class="n">change</span><span class="p">)</span>
+                <span class="n">utils</span><span class="o">.</span><span class="n">_apply_param_change</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">param_name</span><span class="p">,</span> <span class="n">change</span><span class="p">)</span>
 
         <span class="c1"># Store the modified file</span>
         <span class="n">file</span><span class="o">.</span><span class="n">overwrite_file</span><span class="p">()</span>

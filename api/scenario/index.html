@@ -1324,9 +1324,9 @@
 
         <span class="c1"># check that dates are in correct format</span>
         <span class="k">if</span> <span class="n">start_date</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">_validate_date_str</span><span class="p">(</span><span class="n">start_date</span><span class="p">)</span>
+            <span class="n">utils</span><span class="o">.</span><span class="n">_validate_date_str</span><span class="p">(</span><span class="n">start_date</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">end_date</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">_validate_date_str</span><span class="p">(</span><span class="n">end_date</span><span class="p">)</span>
+            <span class="n">utils</span><span class="o">.</span><span class="n">_validate_date_str</span><span class="p">(</span><span class="n">end_date</span><span class="p">)</span>
 
         <span class="n">df</span> <span class="o">=</span> <span class="n">file_reader</span><span class="o">.</span><span class="n">df</span>
 
@@ -2101,9 +2101,9 @@ all columns from the input file are retained.</p>
 
     <span class="c1"># check that dates are in correct format</span>
     <span class="k">if</span> <span class="n">start_date</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">_validate_date_str</span><span class="p">(</span><span class="n">start_date</span><span class="p">)</span>
+        <span class="n">utils</span><span class="o">.</span><span class="n">_validate_date_str</span><span class="p">(</span><span class="n">start_date</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">end_date</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">_validate_date_str</span><span class="p">(</span><span class="n">end_date</span><span class="p">)</span>
+        <span class="n">utils</span><span class="o">.</span><span class="n">_validate_date_str</span><span class="p">(</span><span class="n">end_date</span><span class="p">)</span>
 
     <span class="n">df</span> <span class="o">=</span> <span class="n">file_reader</span><span class="o">.</span><span class="n">df</span>
 
