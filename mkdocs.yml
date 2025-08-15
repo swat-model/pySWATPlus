@@ -45,4 +45,6 @@ nav:
     - Scenario: api/scenario.md
     - pySWATPlus.types: api/types.md
 
+  - Contributing: CONTRIBUTING.md
+
   - Release Notes: changelog.md

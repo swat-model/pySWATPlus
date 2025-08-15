@@ -90,7 +90,7 @@ To contribute, ensure you have the following installed:
 
 - Modify codes for the feature you want to work.
 
-- *Test the Mdified Code*:
+- *Test the Modified Code*:
 
     - Write test functions for the modified code in the `tests/` directory.  
       Use file and function names with the prefix `test_`.
