@@ -53,19 +53,10 @@ class Scenario:
                 `datetime.date` objects created from the `yr`, `mon`, and `day` columns.
         '''
 
-        time_cols = ['yr', 'mon', 'day']
-        if retain_cols is not None:
-            # Remove any time_cols from retain_cols to avoid duplicates
-            rest_cols = [col for col in retain_cols if col not in time_cols]
-            _usecols = time_cols + rest_cols
-        else:
-            _usecols = None
-
         # DataFrame from input file
         file_reader = FileReader(
             path=data_file,
             has_units=unit_row,
-            usecols=_usecols,
         )
 
         # check that dates are in correct format
@@ -80,11 +71,13 @@ class Scenario:
         date_col = 'date'
         df_cols = list(df.columns)
 
+        time_cols = ['yr', 'mon', 'day']
         missing_cols = [col for col in time_cols if col not in df_cols]
         if len(missing_cols) > 0:
             raise ValueError(
                 f'Missing required time series columns "{missing_cols}" in file "{os.path.basename(data_file)}"'
             )
+
         df[date_col] = pandas.to_datetime(
             df[['yr', 'mon', 'day']].rename(columns={'yr': 'year', 'mon': 'month', 'day': 'day'})
         ).dt.date
