@@ -64,15 +64,20 @@ class TxtinoutReader:
 
     def enable_object_in_print_prt(
         self,
-        obj: str,
+        obj: typing.Optional[str],
         daily: bool,
         monthly: bool,
         yearly: bool,
-        avann: bool
+        avann: bool,
+        allow_unavailable_object: bool = False
     ) -> None:
         '''
-        Update an object in the `print.prt` file by setting its value to `True`.
-        If the object does not exist in the file, it will be added at the end.
+        Update or add an object in the `print.prt` file with specified time frequency flags.
+
+        This method modifies the `print.prt` file in a SWAT+ project to enable or disable output
+        for a specific object (or all objects if `obj` is None) at specified time frequencies
+        (daily, monthly, yearly, or average annual). If the object does not exist in the file
+        and `obj` is not None, it is appended to the end of the file.
 
         Note:
             This input does not provide complete control over `print.prt` outputs.
@@ -80,12 +85,30 @@ class TxtinoutReader:
             generated even when disabled.
 
         Args:
-            obj (str): The object name or identifier to update or add.
+            obj (Optional[str]): The name of the object to update (e.g., 'channel_sd', 'reservoir').
+                If None, all objects in the `print.prt` file are updated with the specified
+                time frequency settings.
             daily (bool): If `True`, enable daily frequency output.
             monthly (bool): If `True`, enable monthly frequency output.
             yearly (bool): If `True`, enable yearly frequency output.
             avann (bool): If `True`, enable average annual frequency output.
+            allow_unavailable_object (bool, optional): If True, allows adding an object not in
+                the standard SWAT+ output object list. If False and `obj` is not in the standard list,
+                a ValueError is raised. Defaults to False.
         '''
+
+        VALID_OBJECTS = [
+            'channel_sd', 'channel_sdmorph', 'aquifer', 'reservoir', 'recall', 'ru',
+            'hyd', 'water_allo', 'basin_sd_cha', 'basin_sd_chamorph', 'basin_aqu',
+            'basin_res', 'basin_psc', 'basin_nb', 'lsunit_nb', 'hru-lte_nb', 'basin_wb',
+            'lsunit_wb', 'hru-lte_wb', 'basin_pw', 'lsunit_pw', 'hru-lte_pw', 'basin_ls',
+            'lsunit_ls', 'hru-lte_ls', 'basin_salt', 'hru_salt', 'ru_salt',
+            'aqu_salt', 'channel_salt', 'res_salt', 'wetland_salt', 'basin_cs',
+            'hru_cs', 'ru_cs', 'aqu_cs', 'channel_cs', 'res_cs', 'wetland_cs'
+        ]
+
+        if obj and obj not in VALID_OBJECTS and not allow_unavailable_object:
+            raise ValueError(f'This object is not available in standard SWAT+: {obj}. If you want to use it, please set allow_unavailable_object=True.')
 
         # Time frequency dictionary
         time_dict = {
@@ -99,30 +122,42 @@ class TxtinoutReader:
             if not isinstance(val, bool):
                 raise TypeError(f'Variable "{key}" for "{obj}" must be a bool value')
 
-        # check if obj is object itself or file
-        if pathlib.Path(obj).suffix:
-            arg_to_add = obj.rsplit('_', maxsplit=1)[0]
-        else:
-            arg_to_add = obj
-
         # read all print_prt file, line by line
         print_prt_path = self.root_folder / 'print.prt'
         new_print_prt = ""
         found = False
-        with open(print_prt_path) as file:
-            for line in file:
-                if not line.startswith(arg_to_add + ' '):  # Line must start exactly with arg_to_add, not a word that starts with arg_to_add
-                    new_print_prt += line
-                else:
-                    # obj already exist, replace it in same position
-                    new_print_prt += utils._build_line_to_add(arg_to_add, daily, monthly, yearly, avann)
-                    found = True
 
-        if not found:
-            new_print_prt += utils._build_line_to_add(arg_to_add, daily, monthly, yearly, avann)
+        with open(print_prt_path, 'r', newline='') as file:
+            for i, line in enumerate(file, start=1):
+                if i <= 10:
+                    # Always keep first 10 lines as-is
+                    new_print_prt += line
+                    continue
+
+                stripped = line.strip()
+                if not stripped:
+                    # Keep blank lines unchanged
+                    new_print_prt += line
+                    continue
+
+                parts = stripped.split()
+                line_obj = parts[0]
+
+                if obj is None:
+                    # Update all objects
+                    new_print_prt += utils._build_line_to_add(line_obj, daily, monthly, yearly, avann)
+                elif line_obj == obj:
+                    # obj already exist, replace it in same position
+                    new_print_prt += utils._build_line_to_add(line_obj, daily, monthly, yearly, avann)
+                    found = True
+                else:
+                    new_print_prt += line
+
+        if not found and obj is not None:
+            new_print_prt += utils._build_line_to_add(obj, daily, monthly, yearly, avann)
 
         # store new print_prt
-        with open(print_prt_path, 'w') as file:
+        with open(print_prt_path, 'w', newline='') as file:
             file.write(new_print_prt)
 
     def set_begin_and_end_year(
@@ -233,7 +268,6 @@ class TxtinoutReader:
         # read
         nth_line = 7
 
-        # time_sim_path = f"{self.root_folder}\\{'time.sim'}"
         print_prt_path = self.root_folder / 'print.prt'
 
         # Open the file in read mode and read its contents
