@@ -68,6 +68,51 @@ def test_enable_object_in_print_prt(
         )
     assert exc_info.value.args[0] == 'Variable "daily" for "basin_wb" must be a bool value'
 
+    # adding invalid object without flag
+    with pytest.raises(Exception) as exc_info:
+        txtinout_reader.enable_object_in_print_prt(
+            obj='invalid_obj',
+            daily=True,
+            monthly=True,
+            yearly=True,
+            avann=False,
+            allow_unavailable_object=False
+        )
+    assert exc_info.value.args[0] == 'This object is not available in standard SWAT+: invalid_obj. If you want to use it, please set allow_unavailable_object=True.'
+
+    # adding invalid object with flag
+    txtinout_reader.enable_object_in_print_prt(
+        obj='my_custom_obj',
+        daily=True,
+        monthly=False,
+        yearly=False,
+        avann=True,
+        allow_unavailable_object=True
+    )
+    output_file = txtinout_reader.root_folder / 'print.prt'
+    with open(output_file, 'r') as f:
+        lines = f.readlines()
+    assert any(line.startswith('my_custom_obj') for line in lines)
+    assert ' y' in lines[-1]  # last line should be the added object
+
+    # update all objects
+    txtinout_reader.enable_object_in_print_prt(
+        obj=None,
+        daily=True,
+        monthly=True,
+        yearly=False,
+        avann=False
+    )
+    output_file = txtinout_reader.root_folder / 'print.prt'
+    with open(output_file, 'r') as f:
+        lines = f.readlines()[10:]  # skip first 10 unchanged lines
+    for line in lines:
+        if line.strip():
+            assert line.split()[1] == 'y'
+            assert line.split()[2] == 'y'
+            assert line.split()[3] == 'n'
+            assert line.split()[4] == 'n'
+
 
 def test_set_begin_and_end_year(
     txtinout_reader
