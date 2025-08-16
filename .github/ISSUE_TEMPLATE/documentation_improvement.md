@@ -1,5 +1,5 @@
 ---
-name: Documentation Update Request
+name: Documentation
 about: Provide a clear and concise description of the documentation update needed
   for pySWATPlus.
 title: ''
