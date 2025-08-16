@@ -16,7 +16,7 @@
       
       
       <link rel="icon" href="../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.16">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.17">
     
     
       
@@ -1487,7 +1487,44 @@ SWAT+ model files located in the <code>TxtInOut</code> folder.</p>
 <span class="normal">575</span>
 <span class="normal">576</span>
 <span class="normal">577</span>
-<span class="normal">578</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">TxtinoutReader</span><span class="p">:</span>
+<span class="normal">578</span>
+<span class="normal">579</span>
+<span class="normal">580</span>
+<span class="normal">581</span>
+<span class="normal">582</span>
+<span class="normal">583</span>
+<span class="normal">584</span>
+<span class="normal">585</span>
+<span class="normal">586</span>
+<span class="normal">587</span>
+<span class="normal">588</span>
+<span class="normal">589</span>
+<span class="normal">590</span>
+<span class="normal">591</span>
+<span class="normal">592</span>
+<span class="normal">593</span>
+<span class="normal">594</span>
+<span class="normal">595</span>
+<span class="normal">596</span>
+<span class="normal">597</span>
+<span class="normal">598</span>
+<span class="normal">599</span>
+<span class="normal">600</span>
+<span class="normal">601</span>
+<span class="normal">602</span>
+<span class="normal">603</span>
+<span class="normal">604</span>
+<span class="normal">605</span>
+<span class="normal">606</span>
+<span class="normal">607</span>
+<span class="normal">608</span>
+<span class="normal">609</span>
+<span class="normal">610</span>
+<span class="normal">611</span>
+<span class="normal">612</span>
+<span class="normal">613</span>
+<span class="normal">614</span>
+<span class="normal">615</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">TxtinoutReader</span><span class="p">:</span>
 
 <span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    Provide functionality for seamless reading, editing, and writing of</span>
@@ -1541,15 +1578,20 @@ SWAT+ model files located in the <code>TxtInOut</code> folder.</p>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">enable_object_in_print_prt</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
-        <span class="n">obj</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">obj</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
         <span class="n">daily</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
         <span class="n">monthly</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
         <span class="n">yearly</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
-        <span class="n">avann</span><span class="p">:</span> <span class="nb">bool</span>
+        <span class="n">avann</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
+        <span class="n">allow_unavailable_object</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">        Update an object in the `print.prt` file by setting its value to `True`.</span>
-<span class="sd">        If the object does not exist in the file, it will be added at the end.</span>
+<span class="sd">        Update or add an object in the `print.prt` file with specified time frequency flags.</span>
+
+<span class="sd">        This method modifies the `print.prt` file in a SWAT+ project to enable or disable output</span>
+<span class="sd">        for a specific object (or all objects if `obj` is None) at specified time frequencies</span>
+<span class="sd">        (daily, monthly, yearly, or average annual). If the object does not exist in the file</span>
+<span class="sd">        and `obj` is not None, it is appended to the end of the file.</span>
 
 <span class="sd">        Note:</span>
 <span class="sd">            This input does not provide complete control over `print.prt` outputs.</span>
@@ -1557,12 +1599,33 @@ SWAT+ model files located in the <code>TxtInOut</code> folder.</p>
 <span class="sd">            generated even when disabled.</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            obj (str): The object name or identifier to update or add.</span>
+<span class="sd">            obj (Optional[str]): The name of the object to update (e.g., &#39;channel_sd&#39;, &#39;reservoir&#39;).</span>
+<span class="sd">                If None, all objects in the `print.prt` file are updated with the specified</span>
+<span class="sd">                time frequency settings.</span>
 <span class="sd">            daily (bool): If `True`, enable daily frequency output.</span>
 <span class="sd">            monthly (bool): If `True`, enable monthly frequency output.</span>
 <span class="sd">            yearly (bool): If `True`, enable yearly frequency output.</span>
 <span class="sd">            avann (bool): If `True`, enable average annual frequency output.</span>
+<span class="sd">            allow_unavailable_object (bool, optional): If True, allows adding an object not in</span>
+<span class="sd">                the standard SWAT+ output object list. If False and `obj` is not in the standard list,</span>
+<span class="sd">                a ValueError is raised. Defaults to False.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
+
+        <span class="n">obj_dict</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;model_components&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;channel_sd&#39;</span><span class="p">,</span> <span class="s1">&#39;channel_sdmorph&#39;</span><span class="p">,</span> <span class="s1">&#39;aquifer&#39;</span><span class="p">,</span> <span class="s1">&#39;reservoir&#39;</span><span class="p">,</span> <span class="s1">&#39;recall&#39;</span><span class="p">,</span> <span class="s1">&#39;ru&#39;</span><span class="p">,</span> <span class="s1">&#39;hyd&#39;</span><span class="p">,</span> <span class="s1">&#39;water_allo&#39;</span><span class="p">],</span>
+            <span class="s1">&#39;basin_model_components&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;basin_sd_cha&#39;</span><span class="p">,</span> <span class="s1">&#39;basin_sd_chamorph&#39;</span><span class="p">,</span> <span class="s1">&#39;basin_aqu&#39;</span><span class="p">,</span> <span class="s1">&#39;basin_res&#39;</span><span class="p">,</span> <span class="s1">&#39;basin_psc&#39;</span><span class="p">],</span>
+            <span class="s1">&#39;nutrient_balance&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;basin_nb&#39;</span><span class="p">,</span> <span class="s1">&#39;lsunit_nb&#39;</span><span class="p">,</span> <span class="s1">&#39;hru-lte_nb&#39;</span><span class="p">],</span>
+            <span class="s1">&#39;water_balance&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;basin_wb&#39;</span><span class="p">,</span> <span class="s1">&#39;lsunit_wb&#39;</span><span class="p">,</span> <span class="s1">&#39;hru_wb&#39;</span><span class="p">,</span> <span class="s1">&#39;hru-lte_wb&#39;</span><span class="p">],</span>
+            <span class="s1">&#39;plant_weather&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;basin_pw&#39;</span><span class="p">,</span> <span class="s1">&#39;lsunit_pw&#39;</span><span class="p">,</span> <span class="s1">&#39;hru_pw&#39;</span><span class="p">,</span> <span class="s1">&#39;hru-lte_pw&#39;</span><span class="p">],</span>
+            <span class="s1">&#39;losses&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;basin_ls&#39;</span><span class="p">,</span> <span class="s1">&#39;lsunit_ls&#39;</span><span class="p">,</span> <span class="s1">&#39;hru_ls&#39;</span><span class="p">,</span> <span class="s1">&#39;hru-lte_ls&#39;</span><span class="p">],</span>
+            <span class="s1">&#39;salts&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;basin_salt&#39;</span><span class="p">,</span> <span class="s1">&#39;hru_salt&#39;</span><span class="p">,</span> <span class="s1">&#39;ru_salt&#39;</span><span class="p">,</span> <span class="s1">&#39;aqu_salt&#39;</span><span class="p">,</span> <span class="s1">&#39;channel_salt&#39;</span><span class="p">,</span> <span class="s1">&#39;res_salt&#39;</span><span class="p">,</span> <span class="s1">&#39;wetland_salt&#39;</span><span class="p">],</span>
+            <span class="s1">&#39;constituents&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;basin_cs&#39;</span><span class="p">,</span> <span class="s1">&#39;hru_cs&#39;</span><span class="p">,</span> <span class="s1">&#39;ru_cs&#39;</span><span class="p">,</span> <span class="s1">&#39;aqu_cs&#39;</span><span class="p">,</span> <span class="s1">&#39;channel_cs&#39;</span><span class="p">,</span> <span class="s1">&#39;res_cs&#39;</span><span class="p">,</span> <span class="s1">&#39;wetland_cs&#39;</span><span class="p">]</span>
+        <span class="p">}</span>
+
+        <span class="n">obj_list</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">obj_dict</span><span class="o">.</span><span class="n">values</span><span class="p">()</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">v</span><span class="p">]</span>
+
+        <span class="k">if</span> <span class="n">obj</span> <span class="ow">and</span> <span class="n">obj</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">obj_list</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">allow_unavailable_object</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;This object is not available in standard SWAT+: </span><span class="si">{</span><span class="n">obj</span><span class="si">}</span><span class="s1">. If you want to use it, please set allow_unavailable_object=True.&#39;</span><span class="p">)</span>
 
         <span class="c1"># Time frequency dictionary</span>
         <span class="n">time_dict</span> <span class="o">=</span> <span class="p">{</span>
@@ -1576,30 +1639,42 @@ SWAT+ model files located in the <code>TxtInOut</code> folder.</p>
             <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="nb">bool</span><span class="p">):</span>
                 <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Variable &quot;</span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s1">&quot; for &quot;</span><span class="si">{</span><span class="n">obj</span><span class="si">}</span><span class="s1">&quot; must be a bool value&#39;</span><span class="p">)</span>
 
-        <span class="c1"># check if obj is object itself or file</span>
-        <span class="k">if</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span><span class="o">.</span><span class="n">suffix</span><span class="p">:</span>
-            <span class="n">arg_to_add</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">rsplit</span><span class="p">(</span><span class="s1">&#39;_&#39;</span><span class="p">,</span> <span class="n">maxsplit</span><span class="o">=</span><span class="mi">1</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">arg_to_add</span> <span class="o">=</span> <span class="n">obj</span>
-
         <span class="c1"># read all print_prt file, line by line</span>
         <span class="n">print_prt_path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">root_folder</span> <span class="o">/</span> <span class="s1">&#39;print.prt&#39;</span>
         <span class="n">new_print_prt</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
         <span class="n">found</span> <span class="o">=</span> <span class="kc">False</span>
-        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">print_prt_path</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
-            <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">file</span><span class="p">:</span>
-                <span class="k">if</span> <span class="ow">not</span> <span class="n">line</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="n">arg_to_add</span> <span class="o">+</span> <span class="s1">&#39; &#39;</span><span class="p">):</span>  <span class="c1"># Line must start exactly with arg_to_add, not a word that starts with arg_to_add</span>
-                    <span class="n">new_print_prt</span> <span class="o">+=</span> <span class="n">line</span>
-                <span class="k">else</span><span class="p">:</span>
-                    <span class="c1"># obj already exist, replace it in same position</span>
-                    <span class="n">new_print_prt</span> <span class="o">+=</span> <span class="n">utils</span><span class="o">.</span><span class="n">_build_line_to_add</span><span class="p">(</span><span class="n">arg_to_add</span><span class="p">,</span> <span class="n">daily</span><span class="p">,</span> <span class="n">monthly</span><span class="p">,</span> <span class="n">yearly</span><span class="p">,</span> <span class="n">avann</span><span class="p">)</span>
-                    <span class="n">found</span> <span class="o">=</span> <span class="kc">True</span>
 
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">found</span><span class="p">:</span>
-            <span class="n">new_print_prt</span> <span class="o">+=</span> <span class="n">utils</span><span class="o">.</span><span class="n">_build_line_to_add</span><span class="p">(</span><span class="n">arg_to_add</span><span class="p">,</span> <span class="n">daily</span><span class="p">,</span> <span class="n">monthly</span><span class="p">,</span> <span class="n">yearly</span><span class="p">,</span> <span class="n">avann</span><span class="p">)</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">print_prt_path</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="n">newline</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">line</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">file</span><span class="p">,</span> <span class="n">start</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+                <span class="k">if</span> <span class="n">i</span> <span class="o">&lt;=</span> <span class="mi">10</span><span class="p">:</span>
+                    <span class="c1"># Always keep first 10 lines as-is</span>
+                    <span class="n">new_print_prt</span> <span class="o">+=</span> <span class="n">line</span>
+                    <span class="k">continue</span>
+
+                <span class="n">stripped</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">stripped</span><span class="p">:</span>
+                    <span class="c1"># Keep blank lines unchanged</span>
+                    <span class="n">new_print_prt</span> <span class="o">+=</span> <span class="n">line</span>
+                    <span class="k">continue</span>
+
+                <span class="n">parts</span> <span class="o">=</span> <span class="n">stripped</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+                <span class="n">line_obj</span> <span class="o">=</span> <span class="n">parts</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+                <span class="k">if</span> <span class="n">obj</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="c1"># Update all objects</span>
+                    <span class="n">new_print_prt</span> <span class="o">+=</span> <span class="n">utils</span><span class="o">.</span><span class="n">_build_line_to_add</span><span class="p">(</span><span class="n">line_obj</span><span class="p">,</span> <span class="n">daily</span><span class="p">,</span> <span class="n">monthly</span><span class="p">,</span> <span class="n">yearly</span><span class="p">,</span> <span class="n">avann</span><span class="p">)</span>
+                <span class="k">elif</span> <span class="n">line_obj</span> <span class="o">==</span> <span class="n">obj</span><span class="p">:</span>
+                    <span class="c1"># obj already exist, replace it in same position</span>
+                    <span class="n">new_print_prt</span> <span class="o">+=</span> <span class="n">utils</span><span class="o">.</span><span class="n">_build_line_to_add</span><span class="p">(</span><span class="n">line_obj</span><span class="p">,</span> <span class="n">daily</span><span class="p">,</span> <span class="n">monthly</span><span class="p">,</span> <span class="n">yearly</span><span class="p">,</span> <span class="n">avann</span><span class="p">)</span>
+                    <span class="n">found</span> <span class="o">=</span> <span class="kc">True</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">new_print_prt</span> <span class="o">+=</span> <span class="n">line</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">found</span> <span class="ow">and</span> <span class="n">obj</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">new_print_prt</span> <span class="o">+=</span> <span class="n">utils</span><span class="o">.</span><span class="n">_build_line_to_add</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">daily</span><span class="p">,</span> <span class="n">monthly</span><span class="p">,</span> <span class="n">yearly</span><span class="p">,</span> <span class="n">avann</span><span class="p">)</span>
 
         <span class="c1"># store new print_prt</span>
-        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">print_prt_path</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">print_prt_path</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">,</span> <span class="n">newline</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
             <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">new_print_prt</span><span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">set_begin_and_end_year</span><span class="p">(</span>
@@ -1710,7 +1785,6 @@ SWAT+ model files located in the <code>TxtInOut</code> folder.</p>
         <span class="c1"># read</span>
         <span class="n">nth_line</span> <span class="o">=</span> <span class="mi">7</span>
 
-        <span class="c1"># time_sim_path = f&quot;{self.root_folder}\\{&#39;time.sim&#39;}&quot;</span>
         <span class="n">print_prt_path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">root_folder</span> <span class="o">/</span> <span class="s1">&#39;print.prt&#39;</span>
 
         <span class="c1"># Open the file in read mode and read its contents</span>
@@ -2245,14 +2319,14 @@ zero or multiple <code>.exe</code> files.</p>
 
             <details class="quote">
               <summary>Source code in <code>pySWATPlus/TxtinoutReader.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">260</span>
-<span class="normal">261</span>
-<span class="normal">262</span>
-<span class="normal">263</span>
-<span class="normal">264</span>
-<span class="normal">265</span>
-<span class="normal">266</span>
-<span class="normal">267</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">disable_csv_print</span><span class="p">(</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">297</span>
+<span class="normal">298</span>
+<span class="normal">299</span>
+<span class="normal">300</span>
+<span class="normal">301</span>
+<span class="normal">302</span>
+<span class="normal">303</span>
+<span class="normal">304</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">disable_csv_print</span><span class="p">(</span>
     <span class="bp">self</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
@@ -2282,14 +2356,14 @@ zero or multiple <code>.exe</code> files.</p>
 
             <details class="quote">
               <summary>Source code in <code>pySWATPlus/TxtinoutReader.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">251</span>
-<span class="normal">252</span>
-<span class="normal">253</span>
-<span class="normal">254</span>
-<span class="normal">255</span>
-<span class="normal">256</span>
-<span class="normal">257</span>
-<span class="normal">258</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">enable_csv_print</span><span class="p">(</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">288</span>
+<span class="normal">289</span>
+<span class="normal">290</span>
+<span class="normal">291</span>
+<span class="normal">292</span>
+<span class="normal">293</span>
+<span class="normal">294</span>
+<span class="normal">295</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">enable_csv_print</span><span class="p">(</span>
     <span class="bp">self</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
@@ -2307,15 +2381,18 @@ zero or multiple <code>.exe</code> files.</p>
 
 
 <h4 id="pySWATPlus.TxtinoutReader.TxtinoutReader.enable_object_in_print_prt" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">enable_object_in_print_prt</span><span class="p">(</span><span class="n">obj</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">daily</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span> <span class="n">monthly</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span> <span class="n">yearly</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span> <span class="n">avann</span><span class="p">:</span> <span class="nb">bool</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span></code>
+            <code class="highlight language-python"><span class="n">enable_object_in_print_prt</span><span class="p">(</span><span class="n">obj</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">daily</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span> <span class="n">monthly</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span> <span class="n">yearly</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span> <span class="n">avann</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span> <span class="n">allow_unavailable_object</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span></code>
 
 </h4>
 
 
     <div class="doc doc-contents ">
 
-        <p>Update an object in the <code>print.prt</code> file by setting its value to <code>True</code>.
-If the object does not exist in the file, it will be added at the end.</p>
+        <p>Update or add an object in the <code>print.prt</code> file with specified time frequency flags.</p>
+<p>This method modifies the <code>print.prt</code> file in a SWAT+ project to enable or disable output
+for a specific object (or all objects if <code>obj</code> is None) at specified time frequencies
+(daily, monthly, yearly, or average annual). If the object does not exist in the file
+and <code>obj</code> is not None, it is appended to the end of the file.</p>
 
 
 <details class="note" open>
@@ -2341,11 +2418,13 @@ generated even when disabled.</p>
                 <code>obj</code>
             </td>
             <td>
-                  <code><span title="str">str</span></code>
+                  <code><span title="Optional">Optional</span>[<span title="str">str</span>]</code>
             </td>
             <td>
               <div class="doc-md-description">
-                <p>The object name or identifier to update or add.</p>
+                <p>The name of the object to update (e.g., 'channel_sd', 'reservoir').
+If None, all objects in the <code>print.prt</code> file are updated with the specified
+time frequency settings.</p>
               </div>
             </td>
             <td>
@@ -2416,6 +2495,24 @@ generated even when disabled.</p>
                 <em>required</em>
             </td>
           </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>allow_unavailable_object</code>
+            </td>
+            <td>
+                  <code><span title="bool">bool</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>If True, allows adding an object not in
+the standard SWAT+ output object list. If False and <code>obj</code> is not in the standard list,
+a ValueError is raised. Defaults to False.</p>
+              </div>
+            </td>
+            <td>
+                  <code>False</code>
+            </td>
+          </tr>
       </tbody>
     </table>
 
@@ -2483,17 +2580,60 @@ generated even when disabled.</p>
 <span class="normal">123</span>
 <span class="normal">124</span>
 <span class="normal">125</span>
-<span class="normal">126</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">enable_object_in_print_prt</span><span class="p">(</span>
+<span class="normal">126</span>
+<span class="normal">127</span>
+<span class="normal">128</span>
+<span class="normal">129</span>
+<span class="normal">130</span>
+<span class="normal">131</span>
+<span class="normal">132</span>
+<span class="normal">133</span>
+<span class="normal">134</span>
+<span class="normal">135</span>
+<span class="normal">136</span>
+<span class="normal">137</span>
+<span class="normal">138</span>
+<span class="normal">139</span>
+<span class="normal">140</span>
+<span class="normal">141</span>
+<span class="normal">142</span>
+<span class="normal">143</span>
+<span class="normal">144</span>
+<span class="normal">145</span>
+<span class="normal">146</span>
+<span class="normal">147</span>
+<span class="normal">148</span>
+<span class="normal">149</span>
+<span class="normal">150</span>
+<span class="normal">151</span>
+<span class="normal">152</span>
+<span class="normal">153</span>
+<span class="normal">154</span>
+<span class="normal">155</span>
+<span class="normal">156</span>
+<span class="normal">157</span>
+<span class="normal">158</span>
+<span class="normal">159</span>
+<span class="normal">160</span>
+<span class="normal">161</span>
+<span class="normal">162</span>
+<span class="normal">163</span>
+<span class="normal">164</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">enable_object_in_print_prt</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
-    <span class="n">obj</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">obj</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
     <span class="n">daily</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
     <span class="n">monthly</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
     <span class="n">yearly</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
-    <span class="n">avann</span><span class="p">:</span> <span class="nb">bool</span>
+    <span class="n">avann</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
+    <span class="n">allow_unavailable_object</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">    Update an object in the `print.prt` file by setting its value to `True`.</span>
-<span class="sd">    If the object does not exist in the file, it will be added at the end.</span>
+<span class="sd">    Update or add an object in the `print.prt` file with specified time frequency flags.</span>
+
+<span class="sd">    This method modifies the `print.prt` file in a SWAT+ project to enable or disable output</span>
+<span class="sd">    for a specific object (or all objects if `obj` is None) at specified time frequencies</span>
+<span class="sd">    (daily, monthly, yearly, or average annual). If the object does not exist in the file</span>
+<span class="sd">    and `obj` is not None, it is appended to the end of the file.</span>
 
 <span class="sd">    Note:</span>
 <span class="sd">        This input does not provide complete control over `print.prt` outputs.</span>
@@ -2501,12 +2641,33 @@ generated even when disabled.</p>
 <span class="sd">        generated even when disabled.</span>
 
 <span class="sd">    Args:</span>
-<span class="sd">        obj (str): The object name or identifier to update or add.</span>
+<span class="sd">        obj (Optional[str]): The name of the object to update (e.g., &#39;channel_sd&#39;, &#39;reservoir&#39;).</span>
+<span class="sd">            If None, all objects in the `print.prt` file are updated with the specified</span>
+<span class="sd">            time frequency settings.</span>
 <span class="sd">        daily (bool): If `True`, enable daily frequency output.</span>
 <span class="sd">        monthly (bool): If `True`, enable monthly frequency output.</span>
 <span class="sd">        yearly (bool): If `True`, enable yearly frequency output.</span>
 <span class="sd">        avann (bool): If `True`, enable average annual frequency output.</span>
+<span class="sd">        allow_unavailable_object (bool, optional): If True, allows adding an object not in</span>
+<span class="sd">            the standard SWAT+ output object list. If False and `obj` is not in the standard list,</span>
+<span class="sd">            a ValueError is raised. Defaults to False.</span>
 <span class="sd">    &#39;&#39;&#39;</span>
+
+    <span class="n">obj_dict</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;model_components&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;channel_sd&#39;</span><span class="p">,</span> <span class="s1">&#39;channel_sdmorph&#39;</span><span class="p">,</span> <span class="s1">&#39;aquifer&#39;</span><span class="p">,</span> <span class="s1">&#39;reservoir&#39;</span><span class="p">,</span> <span class="s1">&#39;recall&#39;</span><span class="p">,</span> <span class="s1">&#39;ru&#39;</span><span class="p">,</span> <span class="s1">&#39;hyd&#39;</span><span class="p">,</span> <span class="s1">&#39;water_allo&#39;</span><span class="p">],</span>
+        <span class="s1">&#39;basin_model_components&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;basin_sd_cha&#39;</span><span class="p">,</span> <span class="s1">&#39;basin_sd_chamorph&#39;</span><span class="p">,</span> <span class="s1">&#39;basin_aqu&#39;</span><span class="p">,</span> <span class="s1">&#39;basin_res&#39;</span><span class="p">,</span> <span class="s1">&#39;basin_psc&#39;</span><span class="p">],</span>
+        <span class="s1">&#39;nutrient_balance&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;basin_nb&#39;</span><span class="p">,</span> <span class="s1">&#39;lsunit_nb&#39;</span><span class="p">,</span> <span class="s1">&#39;hru-lte_nb&#39;</span><span class="p">],</span>
+        <span class="s1">&#39;water_balance&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;basin_wb&#39;</span><span class="p">,</span> <span class="s1">&#39;lsunit_wb&#39;</span><span class="p">,</span> <span class="s1">&#39;hru_wb&#39;</span><span class="p">,</span> <span class="s1">&#39;hru-lte_wb&#39;</span><span class="p">],</span>
+        <span class="s1">&#39;plant_weather&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;basin_pw&#39;</span><span class="p">,</span> <span class="s1">&#39;lsunit_pw&#39;</span><span class="p">,</span> <span class="s1">&#39;hru_pw&#39;</span><span class="p">,</span> <span class="s1">&#39;hru-lte_pw&#39;</span><span class="p">],</span>
+        <span class="s1">&#39;losses&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;basin_ls&#39;</span><span class="p">,</span> <span class="s1">&#39;lsunit_ls&#39;</span><span class="p">,</span> <span class="s1">&#39;hru_ls&#39;</span><span class="p">,</span> <span class="s1">&#39;hru-lte_ls&#39;</span><span class="p">],</span>
+        <span class="s1">&#39;salts&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;basin_salt&#39;</span><span class="p">,</span> <span class="s1">&#39;hru_salt&#39;</span><span class="p">,</span> <span class="s1">&#39;ru_salt&#39;</span><span class="p">,</span> <span class="s1">&#39;aqu_salt&#39;</span><span class="p">,</span> <span class="s1">&#39;channel_salt&#39;</span><span class="p">,</span> <span class="s1">&#39;res_salt&#39;</span><span class="p">,</span> <span class="s1">&#39;wetland_salt&#39;</span><span class="p">],</span>
+        <span class="s1">&#39;constituents&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;basin_cs&#39;</span><span class="p">,</span> <span class="s1">&#39;hru_cs&#39;</span><span class="p">,</span> <span class="s1">&#39;ru_cs&#39;</span><span class="p">,</span> <span class="s1">&#39;aqu_cs&#39;</span><span class="p">,</span> <span class="s1">&#39;channel_cs&#39;</span><span class="p">,</span> <span class="s1">&#39;res_cs&#39;</span><span class="p">,</span> <span class="s1">&#39;wetland_cs&#39;</span><span class="p">]</span>
+    <span class="p">}</span>
+
+    <span class="n">obj_list</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">obj_dict</span><span class="o">.</span><span class="n">values</span><span class="p">()</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">v</span><span class="p">]</span>
+
+    <span class="k">if</span> <span class="n">obj</span> <span class="ow">and</span> <span class="n">obj</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">obj_list</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">allow_unavailable_object</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;This object is not available in standard SWAT+: </span><span class="si">{</span><span class="n">obj</span><span class="si">}</span><span class="s1">. If you want to use it, please set allow_unavailable_object=True.&#39;</span><span class="p">)</span>
 
     <span class="c1"># Time frequency dictionary</span>
     <span class="n">time_dict</span> <span class="o">=</span> <span class="p">{</span>
@@ -2520,30 +2681,42 @@ generated even when disabled.</p>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="nb">bool</span><span class="p">):</span>
             <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Variable &quot;</span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s1">&quot; for &quot;</span><span class="si">{</span><span class="n">obj</span><span class="si">}</span><span class="s1">&quot; must be a bool value&#39;</span><span class="p">)</span>
 
-    <span class="c1"># check if obj is object itself or file</span>
-    <span class="k">if</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span><span class="o">.</span><span class="n">suffix</span><span class="p">:</span>
-        <span class="n">arg_to_add</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">rsplit</span><span class="p">(</span><span class="s1">&#39;_&#39;</span><span class="p">,</span> <span class="n">maxsplit</span><span class="o">=</span><span class="mi">1</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="n">arg_to_add</span> <span class="o">=</span> <span class="n">obj</span>
-
     <span class="c1"># read all print_prt file, line by line</span>
     <span class="n">print_prt_path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">root_folder</span> <span class="o">/</span> <span class="s1">&#39;print.prt&#39;</span>
     <span class="n">new_print_prt</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
     <span class="n">found</span> <span class="o">=</span> <span class="kc">False</span>
-    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">print_prt_path</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
-        <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">file</span><span class="p">:</span>
-            <span class="k">if</span> <span class="ow">not</span> <span class="n">line</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="n">arg_to_add</span> <span class="o">+</span> <span class="s1">&#39; &#39;</span><span class="p">):</span>  <span class="c1"># Line must start exactly with arg_to_add, not a word that starts with arg_to_add</span>
-                <span class="n">new_print_prt</span> <span class="o">+=</span> <span class="n">line</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="c1"># obj already exist, replace it in same position</span>
-                <span class="n">new_print_prt</span> <span class="o">+=</span> <span class="n">utils</span><span class="o">.</span><span class="n">_build_line_to_add</span><span class="p">(</span><span class="n">arg_to_add</span><span class="p">,</span> <span class="n">daily</span><span class="p">,</span> <span class="n">monthly</span><span class="p">,</span> <span class="n">yearly</span><span class="p">,</span> <span class="n">avann</span><span class="p">)</span>
-                <span class="n">found</span> <span class="o">=</span> <span class="kc">True</span>
 
-    <span class="k">if</span> <span class="ow">not</span> <span class="n">found</span><span class="p">:</span>
-        <span class="n">new_print_prt</span> <span class="o">+=</span> <span class="n">utils</span><span class="o">.</span><span class="n">_build_line_to_add</span><span class="p">(</span><span class="n">arg_to_add</span><span class="p">,</span> <span class="n">daily</span><span class="p">,</span> <span class="n">monthly</span><span class="p">,</span> <span class="n">yearly</span><span class="p">,</span> <span class="n">avann</span><span class="p">)</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">print_prt_path</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="n">newline</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">line</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">file</span><span class="p">,</span> <span class="n">start</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">i</span> <span class="o">&lt;=</span> <span class="mi">10</span><span class="p">:</span>
+                <span class="c1"># Always keep first 10 lines as-is</span>
+                <span class="n">new_print_prt</span> <span class="o">+=</span> <span class="n">line</span>
+                <span class="k">continue</span>
+
+            <span class="n">stripped</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">stripped</span><span class="p">:</span>
+                <span class="c1"># Keep blank lines unchanged</span>
+                <span class="n">new_print_prt</span> <span class="o">+=</span> <span class="n">line</span>
+                <span class="k">continue</span>
+
+            <span class="n">parts</span> <span class="o">=</span> <span class="n">stripped</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+            <span class="n">line_obj</span> <span class="o">=</span> <span class="n">parts</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+            <span class="k">if</span> <span class="n">obj</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="c1"># Update all objects</span>
+                <span class="n">new_print_prt</span> <span class="o">+=</span> <span class="n">utils</span><span class="o">.</span><span class="n">_build_line_to_add</span><span class="p">(</span><span class="n">line_obj</span><span class="p">,</span> <span class="n">daily</span><span class="p">,</span> <span class="n">monthly</span><span class="p">,</span> <span class="n">yearly</span><span class="p">,</span> <span class="n">avann</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">line_obj</span> <span class="o">==</span> <span class="n">obj</span><span class="p">:</span>
+                <span class="c1"># obj already exist, replace it in same position</span>
+                <span class="n">new_print_prt</span> <span class="o">+=</span> <span class="n">utils</span><span class="o">.</span><span class="n">_build_line_to_add</span><span class="p">(</span><span class="n">line_obj</span><span class="p">,</span> <span class="n">daily</span><span class="p">,</span> <span class="n">monthly</span><span class="p">,</span> <span class="n">yearly</span><span class="p">,</span> <span class="n">avann</span><span class="p">)</span>
+                <span class="n">found</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">new_print_prt</span> <span class="o">+=</span> <span class="n">line</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">found</span> <span class="ow">and</span> <span class="n">obj</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">new_print_prt</span> <span class="o">+=</span> <span class="n">utils</span><span class="o">.</span><span class="n">_build_line_to_add</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">daily</span><span class="p">,</span> <span class="n">monthly</span><span class="p">,</span> <span class="n">yearly</span><span class="p">,</span> <span class="n">avann</span><span class="p">)</span>
 
     <span class="c1"># store new print_prt</span>
-    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">print_prt_path</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">print_prt_path</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">,</span> <span class="n">newline</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
         <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">new_print_prt</span><span class="p">)</span>
 </code></pre></div></td></tr></table></div>
             </details>
@@ -2669,29 +2842,29 @@ generated even when disabled.</p>
 
             <details class="quote">
               <summary>Source code in <code>pySWATPlus/TxtinoutReader.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">269</span>
-<span class="normal">270</span>
-<span class="normal">271</span>
-<span class="normal">272</span>
-<span class="normal">273</span>
-<span class="normal">274</span>
-<span class="normal">275</span>
-<span class="normal">276</span>
-<span class="normal">277</span>
-<span class="normal">278</span>
-<span class="normal">279</span>
-<span class="normal">280</span>
-<span class="normal">281</span>
-<span class="normal">282</span>
-<span class="normal">283</span>
-<span class="normal">284</span>
-<span class="normal">285</span>
-<span class="normal">286</span>
-<span class="normal">287</span>
-<span class="normal">288</span>
-<span class="normal">289</span>
-<span class="normal">290</span>
-<span class="normal">291</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">register_file</span><span class="p">(</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">306</span>
+<span class="normal">307</span>
+<span class="normal">308</span>
+<span class="normal">309</span>
+<span class="normal">310</span>
+<span class="normal">311</span>
+<span class="normal">312</span>
+<span class="normal">313</span>
+<span class="normal">314</span>
+<span class="normal">315</span>
+<span class="normal">316</span>
+<span class="normal">317</span>
+<span class="normal">318</span>
+<span class="normal">319</span>
+<span class="normal">320</span>
+<span class="normal">321</span>
+<span class="normal">322</span>
+<span class="normal">323</span>
+<span class="normal">324</span>
+<span class="normal">325</span>
+<span class="normal">326</span>
+<span class="normal">327</span>
+<span class="normal">328</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">register_file</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">filename</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
     <span class="n">has_units</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
@@ -2826,44 +2999,7 @@ generated even when disabled.</p>
 
             <details class="quote">
               <summary>Source code in <code>pySWATPlus/TxtinoutReader.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">351</span>
-<span class="normal">352</span>
-<span class="normal">353</span>
-<span class="normal">354</span>
-<span class="normal">355</span>
-<span class="normal">356</span>
-<span class="normal">357</span>
-<span class="normal">358</span>
-<span class="normal">359</span>
-<span class="normal">360</span>
-<span class="normal">361</span>
-<span class="normal">362</span>
-<span class="normal">363</span>
-<span class="normal">364</span>
-<span class="normal">365</span>
-<span class="normal">366</span>
-<span class="normal">367</span>
-<span class="normal">368</span>
-<span class="normal">369</span>
-<span class="normal">370</span>
-<span class="normal">371</span>
-<span class="normal">372</span>
-<span class="normal">373</span>
-<span class="normal">374</span>
-<span class="normal">375</span>
-<span class="normal">376</span>
-<span class="normal">377</span>
-<span class="normal">378</span>
-<span class="normal">379</span>
-<span class="normal">380</span>
-<span class="normal">381</span>
-<span class="normal">382</span>
-<span class="normal">383</span>
-<span class="normal">384</span>
-<span class="normal">385</span>
-<span class="normal">386</span>
-<span class="normal">387</span>
-<span class="normal">388</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">388</span>
 <span class="normal">389</span>
 <span class="normal">390</span>
 <span class="normal">391</span>
@@ -2908,7 +3044,44 @@ generated even when disabled.</p>
 <span class="normal">430</span>
 <span class="normal">431</span>
 <span class="normal">432</span>
-<span class="normal">433</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">run_swat</span><span class="p">(</span>
+<span class="normal">433</span>
+<span class="normal">434</span>
+<span class="normal">435</span>
+<span class="normal">436</span>
+<span class="normal">437</span>
+<span class="normal">438</span>
+<span class="normal">439</span>
+<span class="normal">440</span>
+<span class="normal">441</span>
+<span class="normal">442</span>
+<span class="normal">443</span>
+<span class="normal">444</span>
+<span class="normal">445</span>
+<span class="normal">446</span>
+<span class="normal">447</span>
+<span class="normal">448</span>
+<span class="normal">449</span>
+<span class="normal">450</span>
+<span class="normal">451</span>
+<span class="normal">452</span>
+<span class="normal">453</span>
+<span class="normal">454</span>
+<span class="normal">455</span>
+<span class="normal">456</span>
+<span class="normal">457</span>
+<span class="normal">458</span>
+<span class="normal">459</span>
+<span class="normal">460</span>
+<span class="normal">461</span>
+<span class="normal">462</span>
+<span class="normal">463</span>
+<span class="normal">464</span>
+<span class="normal">465</span>
+<span class="normal">466</span>
+<span class="normal">467</span>
+<span class="normal">468</span>
+<span class="normal">469</span>
+<span class="normal">470</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">run_swat</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">params</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">ParamsType</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">:</span>
@@ -3187,44 +3360,7 @@ The time step keys represent:</p>
 
             <details class="quote">
               <summary>Source code in <code>pySWATPlus/TxtinoutReader.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">435</span>
-<span class="normal">436</span>
-<span class="normal">437</span>
-<span class="normal">438</span>
-<span class="normal">439</span>
-<span class="normal">440</span>
-<span class="normal">441</span>
-<span class="normal">442</span>
-<span class="normal">443</span>
-<span class="normal">444</span>
-<span class="normal">445</span>
-<span class="normal">446</span>
-<span class="normal">447</span>
-<span class="normal">448</span>
-<span class="normal">449</span>
-<span class="normal">450</span>
-<span class="normal">451</span>
-<span class="normal">452</span>
-<span class="normal">453</span>
-<span class="normal">454</span>
-<span class="normal">455</span>
-<span class="normal">456</span>
-<span class="normal">457</span>
-<span class="normal">458</span>
-<span class="normal">459</span>
-<span class="normal">460</span>
-<span class="normal">461</span>
-<span class="normal">462</span>
-<span class="normal">463</span>
-<span class="normal">464</span>
-<span class="normal">465</span>
-<span class="normal">466</span>
-<span class="normal">467</span>
-<span class="normal">468</span>
-<span class="normal">469</span>
-<span class="normal">470</span>
-<span class="normal">471</span>
-<span class="normal">472</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">472</span>
 <span class="normal">473</span>
 <span class="normal">474</span>
 <span class="normal">475</span>
@@ -3330,7 +3466,44 @@ The time step keys represent:</p>
 <span class="normal">575</span>
 <span class="normal">576</span>
 <span class="normal">577</span>
-<span class="normal">578</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">run_swat_in_other_dir</span><span class="p">(</span>
+<span class="normal">578</span>
+<span class="normal">579</span>
+<span class="normal">580</span>
+<span class="normal">581</span>
+<span class="normal">582</span>
+<span class="normal">583</span>
+<span class="normal">584</span>
+<span class="normal">585</span>
+<span class="normal">586</span>
+<span class="normal">587</span>
+<span class="normal">588</span>
+<span class="normal">589</span>
+<span class="normal">590</span>
+<span class="normal">591</span>
+<span class="normal">592</span>
+<span class="normal">593</span>
+<span class="normal">594</span>
+<span class="normal">595</span>
+<span class="normal">596</span>
+<span class="normal">597</span>
+<span class="normal">598</span>
+<span class="normal">599</span>
+<span class="normal">600</span>
+<span class="normal">601</span>
+<span class="normal">602</span>
+<span class="normal">603</span>
+<span class="normal">604</span>
+<span class="normal">605</span>
+<span class="normal">606</span>
+<span class="normal">607</span>
+<span class="normal">608</span>
+<span class="normal">609</span>
+<span class="normal">610</span>
+<span class="normal">611</span>
+<span class="normal">612</span>
+<span class="normal">613</span>
+<span class="normal">614</span>
+<span class="normal">615</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">run_swat_in_other_dir</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">target_dir</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">,</span>
     <span class="n">params</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">ParamsType</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -3567,45 +3740,7 @@ the begin and end years in the <code>time.sim</code> file.</p>
 
             <details class="quote">
               <summary>Source code in <code>pySWATPlus/TxtinoutReader.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">128</span>
-<span class="normal">129</span>
-<span class="normal">130</span>
-<span class="normal">131</span>
-<span class="normal">132</span>
-<span class="normal">133</span>
-<span class="normal">134</span>
-<span class="normal">135</span>
-<span class="normal">136</span>
-<span class="normal">137</span>
-<span class="normal">138</span>
-<span class="normal">139</span>
-<span class="normal">140</span>
-<span class="normal">141</span>
-<span class="normal">142</span>
-<span class="normal">143</span>
-<span class="normal">144</span>
-<span class="normal">145</span>
-<span class="normal">146</span>
-<span class="normal">147</span>
-<span class="normal">148</span>
-<span class="normal">149</span>
-<span class="normal">150</span>
-<span class="normal">151</span>
-<span class="normal">152</span>
-<span class="normal">153</span>
-<span class="normal">154</span>
-<span class="normal">155</span>
-<span class="normal">156</span>
-<span class="normal">157</span>
-<span class="normal">158</span>
-<span class="normal">159</span>
-<span class="normal">160</span>
-<span class="normal">161</span>
-<span class="normal">162</span>
-<span class="normal">163</span>
-<span class="normal">164</span>
-<span class="normal">165</span>
-<span class="normal">166</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">166</span>
 <span class="normal">167</span>
 <span class="normal">168</span>
 <span class="normal">169</span>
@@ -3619,7 +3754,45 @@ the begin and end years in the <code>time.sim</code> file.</p>
 <span class="normal">177</span>
 <span class="normal">178</span>
 <span class="normal">179</span>
-<span class="normal">180</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">set_begin_and_end_year</span><span class="p">(</span>
+<span class="normal">180</span>
+<span class="normal">181</span>
+<span class="normal">182</span>
+<span class="normal">183</span>
+<span class="normal">184</span>
+<span class="normal">185</span>
+<span class="normal">186</span>
+<span class="normal">187</span>
+<span class="normal">188</span>
+<span class="normal">189</span>
+<span class="normal">190</span>
+<span class="normal">191</span>
+<span class="normal">192</span>
+<span class="normal">193</span>
+<span class="normal">194</span>
+<span class="normal">195</span>
+<span class="normal">196</span>
+<span class="normal">197</span>
+<span class="normal">198</span>
+<span class="normal">199</span>
+<span class="normal">200</span>
+<span class="normal">201</span>
+<span class="normal">202</span>
+<span class="normal">203</span>
+<span class="normal">204</span>
+<span class="normal">205</span>
+<span class="normal">206</span>
+<span class="normal">207</span>
+<span class="normal">208</span>
+<span class="normal">209</span>
+<span class="normal">210</span>
+<span class="normal">211</span>
+<span class="normal">212</span>
+<span class="normal">213</span>
+<span class="normal">214</span>
+<span class="normal">215</span>
+<span class="normal">216</span>
+<span class="normal">217</span>
+<span class="normal">218</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">set_begin_and_end_year</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">begin</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
     <span class="n">end</span><span class="p">:</span> <span class="nb">int</span>
@@ -3749,48 +3922,48 @@ the simulation will use for warm-up (e.g., 1).</p>
 
             <details class="quote">
               <summary>Source code in <code>pySWATPlus/TxtinoutReader.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">182</span>
-<span class="normal">183</span>
-<span class="normal">184</span>
-<span class="normal">185</span>
-<span class="normal">186</span>
-<span class="normal">187</span>
-<span class="normal">188</span>
-<span class="normal">189</span>
-<span class="normal">190</span>
-<span class="normal">191</span>
-<span class="normal">192</span>
-<span class="normal">193</span>
-<span class="normal">194</span>
-<span class="normal">195</span>
-<span class="normal">196</span>
-<span class="normal">197</span>
-<span class="normal">198</span>
-<span class="normal">199</span>
-<span class="normal">200</span>
-<span class="normal">201</span>
-<span class="normal">202</span>
-<span class="normal">203</span>
-<span class="normal">204</span>
-<span class="normal">205</span>
-<span class="normal">206</span>
-<span class="normal">207</span>
-<span class="normal">208</span>
-<span class="normal">209</span>
-<span class="normal">210</span>
-<span class="normal">211</span>
-<span class="normal">212</span>
-<span class="normal">213</span>
-<span class="normal">214</span>
-<span class="normal">215</span>
-<span class="normal">216</span>
-<span class="normal">217</span>
-<span class="normal">218</span>
-<span class="normal">219</span>
-<span class="normal">220</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">220</span>
 <span class="normal">221</span>
 <span class="normal">222</span>
-<span class="normal">223</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">set_warmup_year</span><span class="p">(</span>
+<span class="normal">223</span>
+<span class="normal">224</span>
+<span class="normal">225</span>
+<span class="normal">226</span>
+<span class="normal">227</span>
+<span class="normal">228</span>
+<span class="normal">229</span>
+<span class="normal">230</span>
+<span class="normal">231</span>
+<span class="normal">232</span>
+<span class="normal">233</span>
+<span class="normal">234</span>
+<span class="normal">235</span>
+<span class="normal">236</span>
+<span class="normal">237</span>
+<span class="normal">238</span>
+<span class="normal">239</span>
+<span class="normal">240</span>
+<span class="normal">241</span>
+<span class="normal">242</span>
+<span class="normal">243</span>
+<span class="normal">244</span>
+<span class="normal">245</span>
+<span class="normal">246</span>
+<span class="normal">247</span>
+<span class="normal">248</span>
+<span class="normal">249</span>
+<span class="normal">250</span>
+<span class="normal">251</span>
+<span class="normal">252</span>
+<span class="normal">253</span>
+<span class="normal">254</span>
+<span class="normal">255</span>
+<span class="normal">256</span>
+<span class="normal">257</span>
+<span class="normal">258</span>
+<span class="normal">259</span>
+<span class="normal">260</span>
+<span class="normal">261</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">set_warmup_year</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">warmup</span><span class="p">:</span> <span class="nb">int</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
@@ -3902,10 +4075,10 @@ the simulation will use for warm-up (e.g., 1).</p>
     
     
       
-      <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.tabs", "content.code.annotate"], "search": "../../assets/javascripts/workers/search.d50fe291.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.tabs", "content.code.annotate"], "search": "../../assets/javascripts/workers/search.973d3a69.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
-      <script src="../../assets/javascripts/bundle.50899def.min.js"></script>
+      <script src="../../assets/javascripts/bundle.92b07e13.min.js"></script>
       
     
   </body>
