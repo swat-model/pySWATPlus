@@ -18,6 +18,25 @@ def txtinout_reader():
     yield txtinout_reader
 
 
+def test_enable_disable_csv_print(
+    txtinout_reader
+):
+
+    # pass test for enable CSV print
+    txtinout_reader.enable_csv_print()
+    output_file = os.path.join(str(txtinout_reader.root_folder), 'print.prt')
+    with open(output_file, 'r') as read_output:
+        target_line = read_output.readlines()[6]
+    assert target_line[0] == 'y'
+
+    # pass test for disable CSV print
+    txtinout_reader.disable_csv_print()
+    output_file = os.path.join(str(txtinout_reader.root_folder), 'print.prt')
+    with open(output_file, 'r') as read_output:
+        target_line = read_output.readlines()[6]
+    assert target_line[0] == 'n'
+
+
 def test_enable_object_in_print_prt(
     txtinout_reader
 ):
