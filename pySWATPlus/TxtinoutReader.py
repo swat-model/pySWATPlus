@@ -97,17 +97,20 @@ class TxtinoutReader:
                 a ValueError is raised. Defaults to False.
         '''
 
-        VALID_OBJECTS = [
-            'channel_sd', 'channel_sdmorph', 'aquifer', 'reservoir', 'recall', 'ru',
-            'hyd', 'water_allo', 'basin_sd_cha', 'basin_sd_chamorph', 'basin_aqu',
-            'basin_res', 'basin_psc', 'basin_nb', 'lsunit_nb', 'hru-lte_nb', 'basin_wb',
-            'lsunit_wb', 'hru-lte_wb', 'basin_pw', 'lsunit_pw', 'hru-lte_pw', 'basin_ls',
-            'lsunit_ls', 'hru-lte_ls', 'basin_salt', 'hru_salt', 'ru_salt',
-            'aqu_salt', 'channel_salt', 'res_salt', 'wetland_salt', 'basin_cs',
-            'hru_cs', 'ru_cs', 'aqu_cs', 'channel_cs', 'res_cs', 'wetland_cs'
-        ]
+        obj_dict = {
+            'model_components': ['channel_sd', 'channel_sdmorph', 'aquifer', 'reservoir', 'recall', 'ru', 'hyd', 'water_allo'],
+            'basin_model_components': ['basin_sd_cha', 'basin_sd_chamorph', 'basin_aqu', 'basin_res', 'basin_psc'],
+            'nutrient_balance': ['basin_nb', 'lsunit_nb', 'hru-lte_nb'],
+            'water_balance': ['basin_wb', 'lsunit_wb', 'hru_wb', 'hru-lte_wb'],
+            'plant_weather': ['basin_pw', 'lsunit_pw', 'hru_pw', 'hru-lte_pw'],
+            'losses': ['basin_ls', 'lsunit_ls', 'hru_ls', 'hru-lte_ls'],
+            'salts': ['basin_salt', 'hru_salt', 'ru_salt', 'aqu_salt', 'channel_salt', 'res_salt', 'wetland_salt'],
+            'constituents': ['basin_cs', 'hru_cs', 'ru_cs', 'aqu_cs', 'channel_cs', 'res_cs', 'wetland_cs']
+        }
 
-        if obj and obj not in VALID_OBJECTS and not allow_unavailable_object:
+        obj_list = [i for v in obj_dict.values() for i in v]
+
+        if obj and obj not in obj_list and not allow_unavailable_object:
             raise ValueError(f'This object is not available in standard SWAT+: {obj}. If you want to use it, please set allow_unavailable_object=True.')
 
         # Time frequency dictionary
