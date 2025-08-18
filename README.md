@@ -42,7 +42,6 @@ It provides a programmatic interface to the [SWAT+](https://swat.tamu.edu/softwa
 - Perform sensitivity analysis on model parameters using the [SALib](https://github.com/SALib/SALib) Python package, with support for parallel computation.
 
 
-
 ## 📥 Install pySWATPlus
 
 To install from PyPI repository:
@@ -89,21 +88,6 @@ import pySWATPlus
 For a guide to setting up first SWAT+ project and other functionalities with examples,
 refere to the [pySWATPlus documentation](https://swat-model.github.io/pySWATPlus/).
 
-
-
-## ⚠️ Legacy Version Notice
-
-Version 1.x includes breaking changes, including the `SWATProblem` and `SWATProblemMultimodel` classes have been removed. Updated tutorials for calibration analysis are coming soon.
-
-- To get the old 0.x version from the PyPI repository:
-
-```bash
-pip install pySWATPlus==0.2.20
-```
-
-- [Access the source code of the 0.x version](https://github.com/swat-model/pySWATPlus/tree/v0.x)
-
-
 ## 📖 Citation
 
 If you use `pySWATPlus` in your research, please cite it using the following **concept DOI**, which always points to the latest version:
@@ -121,12 +105,3 @@ If you use `pySWATPlus` in your research, please cite it using the following **c
   note         = {This DOI always points to the latest version of pySWATPlus.},
 }
 ```
-
-
-To cite a specific version:
-
-- Visit the [Zenodo project page](https://doi.org/10.5281/zenodo.14889319).
-- Select the specific version you used (e.g., `v1.0.1`).
-- Copy the appropriate citation format (BibTeX, APA, etc.).
-
-
