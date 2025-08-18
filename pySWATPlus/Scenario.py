@@ -10,8 +10,8 @@ import json
 import copy
 import concurrent.futures
 from .types import ParamsType
-from .FileReader import FileReader
-from .TxtinoutReader import TxtinoutReader
+from .filereader import FileReader
+from .txtinoutreader import TxtinoutReader
 from . import utils
 
 

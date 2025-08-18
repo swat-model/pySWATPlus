@@ -3,7 +3,7 @@ import shutil
 import pathlib
 import typing
 import logging
-from .FileReader import FileReader
+from .filereader import FileReader
 from .types import ParamsType
 from . import utils
 
