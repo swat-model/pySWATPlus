@@ -112,6 +112,10 @@ def _validate_params(
 
 
 def _clean(df: pandas.DataFrame) -> pandas.DataFrame:
+    '''
+    Cleans a DataFrame by stripping whitespace from column names and string values.
+    '''
+
     # Strip spaces from column names
     df.columns = [str(c).strip() for c in df.columns]
 
