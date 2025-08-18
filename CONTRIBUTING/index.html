@@ -675,26 +675,17 @@
   
 </li>
         
-          <li class="md-nav__item">
-  <a href="#submit-a-pull-request-pr" class="md-nav__link">
-    <span class="md-ellipsis">
-      Submit a Pull Request (PR)
-    </span>
-  </a>
+      </ul>
+    </nav>
   
 </li>
-        
-          <li class="md-nav__item">
+      
+        <li class="md-nav__item">
   <a href="#code-review-process" class="md-nav__link">
     <span class="md-ellipsis">
       Code Review Process
     </span>
   </a>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
       
@@ -842,26 +833,17 @@
   
 </li>
         
-          <li class="md-nav__item">
-  <a href="#submit-a-pull-request-pr" class="md-nav__link">
-    <span class="md-ellipsis">
-      Submit a Pull Request (PR)
-    </span>
-  </a>
+      </ul>
+    </nav>
   
 </li>
-        
-          <li class="md-nav__item">
+      
+        <li class="md-nav__item">
   <a href="#code-review-process" class="md-nav__link">
     <span class="md-ellipsis">
       Code Review Process
     </span>
   </a>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
       
@@ -900,34 +882,20 @@
 
 
 <h1 id="contributing-to-pyswatplus">Contributing to pySWATPlus</h1>
-<p>Thank you for considering contributing to <code>pySWATPlus</code>, an open-source Python package to provide a programmatic interface to the SWAT+ model. We welcome contributions to enhance its functionality for navigating <code>TxtInOut</code> folders, modifying input parameters, running simulations, and performing sensitivity analysis and calibration. This document outlines how to contribute effectively.</p>
+<p>Thank you for considering contributing to <code>pySWATPlus</code>, an open-source Python package that provides a programmatic interface for interacting with the <code>SWAT+</code> model. We welcome contributions that enhance its functionality, including navigating <code>TxtInOut</code> folders, modifying input parameters, running simulations, performing sensitivity analyses, and calibrating models. This document outlines the steps to contribute effectively.</p>
 <h2 id="getting-started">Getting Started</h2>
 <h3 id="prerequisites">Prerequisites</h3>
 <p>To contribute, ensure you have the following installed:</p>
 <ul>
 <li><strong>Python</strong>: Version 3.10 or higher.</li>
 <li><strong>Git</strong>: For version control.</li>
-<li><strong>pip</strong> or <strong>conda</strong> (if using Conda environments).</li>
-<li>A code editor (e.g., VS Code, PyCharm).</li>
+<li><strong>pip</strong> or <strong>conda</strong> (if using <code>conda</code> environments).</li>
+<li>A code editor (e.g., JuputerLab, VS Code, PyCharm).</li>
 </ul>
 <h3 id="development-setting">Development Setting</h3>
 <ul>
 <li>
-<p><em>Fork and Clone the Repository</em>:</p>
-<ul>
-<li>
-<p>Fork the repository on GitHub by clicking the "Fork" button.</p>
-</li>
-<li>
-<p>Clone the fork to your local machine at the desired folder path:</p>
-<div class="highlight"><pre><span></span><code>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/swat-model/pySWATPlus.git
-<span class="nb">cd</span><span class="w"> </span>pySWATPlus
-</code></pre></div>
-</li>
-</ul>
-</li>
-<li>
-<p><em>Create a Virtual Environment</em>:</p>
+<p>Create a Virtual Environment:</p>
 <ul>
 <li>
 <p>Set up a virtual environment to isolate dependencies:</p>
@@ -937,14 +905,30 @@
 </li>
 <li>
 <p>Alternatively, use <code>conda</code>:</p>
-<div class="highlight"><pre><span></span><code>conda<span class="w"> </span>create<span class="w"> </span>-n<span class="w"> </span>pySWATPlus<span class="w"> </span><span class="nv">python</span><span class="o">=</span><span class="m">3</span>.10
+<div class="highlight"><pre><span></span><code>conda<span class="w"> </span>create<span class="w"> </span>--name<span class="w"> </span>pySWATPlus
 conda<span class="w"> </span>activate<span class="w"> </span>pySWATPlus
+conda<span class="w"> </span>install<span class="w"> </span>pip
 </code></pre></div>
 </li>
 </ul>
 </li>
 <li>
-<p><em>Install Dependencies</em>:</p>
+<p>Clone the <code>GitHub</code> Repository:</p>
+<ul>
+<li>
+<p>Fork the repository on GitHub by clicking the <strong>Fork</strong> button.</p>
+</li>
+<li>
+<p>Clone your fork to your local machine at the desired folder path:</p>
+<div class="highlight"><pre><span></span><code><span class="nb">cd</span><span class="w"> </span>C:<span class="se">\\</span>users<span class="se">\\</span>username<span class="se">\\</span>folder_path
+git<span class="w"> </span>clone<span class="w"> </span>https://github.com/swat-model/pySWATPlus.git
+<span class="nb">cd</span><span class="w"> </span>pySWATPlus
+</code></pre></div>
+</li>
+</ul>
+</li>
+<li>
+<p>Install Dependencies:</p>
 <ul>
 <li>
 <p>Install required dependencies:</p>
@@ -965,18 +949,19 @@ pip<span class="w"> </span>install<span class="w"> </span>mkdocstrings-python<sp
 </ul>
 </li>
 <li>
-<p><em>Install <code>pySWATPlus</code> in Editable Mode</em>:</p>
+<p>Install <code>pySWATPlus</code> in Editable Mode:</p>
 <div class="highlight"><pre><span></span><code>python<span class="w"> </span>-m<span class="w"> </span>build
 pip<span class="w"> </span>install<span class="w"> </span>--editable<span class="w"> </span>.
 </code></pre></div>
 </li>
 <li>
-<p><em>Verify Installation</em>:</p>
+<p>Verify Installation:</p>
 <div class="highlight"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">pySWATPlus</span>  <span class="c1"># should execute with no error</span>
 </code></pre></div>
 </li>
 </ul>
 <h2 id="how-to-contribute">How to Contribute</h2>
+<p>The following steps describe how to contribute to the project.</p>
 <h3 id="types-of-contributions">Types of Contributions</h3>
 <ul>
 <li>Solve the existing <a href="https://github.com/swat-model/pySWATPlus/issues">GitHub Issues</a>.</li>
@@ -991,7 +976,7 @@ pip<span class="w"> </span>install<span class="w"> </span>--editable<span class=
 <p>Modify codes for the feature you want to work.</p>
 </li>
 <li>
-<p><em>Test the Modified Code</em>:</p>
+<p>Test the Modified Code:</p>
 <ul>
 <li>Write test functions for the modified code in the <code>tests/</code> directory.<br />
   Use file and function names with the prefix <code>test_</code>.</li>
@@ -1003,7 +988,7 @@ pip<span class="w"> </span>install<span class="w"> </span>--editable<span class=
 </ul>
 </li>
 <li>
-<p><em>Test Code Style</em>:</p>
+<p>Test Code Style:</p>
 <ul>
 <li>Adhere to <a href="https://peps.python.org/pep-0008/">PEP 8</a> style for Python code.</li>
 <li>
@@ -1014,7 +999,7 @@ pip<span class="w"> </span>install<span class="w"> </span>--editable<span class=
 </ul>
 </li>
 <li>
-<p><em>Test Type Hints</em>:</p>
+<p>Test Type Hints:</p>
 <ul>
 <li>Add type hints to all variables where applicable.</li>
 <li>
@@ -1025,7 +1010,7 @@ pip<span class="w"> </span>install<span class="w"> </span>--editable<span class=
 </ul>
 </li>
 <li>
-<p><em>Test Documentation</em>:</p>
+<p>Test Documentation:</p>
 <ul>
 <li>Update documentation if the changes affect usage or introduce new features.</li>
 <li>
@@ -1042,37 +1027,39 @@ pip<span class="w"> </span>install<span class="w"> </span>--editable<span class=
 <h3 id="submit-contributions">Submit Contributions</h3>
 <ul>
 <li>
-<p><em>Create a Separate Branch</em>:</p>
+<p>Create a Separate Branch:</p>
 <div class="highlight"><pre><span></span><code>git<span class="w"> </span>checkout<span class="w"> </span>-b<span class="w"> </span>&lt;feature&gt;/&lt;your-feature-name&gt;
 </code></pre></div>
 </li>
 <li>
-<p><em>Commit and Push Changes</em>:</p>
+<p>Commit and Push Changes:</p>
 <ul>
 <li>
 <p>Commit an individual file (recommended):</p>
 <div class="highlight"><pre><span></span><code>git<span class="w"> </span>add<span class="w"> </span>&lt;filename&gt;
-git<span class="w"> </span>commit<span class="w"> </span>-m<span class="w"> </span><span class="s2">&quot;Add condition for robust error check&quot;</span>
+git<span class="w"> </span>commit<span class="w"> </span>-m<span class="w"> </span><span class="s2">&quot;Specific commit message related to the file&quot;</span>
 git<span class="w"> </span>push<span class="w"> </span>origin<span class="w"> </span>&lt;feature&gt;/&lt;your-feature-name&gt;
 </code></pre></div>
 </li>
 <li>
 <p>Commit all changes together:</p>
 <div class="highlight"><pre><span></span><code>git<span class="w"> </span>add<span class="w"> </span>.
-git<span class="w"> </span>commit<span class="w"> </span>-m<span class="w"> </span><span class="s2">&quot;Your descriptive commit message&quot;</span>
+git<span class="w"> </span>commit<span class="w"> </span>-m<span class="w"> </span><span class="s2">&quot;Descriptive commit message for all changes&quot;</span>
 git<span class="w"> </span>push<span class="w"> </span>origin<span class="w"> </span>&lt;feature&gt;/&lt;your-feature-name&gt;
 </code></pre></div>
 </li>
 </ul>
 </li>
-</ul>
-<h3 id="submit-a-pull-request-pr"><em>Submit a Pull Request (PR)</em></h3>
+<li>
+<p>Open a Pull Request (PR):</p>
 <ul>
 <li>Create a PR on GitHub from your branch <code>&lt;feature&gt;/&lt;your-feature-name&gt;</code>.</li>
 <li>Describe your changes, including their purpose and impact, and reference any open issues if applicable (e.g., <code>fixes #123</code>).</li>
 <li>Ensure the pull request passes all CI/CD workflows.</li>
 </ul>
-<h3 id="code-review-process">Code Review Process</h3>
+</li>
+</ul>
+<h2 id="code-review-process">Code Review Process</h2>
 <ul>
 <li>Maintainers will provide feedback on your PR to improve the code.</li>
 <li>Update your PR according to the feedback.</li>
