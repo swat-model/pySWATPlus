@@ -80,7 +80,8 @@ reader.run_swat()
 ```python
 # Register the hydrology.hyd file
 hyd_register = reader.register_file(
-    filename='hydrology.hyd'
+    filename='hydrology.hyd',
+    has_units=False
 )
 
 # Get the DataFrame

@@ -362,6 +362,9 @@ class Scenario:
                 f'Mismatch between number of variables ({len(var_names)}) and their bounds ({len(var_bounds)})'
             )
 
+        # validate that params is correct
+        utils._validate_params(params)
+
         # Counting and collecting sensitive parameters from 'params' dictionary for robust error checking
         count_params = 0
         collect_params = []
@@ -396,7 +399,11 @@ class Scenario:
         # check file and parameter mapping in the 'params' dictionary
         for key, value in params.items():
             file_path = os.path.join(txtinout_folder, key)
-            has_units = value['has_units'] if 'has_units' in value and isinstance(value['has_units'], bool) else False
+            has_units = value['has_units']
+
+            if not isinstance(has_units, bool):
+                raise TypeError(f"'has_units' for file '{file_path}' must be a boolean.")
+
             file_reader = FileReader(
                 path=file_path,
                 has_units=has_units

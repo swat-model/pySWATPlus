@@ -1,7 +1,6 @@
-import pandas
 import pathlib
-import typing
 from . import utils
+import pandas
 
 
 class FileReader:
@@ -14,9 +13,7 @@ class FileReader:
     def __init__(
         self,
         path: str | pathlib.Path,
-        has_units: bool = False,
-        usecols: typing.Optional[list[str]] = None,
-        filter_by: typing.Optional[str] = None
+        has_units: bool,
     ):
         '''
         Initialize a FileReader instance to read data from a TXT file.
@@ -24,22 +21,12 @@ class FileReader:
         Args:
             path (str or Path): Path to the TXT file to be read.
             has_units (bool): If `True`, the second row of the file contains units.
-            usecols (list[str]): List of column names to read from the file.
-            filter_by (str): A pandas query string to filter rows from the file.
-
-        Raises:
-            TypeError: If the input file has a `.csv` extension.
-
-        Attributes:
-            df (pandas.DataFrame): A DataFrame containing the loaded and optionally filtered data.
 
         Example:
             ```python
             reader = FileReader(
                 path='C:\\users\\username\\project\\Scenarios\\Default\\TxtInOut\\plants.plt',
-                has_units=False,
-                usecols=['name', 'plnt_typ', 'gro_trig'],
-                filter_by="plnt_typ == 'perennial'"
+                has_units=False
             )
             ```
         '''
@@ -52,29 +39,48 @@ class FileReader:
         if not path.is_file():
             raise FileNotFoundError("file does not exist")
 
-        # skips the header
-        skip_rows = [0]
+        self.has_units = has_units
 
-        # if file is txt
-        if path.suffix.lower() == '.csv':
-            raise TypeError("Not implemented yet")
+        # if output ends with _day, _mon, _yr, _aa, _subday (removing the suffix), it means is an output file from SWAT.
+        # if file is a csv is output file
+        self.is_output_file = path.stem.endswith(('_day', '_mon', '_yr', '_aa', '_subday')) or path.suffix == '.csv'
+
+        # skips the header
+        skip_rows = [0, 2] if self.has_units else [0]
 
         # read only first line of file
         with open(path, 'r', encoding='latin-1') as file:
             self.header_file = file.readline()
 
-        self.df = utils._load_file(path, skip_rows=skip_rows, usecols=usecols)
+        self.df = utils._load_file(path, skip_rows=skip_rows)
 
-        self.path = path
+        # if file is a csv is output file
+        if path.suffix == '.csv' and self.has_units:
+            _df = pandas.read_csv(path, skiprows=[0], nrows=2, header=None, skipinitialspace=True)
+            self.units_row = utils._clean(_df).iloc[1].copy()
 
-        if has_units:
-            self.units_row = self.df.iloc[0].copy()
-            self.df = self.df.iloc[1:].reset_index(drop=True)
+        elif self.has_units:  # has_units and txt file
+            # Units row may have some empty values, so we cannot use read_csv.
+            # We'll use read_fwf; infer number of columns using first data row.
+            _df = pandas.read_fwf(path, skiprows=[0, 1], nrows=2, header=None)
+            self.units_row = utils._clean(_df).iloc[0].copy()
+
+            # If _df has only one row, the original file may have no data rows.
+            # Try reading using the header row as reference (but it may have issues sometimes)
+            if len(_df) == 1:
+                _df = pandas.read_fwf(path, skiprows=[0], nrows=2, header=None)
+                self.units_row = utils._clean(_df).iloc[1].copy()
         else:
             self.units_row = None
 
-        if filter_by:
-            self.df = self.df.query(filter_by)
+        # Check if units row matches the DataFrame's column count
+        if self.has_units:
+            if len(self.units_row) != self.df.shape[1]:
+                raise ValueError(
+                    "Units row could not be parsed correctly. Check if your file is well-formed."
+                )
+
+        self.path = path
 
     def overwrite_file(
         self
@@ -83,7 +89,10 @@ class FileReader:
         Overwrite the original TXT file with the modified DataFrame content.
         If the file originally contained a unit row (below the header),
         it will be preserved and written back as part of the output.
+        If the file is a SWAT+ Output File, launch exception.
         '''
+        if self.is_output_file:
+            raise ValueError("Overwriting SWAT+ Output Files is not allowed")
 
         if self.units_row is not None:
             _df = pandas.concat([pandas.DataFrame([self.units_row]), self.df], ignore_index=True)
@@ -98,7 +107,7 @@ class FileReader:
             file.write(self.header_file)
 
             if _df.empty:
-                # Calculate max width for each column name (or set a minimum if you prefer)
+                # Calculate max width for each column name
                 col_widths = [max(len(col), 1) + 3 for col in _df.columns]
 
                 # Create format string with fixed widths, right-aligned

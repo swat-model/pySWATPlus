@@ -35,6 +35,16 @@ def test_validate_params():
         )
     assert exc_info.value.args[0] == "'has_units' for file 'plants.plt' must be a boolean."
 
+    with pytest.raises(Exception) as exc_info:
+        pySWATPlus.utils._validate_params(
+            params={
+                'plants.plt': {
+                    'bm_e': {'value': 2}
+                }
+            }
+        )
+    assert exc_info.value.args[0] == "'has_units' key is missing for file 'plants.plt'."
+
     # error test for other keys
     with pytest.raises(Exception) as exc_info:
         pySWATPlus.utils._validate_params(
