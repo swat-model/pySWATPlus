@@ -111,6 +111,14 @@ def test_simulated_outputs():
         path=txtinout_folder
     )
 
+    txtinout_reader.enable_object_in_print_prt(
+        obj=None,
+        daily=True,
+        monthly=True,
+        yearly=True,
+        avann=False
+    )
+
     txtinout_reader.enable_csv_print()
 
     with tempfile.TemporaryDirectory() as tmp_dir:

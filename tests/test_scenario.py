@@ -26,6 +26,20 @@ def test_simulation_by_sobol_sample():
             'esco': {'value': 0}
         }
     }
+
+    # initialize TxtinoutReader class
+    txtinout_reader = pySWATPlus.TxtinoutReader(
+        path=txtinout_folder
+    )
+
+    txtinout_reader.enable_object_in_print_prt(
+        obj=None,
+        daily=True,
+        monthly=True,
+        yearly=True,
+        avann=False
+    )
+
     # Parallel simulation and output collection
     with tempfile.TemporaryDirectory() as tmp_dir:
         output = pySWATPlus.Scenario().simulation_by_sobol_sample(
@@ -41,22 +55,22 @@ def test_simulation_by_sobol_sample():
             retain_cols=['name', 'flo_out']
         )
 
-    # pass test for simulation by Sobol sample
-    assert 'time' in output
-    assert isinstance(output['time'], dict)
-    assert len(output['time']) == 3
+        # pass test for simulation by Sobol sample
+        assert 'time' in output
+        assert isinstance(output['time'], dict)
+        assert len(output['time']) == 3
 
-    assert 'problem' in output
-    assert isinstance(output['problem'], dict)
-    assert len(output['problem']) == 3
+        assert 'problem' in output
+        assert isinstance(output['problem'], dict)
+        assert len(output['problem']) == 3
 
-    assert 'sample' in output
-    assert not isinstance(output['sample'], dict)
-    assert len(output['sample']) == 8
+        assert 'sample' in output
+        assert not isinstance(output['sample'], dict)
+        assert len(output['sample']) == 8
 
-    assert 'simulation' in output
-    assert isinstance(output['simulation'], dict)
-    assert len(output['simulation']) == 8
+        assert 'simulation' in output
+        assert isinstance(output['simulation'], dict)
+        assert len(output['simulation']) == 8
 
     # error test for invalid simulation folder path
     with pytest.raises(Exception) as exc_info:
