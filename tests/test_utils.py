@@ -50,6 +50,16 @@ def test_validate_params():
         pySWATPlus.utils._validate_params(
             params={
                 'plants.plt': {
+                    'has_units': False, 'bm_e': True}
+            }
+        )
+    assert exc_info.value.args[0] == "Unexpected bool value for key 'bm_e' in file 'plants.plt'"
+
+    # error test for other keys
+    with pytest.raises(Exception) as exc_info:
+        pySWATPlus.utils._validate_params(
+            params={
+                'plants.plt': {
                     'has_units': False,
                     'bm_e': ()
                 }

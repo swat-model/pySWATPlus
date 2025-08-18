@@ -437,6 +437,9 @@ class TxtinoutReader:
 
             has_units = file_params['has_units']
 
+            if not isinstance(has_units, bool):
+                raise TypeError(f"'has_units' for file '{filename}' must be a boolean.")
+
             file = self.register_file(
                 filename,
                 has_units=has_units

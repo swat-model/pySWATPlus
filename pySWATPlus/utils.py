@@ -84,6 +84,10 @@ def _validate_params(
             if key == "has_units":
                 continue
 
+            # For any other key, value should NOT be bool
+            if isinstance(value, bool):
+                raise TypeError(f"Unexpected bool value for key '{key}' in file '{filename}'")
+
             param_changes = value if isinstance(value, list) else [value]
 
             for change in param_changes:
@@ -119,14 +123,14 @@ def _clean(df: pandas.DataFrame) -> pandas.DataFrame:
     return df
 
 
-def _load_file(path: str | pathlib.Path, skip_rows: typing.Optional[list[int]] = None, usecols: typing.Optional[list[str]] = None) -> pandas.DataFrame:
+def _load_file(path: pathlib.Path, skip_rows: typing.Optional[list[int]] = None, usecols: typing.Optional[list[str]] = None) -> pandas.DataFrame:
     '''
     Attempt to load a dataframe from `path` using multiple parsing strategies.
     '''
 
     if path.suffix.lower() == '.csv':
-        df = pandas.read_csv(path, skiprows=skip_rows, usecols=usecols, skipinitialspace=True)
-        return _clean(df)
+        df_from_csv = pandas.read_csv(path, skiprows=skip_rows, usecols=usecols, skipinitialspace=True)
+        return _clean(df_from_csv)
 
     strategies: list[Callable[[], pandas.DataFrame]] = [
         lambda: pandas.read_csv(path, sep=r"\s+", skiprows=skip_rows, usecols=usecols),

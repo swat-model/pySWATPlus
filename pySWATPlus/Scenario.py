@@ -400,6 +400,10 @@ class Scenario:
         for key, value in params.items():
             file_path = os.path.join(txtinout_folder, key)
             has_units = value['has_units']
+
+            if not isinstance(has_units, bool):
+                raise TypeError(f"'has_units' for file '{file_path}' must be a boolean.")
+
             file_reader = FileReader(
                 path=file_path,
                 has_units=has_units
