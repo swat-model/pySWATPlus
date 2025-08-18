@@ -1,4 +1,4 @@
-# SWAT+ Simulation Guide
+# SWAT+ Simulation
 
 
 SWAT+ simulations can be performed while modifying multiple optional input parameters. These parameters can be changed either individually or simultaneously for a simulation. Some examples are shown below:

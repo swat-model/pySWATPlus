@@ -35,9 +35,9 @@ markdown_extensions:
 nav:
   - Home: index.md
 
-  - Run SWAT+: run_swatplus.md
-
-  - Sensitivity Analysis: sensitivity.md
+  - User Guide:
+    - SWAT+ Simulation: userguide/swatplus_simulation.md
+    - Sensitivity Analysis: userguide/sensitivity_analysis.md
 
   - API Reference:
     - TxtinoutReader: api/txtinoutreader.md
