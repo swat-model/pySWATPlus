@@ -564,17 +564,7 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#pySWATPlus.Scenario.Scenario" class="md-nav__link">
-    <span class="md-ellipsis">
-      Scenario
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Scenario">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#pySWATPlus.Scenario.Scenario.simulated_timeseries_df" class="md-nav__link">
+  <a href="#pySWATPlus.Scenario.simulated_timeseries_df" class="md-nav__link">
     <span class="md-ellipsis">
       simulated_timeseries_df
     </span>
@@ -583,16 +573,11 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#pySWATPlus.Scenario.Scenario.simulation_by_sobol_sample" class="md-nav__link">
+  <a href="#pySWATPlus.Scenario.simulation_by_sobol_sample" class="md-nav__link">
     <span class="md-ellipsis">
       simulation_by_sobol_sample
     </span>
   </a>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
         
@@ -719,17 +704,7 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#pySWATPlus.Scenario.Scenario" class="md-nav__link">
-    <span class="md-ellipsis">
-      Scenario
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Scenario">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#pySWATPlus.Scenario.Scenario.simulated_timeseries_df" class="md-nav__link">
+  <a href="#pySWATPlus.Scenario.simulated_timeseries_df" class="md-nav__link">
     <span class="md-ellipsis">
       simulated_timeseries_df
     </span>
@@ -738,16 +713,11 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#pySWATPlus.Scenario.Scenario.simulation_by_sobol_sample" class="md-nav__link">
+  <a href="#pySWATPlus.Scenario.simulation_by_sobol_sample" class="md-nav__link">
     <span class="md-ellipsis">
       simulation_by_sobol_sample
     </span>
   </a>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
         
@@ -774,7 +744,7 @@
 
   <h1>Scenario</h1>
 
-<div class="doc doc-object doc-module">
+<div class="doc doc-object doc-class">
 
 
 
@@ -784,37 +754,8 @@
 
 </h2>
 
+
     <div class="doc doc-contents first">
-
-
-
-
-
-
-
-
-
-  <div class="doc doc-children">
-
-
-
-
-
-
-
-
-<div class="doc doc-object doc-class">
-
-
-
-<h3 id="pySWATPlus.Scenario.Scenario" class="doc doc-heading">
-            <code>Scenario</code>
-
-
-</h3>
-
-
-    <div class="doc doc-contents ">
 
 
         <p>Provides functionality for running scenario simulations and analyzing simulated data.</p>
@@ -826,7 +767,7 @@
 
 
               <details class="quote">
-                <summary>Source code in <code>pySWATPlus/Scenario.py</code></summary>
+                <summary>Source code in <code>pySWATPlus/scenario.py</code></summary>
                 <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 18</span>
 <span class="normal"> 19</span>
 <span class="normal"> 20</span>
@@ -1876,10 +1817,10 @@
 <div class="doc doc-object doc-function">
 
 
-<h4 id="pySWATPlus.Scenario.Scenario.simulated_timeseries_df" class="doc doc-heading">
+<h3 id="pySWATPlus.Scenario.simulated_timeseries_df" class="doc doc-heading">
             <code class="highlight language-python"><span class="n">simulated_timeseries_df</span><span class="p">(</span><span class="n">data_file</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">unit_row</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">start_date</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">end_date</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">filter_rows</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="n">typing</span><span class="o">.</span><span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="p">{},</span> <span class="n">retain_cols</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pandas</span><span class="o">.</span><span class="n">DataFrame</span></code>
 
-</h4>
+</h3>
 
 
     <div class="doc doc-contents ">
@@ -2030,7 +1971,7 @@ all columns from the input file are retained.</p>
 
 
             <details class="quote">
-              <summary>Source code in <code>pySWATPlus/Scenario.py</code></summary>
+              <summary>Source code in <code>pySWATPlus/scenario.py</code></summary>
               <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 24</span>
 <span class="normal"> 25</span>
 <span class="normal"> 26</span>
@@ -2215,10 +2156,10 @@ all columns from the input file are retained.</p>
 <div class="doc doc-object doc-function">
 
 
-<h4 id="pySWATPlus.Scenario.Scenario.simulation_by_sobol_sample" class="doc doc-heading">
+<h3 id="pySWATPlus.Scenario.simulation_by_sobol_sample" class="doc doc-heading">
             <code class="highlight language-python"><span class="n">simulation_by_sobol_sample</span><span class="p">(</span><span class="n">var_names</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">var_bounds</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="nb">float</span><span class="p">]],</span> <span class="n">sample_number</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">simulation_folder</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">txtinout_folder</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">params</span><span class="p">:</span> <span class="n">ParamsType</span><span class="p">,</span> <span class="n">data_file</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">unit_row</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">start_date</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">end_date</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">filter_rows</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="n">typing</span><span class="o">.</span><span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="p">{},</span> <span class="n">retain_cols</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">max_workers</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">save_output</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">clean_setup</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">typing</span><span class="o">.</span><span class="n">Any</span><span class="p">]</span></code>
 
-</h4>
+</h3>
 
 
     <div class="doc doc-contents ">
@@ -2613,7 +2554,7 @@ will be deleted dynamically after collecting the required data.</p>
 </details>
 
             <details class="quote">
-              <summary>Source code in <code>pySWATPlus/Scenario.py</code></summary>
+              <summary>Source code in <code>pySWATPlus/scenario.py</code></summary>
               <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">201</span>
 <span class="normal">202</span>
 <span class="normal">203</span>
@@ -3284,15 +3225,6 @@ will be deleted dynamically after collecting the required data.</p>
     </div>
 
 </div>
-
-
-
-  </div>
-
-    </div>
-
-</div>
-
 
 
 
