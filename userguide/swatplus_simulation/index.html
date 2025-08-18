@@ -881,7 +881,8 @@
 <h2 id="simulation-after-parameter-modifications">Simulation After Parameter Modifications</h2>
 <div class="highlight"><pre><span></span><code><span class="c1"># Register the hydrology.hyd file</span>
 <span class="n">hyd_register</span> <span class="o">=</span> <span class="n">reader</span><span class="o">.</span><span class="n">register_file</span><span class="p">(</span>
-    <span class="n">filename</span><span class="o">=</span><span class="s1">&#39;hydrology.hyd&#39;</span>
+    <span class="n">filename</span><span class="o">=</span><span class="s1">&#39;hydrology.hyd&#39;</span><span class="p">,</span>
+    <span class="n">has_units</span><span class="o">=</span><span class="kc">False</span>
 <span class="p">)</span>
 
 <span class="c1"># Get the DataFrame</span>

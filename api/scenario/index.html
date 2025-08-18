@@ -1335,7 +1335,14 @@
 <span class="normal">523</span>
 <span class="normal">524</span>
 <span class="normal">525</span>
-<span class="normal">526</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Scenario</span><span class="p">:</span>
+<span class="normal">526</span>
+<span class="normal">527</span>
+<span class="normal">528</span>
+<span class="normal">529</span>
+<span class="normal">530</span>
+<span class="normal">531</span>
+<span class="normal">532</span>
+<span class="normal">533</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Scenario</span><span class="p">:</span>
 
 <span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    Provides functionality for running scenario simulations and analyzing simulated data.</span>
@@ -1682,6 +1689,9 @@
                 <span class="sa">f</span><span class="s1">&#39;Mismatch between number of variables (</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">var_names</span><span class="p">)</span><span class="si">}</span><span class="s1">) and their bounds (</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">var_bounds</span><span class="p">)</span><span class="si">}</span><span class="s1">)&#39;</span>
             <span class="p">)</span>
 
+        <span class="c1"># validate that params is correct</span>
+        <span class="n">utils</span><span class="o">.</span><span class="n">_validate_params</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
+
         <span class="c1"># Counting and collecting sensitive parameters from &#39;params&#39; dictionary for robust error checking</span>
         <span class="n">count_params</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="n">collect_params</span> <span class="o">=</span> <span class="p">[]</span>
@@ -1716,7 +1726,11 @@
         <span class="c1"># check file and parameter mapping in the &#39;params&#39; dictionary</span>
         <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">params</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
             <span class="n">file_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">txtinout_folder</span><span class="p">,</span> <span class="n">key</span><span class="p">)</span>
-            <span class="n">has_units</span> <span class="o">=</span> <span class="n">value</span><span class="p">[</span><span class="s1">&#39;has_units&#39;</span><span class="p">]</span> <span class="k">if</span> <span class="s1">&#39;has_units&#39;</span> <span class="ow">in</span> <span class="n">value</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">[</span><span class="s1">&#39;has_units&#39;</span><span class="p">],</span> <span class="nb">bool</span><span class="p">)</span> <span class="k">else</span> <span class="kc">False</span>
+            <span class="n">has_units</span> <span class="o">=</span> <span class="n">value</span><span class="p">[</span><span class="s1">&#39;has_units&#39;</span><span class="p">]</span>
+
+            <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">has_units</span><span class="p">,</span> <span class="nb">bool</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;&#39;has_units&#39; for file &#39;</span><span class="si">{</span><span class="n">file_path</span><span class="si">}</span><span class="s2">&#39; must be a boolean.&quot;</span><span class="p">)</span>
+
             <span class="n">file_reader</span> <span class="o">=</span> <span class="n">FileReader</span><span class="p">(</span>
                 <span class="n">path</span><span class="o">=</span><span class="n">file_path</span><span class="p">,</span>
                 <span class="n">has_units</span><span class="o">=</span><span class="n">has_units</span>
@@ -2925,7 +2939,14 @@ will be deleted dynamically after collecting the required data.</p>
 <span class="normal">523</span>
 <span class="normal">524</span>
 <span class="normal">525</span>
-<span class="normal">526</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">simulation_by_sobol_sample</span><span class="p">(</span>
+<span class="normal">526</span>
+<span class="normal">527</span>
+<span class="normal">528</span>
+<span class="normal">529</span>
+<span class="normal">530</span>
+<span class="normal">531</span>
+<span class="normal">532</span>
+<span class="normal">533</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">simulation_by_sobol_sample</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">var_names</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
     <span class="n">var_bounds</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="nb">float</span><span class="p">]],</span>
@@ -3089,6 +3110,9 @@ will be deleted dynamically after collecting the required data.</p>
             <span class="sa">f</span><span class="s1">&#39;Mismatch between number of variables (</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">var_names</span><span class="p">)</span><span class="si">}</span><span class="s1">) and their bounds (</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">var_bounds</span><span class="p">)</span><span class="si">}</span><span class="s1">)&#39;</span>
         <span class="p">)</span>
 
+    <span class="c1"># validate that params is correct</span>
+    <span class="n">utils</span><span class="o">.</span><span class="n">_validate_params</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
+
     <span class="c1"># Counting and collecting sensitive parameters from &#39;params&#39; dictionary for robust error checking</span>
     <span class="n">count_params</span> <span class="o">=</span> <span class="mi">0</span>
     <span class="n">collect_params</span> <span class="o">=</span> <span class="p">[]</span>
@@ -3123,7 +3147,11 @@ will be deleted dynamically after collecting the required data.</p>
     <span class="c1"># check file and parameter mapping in the &#39;params&#39; dictionary</span>
     <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">params</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
         <span class="n">file_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">txtinout_folder</span><span class="p">,</span> <span class="n">key</span><span class="p">)</span>
-        <span class="n">has_units</span> <span class="o">=</span> <span class="n">value</span><span class="p">[</span><span class="s1">&#39;has_units&#39;</span><span class="p">]</span> <span class="k">if</span> <span class="s1">&#39;has_units&#39;</span> <span class="ow">in</span> <span class="n">value</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">[</span><span class="s1">&#39;has_units&#39;</span><span class="p">],</span> <span class="nb">bool</span><span class="p">)</span> <span class="k">else</span> <span class="kc">False</span>
+        <span class="n">has_units</span> <span class="o">=</span> <span class="n">value</span><span class="p">[</span><span class="s1">&#39;has_units&#39;</span><span class="p">]</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">has_units</span><span class="p">,</span> <span class="nb">bool</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;&#39;has_units&#39; for file &#39;</span><span class="si">{</span><span class="n">file_path</span><span class="si">}</span><span class="s2">&#39; must be a boolean.&quot;</span><span class="p">)</span>
+
         <span class="n">file_reader</span> <span class="o">=</span> <span class="n">FileReader</span><span class="p">(</span>
             <span class="n">path</span><span class="o">=</span><span class="n">file_path</span><span class="p">,</span>
             <span class="n">has_units</span><span class="o">=</span><span class="n">has_units</span>

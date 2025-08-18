@@ -940,8 +940,8 @@ to the SWAT+ model as either a single <code>ParamChange</code> or a list of them
 <details class="special-key" open>
   <summary>Special key</summary>
   <ul>
-<li><code>'has_units'</code> (bool): An optional key indicating whether the
-        input file contains a row of units for columns (default is False).</li>
+<li><code>'has_units'</code> (bool): Key indicating whether the
+        input file contains a row of units for columns.</li>
 </ul>
 </details>        <p>Example:
 <div class="highlight"><pre><span></span><code><span class="c1"># Example from `plants.plt` file with a list of `ParamChange` objects</span>
@@ -985,7 +985,7 @@ Each key is a input filename and the value is a <code>FileParams</code> object.<
 <p>The structure is as follows:
 <div class="highlight"><pre><span></span><code><span class="p">{</span>
     <span class="s1">&#39;&lt;file_1&gt;&#39;</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s1">&#39;has_units&#39;</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>  <span class="c1"># optional (default False)</span>
+        <span class="s1">&#39;has_units&#39;</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
         <span class="s1">&#39;&lt;variable_1&gt;&#39;</span><span class="p">:</span> <span class="p">{</span>
             <span class="s1">&#39;value&#39;</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
             <span class="s1">&#39;change_type&#39;</span><span class="p">:</span> <span class="s1">&#39;absval&#39;</span> <span class="o">|</span> <span class="s1">&#39;abschg&#39;</span> <span class="o">|</span> <span class="s1">&#39;pctchg&#39;</span><span class="p">,</span>  <span class="c1"># optional (default &#39;absval&#39;)</span>
