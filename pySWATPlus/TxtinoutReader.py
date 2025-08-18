@@ -17,7 +17,6 @@ class TxtinoutReader:
     SWAT+ model files located in the `TxtInOut` folder.
     '''
 
-    RESERVED_PARAMS: typing.Final[list[str]] = ['has_units']
     IGNORED_FILE_PATTERNS: typing.Final[tuple[str, ...]] = tuple(
         f'_{suffix}.{ext}'
         for suffix in ('day', 'mon', 'yr', 'aa')
@@ -306,9 +305,7 @@ class TxtinoutReader:
     def register_file(
         self,
         filename: str,
-        has_units: bool = False,
-        usecols: typing.Optional[list[str]] = None,
-        filter_by: typing.Optional[str] = None
+        has_units: bool,
     ) -> FileReader:
         '''
         Register a file to work with in the SWAT+ model.
@@ -316,8 +313,6 @@ class TxtinoutReader:
         Args:
             filename (str): Path to the file to register, located in the `TxtInOut` folder.
             has_units (bool): If True, the second row of the file contains units.
-            usecols (list[str]): List of column names to read from the file.
-            filter_by (str): A pandas query string to filter rows from the file.
 
         Returns:
             A FileReader instance for the registered file.
@@ -325,7 +320,7 @@ class TxtinoutReader:
 
         file_path = self.root_folder / filename
 
-        return FileReader(file_path, has_units, usecols, filter_by)
+        return FileReader(file_path, has_units)
 
     def _copy_swat(
         self,
@@ -400,7 +395,7 @@ class TxtinoutReader:
                 ```python
                 params = {
                     "<input_file>": {
-                        "has_units": bool,              # Optional. Whether the file has units information (default is False)
+                        "has_units": bool,              # Whether the file has units information
                         "<parameter_name>": [           # One or more changes to apply to the parameter
                             {
                                 "value": float,         # New value to assign
@@ -440,7 +435,7 @@ class TxtinoutReader:
         # Modify files for simulation
         for filename, file_params in _params.items():
 
-            has_units = file_params['has_units'] if 'has_units' in self.RESERVED_PARAMS and isinstance(file_params['has_units'], bool) else False
+            has_units = file_params['has_units']
 
             file = self.register_file(
                 filename,
@@ -492,7 +487,7 @@ class TxtinoutReader:
                 ```python
                 params = {
                     "<input_file>": {
-                        "has_units": bool,              # Optional. Whether the file has units information (default is False)
+                        "has_units": bool,              # Whether the file has units information (default is False)
                         "<parameter_name>": [           # One or more changes to apply to the parameter
                             {
                                 "value": float,         # New value to assign

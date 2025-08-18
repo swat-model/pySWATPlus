@@ -74,15 +74,15 @@ def _validate_params(
         if not isinstance(file_params, dict):
             raise TypeError(f"Expected a dictionary for file '{filename}', got {type(file_params).__name__}")
 
+        if "has_units" in file_params:
+            if not isinstance(file_params["has_units"], bool):
+                raise TypeError(f"'has_units' for file '{filename}' must be a boolean.")
+        else:
+            raise KeyError(f"'has_units' key is missing for file '{filename}'.")
+
         for key, value in file_params.items():
             if key == "has_units":
-                if not isinstance(value, bool):
-                    raise TypeError(f"'{key}' for file '{filename}' must be a boolean.")
                 continue
-
-            # For any other key, value should NOT be bool
-            if isinstance(value, bool):
-                raise TypeError(f"Unexpected bool value for key '{key}' in file '{filename}'")
 
             param_changes = value if isinstance(value, list) else [value]
 
@@ -107,10 +107,27 @@ def _validate_params(
                     raise TypeError(f"'filter_by' for '{key}' in file '{filename}' must be a string.")
 
 
+def _clean(df: pandas.DataFrame) -> pandas.DataFrame:
+    # Strip spaces from column names
+    df.columns = [str(c).strip() for c in df.columns]
+
+    # Strip spaces from string/object values
+    obj_cols = df.select_dtypes(include=["object", "string"]).columns
+    for col in obj_cols:
+        df[col] = df[col].str.strip()
+
+    return df
+
+
 def _load_file(path: str | pathlib.Path, skip_rows: typing.Optional[list[int]] = None, usecols: typing.Optional[list[str]] = None) -> pandas.DataFrame:
     '''
     Attempt to load a dataframe from `path` using multiple parsing strategies.
     '''
+
+    if path.suffix.lower() == '.csv':
+        df = pandas.read_csv(path, skiprows=skip_rows, usecols=usecols, skipinitialspace=True)
+        return _clean(df)
+
     strategies: list[Callable[[], pandas.DataFrame]] = [
         lambda: pandas.read_csv(path, sep=r"\s+", skiprows=skip_rows, usecols=usecols),
         lambda: pandas.read_csv(path, sep=r"[ ]{2,}", skiprows=skip_rows, usecols=usecols),
@@ -119,7 +136,7 @@ def _load_file(path: str | pathlib.Path, skip_rows: typing.Optional[list[int]] =
     for attempt in strategies:
         try:
             df: pandas.DataFrame = attempt()
-            return df
+            return _clean(df)
         except Exception:
             pass
 

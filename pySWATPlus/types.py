@@ -40,8 +40,8 @@ Maps a parameter from an input file (e.g., `bm_e` from `plants.plt` or `epco` fr
 to the SWAT+ model as either a single `ParamChange` or a list of them.
 
 Special key:
-    - `'has_units'` (bool): An optional key indicating whether the
-            input file contains a row of units for columns (default is False).
+    - `'has_units'` (bool): Key indicating whether the
+            input file contains a row of units for columns.
 
 Example:
 ```python
@@ -72,7 +72,7 @@ The structure is as follows:
 ```python
 {
     '<file_1>': {
-        'has_units': bool,  # optional (default False)
+        'has_units': bool,
         '<variable_1>': {
             'value': float,
             'change_type': 'absval' | 'abschg' | 'pctchg',  # optional (default 'absval')
