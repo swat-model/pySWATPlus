@@ -63,12 +63,20 @@ class FileReader:
         elif self.has_units:  # TXT file with a units row
             # The units row may contain empty values, making it unreliable to parse with read_csv.
             # Instead, we use read_fwf to handle fixed-width formatting and infer column boundaries
-            # based on the first data row. The header row is used as a reference for alignment.
+            # based on the first data row.
             # In some cases, file formatting may be inconsistent (e.g., misaligned spacing between
             # the header and units row). If such inconsistencies are detected, a warning will be
             # issued when overwriting the file, though compatibility with SWAT+ is still preserved.
-            _df = pandas.read_fwf(path, skiprows=[0], nrows=2, header=None)
-            self.units_row = utils._clean(_df).iloc[1].copy()
+
+            # Attempt parsing using the first data row as a reference for alignment.
+            _df = pandas.read_fwf(path, skiprows=[0, 1], nrows=2, header=None)
+            self.units_row = utils._clean(_df).iloc[0].copy()
+
+            # If only one row is returned (the df is empty), fall back to using the header row as reference.
+            # This approach is less reliable and more prone to alignment issues.
+            if len(_df) == 1:
+                _df = pandas.read_fwf(path, skiprows=[0], nrows=2, header=None)
+                self.units_row = utils._clean(_df).iloc[1].copy()
 
         else:
             self.units_row = None
