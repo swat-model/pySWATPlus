@@ -1,6 +1,7 @@
 import pathlib
 from . import utils
 import pandas
+import warnings
 
 
 class FileReader:
@@ -59,17 +60,16 @@ class FileReader:
             _df = pandas.read_csv(path, skiprows=[0], nrows=2, header=None, skipinitialspace=True)
             self.units_row = utils._clean(_df).iloc[1].copy()
 
-        elif self.has_units:  # has_units and txt file
-            # Units row may have some empty values, so we cannot use read_csv.
-            # We'll use read_fwf; infer number of columns using first data row.
-            _df = pandas.read_fwf(path, skiprows=[0, 1], nrows=2, header=None)
-            self.units_row = utils._clean(_df).iloc[0].copy()
+        elif self.has_units:  # TXT file with a units row
+            # The units row may contain empty values, making it unreliable to parse with read_csv.
+            # Instead, we use read_fwf to handle fixed-width formatting and infer column boundaries
+            # based on the first data row. The header row is used as a reference for alignment.
+            # In some cases, file formatting may be inconsistent (e.g., misaligned spacing between
+            # the header and units row). If such inconsistencies are detected, a warning will be
+            # issued when overwriting the file, though compatibility with SWAT+ is still preserved.
+            _df = pandas.read_fwf(path, skiprows=[0], nrows=2, header=None)
+            self.units_row = utils._clean(_df).iloc[1].copy()
 
-            # If _df has only one row, the original file may have no data rows.
-            # Try reading using the header row as reference (but it may have issues sometimes)
-            if len(_df) == 1:
-                _df = pandas.read_fwf(path, skiprows=[0], nrows=2, header=None)
-                self.units_row = utils._clean(_df).iloc[1].copy()
         else:
             self.units_row = None
 
@@ -93,6 +93,16 @@ class FileReader:
         '''
         if self.is_output_file:
             raise ValueError("Overwriting SWAT+ Output Files is not allowed")
+
+        # Check if units row matches the DataFrame's column count
+        if self.has_units:
+            if len(self.units_row) != self.df.shape[1]:
+                warnings.warn(
+                    "Units row could not be parsed correctly. The file will still be written "
+                    "and remain compatible with SWAT+, but formatting may not be preserved "
+                    "due to a malformed units row.",
+                    UserWarning
+                )
 
         if self.units_row is not None:
             _df = pandas.concat([pandas.DataFrame([self.units_row]), self.df], ignore_index=True)
