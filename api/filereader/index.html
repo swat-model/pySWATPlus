@@ -769,8 +769,7 @@ from a TXT file located in the <code>TxtInOut</code> folder.</p>
 
               <details class="quote">
                 <summary>Source code in <code>pySWATPlus/filereader.py</code></summary>
-                <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">  6</span>
-<span class="normal">  7</span>
+                <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">  7</span>
 <span class="normal">  8</span>
 <span class="normal">  9</span>
 <span class="normal"> 10</span>
@@ -886,7 +885,17 @@ from a TXT file located in the <code>TxtInOut</code> folder.</p>
 <span class="normal">120</span>
 <span class="normal">121</span>
 <span class="normal">122</span>
-<span class="normal">123</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">FileReader</span><span class="p">:</span>
+<span class="normal">123</span>
+<span class="normal">124</span>
+<span class="normal">125</span>
+<span class="normal">126</span>
+<span class="normal">127</span>
+<span class="normal">128</span>
+<span class="normal">129</span>
+<span class="normal">130</span>
+<span class="normal">131</span>
+<span class="normal">132</span>
+<span class="normal">133</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">FileReader</span><span class="p">:</span>
 
 <span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    Provide functionality to read, filter, and write data</span>
@@ -942,17 +951,16 @@ from a TXT file located in the <code>TxtInOut</code> folder.</p>
             <span class="n">_df</span> <span class="o">=</span> <span class="n">pandas</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">skiprows</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">nrows</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">skipinitialspace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">units_row</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">_clean</span><span class="p">(</span><span class="n">_df</span><span class="p">)</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
 
-        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">has_units</span><span class="p">:</span>  <span class="c1"># has_units and txt file</span>
-            <span class="c1"># Units row may have some empty values, so we cannot use read_csv.</span>
-            <span class="c1"># We&#39;ll use read_fwf; infer number of columns using first data row.</span>
-            <span class="n">_df</span> <span class="o">=</span> <span class="n">pandas</span><span class="o">.</span><span class="n">read_fwf</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">skiprows</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">nrows</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">units_row</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">_clean</span><span class="p">(</span><span class="n">_df</span><span class="p">)</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">has_units</span><span class="p">:</span>  <span class="c1"># TXT file with a units row</span>
+            <span class="c1"># The units row may contain empty values, making it unreliable to parse with read_csv.</span>
+            <span class="c1"># Instead, we use read_fwf to handle fixed-width formatting and infer column boundaries</span>
+            <span class="c1"># based on the first data row. The header row is used as a reference for alignment.</span>
+            <span class="c1"># In some cases, file formatting may be inconsistent (e.g., misaligned spacing between</span>
+            <span class="c1"># the header and units row). If such inconsistencies are detected, a warning will be</span>
+            <span class="c1"># issued when overwriting the file, though compatibility with SWAT+ is still preserved.</span>
+            <span class="n">_df</span> <span class="o">=</span> <span class="n">pandas</span><span class="o">.</span><span class="n">read_fwf</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">skiprows</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">nrows</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">units_row</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">_clean</span><span class="p">(</span><span class="n">_df</span><span class="p">)</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
 
-            <span class="c1"># If _df has only one row, the original file may have no data rows.</span>
-            <span class="c1"># Try reading using the header row as reference (but it may have issues sometimes)</span>
-            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">_df</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
-                <span class="n">_df</span> <span class="o">=</span> <span class="n">pandas</span><span class="o">.</span><span class="n">read_fwf</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">skiprows</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">nrows</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">units_row</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">_clean</span><span class="p">(</span><span class="n">_df</span><span class="p">)</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">units_row</span> <span class="o">=</span> <span class="kc">None</span>
 
@@ -976,6 +984,16 @@ from a TXT file located in the <code>TxtInOut</code> folder.</p>
 <span class="sd">        &#39;&#39;&#39;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_output_file</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Overwriting SWAT+ Output Files is not allowed&quot;</span><span class="p">)</span>
+
+        <span class="c1"># Check if units row matches the DataFrame&#39;s column count</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">has_units</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">units_row</span><span class="p">)</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">df</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span>
+                <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
+                    <span class="s2">&quot;Units row could not be parsed correctly. The file will still be written &quot;</span>
+                    <span class="s2">&quot;and remain compatible with SWAT+, but formatting may not be preserved &quot;</span>
+                    <span class="s2">&quot;due to a malformed units row.&quot;</span><span class="p">,</span>
+                    <span class="ne">UserWarning</span>
+                <span class="p">)</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">units_row</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">_df</span> <span class="o">=</span> <span class="n">pandas</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">pandas</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">units_row</span><span class="p">]),</span> <span class="bp">self</span><span class="o">.</span><span class="n">df</span><span class="p">],</span> <span class="n">ignore_index</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
@@ -1091,8 +1109,7 @@ from a TXT file located in the <code>TxtInOut</code> folder.</p>
 
             <details class="quote">
               <summary>Source code in <code>pySWATPlus/filereader.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">13</span>
-<span class="normal">14</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">14</span>
 <span class="normal">15</span>
 <span class="normal">16</span>
 <span class="normal">17</span>
@@ -1210,17 +1227,16 @@ from a TXT file located in the <code>TxtInOut</code> folder.</p>
         <span class="n">_df</span> <span class="o">=</span> <span class="n">pandas</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">skiprows</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">nrows</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">skipinitialspace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">units_row</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">_clean</span><span class="p">(</span><span class="n">_df</span><span class="p">)</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
 
-    <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">has_units</span><span class="p">:</span>  <span class="c1"># has_units and txt file</span>
-        <span class="c1"># Units row may have some empty values, so we cannot use read_csv.</span>
-        <span class="c1"># We&#39;ll use read_fwf; infer number of columns using first data row.</span>
-        <span class="n">_df</span> <span class="o">=</span> <span class="n">pandas</span><span class="o">.</span><span class="n">read_fwf</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">skiprows</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">nrows</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">units_row</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">_clean</span><span class="p">(</span><span class="n">_df</span><span class="p">)</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">has_units</span><span class="p">:</span>  <span class="c1"># TXT file with a units row</span>
+        <span class="c1"># The units row may contain empty values, making it unreliable to parse with read_csv.</span>
+        <span class="c1"># Instead, we use read_fwf to handle fixed-width formatting and infer column boundaries</span>
+        <span class="c1"># based on the first data row. The header row is used as a reference for alignment.</span>
+        <span class="c1"># In some cases, file formatting may be inconsistent (e.g., misaligned spacing between</span>
+        <span class="c1"># the header and units row). If such inconsistencies are detected, a warning will be</span>
+        <span class="c1"># issued when overwriting the file, though compatibility with SWAT+ is still preserved.</span>
+        <span class="n">_df</span> <span class="o">=</span> <span class="n">pandas</span><span class="o">.</span><span class="n">read_fwf</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">skiprows</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">nrows</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">units_row</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">_clean</span><span class="p">(</span><span class="n">_df</span><span class="p">)</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
 
-        <span class="c1"># If _df has only one row, the original file may have no data rows.</span>
-        <span class="c1"># Try reading using the header row as reference (but it may have issues sometimes)</span>
-        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">_df</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
-            <span class="n">_df</span> <span class="o">=</span> <span class="n">pandas</span><span class="o">.</span><span class="n">read_fwf</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">skiprows</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">nrows</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">units_row</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">_clean</span><span class="p">(</span><span class="n">_df</span><span class="p">)</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">units_row</span> <span class="o">=</span> <span class="kc">None</span>
 
@@ -1295,7 +1311,17 @@ If the file is a SWAT+ Output File, launch exception.</p>
 <span class="normal">120</span>
 <span class="normal">121</span>
 <span class="normal">122</span>
-<span class="normal">123</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">overwrite_file</span><span class="p">(</span>
+<span class="normal">123</span>
+<span class="normal">124</span>
+<span class="normal">125</span>
+<span class="normal">126</span>
+<span class="normal">127</span>
+<span class="normal">128</span>
+<span class="normal">129</span>
+<span class="normal">130</span>
+<span class="normal">131</span>
+<span class="normal">132</span>
+<span class="normal">133</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">overwrite_file</span><span class="p">(</span>
     <span class="bp">self</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
@@ -1306,6 +1332,16 @@ If the file is a SWAT+ Output File, launch exception.</p>
 <span class="sd">    &#39;&#39;&#39;</span>
     <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_output_file</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Overwriting SWAT+ Output Files is not allowed&quot;</span><span class="p">)</span>
+
+    <span class="c1"># Check if units row matches the DataFrame&#39;s column count</span>
+    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">has_units</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">units_row</span><span class="p">)</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">df</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span>
+            <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
+                <span class="s2">&quot;Units row could not be parsed correctly. The file will still be written &quot;</span>
+                <span class="s2">&quot;and remain compatible with SWAT+, but formatting may not be preserved &quot;</span>
+                <span class="s2">&quot;due to a malformed units row.&quot;</span><span class="p">,</span>
+                <span class="ne">UserWarning</span>
+            <span class="p">)</span>
 
     <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">units_row</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">_df</span> <span class="o">=</span> <span class="n">pandas</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">pandas</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">units_row</span><span class="p">]),</span> <span class="bp">self</span><span class="o">.</span><span class="n">df</span><span class="p">],</span> <span class="n">ignore_index</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
