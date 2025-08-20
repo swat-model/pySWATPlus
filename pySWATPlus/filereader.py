@@ -73,13 +73,6 @@ class FileReader:
         else:
             self.units_row = None
 
-        # Check if units row matches the DataFrame's column count
-        if self.has_units:
-            if len(self.units_row) != self.df.shape[1]:
-                raise ValueError(
-                    "Units row could not be parsed correctly. Check if your file is well-formed."
-                )
-
         self.path = path
 
     def overwrite_file(
