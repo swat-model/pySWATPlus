@@ -30,8 +30,7 @@
 
 ## 📦 About
 
-`pySWATPlus` is an open-source Python package developed and maintained by [ICRA](https://icra.cat/).
-It provides a programmatic interface to the [SWAT+](https://swat.tamu.edu/software/plus/) model, allowing users to run simulations, modify input files, and streamline custom experimentation through the model’s `TxtInOut` folder.
+`pySWATPlus` is an open-source Python package that provides a programmatic interface to the [SWAT+](https://swat.tamu.edu/software/plus/) model, allowing users to run simulations, modify input files, and streamline custom experimentation through the model’s `TxtInOut` folder.
 
 
 ## ✨ Key Features
@@ -105,3 +104,5 @@ If you use `pySWATPlus` in your research, please cite it using the following **c
   note         = {This DOI always points to the latest version of pySWATPlus.},
 }
 ```
+## 🙏 Acknowledgments
+We acknowledge the [University of Oulu](https://www.oulu.fi/en) and the [ICRA](https://icra.cat/) research center for their support and the collaborative environment that made this project possible.
