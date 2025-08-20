@@ -105,4 +105,4 @@ If you use `pySWATPlus` in your research, please cite it using the following **c
 }
 ```
 ## 🙏 Acknowledgments
-We acknowledge the [University of Oulu](https://www.oulu.fi/en) and the [ICRA](https://icra.cat/) research center for their support and the collaborative environment that made this project possible.
+We acknowledge the [University of Oulu](https://www.oulu.fi/en) and [ICRA](https://icra.cat/) research center for their support and the collaborative environment that made this project possible.

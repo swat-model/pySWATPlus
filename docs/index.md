@@ -4,8 +4,7 @@
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.14889319.svg)](https://doi.org/10.5281/zenodo.14889319)
 
 
-`pySWATPlus` is an open-source Python package developed and maintained by [ICRA](https://icra.cat/).
-It provides a programmatic interface to the [SWAT+](https://swat.tamu.edu/software/plus/) model, allowing users to run simulations, modify input files, and streamline custom experimentation through the model’s `TxtInOut` folder.
+`pySWATPlus` is an open-source Python package that provides a programmatic interface to the [SWAT+](https://swat.tamu.edu/software/plus/) model, allowing users to run simulations, modify input files, and streamline custom experimentation through the model’s `TxtInOut` folder.
 
 
 ## ✨ Key Features
@@ -75,9 +74,5 @@ If you use `pySWATPlus` in your research, please cite it using the following **c
 }
 ```
 
-
-To cite a specific version:
-
-- Visit the [Zenodo project page](https://doi.org/10.5281/zenodo.14889319).
-- Select the specific version you used (e.g., `v1.0.1`).
-- Copy the appropriate citation format (BibTeX, APA, etc.).
+## 🙏 Acknowledgments
+We acknowledge the [University of Oulu](https://www.oulu.fi/en) and [ICRA](https://icra.cat/en) research center for their support and the collaborative environment that made this project possible.
