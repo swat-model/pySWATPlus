@@ -93,12 +93,77 @@
 
 ## Version 0.2.16 (March 30, 2025)
 
-- Introduced `TxtinoutReader` and `FileReader` classes for reading, modifying, and writing files to interact with the SWAT+ model.
+- Updated `publish.yml` deploy-docs task to grant `contents: write` permission
 
-- Added `SWATProblem` and `SWATProblemMultimodel` classes for calibrating SWAT+ parameters.
 
-- Implemented GitHub Actions workflow for automated releases to PyPI and GitHub repositories.
+## Version 0.2.15 (March 30, 2025)
+
+- Simplified workflow by creating GitHub releases via `gh` CLI instead of the `release` action
+
+
+## Version 0.2.14 (March 30, 2025)
+
+- Docs: Published project documentation to GitHub Pages.
+
+
+## Version 0.2.13 (March 23, 2025)
+
+- Fixed bugs on `SWATProblemMultimodel` module
+
+
+## Version 0.2.12 (March 15, 2025)
+
+- Added new sections `README`
+
+
+## Version 0.2.11 (March 10, 2025)
+
+- Updated `publish.yml` workflow to grant `contents: write` permission (enables pushing to the repository).
+
+
+## Version 0.2.9 (March 9, 2025)
+
+- Updated MkDocs installation in workflow with additional plugins/extensions.
+
+
+## Version 0.2.8 (March 9, 2025)
+
+- Updated workflow to install documentation dependencies (`mkdocstrings`, `mkdocs-jupyter`).
+
+
+## Version 0.2.7 (March 9, 2025)
+
+- Removed automatic GitHub Release creation from `publish.yml`.
+
+
+## Version 0.2.6 (March 9, 2025)
+
+- Enabled dynamic versioning in `pyproject.toml` (`dynamic = ["version"]`).
+
+
+## Version 0.2.5 (March 9, 2025)
+
+- Fixed bug in `setuptools_scm` configuration
+
+
+## Version 0.2.4 (March 9, 2025)
+
+- Configured versioning with setuptools_scm (post-release, no local version).
+
+- Updated publish workflow to trigger only on version tags (v*).
+
+
+## Version 0.2.0 (March 9, 2025)
+
+- Added Zenodo badges to the `README` for improved code visibility.
 
 - Completed migration from the TestPyPI repository to the main PyPI repository.
 
+- Implemented GitHub Actions workflow for automated releases to PyPI and GitHub repositories.
 
+
+## Version 0.1.36 (March 15, 2024)
+
+- Migrated project to this repository.
+
+- Initial release under the new repository structure.
