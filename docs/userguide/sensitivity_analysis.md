@@ -29,10 +29,15 @@ Optionally specify the simulation time period, warm-up years, enable outputs via
 
 ```python
 # Set simulation timeline (optional)
-txtinout_reader.set_begin_and_end_year(begin=2010, end=2016)
+txtinout_reader.set_begin_and_end_year(
+    begin=2010,
+    end=2016
+)
 
 # Set warm-up year (optional)
-txtinout_reader.set_warmup_year(warmup=1)
+txtinout_reader.set_warmup_year(
+    warmup=1
+)
 
 # Enable output for channel_sd_day.txt (optional)
 txtinout_reader.enable_object_in_print_prt(
@@ -130,9 +135,9 @@ if __name__ == '__main__':
 ```
 
 
-## High-Level Sobol-Based Sensitivity Simulation Interface
+## Sobol-Based Simulation Interface
 
-This high-level interface automates the sensitivity simulation workflow. It includes:
+This high-level interface automates the sensitivity simulation workflow using Sobol samples. It includes:
 
 - Automatic generation of Sobol samples for the defined parameter space
 - Parallel computation to accelerate simulation runs
@@ -148,39 +153,79 @@ This interface is ideal for users seeking a scalable, low-configuration solution
 import pySWATPlus
 
 if __name__ == '__main__':
-    output = pySWATPlus.Scenario().simulation_by_sobol_sample(
-        var_names=[
-            'esco',
-            '|'.join(['bm_e', 'name == "agrl"'])
-        ],
-        var_bounds=[
-            [0, 1],
-            [30, 40]
-        ],
+    # Copy required file to a target direcotry to keep original `TxtInOut` folder unchanged
+    target_dir = r"C:\Users\Username\target_folder"
+    txtinout_reader.copy_required_files(
+        target_dir=target_dir
+    )
+    # Intialize `TxtinOutReader` class by target direcotry
+    target_reader = pySWATPlus.TxtinoutReader(
+        path=target_dir
+    )
+    # Disable daily frequency simulation file from generated in print.prt (optional)
+    target_reader.enable_object_in_print_prt(
+        obj=None,
+        daily=False,
+        monthly=True,
+        yearly=True,
+        avann=True
+    )
+    # Set begin and end year (optional)
+    target_reader.set_begin_and_end_year(
+        begin=2010,
+        end=2012
+    )
+    # Set warmup year (optional)
+    target_reader.set_warmup_year(
+        warmup=1
+    )
+    # Sensitivity variable names
+    var_names=[
+        'esco',
+        '|'.join(['bm_e', 'name == "agrl"'])
+    ]
+    # Sensitivity variable bounds
+    var_bounds = [
+        [0, 1],
+        [30, 40]
+    ]
+    # Sensitivity 'params' dictionary to run SWAT+ model
+    params={
+        'hydrology.hyd': {
+            'has_units': False,
+            'esco': {'value': 0}
+        },
+        'plants.plt': {
+            'has_units': False,
+            'bm_e': {'value': 0, 'filter_by': 'name == "agrl"'}
+        }
+    }
+    # Sensitivity simulation_data dictionary to extract data
+    simulation_data = {
+        'channel_sd_mon.txt': {
+            'has_units': True,
+            'start_date': '2011-06-01',
+            'end_date': '2012-06-01',
+            'apply_filter': {'gis_id': [561]},
+            'usecols': ['gis_id', 'flo_out']
+        },
+        'channel_sd_yr.txt': {
+            'has_units': True,
+            'apply_filter': {'name': ['cha561'], 'yr': [2012]},
+            'usecols': ['gis_id', 'flo_out']
+        }
+    }
+    # Sensitive simulation
+    output = pySWATPlus.SensitivityAnalyzer().simulation_by_sobol_sample(
+        var_names=var_names,
+        var_bounds=var_bounds,
         sample_number=1,
         simulation_folder=r"C:\Users\Username\simulation_folder",
-        txtinout_folder=r"C:\Users\Username\project\Scenarios\Default\TxtInOut",
-        params={
-            'hydrology.hyd': {
-                'has_units': False,
-                'esco': {'value': 0}
-            },
-            'plants.plt': {
-                'has_units': False,
-                'bm_e': {'value': 0, 'filter_by': 'name == "agrl"'}
-            }
-        },
-        data_file='channel_sd_yr.txt',
-        unit_row=True,
-        start_date='2012-01-01',
-        end_date='2015-12-31',
-        filter_rows={'name': ['cha561']},
-        retain_cols=['name', 'flo_out'],
+        txtinout_folder=target_dir,
+        params=params,
+        simulation_data=simulation_data,
         max_workers=4,
         clean_setup=False
     )
 ```
-
-
-> ⚠️ **Note:** Before using this high-level interface, configure the `TxtInOut` folder with the simulation time period, warm-up years, `print.prt` file settings, and any fixed parameter values not involved in sensitivity analysis.
 
