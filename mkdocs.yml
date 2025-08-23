@@ -33,16 +33,17 @@ markdown_extensions:
   - pymdownx.details
 
 nav:
-  - Home: index.md
+  - Home: introduction.md
 
   - User Guide:
     - SWAT+ Simulation: userguide/swatplus_simulation.md
     - Sensitivity Analysis: userguide/sensitivity_analysis.md
+    - Read Output: userguide/read_output.md
 
   - API Reference:
     - TxtinoutReader: api/txtinoutreader.md
     - FileReader: api/filereader.md
-    - Scenario: api/scenario.md
+    - SensitivityAnalyzer.py: api/sensitivityanalyzer.md
     - pySWATPlus.types: api/types.md
 
   - Contributing: CONTRIBUTING.md
