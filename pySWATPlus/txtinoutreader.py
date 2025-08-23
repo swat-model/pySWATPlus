@@ -37,7 +37,6 @@ class TxtinoutReader:
         Raises:
             TypeError: If the path is not a valid string or Path, or if the folder contains
                 zero or multiple `.exe` files.
-            FileNotFoundError: If the specified folder does not exist.
         '''
 
         # check if path is a string or a path
@@ -55,7 +54,9 @@ class TxtinoutReader:
 
         # raise error on .exe file
         if len(exe_list) != 1:
-            raise TypeError('Expected exactly one .exe file in the parent folder, but found none or multiple.')
+            raise TypeError(
+                'Expected exactly one .exe file in the parent folder, but found none or multiple.'
+            )
 
         # find parent directory
         self.root_folder = path
@@ -84,9 +85,8 @@ class TxtinoutReader:
             generated even when disabled.
 
         Args:
-            obj (Optional[str]): The name of the object to update (e.g., 'channel_sd', 'reservoir').
-                If None, all objects in the `print.prt` file are updated with the specified
-                time frequency settings.
+            obj (str or None): The name of the object to update (e.g., 'channel_sd', 'reservoir').
+                If `None`, all objects in the `print.prt` file are updated with the specified time frequency settings.
             daily (bool): If `True`, enable daily frequency output.
             monthly (bool): If `True`, enable monthly frequency output.
             yearly (bool): If `True`, enable yearly frequency output.
@@ -109,8 +109,15 @@ class TxtinoutReader:
 
         obj_list = [i for v in obj_dict.values() for i in v]
 
+        # Check 'obj' is either string or NoneType
+        if not (isinstance(obj, str) or obj is None):
+            raise TypeError(f'Input "obj" to be string type or None, got {type(obj).__name__}')
+
+        # Check 'obj' is valid
         if obj and obj not in obj_list and not allow_unavailable_object:
-            raise ValueError(f'This object is not available in standard SWAT+: {obj}. If you want to use it, please set allow_unavailable_object=True.')
+            raise ValueError(
+                f'Object "{obj}" not found in print.prt file. Use allow_unavailable_object=True to proceed.'
+            )
 
         # Time frequency dictionary
         time_dict = {
@@ -322,13 +329,19 @@ class TxtinoutReader:
 
         return FileReader(file_path, has_units)
 
-    def _copy_swat(
+    def copy_required_files(
         self,
         target_dir: str | pathlib.Path,
     ) -> pathlib.Path:
         '''
-        Copy the required contents from the input folder associated with this
-        `TxtinoutReader` instance to a target directory for SWAT+ simulation.
+        Copy the required file from the input folder associated with the
+        `TxtinoutReader` instance to the specified directory for SWAT+ simulation.
+
+        Args:
+            target_dir (str or Path): Path to the directory where the required files will be copied.
+
+        Returns:
+            The path to the target directory containing the copied files.
         '''
 
         dest_path = pathlib.Path(target_dir)
@@ -436,9 +449,7 @@ class TxtinoutReader:
         for filename, file_params in _params.items():
 
             has_units = file_params['has_units']
-
-            if not isinstance(has_units, bool):
-                raise TypeError(f"'has_units' for file '{filename}' must be a boolean.")
+            assert isinstance(has_units, bool)
 
             file = self.register_file(
                 filename,
@@ -554,7 +565,7 @@ class TxtinoutReader:
 
         # Create the directory if it does not exist and copy necessary files
         target_dir.mkdir(parents=True, exist_ok=True)
-        tmp_path = self._copy_swat(target_dir=target_dir)
+        tmp_path = self.copy_required_files(target_dir=target_dir)
 
         # Initialize new TxtinoutReader class
         reader = TxtinoutReader(tmp_path)
