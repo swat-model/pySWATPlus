@@ -15,7 +15,7 @@ from .txtinoutreader import TxtinoutReader
 from . import utils
 
 
-class Scenario:
+class SensitivityAnalyzer:
 
     '''
     Provides functionality for running scenario simulations and analyzing simulated data.
@@ -24,11 +24,13 @@ class Scenario:
     def simulated_timeseries_df(
         self,
         data_file: str,
-        unit_row: bool = True,
+        has_units: bool,
         start_date: typing.Optional[str] = None,
         end_date: typing.Optional[str] = None,
-        filter_rows: dict[str, list[typing.Any]] = {},
-        retain_cols: typing.Optional[list[str]] = None
+        apply_filter: typing.Optional[dict[str, list[typing.Any]]] = None,
+        usecols: typing.Optional[list[str]] = None,
+        save_df: bool = False,
+        json_file: typing.Optional[str] = None
     ) -> pandas.DataFrame:
         '''
         Extracts data from an input file produced by a simulation and generates
@@ -37,16 +39,18 @@ class Scenario:
 
         Parameters:
             data_file (str): Path to the target file used to generate the time series `DataFrame`.
-            unit_row (bool): If `True`, the third line of the input file contains units for the columns.
-            start_date (str): Start date in `'yyyy-mm-dd'` format. By default,
+            has_units (bool): If `True`, the third line of the input file contains units for the columns.
+            start_date (str): Start date in `'yyyy-mm-dd'` format. If `None` (default),
                 the earliest date available in the file is used.
-            end_date (str): End date in `'yyyy-mm-dd'` format. By default,
+            end_date (str): End date in `'yyyy-mm-dd'` format. If `None` (default),
                 the latest date available in the file is used.
-            filter_rows (dict[str, list[typing.Any]]): Dictionary where each key is a column name, and the
-                corresponding value is a list of values used to filter the DataFrame. By default,
-                no row filtering is applied.
-            retain_cols (list[str]): List of column names to retain in the output `DataFrame`. By default,
-                all columns from the input file are retained.
+            apply_filter (dict[str, list[typing.Any]]): Dictionary where each key is a column name, and the
+                corresponding value is a list of values used to filter rows in the DataFrame. If `None` (default),
+                no filtering is applied.
+            usecols (list[str]): List of column names to use in the output `DataFrame`. If `None` (default),
+                all columns from the input file are used.
+            save_df (bool): If True, saves the `DataFrame` to a JSON file. Default is False.
+            json_file (str): Path to save the `DataFrame` when `save_df=True`. Default is `None`.
 
         Returns:
             A time series DataFrame with a new column (`date_col`) containing
@@ -56,7 +60,7 @@ class Scenario:
         # DataFrame from input file
         file_reader = FileReader(
             path=data_file,
-            has_units=unit_row,
+            has_units=has_units
         )
 
         # check that dates are in correct format
@@ -65,21 +69,20 @@ class Scenario:
         if end_date is not None:
             utils._validate_date_str(end_date)
 
+        # DataFrame
         df = file_reader.df
+        df_cols = list(df.columns)
 
         # Create date column
         date_col = 'date'
-        df_cols = list(df.columns)
-
         time_cols = ['yr', 'mon', 'day']
         missing_cols = [col for col in time_cols if col not in df_cols]
         if len(missing_cols) > 0:
             raise ValueError(
                 f'Missing required time series columns "{missing_cols}" in file "{os.path.basename(data_file)}"'
             )
-
         df[date_col] = pandas.to_datetime(
-            df[['yr', 'mon', 'day']].rename(columns={'yr': 'year', 'mon': 'month', 'day': 'day'})
+            df[time_cols].rename(columns={'yr': 'year', 'mon': 'month'})
         ).dt.date
 
         # filter DataFrame by date
@@ -90,24 +93,60 @@ class Scenario:
         # Check if filtering by date removed all rows
         if df.empty:
             raise ValueError(
-                f'No data available between {start_do} and {end_do} in file "{os.path.basename(data_file)}"'
+                f'No data available between "{start_date}" and "{end_date}" in file "{os.path.basename(data_file)}"'
             )
 
-        # filter by row values
-        for col, val in filter_rows.items():
-            if col not in df_cols:
-                raise ValueError(f'Column name "{col}" to filter rows is not valid')
-            if not isinstance(val, list):
-                raise ValueError(f'Filter values for column "{col}" must be provided as a list')
-            df = df.loc[df[col].isin(val)].reset_index(drop=True)
+        # Filter rows by dictionary criteria
+        if apply_filter is not None:
+            for col, val in apply_filter.items():
+                if col not in df_cols:
+                    raise ValueError(
+                        f'Column "{col}" in apply_filter is not present in file "{os.path.basename(data_file)}"'
+                    )
+                if not isinstance(val, list):
+                    raise ValueError(
+                        f'Filter values for column "{col}" must be a list in file "{os.path.basename(data_file)}"'
+                    )
+                df = df.loc[df[col].isin(val)]
+                # Check if filtering removed all rows
+                if df.empty:
+                    raise ValueError(
+                        f'Filtering by column "{col}" with values "{val}" removed all rows from file "{os.path.basename(data_file)}"'
+                    )
 
-        # DataFrame with selected columns
-        if retain_cols is None:
-            final_cols = [date_col] + [col for col in df.columns if col != date_col]
+        # Reset DataFrame index
+        df.reset_index(
+            drop=True,
+            inplace=True
+        )
+
+        # Finalize columns for DataFrame
+        if usecols is None:
+            retain_cols = [date_col] + df_cols
         else:
-            final_cols = [date_col] + retain_cols
+            if not isinstance(usecols, list):
+                raise TypeError(f'"usecols" must be a list, got {type(usecols).__name__}')
+            for col in usecols:
+                if col not in df_cols:
+                    raise ValueError(
+                        f'Column "{col}" in usecols list is not present in file "{os.path.basename(data_file)}"'
+                    )
+            retain_cols = [date_col] + usecols
 
-        df = df[final_cols]
+        # Output DataFrame
+        df = df[retain_cols]
+
+        # Write output
+        if save_df:
+            if json_file is None:
+                raise ValueError('json_file must be a valid JSON file string path when save_df=True')
+            df['date'] = df['date'].astype(str)
+            df.to_json(
+                path_or_buf=json_file,
+                orient="records",
+                lines=True
+            )
+
         return df
 
     def _simulation_in_cpu(
@@ -119,12 +158,7 @@ class Scenario:
         simulation_folder: str,
         txtinout_folder: str,
         params: ParamsType,
-        data_file: str,
-        unit_row: bool,
-        start_date: str | None,
-        end_date: str | None,
-        filter_rows: dict[str, list[typing.Any]],
-        retain_cols: list[str] | None,
+        simulation_data: dict[str, dict[str, typing.Any]],
         clean_setup: bool
     ) -> dict[str, typing.Any]:
         '''
@@ -164,6 +198,12 @@ class Scenario:
             name=dir_path
         )
 
+        # Output simulation dictionary
+        simulation_output = {
+            'dir': dir_name,
+            'array': var_array
+        }
+
         # Initialize TxtinoutReader class
         txtinout_reader = TxtinoutReader(
             path=txtinout_folder
@@ -176,27 +216,22 @@ class Scenario:
         )
 
         # Extract simulated data
-        df = self.simulated_timeseries_df(
-            data_file=os.path.join(dir_path, data_file),
-            unit_row=unit_row,
-            start_date=start_date,
-            end_date=end_date,
-            filter_rows=filter_rows,
-            retain_cols=retain_cols
-        )
-
-        # output
-        output = {
-            'dir': dir_name,
-            'array': var_array,
-            'df': df
-        }
+        for sim_fname, sim_fdict in simulation_data.items():
+            df = self.simulated_timeseries_df(
+                data_file=os.path.join(dir_path, sim_fname),
+                has_units=sim_fdict['has_units'],
+                start_date=sim_fdict.get('start_date'),
+                end_date=sim_fdict.get('end_date'),
+                apply_filter=sim_fdict.get('apply_filter'),
+                usecols=sim_fdict.get('usecols')
+            )
+            simulation_output[f'{os.path.splitext(sim_fname)[0]}_df'] = df
 
         # Remove simulation directory
         if clean_setup:
             shutil.rmtree(dir_path, ignore_errors=True)
 
-        return output
+        return simulation_output
 
     def simulation_by_sobol_sample(
         self,
@@ -206,12 +241,7 @@ class Scenario:
         simulation_folder: str,
         txtinout_folder: str,
         params: ParamsType,
-        data_file: str,
-        unit_row: bool = True,
-        start_date: typing.Optional[str] = None,
-        end_date: typing.Optional[str] = None,
-        filter_rows: dict[str, list[typing.Any]] = {},
-        retain_cols: typing.Optional[list[str]] = None,
+        simulation_data: dict[str, dict[str, typing.Any]],
         max_workers: typing.Optional[int] = None,
         save_output: bool = True,
         clean_setup: bool = True
@@ -251,7 +281,7 @@ class Scenario:
                 ```python
                 var_bounds = [
                     [0, 1],  # bounds for 'esco'
-                    [30, 40]  # bounds 'bm_e | name == "agrl"'
+                    [30, 40]  # bounds for 'bm_e|name == "agrl"'
                 ]
                 ```
 
@@ -266,7 +296,7 @@ class Scenario:
             txtinout_folder (str): Path to the `TxtInOut` folder. Raises an error if the folder does not contain exactly one SWAT+ executable `.exe` file.
 
             params (ParamsType):  Nested dictionary defining the parameter modifications to apply during the simulations.
-                Each parameter should include a default value (typically `0` or another `float`) to maintain a valid structure.
+                Each parameter should include a default `value` 0 to maintain a valid structure.
                 Before each simulation, a deep copy (`copy.deepcopy(params)`) is made to ensure the original dictionary remains unchanged.
                 The parameter value is dynamically replaced with the corresponding sampled value during execution.
                 ```python
@@ -281,19 +311,35 @@ class Scenario:
                     }
                 }
                 ```
-            data_file (str): Path to the target file used to generate the time series `DataFrame`.
 
-            unit_row (bool): If `True`, the third line of the input file contains units for the columns.
+            simulation_data (dict[str, dict[str, typing.Any]]):  Nested dictionary that specifies how to extract data
+                from SWAT+ simulation-generated files. The keys are filenames (without paths) of the output files.
+                Each key must map to a non-empty dictionary with the following subkeys:
 
-            start_date (str): Start date in `'yyyy-mm-dd'` format. By default, the earliest date available in the file is used.
+                - `has_units (bool)`: Mandatory subkey. If `True`, the third line of the simulated file contains units for the columns.
+                - `start_date (str)`: Optional subkey in `YYYY-MM-DD` format. Defaults to the earliest date in the simulated file.
+                - `end_date (str)`: Optional subkey in `YYYY-MM-DD` format. Defaults to the latest date in the simulated file.
+                - `apply_filter (dict[str, list[typing.Any]])`: Optional subkey. Each key is a column name and the corresponding value
+                  is a list of allowed values for filtering rows in the DataFrame. By default, no filtering is applied.
+                  An error is raised if filtering produces an empty DataFrame.
+                - `usecols (list[str])`: Optional subkey. List of columns to extract from the simulated file. By default, all available columns are used.
 
-            end_date (str): End date in `'yyyy-mm-dd'` format. By default, the latest date available in the file is used.
-
-            filter_rows (dict[str, list[typing.Any]]): Dictionary where each key is a column name, and the
-                corresponding value is a list of values used to filter the DataFrame. By default, no row filtering is applied.
-
-            retain_cols (list[str]): List of column names to retain in the output `DataFrame`. By default,
-                all columns from the input file are retained.
+                ```python
+                simulation_data = {
+                    'channel_sd_mon.txt': {
+                        'has_units': True,
+                        'start_date': '2014-06-01',
+                        'end_date': '2016-10-01',
+                        'apply_filter': {'gis_id': [561], 'yr': [2015, 2016]},
+                        'usecols': ['gis_id', 'flo_out']
+                    },
+                    'channel_sd_yr.txt': {
+                        'has_units': True,
+                        'apply_filter': {'name': ['cha561'], 'yr': [2015, 2016]},
+                        'usecols': ['gis_id', 'flo_out']
+                    }
+                }
+                ```
 
             max_workers (int): Number of logical CPUs to use for parallel processing.
                 By default, all available logical CPUs are used.
@@ -320,13 +366,15 @@ class Scenario:
 
                 - `sample`: The sampled array of parameter sets used in the simulations.
 
-                - `simulation`: A dictionary mapping simulation indices (integers starting from 1 to `sample_length`) to output sub-dictionaries with the following keys:
+                - `simulation`: Dictionary mapping simulation indices (integers from 1 to `sample_length`) to output sub-dictionaries with the following keys:
 
-                    - `var`: A dictionary mapping each variable name (from `var_names`) to the actual value used in the simulation.
-                    - `dir`: Name of the directory (e.g., `sim_<i>`) where the simulation was performed. Useful when `clean_setup` is `False`,
-                      allowing users to verify whether the sample values were correctly applied in the target files.
-                      Note: The simulation index and directory name (e.g., `sim_<i>`) may not match one-to-one due to deduplication and asynchronous execution.
-                    - `df`: The filtered `DataFrame` obtained from the `data_file`, including a `date` column.
+                    - `var`: Dictionary mapping each variable name (from `var_names`) to the actual value used in that simulation.
+                    - `dir`: Name of the directory (e.g., `sim_<i>`) where the simulation was executed. This is useful when `clean_setup` is `False`, as it allows users
+                      to verify whether the sampled values were correctly applied to the target files. The simulation index and directory name (e.g., `sim_<i>`)
+                      may not always match one-to-one due to deduplication or asynchronous execution.
+                    - `<simulation_data_filename>_df`: Filtered `DataFrame` generated for each file specified in the `simulation_data` dictionary
+                      (e.g., `channel_sd_mon_df`, `channel_sd_yr_df`). Each DataFrame includes a `date` column with `datetime.date` objects.
+
 
         Note:
             - The `problem` dictionary and `sample` array are used later to calculate Sobol indices
@@ -355,6 +403,34 @@ class Scenario:
             raise NotADirectoryError('Provided simulation_folder is not a valid directory path')
         if len(os.listdir(simulation_folder)) > 0:
             raise ValueError('Provided simulation_folder must be an empty directory')
+
+        # check simulation data dictionary
+        if not isinstance(simulation_data, dict):
+            raise TypeError(
+                f'simulation_data must be a dictionary type, got {type(simulation_data).__name__}'
+            )
+        sim_validkeys = [
+            'start_date',
+            'end_date',
+            'apply_filter',
+            'usecols'
+        ]
+        for sim_fname, sim_fdict in simulation_data.items():
+            if not isinstance(sim_fdict, dict):
+                raise TypeError(
+                    f'Value for key "{sim_fname}" in simulation_data must be a dictinary type, got {type(sim_fdict).__name__}'
+                )
+            if 'has_units' not in sim_fdict:
+                raise KeyError(
+                    f'key has_units is missing for "{sim_fname}" in simulation_data'
+                )
+            for sim_fkey in sim_fdict:
+                if sim_fkey == 'has_units':
+                    continue
+                if sim_fkey not in sim_validkeys:
+                    raise ValueError(
+                        f'Invalid key "{sim_fkey}" for "{sim_fname}" in simulation_data. Expected one of: {sim_validkeys}'
+                    )
 
         # Check same length for number of variables and their bounds
         if len(var_names) != len(var_bounds):
@@ -400,10 +476,7 @@ class Scenario:
         for key, value in params.items():
             file_path = os.path.join(txtinout_folder, key)
             has_units = value['has_units']
-
-            if not isinstance(has_units, bool):
-                raise TypeError(f"'has_units' for file '{file_path}' must be a boolean.")
-
+            assert isinstance(has_units, bool)
             file_reader = FileReader(
                 path=file_path,
                 has_units=has_units
@@ -448,12 +521,7 @@ class Scenario:
             simulation_folder=simulation_folder,
             txtinout_folder=txtinout_folder,
             params=params,
-            data_file=data_file,
-            unit_row=unit_row,
-            start_date=start_date,
-            end_date=end_date,
-            filter_rows=filter_rows,
-            retain_cols=retain_cols,
+            simulation_data=simulation_data,
             clean_setup=clean_setup
         )
 
@@ -470,21 +538,21 @@ class Scenario:
                 # collect simulation results
                 idx_r = future.result()
                 cpu_dict[tuple(idx_r['array'])] = {
-                    'dir': idx_r['dir'],
-                    'df': idx_r['df']
+                    k: v for k, v in idx_r.items() if k != 'array'
                 }
 
         # Generate sensitivity simulation output for all sample_array from unique_array outputs
         sim_dict = {}
         for idx, arr in enumerate(sample_array, start=1):
-            idx_dict = cpu_dict[tuple(arr)]
-            sim_dict[idx] = {
-                'var': {
-                    k: float(v) for k, v in zip(var_names, arr)
-                },
-                'dir': idx_dict['dir'],
-                'df': idx_dict['df']
+            arr_dict = {
+                k: float(v) for k, v in zip(var_names, arr)
             }
+            sim_dict[idx] = {
+                'var': arr_dict
+            }
+            idx_dict = cpu_dict[tuple(arr)]
+            for k, v in idx_dict.items():
+                sim_dict[idx][k] = v
 
         # Time statistics
         required_time = time.time() - start_time
@@ -514,7 +582,7 @@ class Scenario:
                 if key == 'simulation':
                     for sub_key, sub_value in value.items():
                         for k, v in sub_value.items():
-                            if k == 'df':
+                            if k.endswith('_df'):
                                 v['date'] = v['date'].astype(str)
                                 write_dict[key][sub_key][k] = v.to_json()
             # Path to the JOSN file
@@ -522,12 +590,5 @@ class Scenario:
             # Write to the JSON file
             with open(json_file, 'w') as output_write:
                 json.dump(write_dict, output_write, indent=4)
-
-        # Remove simulation folders
-        if clean_setup:
-            for k, v in cpu_dict.items():
-                v_folder = os.path.join(simulation_folder, v['dir'])
-                if os.path.exists(v_folder):
-                    shutil.rmtree(v_folder, ignore_errors=True)
 
         return output_dict

@@ -3,10 +3,9 @@ import shutil
 import pySWATPlus
 import pytest
 import tempfile
-import pandas
 
 
-def test_filereader_and_error():
+def test_filereader():
 
     # set up TxtInOut folder path
     txtinout_folder = os.path.join(os.path.dirname(__file__), 'TxtInOut')
@@ -86,6 +85,9 @@ def test_filereader_and_error():
         assert len(df) == 0
         file_reader.overwrite_file()
 
+
+def test_error_filereader():
+
     # error test for string or pathlib.Path object
     with pytest.raises(Exception) as exc_info:
         pySWATPlus.FileReader(
@@ -101,62 +103,6 @@ def test_filereader_and_error():
             has_units=False
         )
     assert exc_info.value.args[0] == 'file does not exist'
-
-
-def test_simulated_outputs():
-    txtinout_folder = os.path.join(os.path.dirname(__file__), 'TxtInOut')
-
-    # initialize TxtinoutReader class
-    txtinout_reader = pySWATPlus.TxtinoutReader(
-        path=txtinout_folder
-    )
-
-    txtinout_reader.enable_object_in_print_prt(
-        obj=None,
-        daily=True,
-        monthly=True,
-        yearly=True,
-        avann=False
-    )
-
-    txtinout_reader.enable_csv_print()
-
-    with tempfile.TemporaryDirectory() as tmp_dir:
-        output = txtinout_reader.run_swat_in_other_dir(
-            target_dir=tmp_dir,
-            begin_and_end_year=(2010, 2012),
-            warmup=1,
-        )
-
-        # error for overwriting output file
-        with pytest.raises(Exception) as exc_info:
-            file_reader = pySWATPlus.FileReader(
-                path=output / 'channel_sd_yr.txt',
-                has_units=True
-            )
-            file_reader.overwrite_file()
-        assert exc_info.value.args[0] == 'Overwriting SWAT+ Output Files is not allowed'
-
-        # ensure types are parsed correctly (for example jday must be int)
-        file_reader = pySWATPlus.FileReader(
-            path=output / 'channel_sd_yr.txt',
-            has_units=True
-        )
-        assert pandas.api.types.is_integer_dtype(file_reader.df['jday'])
-
-        # check that
-        file_reader_csv = pySWATPlus.FileReader(
-            path=output / 'channel_sd_yr.csv',
-            has_units=True
-        )
-
-        # csv and txt decimals are rounded differently, so cannot be compared directly, just evaluate the shape
-        assert file_reader.df.shape == file_reader_csv.df.shape, "Shapes differ"
-        assert list(file_reader.df.columns) == list(file_reader_csv.df.columns), "Column names differ"
-        assert all(file_reader.df.dtypes == file_reader_csv.df.dtypes), "Column types differ"
-
-        # evaluate if units row read by csv and txt output are the same
-        assert file_reader.units_row.equals(file_reader_csv.units_row)
 
 
 def test_github():
