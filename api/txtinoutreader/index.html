@@ -9,7 +9,7 @@
       
       
       
-        <link rel="prev" href="../../userguide/sensitivity_analysis/">
+        <link rel="prev" href="../../userguide/read_output/">
       
       
         <link rel="next" href="../filereader/">
@@ -167,7 +167,7 @@
   
   
     <li class="md-tabs__item">
-      <a href="../.." class="md-tabs__link">
+      <a href="../../introduction/" class="md-tabs__link">
         
   
   
@@ -300,7 +300,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../.." class="md-nav__link">
+      <a href="../../introduction/" class="md-nav__link">
         
   
   
@@ -392,6 +392,29 @@
   
   <span class="md-ellipsis">
     Sensitivity Analysis
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../userguide/read_output/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Read Output
     
   </span>
   
@@ -527,6 +550,15 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#pySWATPlus.TxtinoutReader.copy_required_files" class="md-nav__link">
+    <span class="md-ellipsis">
+      copy_required_files
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#pySWATPlus.TxtinoutReader.disable_csv_print" class="md-nav__link">
     <span class="md-ellipsis">
       disable_csv_print
@@ -642,12 +674,12 @@
   
   
     <li class="md-nav__item">
-      <a href="../scenario/" class="md-nav__link">
+      <a href="../sensitivityanalyzer/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
-    Scenario
+    SensitivityAnalyzer.py
     
   </span>
   
@@ -770,6 +802,15 @@
   <a href="#pySWATPlus.TxtinoutReader.__init__" class="md-nav__link">
     <span class="md-ellipsis">
       __init__
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pySWATPlus.TxtinoutReader.copy_required_files" class="md-nav__link">
+    <span class="md-ellipsis">
+      copy_required_files
     </span>
   </a>
   
@@ -1495,7 +1536,18 @@ SWAT+ model files located in the <code>TxtInOut</code> folder.</p>
 <span class="normal">610</span>
 <span class="normal">611</span>
 <span class="normal">612</span>
-<span class="normal">613</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">TxtinoutReader</span><span class="p">:</span>
+<span class="normal">613</span>
+<span class="normal">614</span>
+<span class="normal">615</span>
+<span class="normal">616</span>
+<span class="normal">617</span>
+<span class="normal">618</span>
+<span class="normal">619</span>
+<span class="normal">620</span>
+<span class="normal">621</span>
+<span class="normal">622</span>
+<span class="normal">623</span>
+<span class="normal">624</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">TxtinoutReader</span><span class="p">:</span>
 
 <span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    Provide functionality for seamless reading, editing, and writing of</span>
@@ -1522,7 +1574,6 @@ SWAT+ model files located in the <code>TxtInOut</code> folder.</p>
 <span class="sd">        Raises:</span>
 <span class="sd">            TypeError: If the path is not a valid string or Path, or if the folder contains</span>
 <span class="sd">                zero or multiple `.exe` files.</span>
-<span class="sd">            FileNotFoundError: If the specified folder does not exist.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
 
         <span class="c1"># check if path is a string or a path</span>
@@ -1540,7 +1591,9 @@ SWAT+ model files located in the <code>TxtInOut</code> folder.</p>
 
         <span class="c1"># raise error on .exe file</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">exe_list</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s1">&#39;Expected exactly one .exe file in the parent folder, but found none or multiple.&#39;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span>
+                <span class="s1">&#39;Expected exactly one .exe file in the parent folder, but found none or multiple.&#39;</span>
+            <span class="p">)</span>
 
         <span class="c1"># find parent directory</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">root_folder</span> <span class="o">=</span> <span class="n">path</span>
@@ -1569,9 +1622,8 @@ SWAT+ model files located in the <code>TxtInOut</code> folder.</p>
 <span class="sd">            generated even when disabled.</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            obj (Optional[str]): The name of the object to update (e.g., &#39;channel_sd&#39;, &#39;reservoir&#39;).</span>
-<span class="sd">                If None, all objects in the `print.prt` file are updated with the specified</span>
-<span class="sd">                time frequency settings.</span>
+<span class="sd">            obj (str or None): The name of the object to update (e.g., &#39;channel_sd&#39;, &#39;reservoir&#39;).</span>
+<span class="sd">                If `None`, all objects in the `print.prt` file are updated with the specified time frequency settings.</span>
 <span class="sd">            daily (bool): If `True`, enable daily frequency output.</span>
 <span class="sd">            monthly (bool): If `True`, enable monthly frequency output.</span>
 <span class="sd">            yearly (bool): If `True`, enable yearly frequency output.</span>
@@ -1594,8 +1646,15 @@ SWAT+ model files located in the <code>TxtInOut</code> folder.</p>
 
         <span class="n">obj_list</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">obj_dict</span><span class="o">.</span><span class="n">values</span><span class="p">()</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">v</span><span class="p">]</span>
 
+        <span class="c1"># Check &#39;obj&#39; is either string or NoneType</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="ow">or</span> <span class="n">obj</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Input &quot;obj&quot; to be string type or None, got </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+
+        <span class="c1"># Check &#39;obj&#39; is valid</span>
         <span class="k">if</span> <span class="n">obj</span> <span class="ow">and</span> <span class="n">obj</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">obj_list</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">allow_unavailable_object</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;This object is not available in standard SWAT+: </span><span class="si">{</span><span class="n">obj</span><span class="si">}</span><span class="s1">. If you want to use it, please set allow_unavailable_object=True.&#39;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s1">&#39;Object &quot;</span><span class="si">{</span><span class="n">obj</span><span class="si">}</span><span class="s1">&quot; not found in print.prt file. Use allow_unavailable_object=True to proceed.&#39;</span>
+            <span class="p">)</span>
 
         <span class="c1"># Time frequency dictionary</span>
         <span class="n">time_dict</span> <span class="o">=</span> <span class="p">{</span>
@@ -1807,13 +1866,19 @@ SWAT+ model files located in the <code>TxtInOut</code> folder.</p>
 
         <span class="k">return</span> <span class="n">FileReader</span><span class="p">(</span><span class="n">file_path</span><span class="p">,</span> <span class="n">has_units</span><span class="p">)</span>
 
-    <span class="k">def</span><span class="w"> </span><span class="nf">_copy_swat</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">copy_required_files</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">target_dir</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">        Copy the required contents from the input folder associated with this</span>
-<span class="sd">        `TxtinoutReader` instance to a target directory for SWAT+ simulation.</span>
+<span class="sd">        Copy the required file from the input folder associated with the</span>
+<span class="sd">        `TxtinoutReader` instance to the specified directory for SWAT+ simulation.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            target_dir (str or Path): Path to the directory where the required files will be copied.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            The path to the target directory containing the copied files.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
 
         <span class="n">dest_path</span> <span class="o">=</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="n">target_dir</span><span class="p">)</span>
@@ -1921,9 +1986,7 @@ SWAT+ model files located in the <code>TxtInOut</code> folder.</p>
         <span class="k">for</span> <span class="n">filename</span><span class="p">,</span> <span class="n">file_params</span> <span class="ow">in</span> <span class="n">_params</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
 
             <span class="n">has_units</span> <span class="o">=</span> <span class="n">file_params</span><span class="p">[</span><span class="s1">&#39;has_units&#39;</span><span class="p">]</span>
-
-            <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">has_units</span><span class="p">,</span> <span class="nb">bool</span><span class="p">):</span>
-                <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;&#39;has_units&#39; for file &#39;</span><span class="si">{</span><span class="n">filename</span><span class="si">}</span><span class="s2">&#39; must be a boolean.&quot;</span><span class="p">)</span>
+            <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">has_units</span><span class="p">,</span> <span class="nb">bool</span><span class="p">)</span>
 
             <span class="n">file</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">register_file</span><span class="p">(</span>
                 <span class="n">filename</span><span class="p">,</span>
@@ -2039,7 +2102,7 @@ SWAT+ model files located in the <code>TxtInOut</code> folder.</p>
 
         <span class="c1"># Create the directory if it does not exist and copy necessary files</span>
         <span class="n">target_dir</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">parents</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-        <span class="n">tmp_path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_copy_swat</span><span class="p">(</span><span class="n">target_dir</span><span class="o">=</span><span class="n">target_dir</span><span class="p">)</span>
+        <span class="n">tmp_path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">copy_required_files</span><span class="p">(</span><span class="n">target_dir</span><span class="o">=</span><span class="n">target_dir</span><span class="p">)</span>
 
         <span class="c1"># Initialize new TxtinoutReader class</span>
         <span class="n">reader</span> <span class="o">=</span> <span class="n">TxtinoutReader</span><span class="p">(</span><span class="n">tmp_path</span><span class="p">)</span>
@@ -2177,16 +2240,6 @@ zero or multiple <code>.exe</code> files.</p>
               </div>
             </td>
           </tr>
-          <tr class="doc-section-item">
-            <td>
-                  <code><span title="FileNotFoundError">FileNotFoundError</span></code>
-            </td>
-            <td>
-              <div class="doc-md-description">
-                <p>If the specified folder does not exist.</p>
-              </div>
-            </td>
-          </tr>
       </tbody>
     </table>
 
@@ -2229,7 +2282,8 @@ zero or multiple <code>.exe</code> files.</p>
 <span class="normal">59</span>
 <span class="normal">60</span>
 <span class="normal">61</span>
-<span class="normal">62</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
+<span class="normal">62</span>
+<span class="normal">63</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">path</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
@@ -2243,7 +2297,6 @@ zero or multiple <code>.exe</code> files.</p>
 <span class="sd">    Raises:</span>
 <span class="sd">        TypeError: If the path is not a valid string or Path, or if the folder contains</span>
 <span class="sd">            zero or multiple `.exe` files.</span>
-<span class="sd">        FileNotFoundError: If the specified folder does not exist.</span>
 <span class="sd">    &#39;&#39;&#39;</span>
 
     <span class="c1"># check if path is a string or a path</span>
@@ -2261,11 +2314,137 @@ zero or multiple <code>.exe</code> files.</p>
 
     <span class="c1"># raise error on .exe file</span>
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">exe_list</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s1">&#39;Expected exactly one .exe file in the parent folder, but found none or multiple.&#39;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span>
+            <span class="s1">&#39;Expected exactly one .exe file in the parent folder, but found none or multiple.&#39;</span>
+        <span class="p">)</span>
 
     <span class="c1"># find parent directory</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">root_folder</span> <span class="o">=</span> <span class="n">path</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">swat_exe_path</span> <span class="o">=</span> <span class="n">path</span> <span class="o">/</span> <span class="n">exe_list</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+</code></pre></div></td></tr></table></div>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="pySWATPlus.TxtinoutReader.copy_required_files" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">copy_required_files</span><span class="p">(</span><span class="n">target_dir</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span></code>
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Copy the required file from the input folder associated with the
+<code>TxtinoutReader</code> instance to the specified directory for SWAT+ simulation.</p>
+
+
+<p><span class="doc-section-title">Parameters:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+          <th>Default</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                <code>target_dir</code>
+            </td>
+            <td>
+                  <code><span title="str">str</span> or <span title="Path">Path</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Path to the directory where the required files will be copied.</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+    <p><span class="doc-section-title">Returns:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                  <code><span title="pathlib.Path">Path</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The path to the target directory containing the copied files.</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+            <details class="quote">
+              <summary>Source code in <code>pySWATPlus/txtinoutreader.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">332</span>
+<span class="normal">333</span>
+<span class="normal">334</span>
+<span class="normal">335</span>
+<span class="normal">336</span>
+<span class="normal">337</span>
+<span class="normal">338</span>
+<span class="normal">339</span>
+<span class="normal">340</span>
+<span class="normal">341</span>
+<span class="normal">342</span>
+<span class="normal">343</span>
+<span class="normal">344</span>
+<span class="normal">345</span>
+<span class="normal">346</span>
+<span class="normal">347</span>
+<span class="normal">348</span>
+<span class="normal">349</span>
+<span class="normal">350</span>
+<span class="normal">351</span>
+<span class="normal">352</span>
+<span class="normal">353</span>
+<span class="normal">354</span>
+<span class="normal">355</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">copy_required_files</span><span class="p">(</span>
+    <span class="bp">self</span><span class="p">,</span>
+    <span class="n">target_dir</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Copy the required file from the input folder associated with the</span>
+<span class="sd">    `TxtinoutReader` instance to the specified directory for SWAT+ simulation.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        target_dir (str or Path): Path to the directory where the required files will be copied.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        The path to the target directory containing the copied files.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+
+    <span class="n">dest_path</span> <span class="o">=</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="n">target_dir</span><span class="p">)</span>
+
+    <span class="c1"># Copy files from source folder</span>
+    <span class="k">for</span> <span class="n">file</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">root_folder</span><span class="o">.</span><span class="n">iterdir</span><span class="p">():</span>
+        <span class="k">if</span> <span class="n">file</span><span class="o">.</span><span class="n">is_dir</span><span class="p">()</span> <span class="ow">or</span> <span class="n">file</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">IGNORED_FILE_PATTERNS</span><span class="p">):</span>
+            <span class="k">continue</span>
+        <span class="n">shutil</span><span class="o">.</span><span class="n">copy2</span><span class="p">(</span><span class="n">file</span><span class="p">,</span> <span class="n">dest_path</span> <span class="o">/</span> <span class="n">file</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">dest_path</span>
 </code></pre></div></td></tr></table></div>
             </details>
     </div>
@@ -2288,14 +2467,14 @@ zero or multiple <code>.exe</code> files.</p>
 
             <details class="quote">
               <summary>Source code in <code>pySWATPlus/txtinoutreader.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">296</span>
-<span class="normal">297</span>
-<span class="normal">298</span>
-<span class="normal">299</span>
-<span class="normal">300</span>
-<span class="normal">301</span>
-<span class="normal">302</span>
-<span class="normal">303</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">disable_csv_print</span><span class="p">(</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">303</span>
+<span class="normal">304</span>
+<span class="normal">305</span>
+<span class="normal">306</span>
+<span class="normal">307</span>
+<span class="normal">308</span>
+<span class="normal">309</span>
+<span class="normal">310</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">disable_csv_print</span><span class="p">(</span>
     <span class="bp">self</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
@@ -2325,14 +2504,14 @@ zero or multiple <code>.exe</code> files.</p>
 
             <details class="quote">
               <summary>Source code in <code>pySWATPlus/txtinoutreader.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">287</span>
-<span class="normal">288</span>
-<span class="normal">289</span>
-<span class="normal">290</span>
-<span class="normal">291</span>
-<span class="normal">292</span>
-<span class="normal">293</span>
-<span class="normal">294</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">enable_csv_print</span><span class="p">(</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">294</span>
+<span class="normal">295</span>
+<span class="normal">296</span>
+<span class="normal">297</span>
+<span class="normal">298</span>
+<span class="normal">299</span>
+<span class="normal">300</span>
+<span class="normal">301</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">enable_csv_print</span><span class="p">(</span>
     <span class="bp">self</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
@@ -2387,13 +2566,12 @@ generated even when disabled.</p>
                 <code>obj</code>
             </td>
             <td>
-                  <code><span title="Optional">Optional</span>[<span title="str">str</span>]</code>
+                  <code><span title="str">str</span> or None</code>
             </td>
             <td>
               <div class="doc-md-description">
                 <p>The name of the object to update (e.g., 'channel_sd', 'reservoir').
-If None, all objects in the <code>print.prt</code> file are updated with the specified
-time frequency settings.</p>
+If <code>None</code>, all objects in the <code>print.prt</code> file are updated with the specified time frequency settings.</p>
               </div>
             </td>
             <td>
@@ -2488,8 +2666,7 @@ a ValueError is raised. Defaults to False.</p>
 
             <details class="quote">
               <summary>Source code in <code>pySWATPlus/txtinoutreader.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 64</span>
-<span class="normal"> 65</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 65</span>
 <span class="normal"> 66</span>
 <span class="normal"> 67</span>
 <span class="normal"> 68</span>
@@ -2587,7 +2764,14 @@ a ValueError is raised. Defaults to False.</p>
 <span class="normal">160</span>
 <span class="normal">161</span>
 <span class="normal">162</span>
-<span class="normal">163</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">enable_object_in_print_prt</span><span class="p">(</span>
+<span class="normal">163</span>
+<span class="normal">164</span>
+<span class="normal">165</span>
+<span class="normal">166</span>
+<span class="normal">167</span>
+<span class="normal">168</span>
+<span class="normal">169</span>
+<span class="normal">170</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">enable_object_in_print_prt</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">obj</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
     <span class="n">daily</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
@@ -2610,9 +2794,8 @@ a ValueError is raised. Defaults to False.</p>
 <span class="sd">        generated even when disabled.</span>
 
 <span class="sd">    Args:</span>
-<span class="sd">        obj (Optional[str]): The name of the object to update (e.g., &#39;channel_sd&#39;, &#39;reservoir&#39;).</span>
-<span class="sd">            If None, all objects in the `print.prt` file are updated with the specified</span>
-<span class="sd">            time frequency settings.</span>
+<span class="sd">        obj (str or None): The name of the object to update (e.g., &#39;channel_sd&#39;, &#39;reservoir&#39;).</span>
+<span class="sd">            If `None`, all objects in the `print.prt` file are updated with the specified time frequency settings.</span>
 <span class="sd">        daily (bool): If `True`, enable daily frequency output.</span>
 <span class="sd">        monthly (bool): If `True`, enable monthly frequency output.</span>
 <span class="sd">        yearly (bool): If `True`, enable yearly frequency output.</span>
@@ -2635,8 +2818,15 @@ a ValueError is raised. Defaults to False.</p>
 
     <span class="n">obj_list</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">obj_dict</span><span class="o">.</span><span class="n">values</span><span class="p">()</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">v</span><span class="p">]</span>
 
+    <span class="c1"># Check &#39;obj&#39; is either string or NoneType</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="ow">or</span> <span class="n">obj</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Input &quot;obj&quot; to be string type or None, got </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+
+    <span class="c1"># Check &#39;obj&#39; is valid</span>
     <span class="k">if</span> <span class="n">obj</span> <span class="ow">and</span> <span class="n">obj</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">obj_list</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">allow_unavailable_object</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;This object is not available in standard SWAT+: </span><span class="si">{</span><span class="n">obj</span><span class="si">}</span><span class="s1">. If you want to use it, please set allow_unavailable_object=True.&#39;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s1">&#39;Object &quot;</span><span class="si">{</span><span class="n">obj</span><span class="si">}</span><span class="s1">&quot; not found in print.prt file. Use allow_unavailable_object=True to proceed.&#39;</span>
+        <span class="p">)</span>
 
     <span class="c1"># Time frequency dictionary</span>
     <span class="n">time_dict</span> <span class="o">=</span> <span class="p">{</span>
@@ -2779,14 +2969,7 @@ a ValueError is raised. Defaults to False.</p>
 
             <details class="quote">
               <summary>Source code in <code>pySWATPlus/txtinoutreader.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">305</span>
-<span class="normal">306</span>
-<span class="normal">307</span>
-<span class="normal">308</span>
-<span class="normal">309</span>
-<span class="normal">310</span>
-<span class="normal">311</span>
-<span class="normal">312</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">312</span>
 <span class="normal">313</span>
 <span class="normal">314</span>
 <span class="normal">315</span>
@@ -2797,7 +2980,14 @@ a ValueError is raised. Defaults to False.</p>
 <span class="normal">320</span>
 <span class="normal">321</span>
 <span class="normal">322</span>
-<span class="normal">323</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">register_file</span><span class="p">(</span>
+<span class="normal">323</span>
+<span class="normal">324</span>
+<span class="normal">325</span>
+<span class="normal">326</span>
+<span class="normal">327</span>
+<span class="normal">328</span>
+<span class="normal">329</span>
+<span class="normal">330</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">register_file</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">filename</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
     <span class="n">has_units</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
@@ -2928,20 +3118,7 @@ a ValueError is raised. Defaults to False.</p>
 
             <details class="quote">
               <summary>Source code in <code>pySWATPlus/txtinoutreader.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">383</span>
-<span class="normal">384</span>
-<span class="normal">385</span>
-<span class="normal">386</span>
-<span class="normal">387</span>
-<span class="normal">388</span>
-<span class="normal">389</span>
-<span class="normal">390</span>
-<span class="normal">391</span>
-<span class="normal">392</span>
-<span class="normal">393</span>
-<span class="normal">394</span>
-<span class="normal">395</span>
-<span class="normal">396</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">396</span>
 <span class="normal">397</span>
 <span class="normal">398</span>
 <span class="normal">399</span>
@@ -3013,7 +3190,18 @@ a ValueError is raised. Defaults to False.</p>
 <span class="normal">465</span>
 <span class="normal">466</span>
 <span class="normal">467</span>
-<span class="normal">468</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">run_swat</span><span class="p">(</span>
+<span class="normal">468</span>
+<span class="normal">469</span>
+<span class="normal">470</span>
+<span class="normal">471</span>
+<span class="normal">472</span>
+<span class="normal">473</span>
+<span class="normal">474</span>
+<span class="normal">475</span>
+<span class="normal">476</span>
+<span class="normal">477</span>
+<span class="normal">478</span>
+<span class="normal">479</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">run_swat</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">params</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">ParamsType</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">:</span>
@@ -3069,9 +3257,7 @@ a ValueError is raised. Defaults to False.</p>
     <span class="k">for</span> <span class="n">filename</span><span class="p">,</span> <span class="n">file_params</span> <span class="ow">in</span> <span class="n">_params</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
 
         <span class="n">has_units</span> <span class="o">=</span> <span class="n">file_params</span><span class="p">[</span><span class="s1">&#39;has_units&#39;</span><span class="p">]</span>
-
-        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">has_units</span><span class="p">,</span> <span class="nb">bool</span><span class="p">):</span>
-            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;&#39;has_units&#39; for file &#39;</span><span class="si">{</span><span class="n">filename</span><span class="si">}</span><span class="s2">&#39; must be a boolean.&quot;</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">has_units</span><span class="p">,</span> <span class="nb">bool</span><span class="p">)</span>
 
         <span class="n">file</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">register_file</span><span class="p">(</span>
             <span class="n">filename</span><span class="p">,</span>
@@ -3295,18 +3481,7 @@ The time step keys represent:</p>
 
             <details class="quote">
               <summary>Source code in <code>pySWATPlus/txtinoutreader.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">470</span>
-<span class="normal">471</span>
-<span class="normal">472</span>
-<span class="normal">473</span>
-<span class="normal">474</span>
-<span class="normal">475</span>
-<span class="normal">476</span>
-<span class="normal">477</span>
-<span class="normal">478</span>
-<span class="normal">479</span>
-<span class="normal">480</span>
-<span class="normal">481</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">481</span>
 <span class="normal">482</span>
 <span class="normal">483</span>
 <span class="normal">484</span>
@@ -3438,7 +3613,18 @@ The time step keys represent:</p>
 <span class="normal">610</span>
 <span class="normal">611</span>
 <span class="normal">612</span>
-<span class="normal">613</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">run_swat_in_other_dir</span><span class="p">(</span>
+<span class="normal">613</span>
+<span class="normal">614</span>
+<span class="normal">615</span>
+<span class="normal">616</span>
+<span class="normal">617</span>
+<span class="normal">618</span>
+<span class="normal">619</span>
+<span class="normal">620</span>
+<span class="normal">621</span>
+<span class="normal">622</span>
+<span class="normal">623</span>
+<span class="normal">624</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">run_swat_in_other_dir</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">target_dir</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">,</span>
     <span class="n">params</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">ParamsType</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -3525,7 +3711,7 @@ The time step keys represent:</p>
 
     <span class="c1"># Create the directory if it does not exist and copy necessary files</span>
     <span class="n">target_dir</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">parents</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-    <span class="n">tmp_path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_copy_swat</span><span class="p">(</span><span class="n">target_dir</span><span class="o">=</span><span class="n">target_dir</span><span class="p">)</span>
+    <span class="n">tmp_path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">copy_required_files</span><span class="p">(</span><span class="n">target_dir</span><span class="o">=</span><span class="n">target_dir</span><span class="p">)</span>
 
     <span class="c1"># Initialize new TxtinoutReader class</span>
     <span class="n">reader</span> <span class="o">=</span> <span class="n">TxtinoutReader</span><span class="p">(</span><span class="n">tmp_path</span><span class="p">)</span>
@@ -3675,14 +3861,7 @@ the begin and end years in the <code>time.sim</code> file.</p>
 
             <details class="quote">
               <summary>Source code in <code>pySWATPlus/txtinoutreader.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">165</span>
-<span class="normal">166</span>
-<span class="normal">167</span>
-<span class="normal">168</span>
-<span class="normal">169</span>
-<span class="normal">170</span>
-<span class="normal">171</span>
-<span class="normal">172</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">172</span>
 <span class="normal">173</span>
 <span class="normal">174</span>
 <span class="normal">175</span>
@@ -3727,7 +3906,14 @@ the begin and end years in the <code>time.sim</code> file.</p>
 <span class="normal">214</span>
 <span class="normal">215</span>
 <span class="normal">216</span>
-<span class="normal">217</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">set_begin_and_end_year</span><span class="p">(</span>
+<span class="normal">217</span>
+<span class="normal">218</span>
+<span class="normal">219</span>
+<span class="normal">220</span>
+<span class="normal">221</span>
+<span class="normal">222</span>
+<span class="normal">223</span>
+<span class="normal">224</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">set_begin_and_end_year</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">begin</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
     <span class="n">end</span><span class="p">:</span> <span class="nb">int</span>
@@ -3857,14 +4043,7 @@ the simulation will use for warm-up (e.g., 1).</p>
 
             <details class="quote">
               <summary>Source code in <code>pySWATPlus/txtinoutreader.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">219</span>
-<span class="normal">220</span>
-<span class="normal">221</span>
-<span class="normal">222</span>
-<span class="normal">223</span>
-<span class="normal">224</span>
-<span class="normal">225</span>
-<span class="normal">226</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">226</span>
 <span class="normal">227</span>
 <span class="normal">228</span>
 <span class="normal">229</span>
@@ -3898,7 +4077,14 @@ the simulation will use for warm-up (e.g., 1).</p>
 <span class="normal">257</span>
 <span class="normal">258</span>
 <span class="normal">259</span>
-<span class="normal">260</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">set_warmup_year</span><span class="p">(</span>
+<span class="normal">260</span>
+<span class="normal">261</span>
+<span class="normal">262</span>
+<span class="normal">263</span>
+<span class="normal">264</span>
+<span class="normal">265</span>
+<span class="normal">266</span>
+<span class="normal">267</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">set_warmup_year</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">warmup</span><span class="p">:</span> <span class="nb">int</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>

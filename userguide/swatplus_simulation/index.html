@@ -9,7 +9,7 @@
       
       
       
-        <link rel="prev" href="../..">
+        <link rel="prev" href="../../introduction/">
       
       
         <link rel="next" href="../sensitivity_analysis/">
@@ -167,7 +167,7 @@
   
   
     <li class="md-tabs__item">
-      <a href="../.." class="md-tabs__link">
+      <a href="../../introduction/" class="md-tabs__link">
         
   
   
@@ -300,7 +300,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../.." class="md-nav__link">
+      <a href="../../introduction/" class="md-nav__link">
         
   
   
@@ -418,54 +418,18 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#initializing-the-txtinoutreader-class" class="md-nav__link">
+  <a href="#a-trial-simulation" class="md-nav__link">
     <span class="md-ellipsis">
-      Initializing the TxtinoutReader Class
+      A Trial Simulation
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#a-trial-simulation-with-no-parameter-changes" class="md-nav__link">
+  <a href="#simulations-in-a-separate-directory-recommended" class="md-nav__link">
     <span class="md-ellipsis">
-      A Trial Simulation with No Parameter Changes
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#simulation-in-a-separate-directory-recommended" class="md-nav__link">
-    <span class="md-ellipsis">
-      Simulation in a Separate Directory (Recommended)
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#simulation-after-modified-timelines" class="md-nav__link">
-    <span class="md-ellipsis">
-      Simulation After Modified Timelines
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#simulation-after-enabling-a-specific-print-object" class="md-nav__link">
-    <span class="md-ellipsis">
-      Simulation After Enabling a Specific Print Object
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#simulation-after-parameter-modifications" class="md-nav__link">
-    <span class="md-ellipsis">
-      Simulation After Parameter Modifications
+      Simulations in a Separate Directory (Recommended)
     </span>
   </a>
   
@@ -511,6 +475,29 @@
   
   <span class="md-ellipsis">
     Sensitivity Analysis
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../read_output/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Read Output
     
   </span>
   
@@ -622,12 +609,12 @@
   
   
     <li class="md-nav__item">
-      <a href="../../api/scenario/" class="md-nav__link">
+      <a href="../../api/sensitivityanalyzer/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
-    Scenario
+    SensitivityAnalyzer.py
     
   </span>
   
@@ -739,54 +726,18 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#initializing-the-txtinoutreader-class" class="md-nav__link">
+  <a href="#a-trial-simulation" class="md-nav__link">
     <span class="md-ellipsis">
-      Initializing the TxtinoutReader Class
+      A Trial Simulation
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#a-trial-simulation-with-no-parameter-changes" class="md-nav__link">
+  <a href="#simulations-in-a-separate-directory-recommended" class="md-nav__link">
     <span class="md-ellipsis">
-      A Trial Simulation with No Parameter Changes
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#simulation-in-a-separate-directory-recommended" class="md-nav__link">
-    <span class="md-ellipsis">
-      Simulation in a Separate Directory (Recommended)
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#simulation-after-modified-timelines" class="md-nav__link">
-    <span class="md-ellipsis">
-      Simulation After Modified Timelines
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#simulation-after-enabling-a-specific-print-object" class="md-nav__link">
-    <span class="md-ellipsis">
-      Simulation After Enabling a Specific Print Object
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#simulation-after-parameter-modifications" class="md-nav__link">
-    <span class="md-ellipsis">
-      Simulation After Parameter Modifications
+      Simulations in a Separate Directory (Recommended)
     </span>
   </a>
   
@@ -827,115 +778,125 @@
 
 
 <h1 id="swat-simulation">SWAT+ Simulation</h1>
-<p>SWAT+ simulations can be performed while modifying multiple optional input parameters. These parameters can be changed either individually or simultaneously for a simulation. Some examples are shown below:</p>
-<h2 id="initializing-the-txtinoutreader-class">Initializing the <code>TxtinoutReader</code> Class</h2>
-<p>The <code>TxtinoutReader</code> class is used to interact with the SWAT+ model via the <code>TxtInOut</code> folder generated by the <a href="https://github.com/swat-model/QSWATPlus">QSWAT+</a>. This folder must include the necessary files generated during a simulation using the <a href="https://github.com/swat-model/swatplus-editor">SWAT+ Editor</a>. The class allows you to modify input parameters and run simulations.</p>
-<p>The TxtInOut folder must also contain the SWAT+ executable file. Its location can be found in the <strong><code>Run SWAT+</code></strong> tab of the SWAT+ Editor. If the executable is missing, an error will occur.</p>
+<p><code>pySWATPlus</code> executes <a href="https://swat.tamu.edu/software/plus/">SWAT+</a> simulations using the <code>TxtInOut</code> folder generated during project creation with <a href="https://github.com/swat-model/QSWATPlus">QSWAT+</a>.</p>
+<p>To run a <code>SWAT+</code> simulation, the <code>TxtInOut</code> folder must include all required input files, which are created during simulation setup in the <a href="https://github.com/swat-model/swatplus-editor">SWAT+ Editor</a> via <code>QSWAT+</code>.</p>
+<p>Additionally, the <code>TxtInOut</code> folder must contain the <code>SWAT+</code> executable. If you need help locating it, open the <strong><code>Run SWAT+</code></strong> tab in the <code>SWAT+ Editor</code> to find its path. Once located, copy the executable file into the <code>TxtInOut</code> folder. If the executable is missing, the simulation will fail.</p>
+<p>Once the <code>TxtInOut</code> folder is properly configured with the necessary input files and the <code>SWAT+</code> executable, you can initialize the <code>TxtinoutReader</code> class to interact with the <code>SWAT+</code> model:</p>
 <div class="highlight"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">pySWATPlus</span>
 
-<span class="c1"># Replace this with your actual path</span>
-<span class="n">txtinout_path</span> <span class="o">=</span> <span class="sa">r</span><span class="s2">&quot;C:\Users\Username\project\Scenarios\Default\TxtInOut&quot;</span> 
+<span class="c1"># Replace this with the path to your project&#39;s TxtInOut folder</span>
+<span class="n">txtinout_folder</span> <span class="o">=</span> <span class="sa">r</span><span class="s2">&quot;C:\Users\Username\project\Scenarios\Default\TxtInOut&quot;</span>
 
 <span class="n">txtinout_reader</span> <span class="o">=</span> <span class="n">pySWATPlus</span><span class="o">.</span><span class="n">TxtinoutReader</span><span class="p">(</span>
-    <span class="n">path</span><span class="o">=</span><span class="n">txtinout_path</span>
+    <span class="n">path</span><span class="o">=</span><span class="n">txtinout_folder</span>
 <span class="p">)</span>
 </code></pre></div>
-<h2 id="a-trial-simulation-with-no-parameter-changes">A Trial Simulation with No Parameter Changes</h2>
-<p>This simple code checks whether the executable file runs the SWAT+ model correctly. </p>
+<p><code>pySWATPlus</code> offers multiple options for executing <code>SWAT+</code> simulations, providing flexibility for diverse workflows and automation needs.</p>
+<p>The following sections demonstrate different approaches, including modifying input parameters, running a single simulation, and performing batch processing.</p>
+<h2 id="a-trial-simulation">A Trial Simulation</h2>
+<p>This simple example runs a <code>SWAT+</code> simulation without changing any input parameters, ensuring that the setup works correctly:</p>
 <div class="highlight"><pre><span></span><code><span class="n">txtinout_reader</span><span class="o">.</span><span class="n">run_swat</span><span class="p">()</span>
 </code></pre></div>
-<h2 id="simulation-in-a-separate-directory-recommended">Simulation in a Separate Directory (Recommended)</h2>
-<p>Instead of modifying the files in the input <code>TxtInOut</code> folder, it is recommended to run the SWAT+ simulation in a seperate direcotry. </p>
-<div class="highlight"><pre><span></span><code><span class="c1"># Replace this with your actual path</span>
-<span class="n">target_dir</span> <span class="o">=</span> <span class="sa">r</span><span class="s2">&quot;C:\Users\Username\simulation_folder&quot;</span> 
+<h2 id="simulations-in-a-separate-directory-recommended">Simulations in a Separate Directory (Recommended)</h2>
+<p>To keep your original <code>TxtInOut</code> folder unchanged, it is recommended to run <code>SWAT+</code> simulations in a separate directory. This approach allows you to safely modify parameters and input files without affecting your main project. The following steps demonstrate how to perform a simulation in a dedicated directory:</p>
+<ul>
+<li>
+<p>Copy required files to the target directory:</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># Replance this with your desired simulation folder path</span>
+<span class="n">target_dir</span> <span class="o">=</span> <span class="sa">r</span><span class="s2">&quot;C:\Users\Username\simulation_folder_1&quot;</span> 
 
-<span class="n">reader</span> <span class="o">=</span> <span class="n">txtinout_reader</span><span class="o">.</span><span class="n">run_swat_in_other_dir</span><span class="p">(</span>
+<span class="c1"># Ensure the required files are copied</span>
+<span class="n">txtinout_reader</span><span class="o">.</span><span class="n">copy_required_files</span><span class="p">(</span>
     <span class="n">target_dir</span><span class="o">=</span><span class="n">target_dir</span>
 <span class="p">)</span>
 </code></pre></div>
-<h2 id="simulation-after-modified-timelines">Simulation After Modified Timelines</h2>
-<p>The following example demonstrates how to run the SWAT+ model after modifying the simulation timelines.</p>
-<div class="highlight"><pre><span></span><code><span class="c1"># Set the begin and end years for the simulation</span>
-<span class="n">reader</span><span class="o">.</span><span class="n">set_begin_and_end_year</span><span class="p">(</span><span class="mi">2012</span><span class="p">,</span> <span class="mi">2016</span><span class="p">)</span>
-
-<span class="c1"># Set the warm-up period in years</span>
-<span class="n">reader</span><span class="o">.</span><span class="n">set_warmup_year</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
-
-<span class="c1"># Run the simulation</span>
-<span class="n">reader</span><span class="o">.</span><span class="n">run_swat</span><span class="p">()</span>
+</li>
+<li>
+<p>Initialize <code>TxtinoutReader</code> for the target directory</p>
+<div class="highlight"><pre><span></span><code><span class="n">target_reader</span> <span class="o">=</span> <span class="n">pySWATPlus</span><span class="o">.</span><span class="n">TxtinoutReader</span><span class="p">(</span>
+    <span class="n">path</span><span class="o">=</span><span class="n">target_dir</span>
+<span class="p">)</span>
 </code></pre></div>
-<h2 id="simulation-after-enabling-a-specific-print-object">Simulation After Enabling a Specific Print Object</h2>
-<p>Suppose the daily simulation data for channel output is required, but the file <a href="https://swatplus.gitbook.io/io-docs/swat+-output-files/channel">channel_sd_day.txt</a> is missing after the simulation. The following example shows how to enable it and generate the expected output:</p>
-<div class="highlight"><pre><span></span><code><span class="c1"># Enable the &#39;channel_sd&#39; object in the print.prt file</span>
-<span class="n">reader</span><span class="o">.</span><span class="n">enable_object_in_print_prt</span><span class="p">(</span>
+</li>
+<li>
+<p>Modify simulation timeline:</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># Update timeline in `time.sim` file</span>
+<span class="n">target_reader</span><span class="o">.</span><span class="n">set_begin_and_end_year</span><span class="p">(</span>
+    <span class="n">begin</span><span class="o">=</span><span class="mi">2012</span><span class="p">,</span>
+    <span class="n">end</span><span class="o">=</span><span class="mi">2016</span>
+<span class="p">)</span>
+</code></pre></div>
+</li>
+<li>
+<p>Set warm-up years:</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># Set warm-up years in `print.prt` file</span>
+<span class="n">target_reader</span><span class="o">.</span><span class="n">set_warmup_year</span><span class="p">(</span>
+    <span class="n">warmup</span><span class="o">=</span><span class="mi">1</span>
+<span class="p">)</span>
+</code></pre></div>
+</li>
+<li>
+<p>Enable required simulation files:</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># Ensure simulation outputs for `channel_sd` object in `print.prt` file  </span>
+<span class="n">target_reader</span><span class="o">.</span><span class="n">enable_object_in_print_prt</span><span class="p">(</span>
     <span class="n">obj</span><span class="o">=</span><span class="s1">&#39;channel_sd&#39;</span><span class="p">,</span>
-    <span class="n">daily</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">daily</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
     <span class="n">monthly</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
     <span class="n">yearly</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
     <span class="n">avann</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
 <span class="p">)</span>
-
-<span class="c1"># Run the simulation</span>
-<span class="n">reader</span><span class="o">.</span><span class="n">run_swat</span><span class="p">()</span>
 </code></pre></div>
-<h2 id="simulation-after-parameter-modifications">Simulation After Parameter Modifications</h2>
-<div class="highlight"><pre><span></span><code><span class="c1"># Register the hydrology.hyd file</span>
-<span class="n">hyd_register</span> <span class="o">=</span> <span class="n">reader</span><span class="o">.</span><span class="n">register_file</span><span class="p">(</span>
+</li>
+<li>
+<p>Modify <code>esco</code> parameter:</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># Register the `hydrology.hyd` file</span>
+<span class="n">hyd_register</span> <span class="o">=</span> <span class="n">target_reader</span><span class="o">.</span><span class="n">register_file</span><span class="p">(</span>
     <span class="n">filename</span><span class="o">=</span><span class="s1">&#39;hydrology.hyd&#39;</span><span class="p">,</span>
     <span class="n">has_units</span><span class="o">=</span><span class="kc">False</span>
 <span class="p">)</span>
 
-<span class="c1"># Get the DataFrame</span>
+<span class="c1"># Get the DataFrame and modify the `esco` value</span>
 <span class="n">hyd_df</span> <span class="o">=</span> <span class="n">hyd_register</span><span class="o">.</span><span class="n">df</span>
-
-<span class="c1"># Modify the &#39;esco&#39; parameter value</span>
 <span class="n">hyd_df</span><span class="p">[</span><span class="s1">&#39;esco&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.6</span>
 
-<span class="c1"># rewrite hydrology.hyd file</span>
+<span class="c1"># Overwrite the `hydrology.hyd` file</span>
 <span class="n">hyd_register</span><span class="o">.</span><span class="n">overwrite_file</span><span class="p">()</span>
-
-<span class="c1"># View the modified DataFrame (optional)</span>
-<span class="n">hyd_register</span><span class="o">.</span><span class="n">df</span>
-
-<span class="c1"># Run the simulation</span>
-<span class="n">reader</span><span class="o">.</span><span class="n">run_swat</span><span class="p">()</span>
 </code></pre></div>
-<h2 id="run-configurable-simulations-in-a-single-function">Run Configurable Simulations in a Single Function</h2>
-<p>Instead of calling <code>set_begin_and_end_year()</code>, <code>set_warmup_year()</code>, and <code>enable_object_in_print_prt()</code> separately, you can pass all these options directly into a single call to <code>run_swat_in_other_dir()</code>. You can also modify input values in specific files prior to running a simulation.</p>
-<p>Supported configuration options include:</p>
-<ul>
-<li><code>params</code>: Dictionary to modify one or more input files before the run.</li>
-<li><code>begin_and_end_year</code>: Tuple like <code>(2012, 2016)</code> to control the simulation period.</li>
-<li><code>warmup</code>: Number of years used for model warm-up.</li>
-<li><code>print_prt_control</code>: Dictionary to control which outputs are written.</li>
-</ul>
-<p>This is recommended for batch or reproducible simulations.</p>
-<div class="highlight"><pre><span></span><code><span class="c1"># Modify parameters in the plants.plt file</span>
+</li>
+<li>
+<p>Run the SWAT+ simulation:</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># Another way to modify `esco` parameter and perform simulation</span>
 <span class="n">params</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="s1">&#39;plants.plt&#39;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="s1">&#39;hydrology.hyd&#39;</span><span class="p">:</span> <span class="p">{</span>
         <span class="s1">&#39;has_units&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
-        <span class="s1">&#39;bm_e&#39;</span><span class="p">:</span> <span class="p">[</span>
-            <span class="p">{</span><span class="s1">&#39;value&#39;</span><span class="p">:</span> <span class="mi">100</span><span class="p">,</span> <span class="s1">&#39;change_type&#39;</span><span class="p">:</span> <span class="s1">&#39;absval&#39;</span><span class="p">,</span> <span class="s1">&#39;filter_by&#39;</span><span class="p">:</span> <span class="s1">&#39;name == &quot;agrl&quot;&#39;</span><span class="p">},</span>
-            <span class="p">{</span><span class="s1">&#39;value&#39;</span><span class="p">:</span> <span class="mi">110</span><span class="p">,</span> <span class="s1">&#39;change_type&#39;</span><span class="p">:</span> <span class="s1">&#39;absval&#39;</span><span class="p">,</span> <span class="s1">&#39;filter_by&#39;</span><span class="p">:</span> <span class="s1">&#39;name == &quot;almd&quot;&#39;</span><span class="p">},</span>
-        <span class="p">],</span>
+        <span class="s1">&#39;esco&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;value&#39;</span><span class="p">:</span> <span class="mf">0.6</span><span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+<span class="n">target_reader</span><span class="o">.</span><span class="n">run_swat</span><span class="p">(</span>
+    <span class="n">params</span><span class="o">=</span><span class="n">params</span>  <span class="c1"># optional</span>
+<span class="p">)</span>
+</code></pre></div>
+</li>
+</ul>
+<h2 id="run-configurable-simulations-in-a-single-function">Run Configurable Simulations in a Single Function</h2>
+<p>Instead of performing each step separately as explained above, you can run a <code>SWAT+</code> simulation in a separate directory by configuring all options at once using a single function:</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># Configure input parameters</span>
+<span class="n">params</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;hydrology.hyd&#39;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s1">&#39;has_units&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="s1">&#39;esco&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;value&#39;</span><span class="p">:</span> <span class="mf">0.6</span><span class="p">}</span>
     <span class="p">}</span>
 <span class="p">}</span>
 
-
+<span class="c1"># Run SWAT+ simulation from the original `TxtInOut` folder</span>
 <span class="n">txtinout_reader</span><span class="o">.</span><span class="n">run_swat_in_other_dir</span><span class="p">(</span>
-    <span class="n">target_dir</span><span class="o">=</span><span class="sa">r</span><span class="s2">&quot;C:\Users\Username\simulation_1&quot;</span><span class="p">,</span>
-    <span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">,</span>
-    <span class="n">begin_and_end_year</span><span class="o">=</span><span class="p">(</span><span class="mi">2010</span><span class="p">,</span> <span class="mi">2015</span><span class="p">),</span>
-    <span class="n">warmup</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
-    <span class="n">print_prt_control</span><span class="o">=</span><span class="p">{</span>
-        <span class="s1">&#39;channel_sd&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;daily&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span> <span class="s1">&#39;monthly&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">}</span>
-    <span class="p">}</span>
+    <span class="n">target_dir</span><span class="o">=</span><span class="sa">r</span><span class="s2">&quot;C:\Users\Username\simulation_folder_2&quot;</span><span class="p">,</span>  <span class="c1"># mandatory</span>
+    <span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">,</span>  <span class="c1"># optional</span>
+    <span class="n">begin_and_end_year</span><span class="o">=</span><span class="p">(</span><span class="mi">2012</span><span class="p">,</span> <span class="mi">2016</span><span class="p">),</span>  <span class="c1"># optional</span>
+    <span class="n">warmup</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>  <span class="c1"># optional</span>
+    <span class="n">print_prt_control</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;channel_sd&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;daily&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">}}</span>  <span class="c1"># optional</span>
 <span class="p">)</span>
 </code></pre></div>
-<blockquote>
-<p>⚠️ <strong>Note:</strong> The <code>run_swat()</code> method only supports the <code>params</code> argument for in-place simulations. 
-It does <strong>not</strong> accept <code>begin_and_end_year</code>, <code>warmup</code>, or <code>print_prt_control</code>. To modify these settings within the original <code>TxtInOut</code> folder, use: <code>set_begin_and_end_year()</code>, <code>set_warmup_year()</code>, and <code>enable_object_in_print_prt()</code>. If you want to avoid changing the original <code>TxtInOut</code> directory, use <code>run_swat_in_other_dir()</code>, which supports all of these options in a separate working directory.</p>
-</blockquote>
 <h2 id="parallel-swat-simulations">Parallel SWAT+ Simulations</h2>
 <p>To run multiple SWAT+ simulations in parallel with modified parameters, the following example provides a quick guide to get started:</p>
 <div class="highlight"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">multiprocessing</span>
@@ -946,8 +907,8 @@ It does <strong>not</strong> accept <code>begin_and_end_year</code>, <code>warmu
     <span class="p">{</span>
         <span class="s1">&#39;hydrology.hyd&#39;</span><span class="p">:</span> <span class="p">{</span>
             <span class="s1">&#39;has_units&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
-            <span class="s1">&#39;epco&#39;</span><span class="p">:</span> <span class="p">[</span>
-                <span class="p">{</span><span class="s1">&#39;value&#39;</span><span class="p">:</span> <span class="mf">0.7</span><span class="p">,</span> <span class="s1">&#39;change_type&#39;</span><span class="p">:</span> <span class="s1">&#39;absval&#39;</span><span class="p">}</span>
+            <span class="s1">&#39;esco&#39;</span><span class="p">:</span> <span class="p">[</span>
+                <span class="p">{</span><span class="s1">&#39;value&#39;</span><span class="p">:</span> <span class="mf">0.6</span><span class="p">,</span> <span class="s1">&#39;change_type&#39;</span><span class="p">:</span> <span class="s1">&#39;absval&#39;</span><span class="p">}</span>
             <span class="p">],</span>
         <span class="p">}</span>
     <span class="p">},</span>
@@ -955,8 +916,8 @@ It does <strong>not</strong> accept <code>begin_and_end_year</code>, <code>warmu
         <span class="s1">&#39;plants.plt&#39;</span><span class="p">:</span> <span class="p">{</span>
             <span class="s1">&#39;has_units&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
             <span class="s1">&#39;bm_e&#39;</span><span class="p">:</span> <span class="p">[</span>
-                <span class="p">{</span><span class="s1">&#39;value&#39;</span><span class="p">:</span> <span class="mi">120</span><span class="p">,</span> <span class="s1">&#39;change_type&#39;</span><span class="p">:</span> <span class="s1">&#39;absval&#39;</span><span class="p">,</span> <span class="s1">&#39;filter_by&#39;</span><span class="p">:</span> <span class="s1">&#39;name == &quot;agrl&quot;&#39;</span><span class="p">},</span>
-                <span class="p">{</span><span class="s1">&#39;value&#39;</span><span class="p">:</span> <span class="mi">130</span><span class="p">,</span> <span class="s1">&#39;change_type&#39;</span><span class="p">:</span> <span class="s1">&#39;absval&#39;</span><span class="p">,</span> <span class="s1">&#39;filter_by&#39;</span><span class="p">:</span> <span class="s1">&#39;name == &quot;almd&quot;&#39;</span><span class="p">},</span>
+                <span class="p">{</span><span class="s1">&#39;value&#39;</span><span class="p">:</span> <span class="mi">30</span><span class="p">,</span> <span class="s1">&#39;change_type&#39;</span><span class="p">:</span> <span class="s1">&#39;absval&#39;</span><span class="p">,</span> <span class="s1">&#39;filter_by&#39;</span><span class="p">:</span> <span class="s1">&#39;name == &quot;agrl&quot;&#39;</span><span class="p">},</span>
+                <span class="p">{</span><span class="s1">&#39;value&#39;</span><span class="p">:</span> <span class="mi">15</span><span class="p">,</span> <span class="s1">&#39;change_type&#39;</span><span class="p">:</span> <span class="s1">&#39;absval&#39;</span><span class="p">,</span> <span class="s1">&#39;filter_by&#39;</span><span class="p">:</span> <span class="s1">&#39;name == &quot;almd&quot;&#39;</span><span class="p">},</span>
             <span class="p">],</span>
         <span class="p">}</span>
     <span class="p">},</span>

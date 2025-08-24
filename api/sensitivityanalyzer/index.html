@@ -20,7 +20,7 @@
     
     
       
-        <title>Scenario - pySWATPlus</title>
+        <title>SensitivityAnalyzer.py - pySWATPlus</title>
       
     
     
@@ -74,7 +74,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#pySWATPlus.Scenario" class="md-skip">
+        <a href="#pySWATPlus.SensitivityAnalyzer" class="md-skip">
           Skip to content
         </a>
       
@@ -108,7 +108,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Scenario
+              SensitivityAnalyzer.py
             
           </span>
         </div>
@@ -167,7 +167,7 @@
   
   
     <li class="md-tabs__item">
-      <a href="../.." class="md-tabs__link">
+      <a href="../../introduction/" class="md-tabs__link">
         
   
   
@@ -300,7 +300,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../.." class="md-nav__link">
+      <a href="../../introduction/" class="md-nav__link">
         
   
   
@@ -392,6 +392,29 @@
   
   <span class="md-ellipsis">
     Sensitivity Analysis
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../userguide/read_output/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Read Output
     
   </span>
   
@@ -520,7 +543,7 @@
   
   
   <span class="md-ellipsis">
-    Scenario
+    SensitivityAnalyzer.py
     
   </span>
   
@@ -533,7 +556,7 @@
   
   
   <span class="md-ellipsis">
-    Scenario
+    SensitivityAnalyzer.py
     
   </span>
   
@@ -554,17 +577,17 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#pySWATPlus.Scenario" class="md-nav__link">
+  <a href="#pySWATPlus.SensitivityAnalyzer" class="md-nav__link">
     <span class="md-ellipsis">
-      Scenario
+      SensitivityAnalyzer
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Scenario">
+    <nav class="md-nav" aria-label="SensitivityAnalyzer">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#pySWATPlus.Scenario.simulated_timeseries_df" class="md-nav__link">
+  <a href="#pySWATPlus.SensitivityAnalyzer.simulated_timeseries_df" class="md-nav__link">
     <span class="md-ellipsis">
       simulated_timeseries_df
     </span>
@@ -573,7 +596,7 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#pySWATPlus.Scenario.simulation_by_sobol_sample" class="md-nav__link">
+  <a href="#pySWATPlus.SensitivityAnalyzer.simulation_by_sobol_sample" class="md-nav__link">
     <span class="md-ellipsis">
       simulation_by_sobol_sample
     </span>
@@ -694,17 +717,17 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#pySWATPlus.Scenario" class="md-nav__link">
+  <a href="#pySWATPlus.SensitivityAnalyzer" class="md-nav__link">
     <span class="md-ellipsis">
-      Scenario
+      SensitivityAnalyzer
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Scenario">
+    <nav class="md-nav" aria-label="SensitivityAnalyzer">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#pySWATPlus.Scenario.simulated_timeseries_df" class="md-nav__link">
+  <a href="#pySWATPlus.SensitivityAnalyzer.simulated_timeseries_df" class="md-nav__link">
     <span class="md-ellipsis">
       simulated_timeseries_df
     </span>
@@ -713,7 +736,7 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#pySWATPlus.Scenario.simulation_by_sobol_sample" class="md-nav__link">
+  <a href="#pySWATPlus.SensitivityAnalyzer.simulation_by_sobol_sample" class="md-nav__link">
     <span class="md-ellipsis">
       simulation_by_sobol_sample
     </span>
@@ -742,14 +765,14 @@
 
 
 
-  <h1>Scenario</h1>
+  <h1>SensitivityAnalyzer.py</h1>
 
 <div class="doc doc-object doc-class">
 
 
 
-<h2 id="pySWATPlus.Scenario" class="doc doc-heading">
-            <code>Scenario</code>
+<h2 id="pySWATPlus.SensitivityAnalyzer" class="doc doc-heading">
+            <code>SensitivityAnalyzer</code>
 
 
 </h2>
@@ -767,7 +790,7 @@
 
 
               <details class="quote">
-                <summary>Source code in <code>pySWATPlus/scenario.py</code></summary>
+                <summary>Source code in <code>pySWATPlus/sensitivityanalyzer.py</code></summary>
                 <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 18</span>
 <span class="normal"> 19</span>
 <span class="normal"> 20</span>
@@ -1283,7 +1306,68 @@
 <span class="normal">530</span>
 <span class="normal">531</span>
 <span class="normal">532</span>
-<span class="normal">533</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Scenario</span><span class="p">:</span>
+<span class="normal">533</span>
+<span class="normal">534</span>
+<span class="normal">535</span>
+<span class="normal">536</span>
+<span class="normal">537</span>
+<span class="normal">538</span>
+<span class="normal">539</span>
+<span class="normal">540</span>
+<span class="normal">541</span>
+<span class="normal">542</span>
+<span class="normal">543</span>
+<span class="normal">544</span>
+<span class="normal">545</span>
+<span class="normal">546</span>
+<span class="normal">547</span>
+<span class="normal">548</span>
+<span class="normal">549</span>
+<span class="normal">550</span>
+<span class="normal">551</span>
+<span class="normal">552</span>
+<span class="normal">553</span>
+<span class="normal">554</span>
+<span class="normal">555</span>
+<span class="normal">556</span>
+<span class="normal">557</span>
+<span class="normal">558</span>
+<span class="normal">559</span>
+<span class="normal">560</span>
+<span class="normal">561</span>
+<span class="normal">562</span>
+<span class="normal">563</span>
+<span class="normal">564</span>
+<span class="normal">565</span>
+<span class="normal">566</span>
+<span class="normal">567</span>
+<span class="normal">568</span>
+<span class="normal">569</span>
+<span class="normal">570</span>
+<span class="normal">571</span>
+<span class="normal">572</span>
+<span class="normal">573</span>
+<span class="normal">574</span>
+<span class="normal">575</span>
+<span class="normal">576</span>
+<span class="normal">577</span>
+<span class="normal">578</span>
+<span class="normal">579</span>
+<span class="normal">580</span>
+<span class="normal">581</span>
+<span class="normal">582</span>
+<span class="normal">583</span>
+<span class="normal">584</span>
+<span class="normal">585</span>
+<span class="normal">586</span>
+<span class="normal">587</span>
+<span class="normal">588</span>
+<span class="normal">589</span>
+<span class="normal">590</span>
+<span class="normal">591</span>
+<span class="normal">592</span>
+<span class="normal">593</span>
+<span class="normal">594</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">SensitivityAnalyzer</span><span class="p">:</span>
 
 <span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    Provides functionality for running scenario simulations and analyzing simulated data.</span>
@@ -1292,11 +1376,13 @@
     <span class="k">def</span><span class="w"> </span><span class="nf">simulated_timeseries_df</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">data_file</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
-        <span class="n">unit_row</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="n">has_units</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
         <span class="n">start_date</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">end_date</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-        <span class="n">filter_rows</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="n">typing</span><span class="o">.</span><span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="p">{},</span>
-        <span class="n">retain_cols</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">apply_filter</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="n">typing</span><span class="o">.</span><span class="n">Any</span><span class="p">]]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">usecols</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">save_df</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="n">json_file</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pandas</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">        Extracts data from an input file produced by a simulation and generates</span>
@@ -1305,16 +1391,18 @@
 
 <span class="sd">        Parameters:</span>
 <span class="sd">            data_file (str): Path to the target file used to generate the time series `DataFrame`.</span>
-<span class="sd">            unit_row (bool): If `True`, the third line of the input file contains units for the columns.</span>
-<span class="sd">            start_date (str): Start date in `&#39;yyyy-mm-dd&#39;` format. By default,</span>
+<span class="sd">            has_units (bool): If `True`, the third line of the input file contains units for the columns.</span>
+<span class="sd">            start_date (str): Start date in `&#39;yyyy-mm-dd&#39;` format. If `None` (default),</span>
 <span class="sd">                the earliest date available in the file is used.</span>
-<span class="sd">            end_date (str): End date in `&#39;yyyy-mm-dd&#39;` format. By default,</span>
+<span class="sd">            end_date (str): End date in `&#39;yyyy-mm-dd&#39;` format. If `None` (default),</span>
 <span class="sd">                the latest date available in the file is used.</span>
-<span class="sd">            filter_rows (dict[str, list[typing.Any]]): Dictionary where each key is a column name, and the</span>
-<span class="sd">                corresponding value is a list of values used to filter the DataFrame. By default,</span>
-<span class="sd">                no row filtering is applied.</span>
-<span class="sd">            retain_cols (list[str]): List of column names to retain in the output `DataFrame`. By default,</span>
-<span class="sd">                all columns from the input file are retained.</span>
+<span class="sd">            apply_filter (dict[str, list[typing.Any]]): Dictionary where each key is a column name, and the</span>
+<span class="sd">                corresponding value is a list of values used to filter rows in the DataFrame. If `None` (default),</span>
+<span class="sd">                no filtering is applied.</span>
+<span class="sd">            usecols (list[str]): List of column names to use in the output `DataFrame`. If `None` (default),</span>
+<span class="sd">                all columns from the input file are used.</span>
+<span class="sd">            save_df (bool): If True, saves the `DataFrame` to a JSON file. Default is False.</span>
+<span class="sd">            json_file (str): Path to save the `DataFrame` when `save_df=True`. Default is `None`.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            A time series DataFrame with a new column (`date_col`) containing</span>
@@ -1324,7 +1412,7 @@
         <span class="c1"># DataFrame from input file</span>
         <span class="n">file_reader</span> <span class="o">=</span> <span class="n">FileReader</span><span class="p">(</span>
             <span class="n">path</span><span class="o">=</span><span class="n">data_file</span><span class="p">,</span>
-            <span class="n">has_units</span><span class="o">=</span><span class="n">unit_row</span><span class="p">,</span>
+            <span class="n">has_units</span><span class="o">=</span><span class="n">has_units</span>
         <span class="p">)</span>
 
         <span class="c1"># check that dates are in correct format</span>
@@ -1333,21 +1421,20 @@
         <span class="k">if</span> <span class="n">end_date</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">utils</span><span class="o">.</span><span class="n">_validate_date_str</span><span class="p">(</span><span class="n">end_date</span><span class="p">)</span>
 
+        <span class="c1"># DataFrame</span>
         <span class="n">df</span> <span class="o">=</span> <span class="n">file_reader</span><span class="o">.</span><span class="n">df</span>
+        <span class="n">df_cols</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span>
 
         <span class="c1"># Create date column</span>
         <span class="n">date_col</span> <span class="o">=</span> <span class="s1">&#39;date&#39;</span>
-        <span class="n">df_cols</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span>
-
         <span class="n">time_cols</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;yr&#39;</span><span class="p">,</span> <span class="s1">&#39;mon&#39;</span><span class="p">,</span> <span class="s1">&#39;day&#39;</span><span class="p">]</span>
         <span class="n">missing_cols</span> <span class="o">=</span> <span class="p">[</span><span class="n">col</span> <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">time_cols</span> <span class="k">if</span> <span class="n">col</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">df_cols</span><span class="p">]</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">missing_cols</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
                 <span class="sa">f</span><span class="s1">&#39;Missing required time series columns &quot;</span><span class="si">{</span><span class="n">missing_cols</span><span class="si">}</span><span class="s1">&quot; in file &quot;</span><span class="si">{</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">data_file</span><span class="p">)</span><span class="si">}</span><span class="s1">&quot;&#39;</span>
             <span class="p">)</span>
-
         <span class="n">df</span><span class="p">[</span><span class="n">date_col</span><span class="p">]</span> <span class="o">=</span> <span class="n">pandas</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span>
-            <span class="n">df</span><span class="p">[[</span><span class="s1">&#39;yr&#39;</span><span class="p">,</span> <span class="s1">&#39;mon&#39;</span><span class="p">,</span> <span class="s1">&#39;day&#39;</span><span class="p">]]</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;yr&#39;</span><span class="p">:</span> <span class="s1">&#39;year&#39;</span><span class="p">,</span> <span class="s1">&#39;mon&#39;</span><span class="p">:</span> <span class="s1">&#39;month&#39;</span><span class="p">,</span> <span class="s1">&#39;day&#39;</span><span class="p">:</span> <span class="s1">&#39;day&#39;</span><span class="p">})</span>
+            <span class="n">df</span><span class="p">[</span><span class="n">time_cols</span><span class="p">]</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;yr&#39;</span><span class="p">:</span> <span class="s1">&#39;year&#39;</span><span class="p">,</span> <span class="s1">&#39;mon&#39;</span><span class="p">:</span> <span class="s1">&#39;month&#39;</span><span class="p">})</span>
         <span class="p">)</span><span class="o">.</span><span class="n">dt</span><span class="o">.</span><span class="n">date</span>
 
         <span class="c1"># filter DataFrame by date</span>
@@ -1358,24 +1445,60 @@
         <span class="c1"># Check if filtering by date removed all rows</span>
         <span class="k">if</span> <span class="n">df</span><span class="o">.</span><span class="n">empty</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s1">&#39;No data available between </span><span class="si">{</span><span class="n">start_do</span><span class="si">}</span><span class="s1"> and </span><span class="si">{</span><span class="n">end_do</span><span class="si">}</span><span class="s1"> in file &quot;</span><span class="si">{</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">data_file</span><span class="p">)</span><span class="si">}</span><span class="s1">&quot;&#39;</span>
+                <span class="sa">f</span><span class="s1">&#39;No data available between &quot;</span><span class="si">{</span><span class="n">start_date</span><span class="si">}</span><span class="s1">&quot; and &quot;</span><span class="si">{</span><span class="n">end_date</span><span class="si">}</span><span class="s1">&quot; in file &quot;</span><span class="si">{</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">data_file</span><span class="p">)</span><span class="si">}</span><span class="s1">&quot;&#39;</span>
             <span class="p">)</span>
 
-        <span class="c1"># filter by row values</span>
-        <span class="k">for</span> <span class="n">col</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">filter_rows</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-            <span class="k">if</span> <span class="n">col</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">df_cols</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Column name &quot;</span><span class="si">{</span><span class="n">col</span><span class="si">}</span><span class="s1">&quot; to filter rows is not valid&#39;</span><span class="p">)</span>
-            <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
-                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Filter values for column &quot;</span><span class="si">{</span><span class="n">col</span><span class="si">}</span><span class="s1">&quot; must be provided as a list&#39;</span><span class="p">)</span>
-            <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="n">col</span><span class="p">]</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">val</span><span class="p">)]</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="c1"># Filter rows by dictionary criteria</span>
+        <span class="k">if</span> <span class="n">apply_filter</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">col</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">apply_filter</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="k">if</span> <span class="n">col</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">df_cols</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                        <span class="sa">f</span><span class="s1">&#39;Column &quot;</span><span class="si">{</span><span class="n">col</span><span class="si">}</span><span class="s1">&quot; in apply_filter is not present in file &quot;</span><span class="si">{</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">data_file</span><span class="p">)</span><span class="si">}</span><span class="s1">&quot;&#39;</span>
+                    <span class="p">)</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                        <span class="sa">f</span><span class="s1">&#39;Filter values for column &quot;</span><span class="si">{</span><span class="n">col</span><span class="si">}</span><span class="s1">&quot; must be a list in file &quot;</span><span class="si">{</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">data_file</span><span class="p">)</span><span class="si">}</span><span class="s1">&quot;&#39;</span>
+                    <span class="p">)</span>
+                <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="n">col</span><span class="p">]</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">val</span><span class="p">)]</span>
+                <span class="c1"># Check if filtering removed all rows</span>
+                <span class="k">if</span> <span class="n">df</span><span class="o">.</span><span class="n">empty</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                        <span class="sa">f</span><span class="s1">&#39;Filtering by column &quot;</span><span class="si">{</span><span class="n">col</span><span class="si">}</span><span class="s1">&quot; with values &quot;</span><span class="si">{</span><span class="n">val</span><span class="si">}</span><span class="s1">&quot; removed all rows from file &quot;</span><span class="si">{</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">data_file</span><span class="p">)</span><span class="si">}</span><span class="s1">&quot;&#39;</span>
+                    <span class="p">)</span>
 
-        <span class="c1"># DataFrame with selected columns</span>
-        <span class="k">if</span> <span class="n">retain_cols</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">final_cols</span> <span class="o">=</span> <span class="p">[</span><span class="n">date_col</span><span class="p">]</span> <span class="o">+</span> <span class="p">[</span><span class="n">col</span> <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span> <span class="k">if</span> <span class="n">col</span> <span class="o">!=</span> <span class="n">date_col</span><span class="p">]</span>
+        <span class="c1"># Reset DataFrame index</span>
+        <span class="n">df</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span>
+            <span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span>
+        <span class="p">)</span>
+
+        <span class="c1"># Finalize columns for DataFrame</span>
+        <span class="k">if</span> <span class="n">usecols</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">retain_cols</span> <span class="o">=</span> <span class="p">[</span><span class="n">date_col</span><span class="p">]</span> <span class="o">+</span> <span class="n">df_cols</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">final_cols</span> <span class="o">=</span> <span class="p">[</span><span class="n">date_col</span><span class="p">]</span> <span class="o">+</span> <span class="n">retain_cols</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">usecols</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;&quot;usecols&quot; must be a list, got </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">usecols</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">usecols</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">col</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">df_cols</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                        <span class="sa">f</span><span class="s1">&#39;Column &quot;</span><span class="si">{</span><span class="n">col</span><span class="si">}</span><span class="s1">&quot; in usecols list is not present in file &quot;</span><span class="si">{</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">data_file</span><span class="p">)</span><span class="si">}</span><span class="s1">&quot;&#39;</span>
+                    <span class="p">)</span>
+            <span class="n">retain_cols</span> <span class="o">=</span> <span class="p">[</span><span class="n">date_col</span><span class="p">]</span> <span class="o">+</span> <span class="n">usecols</span>
 
-        <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">final_cols</span><span class="p">]</span>
+        <span class="c1"># Output DataFrame</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">retain_cols</span><span class="p">]</span>
+
+        <span class="c1"># Write output</span>
+        <span class="k">if</span> <span class="n">save_df</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">json_file</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;json_file must be a valid JSON file string path when save_df=True&#39;</span><span class="p">)</span>
+            <span class="n">df</span><span class="p">[</span><span class="s1">&#39;date&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;date&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
+            <span class="n">df</span><span class="o">.</span><span class="n">to_json</span><span class="p">(</span>
+                <span class="n">path_or_buf</span><span class="o">=</span><span class="n">json_file</span><span class="p">,</span>
+                <span class="n">orient</span><span class="o">=</span><span class="s2">&quot;records&quot;</span><span class="p">,</span>
+                <span class="n">lines</span><span class="o">=</span><span class="kc">True</span>
+            <span class="p">)</span>
+
         <span class="k">return</span> <span class="n">df</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_simulation_in_cpu</span><span class="p">(</span>
@@ -1387,12 +1510,7 @@
         <span class="n">simulation_folder</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
         <span class="n">txtinout_folder</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
         <span class="n">params</span><span class="p">:</span> <span class="n">ParamsType</span><span class="p">,</span>
-        <span class="n">data_file</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
-        <span class="n">unit_row</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
-        <span class="n">start_date</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span>
-        <span class="n">end_date</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span>
-        <span class="n">filter_rows</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="n">typing</span><span class="o">.</span><span class="n">Any</span><span class="p">]],</span>
-        <span class="n">retain_cols</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">simulation_data</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">typing</span><span class="o">.</span><span class="n">Any</span><span class="p">]],</span>
         <span class="n">clean_setup</span><span class="p">:</span> <span class="nb">bool</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">typing</span><span class="o">.</span><span class="n">Any</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
@@ -1432,6 +1550,12 @@
             <span class="n">name</span><span class="o">=</span><span class="n">dir_path</span>
         <span class="p">)</span>
 
+        <span class="c1"># Output simulation dictionary</span>
+        <span class="n">simulation_output</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;dir&#39;</span><span class="p">:</span> <span class="n">dir_name</span><span class="p">,</span>
+            <span class="s1">&#39;array&#39;</span><span class="p">:</span> <span class="n">var_array</span>
+        <span class="p">}</span>
+
         <span class="c1"># Initialize TxtinoutReader class</span>
         <span class="n">txtinout_reader</span> <span class="o">=</span> <span class="n">TxtinoutReader</span><span class="p">(</span>
             <span class="n">path</span><span class="o">=</span><span class="n">txtinout_folder</span>
@@ -1444,27 +1568,22 @@
         <span class="p">)</span>
 
         <span class="c1"># Extract simulated data</span>
-        <span class="n">df</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">simulated_timeseries_df</span><span class="p">(</span>
-            <span class="n">data_file</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">dir_path</span><span class="p">,</span> <span class="n">data_file</span><span class="p">),</span>
-            <span class="n">unit_row</span><span class="o">=</span><span class="n">unit_row</span><span class="p">,</span>
-            <span class="n">start_date</span><span class="o">=</span><span class="n">start_date</span><span class="p">,</span>
-            <span class="n">end_date</span><span class="o">=</span><span class="n">end_date</span><span class="p">,</span>
-            <span class="n">filter_rows</span><span class="o">=</span><span class="n">filter_rows</span><span class="p">,</span>
-            <span class="n">retain_cols</span><span class="o">=</span><span class="n">retain_cols</span>
-        <span class="p">)</span>
-
-        <span class="c1"># output</span>
-        <span class="n">output</span> <span class="o">=</span> <span class="p">{</span>
-            <span class="s1">&#39;dir&#39;</span><span class="p">:</span> <span class="n">dir_name</span><span class="p">,</span>
-            <span class="s1">&#39;array&#39;</span><span class="p">:</span> <span class="n">var_array</span><span class="p">,</span>
-            <span class="s1">&#39;df&#39;</span><span class="p">:</span> <span class="n">df</span>
-        <span class="p">}</span>
+        <span class="k">for</span> <span class="n">sim_fname</span><span class="p">,</span> <span class="n">sim_fdict</span> <span class="ow">in</span> <span class="n">simulation_data</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="n">df</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">simulated_timeseries_df</span><span class="p">(</span>
+                <span class="n">data_file</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">dir_path</span><span class="p">,</span> <span class="n">sim_fname</span><span class="p">),</span>
+                <span class="n">has_units</span><span class="o">=</span><span class="n">sim_fdict</span><span class="p">[</span><span class="s1">&#39;has_units&#39;</span><span class="p">],</span>
+                <span class="n">start_date</span><span class="o">=</span><span class="n">sim_fdict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;start_date&#39;</span><span class="p">),</span>
+                <span class="n">end_date</span><span class="o">=</span><span class="n">sim_fdict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;end_date&#39;</span><span class="p">),</span>
+                <span class="n">apply_filter</span><span class="o">=</span><span class="n">sim_fdict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;apply_filter&#39;</span><span class="p">),</span>
+                <span class="n">usecols</span><span class="o">=</span><span class="n">sim_fdict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;usecols&#39;</span><span class="p">)</span>
+            <span class="p">)</span>
+            <span class="n">simulation_output</span><span class="p">[</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="n">sim_fname</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s1">_df&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span>
 
         <span class="c1"># Remove simulation directory</span>
         <span class="k">if</span> <span class="n">clean_setup</span><span class="p">:</span>
             <span class="n">shutil</span><span class="o">.</span><span class="n">rmtree</span><span class="p">(</span><span class="n">dir_path</span><span class="p">,</span> <span class="n">ignore_errors</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
-        <span class="k">return</span> <span class="n">output</span>
+        <span class="k">return</span> <span class="n">simulation_output</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">simulation_by_sobol_sample</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
@@ -1474,12 +1593,7 @@
         <span class="n">simulation_folder</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
         <span class="n">txtinout_folder</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
         <span class="n">params</span><span class="p">:</span> <span class="n">ParamsType</span><span class="p">,</span>
-        <span class="n">data_file</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
-        <span class="n">unit_row</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
-        <span class="n">start_date</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-        <span class="n">end_date</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-        <span class="n">filter_rows</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="n">typing</span><span class="o">.</span><span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="p">{},</span>
-        <span class="n">retain_cols</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">simulation_data</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">typing</span><span class="o">.</span><span class="n">Any</span><span class="p">]],</span>
         <span class="n">max_workers</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">save_output</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
         <span class="n">clean_setup</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span>
@@ -1519,7 +1633,7 @@
 <span class="sd">                ```python</span>
 <span class="sd">                var_bounds = [</span>
 <span class="sd">                    [0, 1],  # bounds for &#39;esco&#39;</span>
-<span class="sd">                    [30, 40]  # bounds &#39;bm_e | name == &quot;agrl&quot;&#39;</span>
+<span class="sd">                    [30, 40]  # bounds for &#39;bm_e|name == &quot;agrl&quot;&#39;</span>
 <span class="sd">                ]</span>
 <span class="sd">                ```</span>
 
@@ -1534,7 +1648,7 @@
 <span class="sd">            txtinout_folder (str): Path to the `TxtInOut` folder. Raises an error if the folder does not contain exactly one SWAT+ executable `.exe` file.</span>
 
 <span class="sd">            params (ParamsType):  Nested dictionary defining the parameter modifications to apply during the simulations.</span>
-<span class="sd">                Each parameter should include a default value (typically `0` or another `float`) to maintain a valid structure.</span>
+<span class="sd">                Each parameter should include a default `value` 0 to maintain a valid structure.</span>
 <span class="sd">                Before each simulation, a deep copy (`copy.deepcopy(params)`) is made to ensure the original dictionary remains unchanged.</span>
 <span class="sd">                The parameter value is dynamically replaced with the corresponding sampled value during execution.</span>
 <span class="sd">                ```python</span>
@@ -1549,19 +1663,35 @@
 <span class="sd">                    }</span>
 <span class="sd">                }</span>
 <span class="sd">                ```</span>
-<span class="sd">            data_file (str): Path to the target file used to generate the time series `DataFrame`.</span>
 
-<span class="sd">            unit_row (bool): If `True`, the third line of the input file contains units for the columns.</span>
+<span class="sd">            simulation_data (dict[str, dict[str, typing.Any]]):  Nested dictionary that specifies how to extract data</span>
+<span class="sd">                from SWAT+ simulation-generated files. The keys are filenames (without paths) of the output files.</span>
+<span class="sd">                Each key must map to a non-empty dictionary with the following subkeys:</span>
 
-<span class="sd">            start_date (str): Start date in `&#39;yyyy-mm-dd&#39;` format. By default, the earliest date available in the file is used.</span>
+<span class="sd">                - `has_units (bool)`: Mandatory subkey. If `True`, the third line of the simulated file contains units for the columns.</span>
+<span class="sd">                - `start_date (str)`: Optional subkey in `YYYY-MM-DD` format. Defaults to the earliest date in the simulated file.</span>
+<span class="sd">                - `end_date (str)`: Optional subkey in `YYYY-MM-DD` format. Defaults to the latest date in the simulated file.</span>
+<span class="sd">                - `apply_filter (dict[str, list[typing.Any]])`: Optional subkey. Each key is a column name and the corresponding value</span>
+<span class="sd">                  is a list of allowed values for filtering rows in the DataFrame. By default, no filtering is applied.</span>
+<span class="sd">                  An error is raised if filtering produces an empty DataFrame.</span>
+<span class="sd">                - `usecols (list[str])`: Optional subkey. List of columns to extract from the simulated file. By default, all available columns are used.</span>
 
-<span class="sd">            end_date (str): End date in `&#39;yyyy-mm-dd&#39;` format. By default, the latest date available in the file is used.</span>
-
-<span class="sd">            filter_rows (dict[str, list[typing.Any]]): Dictionary where each key is a column name, and the</span>
-<span class="sd">                corresponding value is a list of values used to filter the DataFrame. By default, no row filtering is applied.</span>
-
-<span class="sd">            retain_cols (list[str]): List of column names to retain in the output `DataFrame`. By default,</span>
-<span class="sd">                all columns from the input file are retained.</span>
+<span class="sd">                ```python</span>
+<span class="sd">                simulation_data = {</span>
+<span class="sd">                    &#39;channel_sd_mon.txt&#39;: {</span>
+<span class="sd">                        &#39;has_units&#39;: True,</span>
+<span class="sd">                        &#39;start_date&#39;: &#39;2014-06-01&#39;,</span>
+<span class="sd">                        &#39;end_date&#39;: &#39;2016-10-01&#39;,</span>
+<span class="sd">                        &#39;apply_filter&#39;: {&#39;gis_id&#39;: [561], &#39;yr&#39;: [2015, 2016]},</span>
+<span class="sd">                        &#39;usecols&#39;: [&#39;gis_id&#39;, &#39;flo_out&#39;]</span>
+<span class="sd">                    },</span>
+<span class="sd">                    &#39;channel_sd_yr.txt&#39;: {</span>
+<span class="sd">                        &#39;has_units&#39;: True,</span>
+<span class="sd">                        &#39;apply_filter&#39;: {&#39;name&#39;: [&#39;cha561&#39;], &#39;yr&#39;: [2015, 2016]},</span>
+<span class="sd">                        &#39;usecols&#39;: [&#39;gis_id&#39;, &#39;flo_out&#39;]</span>
+<span class="sd">                    }</span>
+<span class="sd">                }</span>
+<span class="sd">                ```</span>
 
 <span class="sd">            max_workers (int): Number of logical CPUs to use for parallel processing.</span>
 <span class="sd">                By default, all available logical CPUs are used.</span>
@@ -1588,13 +1718,15 @@
 
 <span class="sd">                - `sample`: The sampled array of parameter sets used in the simulations.</span>
 
-<span class="sd">                - `simulation`: A dictionary mapping simulation indices (integers starting from 1 to `sample_length`) to output sub-dictionaries with the following keys:</span>
+<span class="sd">                - `simulation`: Dictionary mapping simulation indices (integers from 1 to `sample_length`) to output sub-dictionaries with the following keys:</span>
 
-<span class="sd">                    - `var`: A dictionary mapping each variable name (from `var_names`) to the actual value used in the simulation.</span>
-<span class="sd">                    - `dir`: Name of the directory (e.g., `sim_&lt;i&gt;`) where the simulation was performed. Useful when `clean_setup` is `False`,</span>
-<span class="sd">                      allowing users to verify whether the sample values were correctly applied in the target files.</span>
-<span class="sd">                      Note: The simulation index and directory name (e.g., `sim_&lt;i&gt;`) may not match one-to-one due to deduplication and asynchronous execution.</span>
-<span class="sd">                    - `df`: The filtered `DataFrame` obtained from the `data_file`, including a `date` column.</span>
+<span class="sd">                    - `var`: Dictionary mapping each variable name (from `var_names`) to the actual value used in that simulation.</span>
+<span class="sd">                    - `dir`: Name of the directory (e.g., `sim_&lt;i&gt;`) where the simulation was executed. This is useful when `clean_setup` is `False`, as it allows users</span>
+<span class="sd">                      to verify whether the sampled values were correctly applied to the target files. The simulation index and directory name (e.g., `sim_&lt;i&gt;`)</span>
+<span class="sd">                      may not always match one-to-one due to deduplication or asynchronous execution.</span>
+<span class="sd">                    - `&lt;simulation_data_filename&gt;_df`: Filtered `DataFrame` generated for each file specified in the `simulation_data` dictionary</span>
+<span class="sd">                      (e.g., `channel_sd_mon_df`, `channel_sd_yr_df`). Each DataFrame includes a `date` column with `datetime.date` objects.</span>
+
 
 <span class="sd">        Note:</span>
 <span class="sd">            - The `problem` dictionary and `sample` array are used later to calculate Sobol indices</span>
@@ -1623,6 +1755,34 @@
             <span class="k">raise</span> <span class="ne">NotADirectoryError</span><span class="p">(</span><span class="s1">&#39;Provided simulation_folder is not a valid directory path&#39;</span><span class="p">)</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">simulation_folder</span><span class="p">))</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Provided simulation_folder must be an empty directory&#39;</span><span class="p">)</span>
+
+        <span class="c1"># check simulation data dictionary</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">simulation_data</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s1">&#39;simulation_data must be a dictionary type, got </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">simulation_data</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s1">&#39;</span>
+            <span class="p">)</span>
+        <span class="n">sim_validkeys</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="s1">&#39;start_date&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;end_date&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;apply_filter&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;usecols&#39;</span>
+        <span class="p">]</span>
+        <span class="k">for</span> <span class="n">sim_fname</span><span class="p">,</span> <span class="n">sim_fdict</span> <span class="ow">in</span> <span class="n">simulation_data</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">sim_fdict</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s1">&#39;Value for key &quot;</span><span class="si">{</span><span class="n">sim_fname</span><span class="si">}</span><span class="s1">&quot; in simulation_data must be a dictinary type, got </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">sim_fdict</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s1">&#39;</span>
+                <span class="p">)</span>
+            <span class="k">if</span> <span class="s1">&#39;has_units&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">sim_fdict</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s1">&#39;key has_units is missing for &quot;</span><span class="si">{</span><span class="n">sim_fname</span><span class="si">}</span><span class="s1">&quot; in simulation_data&#39;</span>
+                <span class="p">)</span>
+            <span class="k">for</span> <span class="n">sim_fkey</span> <span class="ow">in</span> <span class="n">sim_fdict</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">sim_fkey</span> <span class="o">==</span> <span class="s1">&#39;has_units&#39;</span><span class="p">:</span>
+                    <span class="k">continue</span>
+                <span class="k">if</span> <span class="n">sim_fkey</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">sim_validkeys</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                        <span class="sa">f</span><span class="s1">&#39;Invalid key &quot;</span><span class="si">{</span><span class="n">sim_fkey</span><span class="si">}</span><span class="s1">&quot; for &quot;</span><span class="si">{</span><span class="n">sim_fname</span><span class="si">}</span><span class="s1">&quot; in simulation_data. Expected one of: </span><span class="si">{</span><span class="n">sim_validkeys</span><span class="si">}</span><span class="s1">&#39;</span>
+                    <span class="p">)</span>
 
         <span class="c1"># Check same length for number of variables and their bounds</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">var_names</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">var_bounds</span><span class="p">):</span>
@@ -1668,10 +1828,7 @@
         <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">params</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
             <span class="n">file_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">txtinout_folder</span><span class="p">,</span> <span class="n">key</span><span class="p">)</span>
             <span class="n">has_units</span> <span class="o">=</span> <span class="n">value</span><span class="p">[</span><span class="s1">&#39;has_units&#39;</span><span class="p">]</span>
-
-            <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">has_units</span><span class="p">,</span> <span class="nb">bool</span><span class="p">):</span>
-                <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;&#39;has_units&#39; for file &#39;</span><span class="si">{</span><span class="n">file_path</span><span class="si">}</span><span class="s2">&#39; must be a boolean.&quot;</span><span class="p">)</span>
-
+            <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">has_units</span><span class="p">,</span> <span class="nb">bool</span><span class="p">)</span>
             <span class="n">file_reader</span> <span class="o">=</span> <span class="n">FileReader</span><span class="p">(</span>
                 <span class="n">path</span><span class="o">=</span><span class="n">file_path</span><span class="p">,</span>
                 <span class="n">has_units</span><span class="o">=</span><span class="n">has_units</span>
@@ -1716,12 +1873,7 @@
             <span class="n">simulation_folder</span><span class="o">=</span><span class="n">simulation_folder</span><span class="p">,</span>
             <span class="n">txtinout_folder</span><span class="o">=</span><span class="n">txtinout_folder</span><span class="p">,</span>
             <span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">,</span>
-            <span class="n">data_file</span><span class="o">=</span><span class="n">data_file</span><span class="p">,</span>
-            <span class="n">unit_row</span><span class="o">=</span><span class="n">unit_row</span><span class="p">,</span>
-            <span class="n">start_date</span><span class="o">=</span><span class="n">start_date</span><span class="p">,</span>
-            <span class="n">end_date</span><span class="o">=</span><span class="n">end_date</span><span class="p">,</span>
-            <span class="n">filter_rows</span><span class="o">=</span><span class="n">filter_rows</span><span class="p">,</span>
-            <span class="n">retain_cols</span><span class="o">=</span><span class="n">retain_cols</span><span class="p">,</span>
+            <span class="n">simulation_data</span><span class="o">=</span><span class="n">simulation_data</span><span class="p">,</span>
             <span class="n">clean_setup</span><span class="o">=</span><span class="n">clean_setup</span>
         <span class="p">)</span>
 
@@ -1738,21 +1890,21 @@
                 <span class="c1"># collect simulation results</span>
                 <span class="n">idx_r</span> <span class="o">=</span> <span class="n">future</span><span class="o">.</span><span class="n">result</span><span class="p">()</span>
                 <span class="n">cpu_dict</span><span class="p">[</span><span class="nb">tuple</span><span class="p">(</span><span class="n">idx_r</span><span class="p">[</span><span class="s1">&#39;array&#39;</span><span class="p">])]</span> <span class="o">=</span> <span class="p">{</span>
-                    <span class="s1">&#39;dir&#39;</span><span class="p">:</span> <span class="n">idx_r</span><span class="p">[</span><span class="s1">&#39;dir&#39;</span><span class="p">],</span>
-                    <span class="s1">&#39;df&#39;</span><span class="p">:</span> <span class="n">idx_r</span><span class="p">[</span><span class="s1">&#39;df&#39;</span><span class="p">]</span>
+                    <span class="n">k</span><span class="p">:</span> <span class="n">v</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">idx_r</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="n">k</span> <span class="o">!=</span> <span class="s1">&#39;array&#39;</span>
                 <span class="p">}</span>
 
         <span class="c1"># Generate sensitivity simulation output for all sample_array from unique_array outputs</span>
         <span class="n">sim_dict</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">arr</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">sample_array</span><span class="p">,</span> <span class="n">start</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
-            <span class="n">idx_dict</span> <span class="o">=</span> <span class="n">cpu_dict</span><span class="p">[</span><span class="nb">tuple</span><span class="p">(</span><span class="n">arr</span><span class="p">)]</span>
-            <span class="n">sim_dict</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
-                <span class="s1">&#39;var&#39;</span><span class="p">:</span> <span class="p">{</span>
-                    <span class="n">k</span><span class="p">:</span> <span class="nb">float</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">var_names</span><span class="p">,</span> <span class="n">arr</span><span class="p">)</span>
-                <span class="p">},</span>
-                <span class="s1">&#39;dir&#39;</span><span class="p">:</span> <span class="n">idx_dict</span><span class="p">[</span><span class="s1">&#39;dir&#39;</span><span class="p">],</span>
-                <span class="s1">&#39;df&#39;</span><span class="p">:</span> <span class="n">idx_dict</span><span class="p">[</span><span class="s1">&#39;df&#39;</span><span class="p">]</span>
+            <span class="n">arr_dict</span> <span class="o">=</span> <span class="p">{</span>
+                <span class="n">k</span><span class="p">:</span> <span class="nb">float</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">var_names</span><span class="p">,</span> <span class="n">arr</span><span class="p">)</span>
             <span class="p">}</span>
+            <span class="n">sim_dict</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+                <span class="s1">&#39;var&#39;</span><span class="p">:</span> <span class="n">arr_dict</span>
+            <span class="p">}</span>
+            <span class="n">idx_dict</span> <span class="o">=</span> <span class="n">cpu_dict</span><span class="p">[</span><span class="nb">tuple</span><span class="p">(</span><span class="n">arr</span><span class="p">)]</span>
+            <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">idx_dict</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="n">sim_dict</span><span class="p">[</span><span class="n">idx</span><span class="p">][</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">v</span>
 
         <span class="c1"># Time statistics</span>
         <span class="n">required_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">start_time</span>
@@ -1782,7 +1934,7 @@
                 <span class="k">if</span> <span class="n">key</span> <span class="o">==</span> <span class="s1">&#39;simulation&#39;</span><span class="p">:</span>
                     <span class="k">for</span> <span class="n">sub_key</span><span class="p">,</span> <span class="n">sub_value</span> <span class="ow">in</span> <span class="n">value</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
                         <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">sub_value</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-                            <span class="k">if</span> <span class="n">k</span> <span class="o">==</span> <span class="s1">&#39;df&#39;</span><span class="p">:</span>
+                            <span class="k">if</span> <span class="n">k</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;_df&#39;</span><span class="p">):</span>
                                 <span class="n">v</span><span class="p">[</span><span class="s1">&#39;date&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">v</span><span class="p">[</span><span class="s1">&#39;date&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
                                 <span class="n">write_dict</span><span class="p">[</span><span class="n">key</span><span class="p">][</span><span class="n">sub_key</span><span class="p">][</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">v</span><span class="o">.</span><span class="n">to_json</span><span class="p">()</span>
             <span class="c1"># Path to the JOSN file</span>
@@ -1790,13 +1942,6 @@
             <span class="c1"># Write to the JSON file</span>
             <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">json_file</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">output_write</span><span class="p">:</span>
                 <span class="n">json</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">write_dict</span><span class="p">,</span> <span class="n">output_write</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
-
-        <span class="c1"># Remove simulation folders</span>
-        <span class="k">if</span> <span class="n">clean_setup</span><span class="p">:</span>
-            <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">cpu_dict</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-                <span class="n">v_folder</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">simulation_folder</span><span class="p">,</span> <span class="n">v</span><span class="p">[</span><span class="s1">&#39;dir&#39;</span><span class="p">])</span>
-                <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">v_folder</span><span class="p">):</span>
-                    <span class="n">shutil</span><span class="o">.</span><span class="n">rmtree</span><span class="p">(</span><span class="n">v_folder</span><span class="p">,</span> <span class="n">ignore_errors</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="n">output_dict</span>
 </code></pre></div></td></tr></table></div>
@@ -1817,8 +1962,8 @@
 <div class="doc doc-object doc-function">
 
 
-<h3 id="pySWATPlus.Scenario.simulated_timeseries_df" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">simulated_timeseries_df</span><span class="p">(</span><span class="n">data_file</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">unit_row</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">start_date</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">end_date</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">filter_rows</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="n">typing</span><span class="o">.</span><span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="p">{},</span> <span class="n">retain_cols</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pandas</span><span class="o">.</span><span class="n">DataFrame</span></code>
+<h3 id="pySWATPlus.SensitivityAnalyzer.simulated_timeseries_df" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">simulated_timeseries_df</span><span class="p">(</span><span class="n">data_file</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">has_units</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span> <span class="n">start_date</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">end_date</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">apply_filter</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="n">typing</span><span class="o">.</span><span class="n">Any</span><span class="p">]]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">usecols</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">save_df</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">json_file</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pandas</span><span class="o">.</span><span class="n">DataFrame</span></code>
 
 </h3>
 
@@ -1859,7 +2004,7 @@ containing <code>datetime.date</code> objects created from the <code>yr</code>, 
           </tr>
           <tr class="doc-section-item">
             <td>
-                <code>unit_row</code>
+                <code>has_units</code>
             </td>
             <td>
                   <code><span title="bool">bool</span></code>
@@ -1870,7 +2015,7 @@ containing <code>datetime.date</code> objects created from the <code>yr</code>, 
               </div>
             </td>
             <td>
-                  <code>True</code>
+                <em>required</em>
             </td>
           </tr>
           <tr class="doc-section-item">
@@ -1882,7 +2027,7 @@ containing <code>datetime.date</code> objects created from the <code>yr</code>, 
             </td>
             <td>
               <div class="doc-md-description">
-                <p>Start date in <code>'yyyy-mm-dd'</code> format. By default,
+                <p>Start date in <code>'yyyy-mm-dd'</code> format. If <code>None</code> (default),
 the earliest date available in the file is used.</p>
               </div>
             </td>
@@ -1899,7 +2044,7 @@ the earliest date available in the file is used.</p>
             </td>
             <td>
               <div class="doc-md-description">
-                <p>End date in <code>'yyyy-mm-dd'</code> format. By default,
+                <p>End date in <code>'yyyy-mm-dd'</code> format. If <code>None</code> (default),
 the latest date available in the file is used.</p>
               </div>
             </td>
@@ -1909,7 +2054,7 @@ the latest date available in the file is used.</p>
           </tr>
           <tr class="doc-section-item">
             <td>
-                <code>filter_rows</code>
+                <code>apply_filter</code>
             </td>
             <td>
                   <code><span title="dict">dict</span>[<span title="str">str</span>, <span title="list">list</span>[<span title="typing.Any">Any</span>]]</code>
@@ -1917,25 +2062,57 @@ the latest date available in the file is used.</p>
             <td>
               <div class="doc-md-description">
                 <p>Dictionary where each key is a column name, and the
-corresponding value is a list of values used to filter the DataFrame. By default,
-no row filtering is applied.</p>
+corresponding value is a list of values used to filter rows in the DataFrame. If <code>None</code> (default),
+no filtering is applied.</p>
               </div>
             </td>
             <td>
-                  <code>{}</code>
+                  <code>None</code>
             </td>
           </tr>
           <tr class="doc-section-item">
             <td>
-                <code>retain_cols</code>
+                <code>usecols</code>
             </td>
             <td>
                   <code><span title="list">list</span>[<span title="str">str</span>]</code>
             </td>
             <td>
               <div class="doc-md-description">
-                <p>List of column names to retain in the output <code>DataFrame</code>. By default,
-all columns from the input file are retained.</p>
+                <p>List of column names to use in the output <code>DataFrame</code>. If <code>None</code> (default),
+all columns from the input file are used.</p>
+              </div>
+            </td>
+            <td>
+                  <code>None</code>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>save_df</code>
+            </td>
+            <td>
+                  <code><span title="bool">bool</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>If True, saves the <code>DataFrame</code> to a JSON file. Default is False.</p>
+              </div>
+            </td>
+            <td>
+                  <code>False</code>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>json_file</code>
+            </td>
+            <td>
+                  <code><span title="str">str</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Path to save the <code>DataFrame</code> when <code>save_df=True</code>. Default is <code>None</code>.</p>
               </div>
             </td>
             <td>
@@ -1971,7 +2148,7 @@ all columns from the input file are retained.</p>
 
 
             <details class="quote">
-              <summary>Source code in <code>pySWATPlus/scenario.py</code></summary>
+              <summary>Source code in <code>pySWATPlus/sensitivityanalyzer.py</code></summary>
               <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 24</span>
 <span class="normal"> 25</span>
 <span class="normal"> 26</span>
@@ -2059,14 +2236,55 @@ all columns from the input file are retained.</p>
 <span class="normal">108</span>
 <span class="normal">109</span>
 <span class="normal">110</span>
-<span class="normal">111</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">simulated_timeseries_df</span><span class="p">(</span>
+<span class="normal">111</span>
+<span class="normal">112</span>
+<span class="normal">113</span>
+<span class="normal">114</span>
+<span class="normal">115</span>
+<span class="normal">116</span>
+<span class="normal">117</span>
+<span class="normal">118</span>
+<span class="normal">119</span>
+<span class="normal">120</span>
+<span class="normal">121</span>
+<span class="normal">122</span>
+<span class="normal">123</span>
+<span class="normal">124</span>
+<span class="normal">125</span>
+<span class="normal">126</span>
+<span class="normal">127</span>
+<span class="normal">128</span>
+<span class="normal">129</span>
+<span class="normal">130</span>
+<span class="normal">131</span>
+<span class="normal">132</span>
+<span class="normal">133</span>
+<span class="normal">134</span>
+<span class="normal">135</span>
+<span class="normal">136</span>
+<span class="normal">137</span>
+<span class="normal">138</span>
+<span class="normal">139</span>
+<span class="normal">140</span>
+<span class="normal">141</span>
+<span class="normal">142</span>
+<span class="normal">143</span>
+<span class="normal">144</span>
+<span class="normal">145</span>
+<span class="normal">146</span>
+<span class="normal">147</span>
+<span class="normal">148</span>
+<span class="normal">149</span>
+<span class="normal">150</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">simulated_timeseries_df</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">data_file</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
-    <span class="n">unit_row</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="n">has_units</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
     <span class="n">start_date</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">end_date</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">filter_rows</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="n">typing</span><span class="o">.</span><span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="p">{},</span>
-    <span class="n">retain_cols</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">apply_filter</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="n">typing</span><span class="o">.</span><span class="n">Any</span><span class="p">]]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">usecols</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">save_df</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n">json_file</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pandas</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    Extracts data from an input file produced by a simulation and generates</span>
@@ -2075,16 +2293,18 @@ all columns from the input file are retained.</p>
 
 <span class="sd">    Parameters:</span>
 <span class="sd">        data_file (str): Path to the target file used to generate the time series `DataFrame`.</span>
-<span class="sd">        unit_row (bool): If `True`, the third line of the input file contains units for the columns.</span>
-<span class="sd">        start_date (str): Start date in `&#39;yyyy-mm-dd&#39;` format. By default,</span>
+<span class="sd">        has_units (bool): If `True`, the third line of the input file contains units for the columns.</span>
+<span class="sd">        start_date (str): Start date in `&#39;yyyy-mm-dd&#39;` format. If `None` (default),</span>
 <span class="sd">            the earliest date available in the file is used.</span>
-<span class="sd">        end_date (str): End date in `&#39;yyyy-mm-dd&#39;` format. By default,</span>
+<span class="sd">        end_date (str): End date in `&#39;yyyy-mm-dd&#39;` format. If `None` (default),</span>
 <span class="sd">            the latest date available in the file is used.</span>
-<span class="sd">        filter_rows (dict[str, list[typing.Any]]): Dictionary where each key is a column name, and the</span>
-<span class="sd">            corresponding value is a list of values used to filter the DataFrame. By default,</span>
-<span class="sd">            no row filtering is applied.</span>
-<span class="sd">        retain_cols (list[str]): List of column names to retain in the output `DataFrame`. By default,</span>
-<span class="sd">            all columns from the input file are retained.</span>
+<span class="sd">        apply_filter (dict[str, list[typing.Any]]): Dictionary where each key is a column name, and the</span>
+<span class="sd">            corresponding value is a list of values used to filter rows in the DataFrame. If `None` (default),</span>
+<span class="sd">            no filtering is applied.</span>
+<span class="sd">        usecols (list[str]): List of column names to use in the output `DataFrame`. If `None` (default),</span>
+<span class="sd">            all columns from the input file are used.</span>
+<span class="sd">        save_df (bool): If True, saves the `DataFrame` to a JSON file. Default is False.</span>
+<span class="sd">        json_file (str): Path to save the `DataFrame` when `save_df=True`. Default is `None`.</span>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        A time series DataFrame with a new column (`date_col`) containing</span>
@@ -2094,7 +2314,7 @@ all columns from the input file are retained.</p>
     <span class="c1"># DataFrame from input file</span>
     <span class="n">file_reader</span> <span class="o">=</span> <span class="n">FileReader</span><span class="p">(</span>
         <span class="n">path</span><span class="o">=</span><span class="n">data_file</span><span class="p">,</span>
-        <span class="n">has_units</span><span class="o">=</span><span class="n">unit_row</span><span class="p">,</span>
+        <span class="n">has_units</span><span class="o">=</span><span class="n">has_units</span>
     <span class="p">)</span>
 
     <span class="c1"># check that dates are in correct format</span>
@@ -2103,21 +2323,20 @@ all columns from the input file are retained.</p>
     <span class="k">if</span> <span class="n">end_date</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">utils</span><span class="o">.</span><span class="n">_validate_date_str</span><span class="p">(</span><span class="n">end_date</span><span class="p">)</span>
 
+    <span class="c1"># DataFrame</span>
     <span class="n">df</span> <span class="o">=</span> <span class="n">file_reader</span><span class="o">.</span><span class="n">df</span>
+    <span class="n">df_cols</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span>
 
     <span class="c1"># Create date column</span>
     <span class="n">date_col</span> <span class="o">=</span> <span class="s1">&#39;date&#39;</span>
-    <span class="n">df_cols</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span>
-
     <span class="n">time_cols</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;yr&#39;</span><span class="p">,</span> <span class="s1">&#39;mon&#39;</span><span class="p">,</span> <span class="s1">&#39;day&#39;</span><span class="p">]</span>
     <span class="n">missing_cols</span> <span class="o">=</span> <span class="p">[</span><span class="n">col</span> <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">time_cols</span> <span class="k">if</span> <span class="n">col</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">df_cols</span><span class="p">]</span>
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">missing_cols</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
             <span class="sa">f</span><span class="s1">&#39;Missing required time series columns &quot;</span><span class="si">{</span><span class="n">missing_cols</span><span class="si">}</span><span class="s1">&quot; in file &quot;</span><span class="si">{</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">data_file</span><span class="p">)</span><span class="si">}</span><span class="s1">&quot;&#39;</span>
         <span class="p">)</span>
-
     <span class="n">df</span><span class="p">[</span><span class="n">date_col</span><span class="p">]</span> <span class="o">=</span> <span class="n">pandas</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span>
-        <span class="n">df</span><span class="p">[[</span><span class="s1">&#39;yr&#39;</span><span class="p">,</span> <span class="s1">&#39;mon&#39;</span><span class="p">,</span> <span class="s1">&#39;day&#39;</span><span class="p">]]</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;yr&#39;</span><span class="p">:</span> <span class="s1">&#39;year&#39;</span><span class="p">,</span> <span class="s1">&#39;mon&#39;</span><span class="p">:</span> <span class="s1">&#39;month&#39;</span><span class="p">,</span> <span class="s1">&#39;day&#39;</span><span class="p">:</span> <span class="s1">&#39;day&#39;</span><span class="p">})</span>
+        <span class="n">df</span><span class="p">[</span><span class="n">time_cols</span><span class="p">]</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;yr&#39;</span><span class="p">:</span> <span class="s1">&#39;year&#39;</span><span class="p">,</span> <span class="s1">&#39;mon&#39;</span><span class="p">:</span> <span class="s1">&#39;month&#39;</span><span class="p">})</span>
     <span class="p">)</span><span class="o">.</span><span class="n">dt</span><span class="o">.</span><span class="n">date</span>
 
     <span class="c1"># filter DataFrame by date</span>
@@ -2128,24 +2347,60 @@ all columns from the input file are retained.</p>
     <span class="c1"># Check if filtering by date removed all rows</span>
     <span class="k">if</span> <span class="n">df</span><span class="o">.</span><span class="n">empty</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-            <span class="sa">f</span><span class="s1">&#39;No data available between </span><span class="si">{</span><span class="n">start_do</span><span class="si">}</span><span class="s1"> and </span><span class="si">{</span><span class="n">end_do</span><span class="si">}</span><span class="s1"> in file &quot;</span><span class="si">{</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">data_file</span><span class="p">)</span><span class="si">}</span><span class="s1">&quot;&#39;</span>
+            <span class="sa">f</span><span class="s1">&#39;No data available between &quot;</span><span class="si">{</span><span class="n">start_date</span><span class="si">}</span><span class="s1">&quot; and &quot;</span><span class="si">{</span><span class="n">end_date</span><span class="si">}</span><span class="s1">&quot; in file &quot;</span><span class="si">{</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">data_file</span><span class="p">)</span><span class="si">}</span><span class="s1">&quot;&#39;</span>
         <span class="p">)</span>
 
-    <span class="c1"># filter by row values</span>
-    <span class="k">for</span> <span class="n">col</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">filter_rows</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-        <span class="k">if</span> <span class="n">col</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">df_cols</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Column name &quot;</span><span class="si">{</span><span class="n">col</span><span class="si">}</span><span class="s1">&quot; to filter rows is not valid&#39;</span><span class="p">)</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Filter values for column &quot;</span><span class="si">{</span><span class="n">col</span><span class="si">}</span><span class="s1">&quot; must be provided as a list&#39;</span><span class="p">)</span>
-        <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="n">col</span><span class="p">]</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">val</span><span class="p">)]</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="c1"># Filter rows by dictionary criteria</span>
+    <span class="k">if</span> <span class="n">apply_filter</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">col</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">apply_filter</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">col</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">df_cols</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s1">&#39;Column &quot;</span><span class="si">{</span><span class="n">col</span><span class="si">}</span><span class="s1">&quot; in apply_filter is not present in file &quot;</span><span class="si">{</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">data_file</span><span class="p">)</span><span class="si">}</span><span class="s1">&quot;&#39;</span>
+                <span class="p">)</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s1">&#39;Filter values for column &quot;</span><span class="si">{</span><span class="n">col</span><span class="si">}</span><span class="s1">&quot; must be a list in file &quot;</span><span class="si">{</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">data_file</span><span class="p">)</span><span class="si">}</span><span class="s1">&quot;&#39;</span>
+                <span class="p">)</span>
+            <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="n">col</span><span class="p">]</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">val</span><span class="p">)]</span>
+            <span class="c1"># Check if filtering removed all rows</span>
+            <span class="k">if</span> <span class="n">df</span><span class="o">.</span><span class="n">empty</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s1">&#39;Filtering by column &quot;</span><span class="si">{</span><span class="n">col</span><span class="si">}</span><span class="s1">&quot; with values &quot;</span><span class="si">{</span><span class="n">val</span><span class="si">}</span><span class="s1">&quot; removed all rows from file &quot;</span><span class="si">{</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">data_file</span><span class="p">)</span><span class="si">}</span><span class="s1">&quot;&#39;</span>
+                <span class="p">)</span>
 
-    <span class="c1"># DataFrame with selected columns</span>
-    <span class="k">if</span> <span class="n">retain_cols</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">final_cols</span> <span class="o">=</span> <span class="p">[</span><span class="n">date_col</span><span class="p">]</span> <span class="o">+</span> <span class="p">[</span><span class="n">col</span> <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span> <span class="k">if</span> <span class="n">col</span> <span class="o">!=</span> <span class="n">date_col</span><span class="p">]</span>
+    <span class="c1"># Reset DataFrame index</span>
+    <span class="n">df</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span>
+        <span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span>
+    <span class="p">)</span>
+
+    <span class="c1"># Finalize columns for DataFrame</span>
+    <span class="k">if</span> <span class="n">usecols</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">retain_cols</span> <span class="o">=</span> <span class="p">[</span><span class="n">date_col</span><span class="p">]</span> <span class="o">+</span> <span class="n">df_cols</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="n">final_cols</span> <span class="o">=</span> <span class="p">[</span><span class="n">date_col</span><span class="p">]</span> <span class="o">+</span> <span class="n">retain_cols</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">usecols</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;&quot;usecols&quot; must be a list, got </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">usecols</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">usecols</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">col</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">df_cols</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s1">&#39;Column &quot;</span><span class="si">{</span><span class="n">col</span><span class="si">}</span><span class="s1">&quot; in usecols list is not present in file &quot;</span><span class="si">{</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">data_file</span><span class="p">)</span><span class="si">}</span><span class="s1">&quot;&#39;</span>
+                <span class="p">)</span>
+        <span class="n">retain_cols</span> <span class="o">=</span> <span class="p">[</span><span class="n">date_col</span><span class="p">]</span> <span class="o">+</span> <span class="n">usecols</span>
 
-    <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">final_cols</span><span class="p">]</span>
+    <span class="c1"># Output DataFrame</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">retain_cols</span><span class="p">]</span>
+
+    <span class="c1"># Write output</span>
+    <span class="k">if</span> <span class="n">save_df</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">json_file</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;json_file must be a valid JSON file string path when save_df=True&#39;</span><span class="p">)</span>
+        <span class="n">df</span><span class="p">[</span><span class="s1">&#39;date&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;date&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
+        <span class="n">df</span><span class="o">.</span><span class="n">to_json</span><span class="p">(</span>
+            <span class="n">path_or_buf</span><span class="o">=</span><span class="n">json_file</span><span class="p">,</span>
+            <span class="n">orient</span><span class="o">=</span><span class="s2">&quot;records&quot;</span><span class="p">,</span>
+            <span class="n">lines</span><span class="o">=</span><span class="kc">True</span>
+        <span class="p">)</span>
+
     <span class="k">return</span> <span class="n">df</span>
 </code></pre></div></td></tr></table></div>
             </details>
@@ -2156,8 +2411,8 @@ all columns from the input file are retained.</p>
 <div class="doc doc-object doc-function">
 
 
-<h3 id="pySWATPlus.Scenario.simulation_by_sobol_sample" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">simulation_by_sobol_sample</span><span class="p">(</span><span class="n">var_names</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">var_bounds</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="nb">float</span><span class="p">]],</span> <span class="n">sample_number</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">simulation_folder</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">txtinout_folder</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">params</span><span class="p">:</span> <span class="n">ParamsType</span><span class="p">,</span> <span class="n">data_file</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">unit_row</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">start_date</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">end_date</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">filter_rows</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="n">typing</span><span class="o">.</span><span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="p">{},</span> <span class="n">retain_cols</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">max_workers</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">save_output</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">clean_setup</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">typing</span><span class="o">.</span><span class="n">Any</span><span class="p">]</span></code>
+<h3 id="pySWATPlus.SensitivityAnalyzer.simulation_by_sobol_sample" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">simulation_by_sobol_sample</span><span class="p">(</span><span class="n">var_names</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">var_bounds</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="nb">float</span><span class="p">]],</span> <span class="n">sample_number</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">simulation_folder</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">txtinout_folder</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">params</span><span class="p">:</span> <span class="n">ParamsType</span><span class="p">,</span> <span class="n">simulation_data</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">typing</span><span class="o">.</span><span class="n">Any</span><span class="p">]],</span> <span class="n">max_workers</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">save_output</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">clean_setup</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">typing</span><span class="o">.</span><span class="n">Any</span><span class="p">]</span></code>
 
 </h3>
 
@@ -2224,7 +2479,7 @@ If a parameter includes a <code>filter_by</code> condition, the name must be con
                 <p>A list containing <code>[min, max]</code> bounds for each parameter in <code>var_names</code>, in the same order.
 <div class="highlight"><pre><span></span><code><span class="n">var_bounds</span> <span class="o">=</span> <span class="p">[</span>
     <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span>  <span class="c1"># bounds for &#39;esco&#39;</span>
-    <span class="p">[</span><span class="mi">30</span><span class="p">,</span> <span class="mi">40</span><span class="p">]</span>  <span class="c1"># bounds &#39;bm_e | name == &quot;agrl&quot;&#39;</span>
+    <span class="p">[</span><span class="mi">30</span><span class="p">,</span> <span class="mi">40</span><span class="p">]</span>  <span class="c1"># bounds for &#39;bm_e|name == &quot;agrl&quot;&#39;</span>
 <span class="p">]</span>
 </code></pre></div></p>
               </div>
@@ -2299,7 +2554,7 @@ and issues with reading required data files not generated by the simulation.</p>
             <td>
               <div class="doc-md-description">
                 <p>Nested dictionary defining the parameter modifications to apply during the simulations.
-Each parameter should include a default value (typically <code>0</code> or another <code>float</code>) to maintain a valid structure.
+Each parameter should include a default <code>value</code> 0 to maintain a valid structure.
 Before each simulation, a deep copy (<code>copy.deepcopy(params)</code>) is made to ensure the original dictionary remains unchanged.
 The parameter value is dynamically replaced with the corresponding sampled value during execution.
 <div class="highlight"><pre><span></span><code><span class="n">params</span> <span class="o">=</span> <span class="p">{</span>
@@ -2321,100 +2576,44 @@ The parameter value is dynamically replaced with the corresponding sampled value
           </tr>
           <tr class="doc-section-item">
             <td>
-                <code>data_file</code>
+                <code>simulation_data</code>
             </td>
             <td>
-                  <code><span title="str">str</span></code>
+                  <code><span title="dict">dict</span>[<span title="str">str</span>, <span title="dict">dict</span>[<span title="str">str</span>, <span title="typing.Any">Any</span>]]</code>
             </td>
             <td>
               <div class="doc-md-description">
-                <p>Path to the target file used to generate the time series <code>DataFrame</code>.</p>
+                <p>Nested dictionary that specifies how to extract data
+from SWAT+ simulation-generated files. The keys are filenames (without paths) of the output files.
+Each key must map to a non-empty dictionary with the following subkeys:</p>
+<ul>
+<li><code>has_units (bool)</code>: Mandatory subkey. If <code>True</code>, the third line of the simulated file contains units for the columns.</li>
+<li><code>start_date (str)</code>: Optional subkey in <code>YYYY-MM-DD</code> format. Defaults to the earliest date in the simulated file.</li>
+<li><code>end_date (str)</code>: Optional subkey in <code>YYYY-MM-DD</code> format. Defaults to the latest date in the simulated file.</li>
+<li><code>apply_filter (dict[str, list[typing.Any]])</code>: Optional subkey. Each key is a column name and the corresponding value
+  is a list of allowed values for filtering rows in the DataFrame. By default, no filtering is applied.
+  An error is raised if filtering produces an empty DataFrame.</li>
+<li><code>usecols (list[str])</code>: Optional subkey. List of columns to extract from the simulated file. By default, all available columns are used.</li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="n">simulation_data</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;channel_sd_mon.txt&#39;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s1">&#39;has_units&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="s1">&#39;start_date&#39;</span><span class="p">:</span> <span class="s1">&#39;2014-06-01&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;end_date&#39;</span><span class="p">:</span> <span class="s1">&#39;2016-10-01&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;apply_filter&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;gis_id&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">561</span><span class="p">],</span> <span class="s1">&#39;yr&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">2015</span><span class="p">,</span> <span class="mi">2016</span><span class="p">]},</span>
+        <span class="s1">&#39;usecols&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;gis_id&#39;</span><span class="p">,</span> <span class="s1">&#39;flo_out&#39;</span><span class="p">]</span>
+    <span class="p">},</span>
+    <span class="s1">&#39;channel_sd_yr.txt&#39;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s1">&#39;has_units&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="s1">&#39;apply_filter&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;cha561&#39;</span><span class="p">],</span> <span class="s1">&#39;yr&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">2015</span><span class="p">,</span> <span class="mi">2016</span><span class="p">]},</span>
+        <span class="s1">&#39;usecols&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;gis_id&#39;</span><span class="p">,</span> <span class="s1">&#39;flo_out&#39;</span><span class="p">]</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
               </div>
             </td>
             <td>
                 <em>required</em>
-            </td>
-          </tr>
-          <tr class="doc-section-item">
-            <td>
-                <code>unit_row</code>
-            </td>
-            <td>
-                  <code><span title="bool">bool</span></code>
-            </td>
-            <td>
-              <div class="doc-md-description">
-                <p>If <code>True</code>, the third line of the input file contains units for the columns.</p>
-              </div>
-            </td>
-            <td>
-                  <code>True</code>
-            </td>
-          </tr>
-          <tr class="doc-section-item">
-            <td>
-                <code>start_date</code>
-            </td>
-            <td>
-                  <code><span title="str">str</span></code>
-            </td>
-            <td>
-              <div class="doc-md-description">
-                <p>Start date in <code>'yyyy-mm-dd'</code> format. By default, the earliest date available in the file is used.</p>
-              </div>
-            </td>
-            <td>
-                  <code>None</code>
-            </td>
-          </tr>
-          <tr class="doc-section-item">
-            <td>
-                <code>end_date</code>
-            </td>
-            <td>
-                  <code><span title="str">str</span></code>
-            </td>
-            <td>
-              <div class="doc-md-description">
-                <p>End date in <code>'yyyy-mm-dd'</code> format. By default, the latest date available in the file is used.</p>
-              </div>
-            </td>
-            <td>
-                  <code>None</code>
-            </td>
-          </tr>
-          <tr class="doc-section-item">
-            <td>
-                <code>filter_rows</code>
-            </td>
-            <td>
-                  <code><span title="dict">dict</span>[<span title="str">str</span>, <span title="list">list</span>[<span title="typing.Any">Any</span>]]</code>
-            </td>
-            <td>
-              <div class="doc-md-description">
-                <p>Dictionary where each key is a column name, and the
-corresponding value is a list of values used to filter the DataFrame. By default, no row filtering is applied.</p>
-              </div>
-            </td>
-            <td>
-                  <code>{}</code>
-            </td>
-          </tr>
-          <tr class="doc-section-item">
-            <td>
-                <code>retain_cols</code>
-            </td>
-            <td>
-                  <code><span title="list">list</span>[<span title="str">str</span>]</code>
-            </td>
-            <td>
-              <div class="doc-md-description">
-                <p>List of column names to retain in the output <code>DataFrame</code>. By default,
-all columns from the input file are retained.</p>
-              </div>
-            </td>
-            <td>
-                  <code>None</code>
             </td>
           </tr>
           <tr class="doc-section-item">
@@ -2508,13 +2707,14 @@ will be deleted dynamically after collecting the required data.</p>
 <p><code>sample</code>: The sampled array of parameter sets used in the simulations.</p>
 </li>
 <li>
-<p><code>simulation</code>: A dictionary mapping simulation indices (integers starting from 1 to <code>sample_length</code>) to output sub-dictionaries with the following keys:</p>
+<p><code>simulation</code>: Dictionary mapping simulation indices (integers from 1 to <code>sample_length</code>) to output sub-dictionaries with the following keys:</p>
 <ul>
-<li><code>var</code>: A dictionary mapping each variable name (from <code>var_names</code>) to the actual value used in the simulation.</li>
-<li><code>dir</code>: Name of the directory (e.g., <code>sim_&lt;i&gt;</code>) where the simulation was performed. Useful when <code>clean_setup</code> is <code>False</code>,
-  allowing users to verify whether the sample values were correctly applied in the target files.
-  Note: The simulation index and directory name (e.g., <code>sim_&lt;i&gt;</code>) may not match one-to-one due to deduplication and asynchronous execution.</li>
-<li><code>df</code>: The filtered <code>DataFrame</code> obtained from the <code>data_file</code>, including a <code>date</code> column.</li>
+<li><code>var</code>: Dictionary mapping each variable name (from <code>var_names</code>) to the actual value used in that simulation.</li>
+<li><code>dir</code>: Name of the directory (e.g., <code>sim_&lt;i&gt;</code>) where the simulation was executed. This is useful when <code>clean_setup</code> is <code>False</code>, as it allows users
+  to verify whether the sampled values were correctly applied to the target files. The simulation index and directory name (e.g., <code>sim_&lt;i&gt;</code>)
+  may not always match one-to-one due to deduplication or asynchronous execution.</li>
+<li><code>&lt;simulation_data_filename&gt;_df</code>: Filtered <code>DataFrame</code> generated for each file specified in the <code>simulation_data</code> dictionary
+  (e.g., <code>channel_sd_mon_df</code>, <code>channel_sd_yr_df</code>). Each DataFrame includes a <code>date</code> column with <code>datetime.date</code> objects.</li>
 </ul>
 </li>
 </ul>
@@ -2554,43 +2754,8 @@ will be deleted dynamically after collecting the required data.</p>
 </details>
 
             <details class="quote">
-              <summary>Source code in <code>pySWATPlus/scenario.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">201</span>
-<span class="normal">202</span>
-<span class="normal">203</span>
-<span class="normal">204</span>
-<span class="normal">205</span>
-<span class="normal">206</span>
-<span class="normal">207</span>
-<span class="normal">208</span>
-<span class="normal">209</span>
-<span class="normal">210</span>
-<span class="normal">211</span>
-<span class="normal">212</span>
-<span class="normal">213</span>
-<span class="normal">214</span>
-<span class="normal">215</span>
-<span class="normal">216</span>
-<span class="normal">217</span>
-<span class="normal">218</span>
-<span class="normal">219</span>
-<span class="normal">220</span>
-<span class="normal">221</span>
-<span class="normal">222</span>
-<span class="normal">223</span>
-<span class="normal">224</span>
-<span class="normal">225</span>
-<span class="normal">226</span>
-<span class="normal">227</span>
-<span class="normal">228</span>
-<span class="normal">229</span>
-<span class="normal">230</span>
-<span class="normal">231</span>
-<span class="normal">232</span>
-<span class="normal">233</span>
-<span class="normal">234</span>
-<span class="normal">235</span>
-<span class="normal">236</span>
+              <summary>Source code in <code>pySWATPlus/sensitivityanalyzer.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">236</span>
 <span class="normal">237</span>
 <span class="normal">238</span>
 <span class="normal">239</span>
@@ -2887,7 +3052,68 @@ will be deleted dynamically after collecting the required data.</p>
 <span class="normal">530</span>
 <span class="normal">531</span>
 <span class="normal">532</span>
-<span class="normal">533</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">simulation_by_sobol_sample</span><span class="p">(</span>
+<span class="normal">533</span>
+<span class="normal">534</span>
+<span class="normal">535</span>
+<span class="normal">536</span>
+<span class="normal">537</span>
+<span class="normal">538</span>
+<span class="normal">539</span>
+<span class="normal">540</span>
+<span class="normal">541</span>
+<span class="normal">542</span>
+<span class="normal">543</span>
+<span class="normal">544</span>
+<span class="normal">545</span>
+<span class="normal">546</span>
+<span class="normal">547</span>
+<span class="normal">548</span>
+<span class="normal">549</span>
+<span class="normal">550</span>
+<span class="normal">551</span>
+<span class="normal">552</span>
+<span class="normal">553</span>
+<span class="normal">554</span>
+<span class="normal">555</span>
+<span class="normal">556</span>
+<span class="normal">557</span>
+<span class="normal">558</span>
+<span class="normal">559</span>
+<span class="normal">560</span>
+<span class="normal">561</span>
+<span class="normal">562</span>
+<span class="normal">563</span>
+<span class="normal">564</span>
+<span class="normal">565</span>
+<span class="normal">566</span>
+<span class="normal">567</span>
+<span class="normal">568</span>
+<span class="normal">569</span>
+<span class="normal">570</span>
+<span class="normal">571</span>
+<span class="normal">572</span>
+<span class="normal">573</span>
+<span class="normal">574</span>
+<span class="normal">575</span>
+<span class="normal">576</span>
+<span class="normal">577</span>
+<span class="normal">578</span>
+<span class="normal">579</span>
+<span class="normal">580</span>
+<span class="normal">581</span>
+<span class="normal">582</span>
+<span class="normal">583</span>
+<span class="normal">584</span>
+<span class="normal">585</span>
+<span class="normal">586</span>
+<span class="normal">587</span>
+<span class="normal">588</span>
+<span class="normal">589</span>
+<span class="normal">590</span>
+<span class="normal">591</span>
+<span class="normal">592</span>
+<span class="normal">593</span>
+<span class="normal">594</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">simulation_by_sobol_sample</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">var_names</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
     <span class="n">var_bounds</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="nb">float</span><span class="p">]],</span>
@@ -2895,12 +3121,7 @@ will be deleted dynamically after collecting the required data.</p>
     <span class="n">simulation_folder</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
     <span class="n">txtinout_folder</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
     <span class="n">params</span><span class="p">:</span> <span class="n">ParamsType</span><span class="p">,</span>
-    <span class="n">data_file</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
-    <span class="n">unit_row</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
-    <span class="n">start_date</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">end_date</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">filter_rows</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="n">typing</span><span class="o">.</span><span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="p">{},</span>
-    <span class="n">retain_cols</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">simulation_data</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">typing</span><span class="o">.</span><span class="n">Any</span><span class="p">]],</span>
     <span class="n">max_workers</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">save_output</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
     <span class="n">clean_setup</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span>
@@ -2940,7 +3161,7 @@ will be deleted dynamically after collecting the required data.</p>
 <span class="sd">            ```python</span>
 <span class="sd">            var_bounds = [</span>
 <span class="sd">                [0, 1],  # bounds for &#39;esco&#39;</span>
-<span class="sd">                [30, 40]  # bounds &#39;bm_e | name == &quot;agrl&quot;&#39;</span>
+<span class="sd">                [30, 40]  # bounds for &#39;bm_e|name == &quot;agrl&quot;&#39;</span>
 <span class="sd">            ]</span>
 <span class="sd">            ```</span>
 
@@ -2955,7 +3176,7 @@ will be deleted dynamically after collecting the required data.</p>
 <span class="sd">        txtinout_folder (str): Path to the `TxtInOut` folder. Raises an error if the folder does not contain exactly one SWAT+ executable `.exe` file.</span>
 
 <span class="sd">        params (ParamsType):  Nested dictionary defining the parameter modifications to apply during the simulations.</span>
-<span class="sd">            Each parameter should include a default value (typically `0` or another `float`) to maintain a valid structure.</span>
+<span class="sd">            Each parameter should include a default `value` 0 to maintain a valid structure.</span>
 <span class="sd">            Before each simulation, a deep copy (`copy.deepcopy(params)`) is made to ensure the original dictionary remains unchanged.</span>
 <span class="sd">            The parameter value is dynamically replaced with the corresponding sampled value during execution.</span>
 <span class="sd">            ```python</span>
@@ -2970,19 +3191,35 @@ will be deleted dynamically after collecting the required data.</p>
 <span class="sd">                }</span>
 <span class="sd">            }</span>
 <span class="sd">            ```</span>
-<span class="sd">        data_file (str): Path to the target file used to generate the time series `DataFrame`.</span>
 
-<span class="sd">        unit_row (bool): If `True`, the third line of the input file contains units for the columns.</span>
+<span class="sd">        simulation_data (dict[str, dict[str, typing.Any]]):  Nested dictionary that specifies how to extract data</span>
+<span class="sd">            from SWAT+ simulation-generated files. The keys are filenames (without paths) of the output files.</span>
+<span class="sd">            Each key must map to a non-empty dictionary with the following subkeys:</span>
 
-<span class="sd">        start_date (str): Start date in `&#39;yyyy-mm-dd&#39;` format. By default, the earliest date available in the file is used.</span>
+<span class="sd">            - `has_units (bool)`: Mandatory subkey. If `True`, the third line of the simulated file contains units for the columns.</span>
+<span class="sd">            - `start_date (str)`: Optional subkey in `YYYY-MM-DD` format. Defaults to the earliest date in the simulated file.</span>
+<span class="sd">            - `end_date (str)`: Optional subkey in `YYYY-MM-DD` format. Defaults to the latest date in the simulated file.</span>
+<span class="sd">            - `apply_filter (dict[str, list[typing.Any]])`: Optional subkey. Each key is a column name and the corresponding value</span>
+<span class="sd">              is a list of allowed values for filtering rows in the DataFrame. By default, no filtering is applied.</span>
+<span class="sd">              An error is raised if filtering produces an empty DataFrame.</span>
+<span class="sd">            - `usecols (list[str])`: Optional subkey. List of columns to extract from the simulated file. By default, all available columns are used.</span>
 
-<span class="sd">        end_date (str): End date in `&#39;yyyy-mm-dd&#39;` format. By default, the latest date available in the file is used.</span>
-
-<span class="sd">        filter_rows (dict[str, list[typing.Any]]): Dictionary where each key is a column name, and the</span>
-<span class="sd">            corresponding value is a list of values used to filter the DataFrame. By default, no row filtering is applied.</span>
-
-<span class="sd">        retain_cols (list[str]): List of column names to retain in the output `DataFrame`. By default,</span>
-<span class="sd">            all columns from the input file are retained.</span>
+<span class="sd">            ```python</span>
+<span class="sd">            simulation_data = {</span>
+<span class="sd">                &#39;channel_sd_mon.txt&#39;: {</span>
+<span class="sd">                    &#39;has_units&#39;: True,</span>
+<span class="sd">                    &#39;start_date&#39;: &#39;2014-06-01&#39;,</span>
+<span class="sd">                    &#39;end_date&#39;: &#39;2016-10-01&#39;,</span>
+<span class="sd">                    &#39;apply_filter&#39;: {&#39;gis_id&#39;: [561], &#39;yr&#39;: [2015, 2016]},</span>
+<span class="sd">                    &#39;usecols&#39;: [&#39;gis_id&#39;, &#39;flo_out&#39;]</span>
+<span class="sd">                },</span>
+<span class="sd">                &#39;channel_sd_yr.txt&#39;: {</span>
+<span class="sd">                    &#39;has_units&#39;: True,</span>
+<span class="sd">                    &#39;apply_filter&#39;: {&#39;name&#39;: [&#39;cha561&#39;], &#39;yr&#39;: [2015, 2016]},</span>
+<span class="sd">                    &#39;usecols&#39;: [&#39;gis_id&#39;, &#39;flo_out&#39;]</span>
+<span class="sd">                }</span>
+<span class="sd">            }</span>
+<span class="sd">            ```</span>
 
 <span class="sd">        max_workers (int): Number of logical CPUs to use for parallel processing.</span>
 <span class="sd">            By default, all available logical CPUs are used.</span>
@@ -3009,13 +3246,15 @@ will be deleted dynamically after collecting the required data.</p>
 
 <span class="sd">            - `sample`: The sampled array of parameter sets used in the simulations.</span>
 
-<span class="sd">            - `simulation`: A dictionary mapping simulation indices (integers starting from 1 to `sample_length`) to output sub-dictionaries with the following keys:</span>
+<span class="sd">            - `simulation`: Dictionary mapping simulation indices (integers from 1 to `sample_length`) to output sub-dictionaries with the following keys:</span>
 
-<span class="sd">                - `var`: A dictionary mapping each variable name (from `var_names`) to the actual value used in the simulation.</span>
-<span class="sd">                - `dir`: Name of the directory (e.g., `sim_&lt;i&gt;`) where the simulation was performed. Useful when `clean_setup` is `False`,</span>
-<span class="sd">                  allowing users to verify whether the sample values were correctly applied in the target files.</span>
-<span class="sd">                  Note: The simulation index and directory name (e.g., `sim_&lt;i&gt;`) may not match one-to-one due to deduplication and asynchronous execution.</span>
-<span class="sd">                - `df`: The filtered `DataFrame` obtained from the `data_file`, including a `date` column.</span>
+<span class="sd">                - `var`: Dictionary mapping each variable name (from `var_names`) to the actual value used in that simulation.</span>
+<span class="sd">                - `dir`: Name of the directory (e.g., `sim_&lt;i&gt;`) where the simulation was executed. This is useful when `clean_setup` is `False`, as it allows users</span>
+<span class="sd">                  to verify whether the sampled values were correctly applied to the target files. The simulation index and directory name (e.g., `sim_&lt;i&gt;`)</span>
+<span class="sd">                  may not always match one-to-one due to deduplication or asynchronous execution.</span>
+<span class="sd">                - `&lt;simulation_data_filename&gt;_df`: Filtered `DataFrame` generated for each file specified in the `simulation_data` dictionary</span>
+<span class="sd">                  (e.g., `channel_sd_mon_df`, `channel_sd_yr_df`). Each DataFrame includes a `date` column with `datetime.date` objects.</span>
+
 
 <span class="sd">    Note:</span>
 <span class="sd">        - The `problem` dictionary and `sample` array are used later to calculate Sobol indices</span>
@@ -3044,6 +3283,34 @@ will be deleted dynamically after collecting the required data.</p>
         <span class="k">raise</span> <span class="ne">NotADirectoryError</span><span class="p">(</span><span class="s1">&#39;Provided simulation_folder is not a valid directory path&#39;</span><span class="p">)</span>
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">simulation_folder</span><span class="p">))</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Provided simulation_folder must be an empty directory&#39;</span><span class="p">)</span>
+
+    <span class="c1"># check simulation data dictionary</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">simulation_data</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s1">&#39;simulation_data must be a dictionary type, got </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">simulation_data</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s1">&#39;</span>
+        <span class="p">)</span>
+    <span class="n">sim_validkeys</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="s1">&#39;start_date&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;end_date&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;apply_filter&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;usecols&#39;</span>
+    <span class="p">]</span>
+    <span class="k">for</span> <span class="n">sim_fname</span><span class="p">,</span> <span class="n">sim_fdict</span> <span class="ow">in</span> <span class="n">simulation_data</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">sim_fdict</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s1">&#39;Value for key &quot;</span><span class="si">{</span><span class="n">sim_fname</span><span class="si">}</span><span class="s1">&quot; in simulation_data must be a dictinary type, got </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">sim_fdict</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s1">&#39;</span>
+            <span class="p">)</span>
+        <span class="k">if</span> <span class="s1">&#39;has_units&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">sim_fdict</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s1">&#39;key has_units is missing for &quot;</span><span class="si">{</span><span class="n">sim_fname</span><span class="si">}</span><span class="s1">&quot; in simulation_data&#39;</span>
+            <span class="p">)</span>
+        <span class="k">for</span> <span class="n">sim_fkey</span> <span class="ow">in</span> <span class="n">sim_fdict</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">sim_fkey</span> <span class="o">==</span> <span class="s1">&#39;has_units&#39;</span><span class="p">:</span>
+                <span class="k">continue</span>
+            <span class="k">if</span> <span class="n">sim_fkey</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">sim_validkeys</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s1">&#39;Invalid key &quot;</span><span class="si">{</span><span class="n">sim_fkey</span><span class="si">}</span><span class="s1">&quot; for &quot;</span><span class="si">{</span><span class="n">sim_fname</span><span class="si">}</span><span class="s1">&quot; in simulation_data. Expected one of: </span><span class="si">{</span><span class="n">sim_validkeys</span><span class="si">}</span><span class="s1">&#39;</span>
+                <span class="p">)</span>
 
     <span class="c1"># Check same length for number of variables and their bounds</span>
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">var_names</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">var_bounds</span><span class="p">):</span>
@@ -3089,10 +3356,7 @@ will be deleted dynamically after collecting the required data.</p>
     <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">params</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
         <span class="n">file_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">txtinout_folder</span><span class="p">,</span> <span class="n">key</span><span class="p">)</span>
         <span class="n">has_units</span> <span class="o">=</span> <span class="n">value</span><span class="p">[</span><span class="s1">&#39;has_units&#39;</span><span class="p">]</span>
-
-        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">has_units</span><span class="p">,</span> <span class="nb">bool</span><span class="p">):</span>
-            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;&#39;has_units&#39; for file &#39;</span><span class="si">{</span><span class="n">file_path</span><span class="si">}</span><span class="s2">&#39; must be a boolean.&quot;</span><span class="p">)</span>
-
+        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">has_units</span><span class="p">,</span> <span class="nb">bool</span><span class="p">)</span>
         <span class="n">file_reader</span> <span class="o">=</span> <span class="n">FileReader</span><span class="p">(</span>
             <span class="n">path</span><span class="o">=</span><span class="n">file_path</span><span class="p">,</span>
             <span class="n">has_units</span><span class="o">=</span><span class="n">has_units</span>
@@ -3137,12 +3401,7 @@ will be deleted dynamically after collecting the required data.</p>
         <span class="n">simulation_folder</span><span class="o">=</span><span class="n">simulation_folder</span><span class="p">,</span>
         <span class="n">txtinout_folder</span><span class="o">=</span><span class="n">txtinout_folder</span><span class="p">,</span>
         <span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">,</span>
-        <span class="n">data_file</span><span class="o">=</span><span class="n">data_file</span><span class="p">,</span>
-        <span class="n">unit_row</span><span class="o">=</span><span class="n">unit_row</span><span class="p">,</span>
-        <span class="n">start_date</span><span class="o">=</span><span class="n">start_date</span><span class="p">,</span>
-        <span class="n">end_date</span><span class="o">=</span><span class="n">end_date</span><span class="p">,</span>
-        <span class="n">filter_rows</span><span class="o">=</span><span class="n">filter_rows</span><span class="p">,</span>
-        <span class="n">retain_cols</span><span class="o">=</span><span class="n">retain_cols</span><span class="p">,</span>
+        <span class="n">simulation_data</span><span class="o">=</span><span class="n">simulation_data</span><span class="p">,</span>
         <span class="n">clean_setup</span><span class="o">=</span><span class="n">clean_setup</span>
     <span class="p">)</span>
 
@@ -3159,21 +3418,21 @@ will be deleted dynamically after collecting the required data.</p>
             <span class="c1"># collect simulation results</span>
             <span class="n">idx_r</span> <span class="o">=</span> <span class="n">future</span><span class="o">.</span><span class="n">result</span><span class="p">()</span>
             <span class="n">cpu_dict</span><span class="p">[</span><span class="nb">tuple</span><span class="p">(</span><span class="n">idx_r</span><span class="p">[</span><span class="s1">&#39;array&#39;</span><span class="p">])]</span> <span class="o">=</span> <span class="p">{</span>
-                <span class="s1">&#39;dir&#39;</span><span class="p">:</span> <span class="n">idx_r</span><span class="p">[</span><span class="s1">&#39;dir&#39;</span><span class="p">],</span>
-                <span class="s1">&#39;df&#39;</span><span class="p">:</span> <span class="n">idx_r</span><span class="p">[</span><span class="s1">&#39;df&#39;</span><span class="p">]</span>
+                <span class="n">k</span><span class="p">:</span> <span class="n">v</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">idx_r</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="n">k</span> <span class="o">!=</span> <span class="s1">&#39;array&#39;</span>
             <span class="p">}</span>
 
     <span class="c1"># Generate sensitivity simulation output for all sample_array from unique_array outputs</span>
     <span class="n">sim_dict</span> <span class="o">=</span> <span class="p">{}</span>
     <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">arr</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">sample_array</span><span class="p">,</span> <span class="n">start</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
-        <span class="n">idx_dict</span> <span class="o">=</span> <span class="n">cpu_dict</span><span class="p">[</span><span class="nb">tuple</span><span class="p">(</span><span class="n">arr</span><span class="p">)]</span>
-        <span class="n">sim_dict</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
-            <span class="s1">&#39;var&#39;</span><span class="p">:</span> <span class="p">{</span>
-                <span class="n">k</span><span class="p">:</span> <span class="nb">float</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">var_names</span><span class="p">,</span> <span class="n">arr</span><span class="p">)</span>
-            <span class="p">},</span>
-            <span class="s1">&#39;dir&#39;</span><span class="p">:</span> <span class="n">idx_dict</span><span class="p">[</span><span class="s1">&#39;dir&#39;</span><span class="p">],</span>
-            <span class="s1">&#39;df&#39;</span><span class="p">:</span> <span class="n">idx_dict</span><span class="p">[</span><span class="s1">&#39;df&#39;</span><span class="p">]</span>
+        <span class="n">arr_dict</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="n">k</span><span class="p">:</span> <span class="nb">float</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">var_names</span><span class="p">,</span> <span class="n">arr</span><span class="p">)</span>
         <span class="p">}</span>
+        <span class="n">sim_dict</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;var&#39;</span><span class="p">:</span> <span class="n">arr_dict</span>
+        <span class="p">}</span>
+        <span class="n">idx_dict</span> <span class="o">=</span> <span class="n">cpu_dict</span><span class="p">[</span><span class="nb">tuple</span><span class="p">(</span><span class="n">arr</span><span class="p">)]</span>
+        <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">idx_dict</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="n">sim_dict</span><span class="p">[</span><span class="n">idx</span><span class="p">][</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">v</span>
 
     <span class="c1"># Time statistics</span>
     <span class="n">required_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">start_time</span>
@@ -3203,7 +3462,7 @@ will be deleted dynamically after collecting the required data.</p>
             <span class="k">if</span> <span class="n">key</span> <span class="o">==</span> <span class="s1">&#39;simulation&#39;</span><span class="p">:</span>
                 <span class="k">for</span> <span class="n">sub_key</span><span class="p">,</span> <span class="n">sub_value</span> <span class="ow">in</span> <span class="n">value</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
                     <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">sub_value</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-                        <span class="k">if</span> <span class="n">k</span> <span class="o">==</span> <span class="s1">&#39;df&#39;</span><span class="p">:</span>
+                        <span class="k">if</span> <span class="n">k</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;_df&#39;</span><span class="p">):</span>
                             <span class="n">v</span><span class="p">[</span><span class="s1">&#39;date&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">v</span><span class="p">[</span><span class="s1">&#39;date&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
                             <span class="n">write_dict</span><span class="p">[</span><span class="n">key</span><span class="p">][</span><span class="n">sub_key</span><span class="p">][</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">v</span><span class="o">.</span><span class="n">to_json</span><span class="p">()</span>
         <span class="c1"># Path to the JOSN file</span>
@@ -3211,13 +3470,6 @@ will be deleted dynamically after collecting the required data.</p>
         <span class="c1"># Write to the JSON file</span>
         <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">json_file</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">output_write</span><span class="p">:</span>
             <span class="n">json</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">write_dict</span><span class="p">,</span> <span class="n">output_write</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
-
-    <span class="c1"># Remove simulation folders</span>
-    <span class="k">if</span> <span class="n">clean_setup</span><span class="p">:</span>
-        <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">cpu_dict</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-            <span class="n">v_folder</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">simulation_folder</span><span class="p">,</span> <span class="n">v</span><span class="p">[</span><span class="s1">&#39;dir&#39;</span><span class="p">])</span>
-            <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">v_folder</span><span class="p">):</span>
-                <span class="n">shutil</span><span class="o">.</span><span class="n">rmtree</span><span class="p">(</span><span class="n">v_folder</span><span class="p">,</span> <span class="n">ignore_errors</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">output_dict</span>
 </code></pre></div></td></tr></table></div>
