@@ -33,7 +33,7 @@ markdown_extensions:
   - pymdownx.details
 
 nav:
-  - Home: introduction.md
+  - Home: index.md
 
   - User Guide:
     - SWAT+ Simulation: userguide/swatplus_simulation.md
