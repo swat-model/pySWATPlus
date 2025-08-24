@@ -7,7 +7,7 @@ It covers accessing results from both standard simulations and Sobol-based sensi
 
 ## Read Time Series Data
 
-A standard `SWAT+` simulation generates TXT files with time series columns: `day`, `mon`, and `yr` for day, month, and year, respectively. To create a time series `DataFrame` that includes a new `date` column with `datetime.date` objects, and optionally save the output, you can use the following in-built method:
+A standard `SWAT+` simulation generates TXT files with time series columns: `day`, `mon`, and `yr` for day, month, and year, respectively. To create a time series `DataFrame` that includes a new `date` column with `datetime.date` objects. Additionally, the method can optionally save the resulting DataFrame to a JSON file. This is controlled by the parameters `save_df` and `json_file`: setting `save_df=True` enables the saving process, and `json_file` specifies the path where the DataFrame will be written.
 
 ```python
 output = pySWATPlus.SensitivityAnalyzer().simulated_timeseries_df(
@@ -16,7 +16,7 @@ output = pySWATPlus.SensitivityAnalyzer().simulated_timeseries_df(
     start_date='2014-06-01',
     apply_filter={'yr': [2014, 2015], 'gis_id': [561]},
     usecols=['gis_id', 'flo_out'],
-    save_output=True,
+    save_df=True,
     json_file=r"C:\Users\Username\output_folder\tmp.json"
 )
 ```
