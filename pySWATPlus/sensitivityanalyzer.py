@@ -219,11 +219,7 @@ class SensitivityAnalyzer:
         for sim_fname, sim_fdict in simulation_data.items():
             df = self.simulated_timeseries_df(
                 data_file=os.path.join(dir_path, sim_fname),
-                has_units=sim_fdict['has_units'],
-                start_date=sim_fdict.get('start_date'),
-                end_date=sim_fdict.get('end_date'),
-                apply_filter=sim_fdict.get('apply_filter'),
-                usecols=sim_fdict.get('usecols')
+                **sim_fdict
             )
             simulation_output[f'{os.path.splitext(sim_fname)[0]}_df'] = df
 
