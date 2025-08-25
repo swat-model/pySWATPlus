@@ -14,7 +14,7 @@ All contributions, whether large or small, are valuable.
 
 ## Guidelines
 
-Please review the [Contributing Guide](https://swat-model.github.io/pySWATPlus/CONTRIBUTING) for detailed instructions on how to get started.
+Please review the [Contributing Guidelines](https://swat-model.github.io/pySWATPlus/CONTRIBUTING) for detailed instructions on how to get started.
 
 ## Code of Conduct
 As a contributor, you are expected to adhere to our [Code of Conduct](https://github.com/swat-model/pySWATPlus/blob/main/CODE_OF_CONDUCT.md) to ensure a welcoming and inclusive community.
