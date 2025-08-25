@@ -46,6 +46,6 @@ nav:
     - SensitivityAnalyzer.py: api/sensitivityanalyzer.md
     - pySWATPlus.types: api/types.md
 
-  - Contributing: CONTRIBUTING.md
+  - Contributor Guide: CONTRIBUTING.md
 
   - Release Notes: changelog.md
