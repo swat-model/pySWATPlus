@@ -234,7 +234,7 @@
   
     
   
-  Contributing
+  Contributor Guide
 
       </a>
     </li>
@@ -660,7 +660,7 @@
   
   
   <span class="md-ellipsis">
-    Contributing
+    Contributor Guide
     
   </span>
   
@@ -1363,11 +1363,7 @@
 <span class="normal">587</span>
 <span class="normal">588</span>
 <span class="normal">589</span>
-<span class="normal">590</span>
-<span class="normal">591</span>
-<span class="normal">592</span>
-<span class="normal">593</span>
-<span class="normal">594</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">SensitivityAnalyzer</span><span class="p">:</span>
+<span class="normal">590</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">SensitivityAnalyzer</span><span class="p">:</span>
 
 <span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    Provides functionality for running scenario simulations and analyzing simulated data.</span>
@@ -1571,11 +1567,7 @@
         <span class="k">for</span> <span class="n">sim_fname</span><span class="p">,</span> <span class="n">sim_fdict</span> <span class="ow">in</span> <span class="n">simulation_data</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
             <span class="n">df</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">simulated_timeseries_df</span><span class="p">(</span>
                 <span class="n">data_file</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">dir_path</span><span class="p">,</span> <span class="n">sim_fname</span><span class="p">),</span>
-                <span class="n">has_units</span><span class="o">=</span><span class="n">sim_fdict</span><span class="p">[</span><span class="s1">&#39;has_units&#39;</span><span class="p">],</span>
-                <span class="n">start_date</span><span class="o">=</span><span class="n">sim_fdict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;start_date&#39;</span><span class="p">),</span>
-                <span class="n">end_date</span><span class="o">=</span><span class="n">sim_fdict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;end_date&#39;</span><span class="p">),</span>
-                <span class="n">apply_filter</span><span class="o">=</span><span class="n">sim_fdict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;apply_filter&#39;</span><span class="p">),</span>
-                <span class="n">usecols</span><span class="o">=</span><span class="n">sim_fdict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;usecols&#39;</span><span class="p">)</span>
+                <span class="o">**</span><span class="n">sim_fdict</span>
             <span class="p">)</span>
             <span class="n">simulation_output</span><span class="p">[</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="n">sim_fname</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s1">_df&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span>
 
@@ -2755,7 +2747,11 @@ will be deleted dynamically after collecting the required data.</p>
 
             <details class="quote">
               <summary>Source code in <code>pySWATPlus/sensitivityanalyzer.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">236</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">232</span>
+<span class="normal">233</span>
+<span class="normal">234</span>
+<span class="normal">235</span>
+<span class="normal">236</span>
 <span class="normal">237</span>
 <span class="normal">238</span>
 <span class="normal">239</span>
@@ -3109,11 +3105,7 @@ will be deleted dynamically after collecting the required data.</p>
 <span class="normal">587</span>
 <span class="normal">588</span>
 <span class="normal">589</span>
-<span class="normal">590</span>
-<span class="normal">591</span>
-<span class="normal">592</span>
-<span class="normal">593</span>
-<span class="normal">594</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">simulation_by_sobol_sample</span><span class="p">(</span>
+<span class="normal">590</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">simulation_by_sobol_sample</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">var_names</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
     <span class="n">var_bounds</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="nb">float</span><span class="p">]],</span>
