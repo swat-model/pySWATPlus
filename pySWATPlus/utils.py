@@ -170,3 +170,35 @@ def _validate_date_str(
         datetime.strptime(date_str, '%Y-%m-%d').date()
     except ValueError:
         raise ValueError(f'Invalid date format: "{date_str}". Expected YYYY-MM-DD.')
+
+# Function to format VAL to exactly 15 digits (including sign, integer, decimal point)
+
+
+def _format_val_to_15_digits(
+    value: float
+) -> str:
+    '''
+    Format a number for VAL column:
+    - Right-aligned
+    - Max 15 characters total (including sign, digits, decimal point)
+    - Fixed-point if possible, scientific if integer part too big
+    '''
+    abs_val = abs(value)
+    sign = '-' if value < 0 else ''
+
+    # number of digits in integer part
+    int_digits = len(str(int(abs_val)))
+
+    # total space for decimal part: 15 - int_digits - sign - decimal point
+    decimal_places = 15 - int_digits - len(sign) - 1
+
+    if decimal_places >= 0:
+        # fixed-point format fits
+        s = f"{value:.{decimal_places}f}"
+    else:
+        # integer part too big, switch to scientific notation
+        # reserve 1 char for sign if negative
+        s = f"{value:.6e}"  # 6 decimals in scientific notation
+
+    # always right-align in 15 characters
+    return f"{s:>16}"
