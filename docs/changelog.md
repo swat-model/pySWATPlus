@@ -1,7 +1,7 @@
 # Release Notes
 
 
-## Version 1.1.3 (Planned for August xx, 2025)
+## Version 1.1.0 (August 26, 2025)
 
 - Added a new class `pySWATPlus.SensitivityAnalyzer` to support sensitivity simulations with two main methods:
 
