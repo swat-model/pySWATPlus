@@ -3,12 +3,10 @@ import shutil
 import pathlib
 import typing
 import logging
-
-import pandas
 from .filereader import FileReader
-from .types import ParamsType
+from .types import ParamsType, ParameterChanges
 from . import utils
-
+import pandas
 logger = logging.getLogger(__name__)
 
 
@@ -63,125 +61,6 @@ class TxtinoutReader:
         # find parent directory
         self.root_folder = path
         self.swat_exe_path = path / exe_list[0]
-
-    def _write_calibration_file(self, par_change: list[dict[str, typing.Any]]):
-        '''
-        Writes `calibration.cal` file with parameter changes.
-        '''
-
-        outfile = self.root_folder / "calibration.cal"
-
-        # check if calibration.cal exists
-        if not outfile.exists():
-            raise FileNotFoundError("calibration.cal file does not exist in the TxtInOut folder")
-
-        # check if parameters are correct
-        self._check_swatplus_parameters(par_change)
-
-        # Number of parameters (number of rows in the DataFrame)
-        num_parameters = len(par_change)
-
-        # Column widths for right-alignment
-        col_widths = {
-            "NAME": 12,      # left-aligned
-            "CHG_TYPE": 8,
-            "VAL": 16,
-            "CONDS": 16,
-            "LYR1": 8,
-            "LYR2": 8,
-            "YEAR1": 8,
-            "YEAR2": 8,
-            "DAY1": 8,
-            "DAY2": 8,
-            "OBJ_TOT": 8
-        }
-
-        _par_changes = []
-        for change in par_change:
-
-            _par_changes.append({
-                "NAME": change["name"],
-                "CHG_TYPE": change["chg_type"],
-                "VAL": change["value"],
-                "CONDS": 0,
-                "LYR1": 0,
-                "LYR2": 0,
-                "YEAR1": 0,
-                "YEAR2": 0,
-                "DAY1": 0,
-                "DAY2": 0,
-                "OBJ_TOT": 0
-            })
-
-        with open(outfile, "w") as f:
-            # Write header
-            f.write(f"Number of parameters:\n{num_parameters}\n")
-            headers = "NAME        CHG_TYPE             VAL           CONDS    LYR1    LYR2   YEAR1   YEAR2    DAY1    DAY2 OBJ_TOT"
-            f.write(f"{headers}\n")
-
-            # Write rows
-            for change in _par_changes:
-                line = ""
-                for col in change.keys():
-                    if col == "NAME":
-                        line += f"{change[col]:<{col_widths[col]}}"   # left-align
-                    elif col == "VAL":
-                        line += utils._format_val_to_15_digits(change[col])               # special VAL formatting
-                    else:
-                        line += f"{change[col]:>{col_widths[col]}}"  # right-align numeric columns
-                f.write(line + "\n")
-
-    def _check_swatplus_parameters(self, par_change: list[dict[str, typing.Any]]) -> None:
-        '''
-        Check if parameters exists in cal_parms.cal
-        '''
-
-        file_path = self.root_folder / "cal_parms.cal"
-
-        if not file_path.exists():
-            raise FileNotFoundError("cal_parms.cal file does not exist in the TxtInOut folder")
-
-        cal_parms_df = pandas.read_csv(
-            filepath_or_buffer=file_path,
-            skiprows=2,
-            sep=r'\s+'
-        )
-
-        parameter_names = [change['name'] for change in par_change]
-
-        for parameter in parameter_names:
-            if parameter not in cal_parms_df['name'].values:
-                raise ValueError(f"The parameter '{parameter}' is not in cal_parms.cal")
-
-    def _add_calibration_cal_to_file_cio(self):
-        '''
-        Adds the calibration line to 'file.cio'
-        '''
-        file_path = self.root_folder / "file.cio"
-        if not file_path.exists():
-            raise FileNotFoundError("file.cio file does not exist in the TxtInOut folder")
-
-        line_to_add = (
-            "chg               cal_parms.cal     calibration.cal   null              "
-            "null              null              null              null              "
-            "null              null              null              null"
-        )
-        line_index = 21
-
-        # Read all lines
-        with file_path.open("r") as f:
-            lines = f.readlines()
-
-        # Safety check: ensure the file has enough lines
-        if line_index >= len(lines):
-            raise IndexError(f"The file only has {len(lines)} lines, cannot replace line {line_index+1}.")
-
-        # Replace the line, ensure it ends with a newline
-        lines[line_index] = line_to_add.rstrip() + "\n"
-
-        # Write back
-        with file_path.open("w") as f:
-            f.writelines(lines)
 
     def enable_object_in_print_prt(
         self,
@@ -257,6 +136,10 @@ class TxtinoutReader:
         new_print_prt = ""
         found = False
 
+        # Check if file exists
+        if not print_prt_path.exists():
+            raise FileNotFoundError("print.prt file does not exist")
+
         with open(print_prt_path, 'r', newline='') as file:
             for i, line in enumerate(file, start=1):
                 if i <= 10:
@@ -323,6 +206,10 @@ class TxtinoutReader:
 
         time_sim_path = self.root_folder / 'time.sim'
 
+        # Check if file exists
+        if not time_sim_path.exists():
+            raise FileNotFoundError("time.sim file does not exist")
+
         # Open the file in read mode and read its contents
         with open(time_sim_path, 'r') as file:
             lines = file.readlines()
@@ -349,7 +236,7 @@ class TxtinoutReader:
         warmup: int
     ) -> None:
         '''
-        Modify the warm-up years in the `time.sim` file.
+        Modify the warm-up years in the `print.prt` file.
 
         Args:
             warmup (int): A positive integer representing the number of years
@@ -364,10 +251,14 @@ class TxtinoutReader:
         if warmup <= 0:
             raise ValueError('warmup must be a positive integer')
 
-        time_sim_path = self.root_folder / 'print.prt'
+        print_prt_path = self.root_folder / 'print.prt'
+
+        # Check if file exists
+        if not print_prt_path.exists():
+            raise FileNotFoundError("print.prt file does not exist")
 
         # Open the file in read mode and read its contents
-        with open(time_sim_path, 'r') as file:
+        with open(print_prt_path, 'r') as file:
             lines = file.readlines()
 
         nth_line = 3
@@ -384,7 +275,7 @@ class TxtinoutReader:
 
         lines[nth_line - 1] = result_string
 
-        with open(time_sim_path, 'w') as file:
+        with open(print_prt_path, 'w') as file:
             file.writelines(lines)
 
     def _enable_disable_csv_print(
@@ -399,6 +290,10 @@ class TxtinoutReader:
         nth_line = 7
 
         print_prt_path = self.root_folder / 'print.prt'
+
+        # Check if file exists
+        if not print_prt_path.exists():
+            raise FileNotFoundError("print.prt file does not exist")
 
         # Open the file in read mode and read its contents
         with open(print_prt_path, 'r') as file:
@@ -474,6 +369,133 @@ class TxtinoutReader:
             shutil.copy2(file, dest_path / file.name)
 
         return dest_path
+
+    def _write_calibration_file(
+        self,
+        par_change: ParameterChanges
+    ):
+        '''
+        Writes `calibration.cal` file with parameter changes.
+        '''
+
+        outfile = self.root_folder / "calibration.cal"
+
+        # check if calibration.cal exists
+        if not outfile.exists():
+            raise FileNotFoundError("calibration.cal file does not exist in the TxtInOut folder")
+
+        # check if parameters are correct
+        self._check_swatplus_parameters(par_change)
+
+        # Number of parameters (number of rows in the DataFrame)
+        num_parameters = len(par_change)
+
+        # Column widths for right-alignment
+        col_widths = {
+            "NAME": 12,      # left-aligned
+            "CHG_TYPE": 8,
+            "VAL": 16,
+            "CONDS": 16,
+            "LYR1": 8,
+            "LYR2": 8,
+            "YEAR1": 8,
+            "YEAR2": 8,
+            "DAY1": 8,
+            "DAY2": 8,
+            "OBJ_TOT": 8
+        }
+
+        _par_changes = []
+        for change in par_change:
+
+            _par_changes.append({
+                "NAME": change["name"],
+                "CHG_TYPE": change["chg_type"],
+                "VAL": change["value"],
+                "CONDS": 0,
+                "LYR1": 0,
+                "LYR2": 0,
+                "YEAR1": 0,
+                "YEAR2": 0,
+                "DAY1": 0,
+                "DAY2": 0,
+                "OBJ_TOT": 0
+            })
+
+        with open(outfile, "w") as f:
+            # Write header
+            f.write(f"Number of parameters:\n{num_parameters}\n")
+            headers = "NAME        CHG_TYPE             VAL           CONDS    LYR1    LYR2   YEAR1   YEAR2    DAY1    DAY2 OBJ_TOT"
+            f.write(f"{headers}\n")
+
+            # Write rows
+            for change in _par_changes:
+                line = ""
+                for col in change.keys():
+                    if col == "NAME":
+                        line += f"{change[col]:<{col_widths[col]}}"   # left-align
+                    elif col == "VAL":
+                        line += utils._format_val_to_15_digits(change[col])               # special VAL formatting
+                    else:
+                        line += f"{change[col]:>{col_widths[col]}}"  # right-align numeric columns
+                f.write(line + "\n")
+
+    def _check_swatplus_parameters(
+        self,
+        par_change: ParameterChanges
+    ) -> None:
+        '''
+        Check if parameters exists in cal_parms.cal
+        '''
+
+        file_path = self.root_folder / "cal_parms.cal"
+
+        if not file_path.exists():
+            raise FileNotFoundError("cal_parms.cal file does not exist in the TxtInOut folder")
+
+        cal_parms_df = pandas.read_csv(
+            filepath_or_buffer=file_path,
+            skiprows=2,
+            sep=r'\s+'
+        )
+
+        parameter_names = [change['name'] for change in par_change]
+
+        for parameter in parameter_names:
+            if parameter not in cal_parms_df['name'].values:
+                raise ValueError(f"The parameter '{parameter}' is not in cal_parms.cal")
+
+    def _add_calibration_cal_to_file_cio(
+        self
+    ):
+        '''
+        Adds the calibration line to 'file.cio'
+        '''
+        file_path = self.root_folder / "file.cio"
+        if not file_path.exists():
+            raise FileNotFoundError("file.cio file does not exist in the TxtInOut folder")
+
+        line_to_add = (
+            "chg               cal_parms.cal     calibration.cal   null              "
+            "null              null              null              null              "
+            "null              null              null              null"
+        )
+        line_index = 21
+
+        # Read all lines
+        with file_path.open("r") as f:
+            lines = f.readlines()
+
+        # Safety check: ensure the file has enough lines
+        if line_index >= len(lines):
+            raise IndexError(f"The file only has {len(lines)} lines, cannot replace line {line_index+1}.")
+
+        # Replace the line, ensure it ends with a newline
+        lines[line_index] = line_to_add.rstrip() + "\n"
+
+        # Write back
+        with file_path.open("w") as f:
+            f.writelines(lines)
 
     def _run_swat(
         self,
@@ -743,3 +765,52 @@ class TxtinoutReader:
         output = reader.run_swat(params=params)
 
         return output
+
+    def run_swat_calibration_cal(
+        self,
+        params: typing.Optional[ParameterChanges] = None,
+    ) -> pathlib.Path:
+        '''
+        Run the SWAT+ simulation with optional parameter changes.
+
+        Args:
+            params (ParameterChanges, optional): list of dictionaries specifying parameter changes to apply.
+
+                The `params` dictionary should follow this structure:
+
+                ```python
+                params = [
+                            {
+                                "name": str,            # Name of the parameter to change
+                                "value": float,         # New value to assign
+                                "change_type": str,     # (Optional) One of: 'absval' (default), 'abschg', 'pctchg'
+                            },
+                            # ... more changes
+                        ]
+                ```
+
+        Returns:
+            Path where the SWAT+ simulation was executed.
+
+        Example:
+            ```python
+            params = params = [
+                {
+                    "name": "cn2",
+                    "change_type": "absval",
+                    "value": 0.5,
+                }
+            ]
+
+            reader.run_swat(params)
+            ```
+        '''
+
+        _params = params or []
+
+        utils._validate_calibration_params(_params)
+
+        # Run simulation
+        self._run_swat()
+
+        return self.root_folder

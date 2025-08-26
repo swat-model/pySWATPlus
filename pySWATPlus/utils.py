@@ -1,4 +1,4 @@
-from .types import ParamsType, ParamChange
+from .types import ParamsType, ParamChange, ParameterChange, ParameterChanges
 import pandas
 from collections.abc import Callable
 import pathlib
@@ -202,3 +202,45 @@ def _format_val_to_15_digits(
 
     # always right-align in 15 characters
     return f"{s:>16}"
+
+
+def _validate_calibration_params(
+    params: ParameterChanges
+) -> None:
+    '''
+    Validate the structure and values of SWAT+ parameter modification input.
+    '''
+
+    if params is None:
+        return
+
+    if not isinstance(params, ParameterChanges):
+        raise TypeError('Input variable "params" must be a list of ParameterChange dictionaries')
+
+    if not isinstance(params, list):
+        _params = [params]
+    else:
+        _params = params
+
+    valid_change_types = ['absval', 'abschg', 'pctchg']
+    mandatory_keys = ['name', 'value']
+
+    for param_change in _params:
+        if not isinstance(param_change, ParameterChange):
+            raise TypeError(f'Expected a dictionary, got {type(param_change).__name__}')
+
+        for key in mandatory_keys:
+            if key not in param_change:
+                raise KeyError(f'Missing "{key}" key for "{param_change.get("name", "unknown")}" in `params`')
+
+        if not isinstance(param_change['name'], str):
+            raise TypeError('"name" key must be a string in `params`')
+
+        if not isinstance(param_change['value'], (int, float)):
+            raise TypeError(f'"value" type for "{param_change["name"]}" in `params` must be numeric')
+
+        change_type = param_change.get('change_type', 'absval')
+        if change_type not in valid_change_types:
+            raise ValueError(
+                f'Invalid change_type "{change_type}" for "{param_change["name"]}" in `params`. Expected one of: {valid_change_types}'
+            )

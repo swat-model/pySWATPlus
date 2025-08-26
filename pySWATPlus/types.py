@@ -114,3 +114,45 @@ params={
 }
 ```
 '''
+
+
+class ParameterChange(
+    typing.TypedDict
+):
+
+    '''
+    Describes a dictionary structure to change a parameter value in an input file of the SWAT+ model.
+
+    Attributes:
+
+        name (str): The name of the parameter.
+        value (float): The value to apply to the parameter.
+
+        change_type (str): An optional key with a string value that specifies the type of change to apply, with options:
+
+            - `'absval'`: Use the absolute value (default).
+            - `'abschg'`: Apply an absolute change (e.g., -0.5).
+            - `'pctchg'`: Apply a percentage change (e.g., +10%).
+
+    '''
+    name: str
+    value: float
+    change_type: typing_extensions.NotRequired[typing.Literal['absval', 'abschg', 'pctchg']]
+
+
+ParameterChanges = ParameterChange | list[ParameterChange]
+
+'''
+Defines changes in parameter values.
+
+Example:
+```python
+params = [
+    {
+        "name": "cn2",
+        "change_type": "absval",
+        "value": 0.5,
+    }
+]
+```
+'''
