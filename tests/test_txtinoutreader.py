@@ -288,3 +288,68 @@ def test_error_run_swat_in_other_dir(
                 }
             )
         assert exc_info.value.args[0] == 65
+
+
+def test_error_print_prt_does_not_exist(
+    txtinout_reader
+):
+    # check that exception is raised if print.prt file does not exist
+    with tempfile.TemporaryDirectory() as tmp1_dir:
+        target_dir = txtinout_reader.copy_required_files(
+            target_dir=tmp1_dir
+        )
+        target_reader = pySWATPlus.TxtinoutReader(
+            path=target_dir
+        )
+
+        # delete print.prt file in tmp1_dir
+        print_prt_path = target_dir / 'print.prt'
+        if print_prt_path.exists():
+            print_prt_path.unlink()
+
+        with pytest.raises(Exception) as exc_info:
+            target_reader.enable_object_in_print_prt(
+                obj='basin_wb',
+                daily=False,
+                monthly=True,
+                yearly=True,
+                avann=False
+            )
+        assert exc_info.value.args[0] == 'print.prt file does not exist'
+
+        with pytest.raises(Exception) as exc_info:
+            target_reader.set_warmup_year(3)
+        assert exc_info.value.args[0] == 'print.prt file does not exist'
+
+        with pytest.raises(Exception) as exc_info:
+            target_reader.enable_csv_print()
+        assert exc_info.value.args[0] == 'print.prt file does not exist'
+
+        with pytest.raises(Exception) as exc_info:
+            target_reader.disable_csv_print()
+        assert exc_info.value.args[0] == 'print.prt file does not exist'
+
+
+def test_error_time_sim_does_not_exist(
+    txtinout_reader
+):
+    # check that exception is raised if time.sim file does not exist
+    with tempfile.TemporaryDirectory() as tmp1_dir:
+        target_dir = txtinout_reader.copy_required_files(
+            target_dir=tmp1_dir
+        )
+        target_reader = pySWATPlus.TxtinoutReader(
+            path=target_dir
+        )
+
+        # delete time.sim file in tmp1_dir
+        time_sim_path = target_dir / 'time.sim'
+        if time_sim_path.exists():
+            time_sim_path.unlink()
+
+        with pytest.raises(Exception) as exc_info:
+            target_reader.set_begin_and_end_year(
+                begin=2000,
+                end=2020
+            )
+        assert exc_info.value.args[0] == 'time.sim file does not exist'

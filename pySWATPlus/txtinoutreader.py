@@ -136,6 +136,10 @@ class TxtinoutReader:
         new_print_prt = ""
         found = False
 
+        # Check if file exists
+        if not print_prt_path.exists():
+            raise FileNotFoundError("print.prt file does not exist")
+
         with open(print_prt_path, 'r', newline='') as file:
             for i, line in enumerate(file, start=1):
                 if i <= 10:
@@ -202,6 +206,10 @@ class TxtinoutReader:
 
         time_sim_path = self.root_folder / 'time.sim'
 
+        # Check if file exists
+        if not time_sim_path.exists():
+            raise FileNotFoundError("time.sim file does not exist")
+
         # Open the file in read mode and read its contents
         with open(time_sim_path, 'r') as file:
             lines = file.readlines()
@@ -228,7 +236,7 @@ class TxtinoutReader:
         warmup: int
     ) -> None:
         '''
-        Modify the warm-up years in the `time.sim` file.
+        Modify the warm-up years in the `print.prt` file.
 
         Args:
             warmup (int): A positive integer representing the number of years
@@ -243,10 +251,14 @@ class TxtinoutReader:
         if warmup <= 0:
             raise ValueError('warmup must be a positive integer')
 
-        time_sim_path = self.root_folder / 'print.prt'
+        print_prt_path = self.root_folder / 'print.prt'
+
+        # Check if file exists
+        if not print_prt_path.exists():
+            raise FileNotFoundError("print.prt file does not exist")
 
         # Open the file in read mode and read its contents
-        with open(time_sim_path, 'r') as file:
+        with open(print_prt_path, 'r') as file:
             lines = file.readlines()
 
         nth_line = 3
@@ -263,7 +275,7 @@ class TxtinoutReader:
 
         lines[nth_line - 1] = result_string
 
-        with open(time_sim_path, 'w') as file:
+        with open(print_prt_path, 'w') as file:
             file.writelines(lines)
 
     def _enable_disable_csv_print(
@@ -278,6 +290,10 @@ class TxtinoutReader:
         nth_line = 7
 
         print_prt_path = self.root_folder / 'print.prt'
+
+        # Check if file exists
+        if not print_prt_path.exists():
+            raise FileNotFoundError("print.prt file does not exist")
 
         # Open the file in read mode and read its contents
         with open(print_prt_path, 'r') as file:
