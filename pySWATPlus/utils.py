@@ -4,6 +4,7 @@ from collections.abc import Callable
 import pathlib
 import typing
 from datetime import datetime
+from collections.abc import Iterable
 
 
 def _build_line_to_add(
@@ -196,6 +197,43 @@ def _format_val_field(value: float) -> str:
     return f"{formatted:>16}"
 
 
+def _compact_units_1based(unit_list: Iterable[int]) -> list[int]:
+    '''
+    Compact a 0-based list of unit IDs into a 1-based Fortran-style representation.
+
+    Consecutive unit IDs are represented as a range using negative numbers:
+        - Single units are listed as positive numbers.
+        - Consecutive ranges are represented as [start, -end].
+
+    All IDs are converted from 0-based (Python-style) to 1-based (Fortran-style).
+    '''
+    if not unit_list:
+        return []
+
+    # Sort the list and convert to 1-based
+    unit_list = sorted([u + 1 for u in set(unit_list)])
+    compact = []
+    start = prev = unit_list[0]
+
+    for u in unit_list[1:]:
+        if u == prev + 1:
+            prev = u
+        else:
+            if start == prev:
+                compact.append(start)
+            else:
+                compact.extend([start, -prev])
+            start = prev = u
+
+    # Add the last sequence
+    if start == prev:
+        compact.append(start)
+    else:
+        compact.extend([start, -prev])
+
+    return compact
+
+
 def _validate_calibration_params(
     params: ParameterChanges
 ) -> None:
@@ -239,3 +277,16 @@ def _validate_calibration_params(
                 f'Parameter {i} ("{param_change["name"]}"): invalid change_type "{change_type}". '
                 f'Expected one of: {", ".join(valid_change_types)}'
             )
+
+        if "units" in param_change:
+            if not isinstance(param_change["units"], Iterable):
+                raise TypeError(
+                    f'Parameter {i} ("{param_change["name"]}"): "units" must be an iterable of integers, '
+                    f'got {type(param_change["units"]).__name__}'
+                )
+
+            # Check that all elements are integers and >= 0
+            if not all(isinstance(unit, int) and unit >= 0 for unit in param_change["units"]):
+                raise ValueError(
+                    f'Parameter {i} ("{param_change["name"]}"): all elements in "units" must be integers >= 0'
+                )

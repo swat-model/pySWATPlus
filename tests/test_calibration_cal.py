@@ -65,6 +65,49 @@ def test_utils():
     ])
     assert output is None
 
+    # --- pass test: valid 0-based list of units ---
+    output = pySWATPlus.utils._validate_calibration_params(params={
+        "name": "alpha",
+        "value": 1.0,
+        "units": [0, 1, 2]
+    })
+    assert output is None
+
+    # --- pass test: valid range of units ---
+    output = pySWATPlus.utils._validate_calibration_params(params={
+        "name": "beta",
+        "value": 2.0,
+        "units": range(0, 5)
+    })
+    assert output is None
+
+    # --- error test: units contains negative IDs ---
+    with pytest.raises(ValueError) as exc_info:
+        pySWATPlus.utils._validate_calibration_params(params={
+            "name": "delta",
+            "value": 1.0,
+            "units": [0, -1, 2]
+        })
+    assert 'all elements in "units" must be integers >= 0' in str(exc_info.value)
+
+    # --- error test: units contains non-integer ---
+    with pytest.raises(ValueError) as exc_info:
+        pySWATPlus.utils._validate_calibration_params(params={
+            "name": "epsilon",
+            "value": 1.0,
+            "units": [0, 1.5, 2]
+        })
+    assert 'all elements in "units" must be integers >= 0' in str(exc_info.value)
+
+    # --- error test: units is not iterable ---
+    with pytest.raises(TypeError) as exc_info:
+        pySWATPlus.utils._validate_calibration_params(params={
+            "name": "zeta",
+            "value": 1.0,
+            "units": 123
+        })
+    assert '"units" must be an iterable of integers' in str(exc_info.value)
+
 
 @pytest.mark.parametrize(
     "value,expected",
@@ -207,3 +250,42 @@ def test_write_calibration_file(
         cal_file = target_reader.root_folder / "calibration.cal"
         content = cal_file.read_text()
         assert content == expected_content
+
+
+def test_compact_units_1based():
+    # --- empty input ---
+    assert pySWATPlus.utils._compact_units_1based([]) == []
+    assert pySWATPlus.utils._compact_units_1based(range(0)) == []
+
+    # --- single element ---
+    assert pySWATPlus.utils._compact_units_1based([0]) == [1]
+    assert pySWATPlus.utils._compact_units_1based(range(0, 1)) == [1]
+
+    # --- consecutive sequence ---
+    assert pySWATPlus.utils._compact_units_1based([0, 1, 2, 3]) == [1, -4]
+    assert pySWATPlus.utils._compact_units_1based(range(0, 4)) == [1, -4]
+
+    # --- non-consecutive numbers ---
+    assert pySWATPlus.utils._compact_units_1based([0, 2, 3, 5]) == [1, 3, -4, 6]
+
+    # --- mixed input types ---
+    assert pySWATPlus.utils._compact_units_1based((0, 1, 2, 4, 5)) == [1, -3, 5, -6]
+    assert pySWATPlus.utils._compact_units_1based({0, 1, 2, 4, 5}) == [1, -3, 5, -6]
+
+    # --- unordered input ---
+    assert pySWATPlus.utils._compact_units_1based([5, 2, 4, 0, 1]) == [1, -3, 5, -6]
+
+    # --- input with duplicates ---
+    assert pySWATPlus.utils._compact_units_1based([0, 0, 1, 1, 2]) == [1, -3]
+
+    # --- large range ---
+    large_range = list(range(0, 1000))
+    assert pySWATPlus.utils._compact_units_1based(large_range) == [1, -1000]
+
+    # --- single non-consecutive elements ---
+    assert pySWATPlus.utils._compact_units_1based([0, 2, 4, 6]) == [1, 3, 5, 7]
+
+    # --- already 1-based check (0-based input) ---
+    input_units = [0, 1, 2]  # 0-based
+    expected_output = [1, -3]  # 1-based
+    assert pySWATPlus.utils._compact_units_1based(input_units) == expected_output

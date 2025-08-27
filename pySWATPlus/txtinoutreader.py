@@ -409,7 +409,15 @@ class TxtinoutReader:
         }
 
         _par_changes = []
+
         for change in par_change:
+            units = change.get("units", [])
+
+            # Convert 0-based units to 1-based compact representation
+            if units:
+                compacted_units = utils._compact_units_1based(units)
+            else:
+                compacted_units = []
 
             _par_changes.append({
                 "NAME": change["name"],
@@ -422,7 +430,8 @@ class TxtinoutReader:
                 "YEAR2": 0,
                 "DAY1": 0,
                 "DAY2": 0,
-                "OBJ_TOT": 0
+                "OBJ_TOT": len(compacted_units),
+                "OBJ_LIST": compacted_units  # Store the compacted units
             })
 
         with open(outfile, "w") as f:
@@ -434,13 +443,19 @@ class TxtinoutReader:
             # Write rows
             for change in _par_changes:
                 line = ""
-                for col in change.keys():
+                for col in ["NAME", "CHG_TYPE", "VAL", "CONDS", "LYR1", "LYR2",
+                            "YEAR1", "YEAR2", "DAY1", "DAY2", "OBJ_TOT"]:
                     if col == "NAME":
                         line += f"{change[col]:<{col_widths[col]}}"   # left-align
                     elif col == "VAL":
                         line += utils._format_val_field(change[col])  # special VAL formatting
                     else:
                         line += f"{change[col]:>{col_widths[col]}}"  # right-align numeric columns
+
+                # Append compacted units at the end (space-separated)
+                if change["OBJ_LIST"]:
+                    line += "       " + "    ".join(str(u) for u in change["OBJ_LIST"])
+
                 f.write(line + "\n")
 
     def _check_swatplus_parameters(
@@ -806,6 +821,7 @@ class TxtinoutReader:
                                 "name": str,            # Name of the parameter to change
                                 "value": float,         # New value to assign
                                 "change_type": str,     # (Optional) One of: 'absval' (default), 'abschg', 'pctchg'
+                                "units": Iterable[int],  # (Optional) An optional list of unit IDs to constrain the parameter change
                             },
                             # ... more changes
                         ]
@@ -821,6 +837,7 @@ class TxtinoutReader:
                     "name": "cn2",
                     "change_type": "absval",
                     "value": 0.5,
+                    "units": [1, 2, 3]
                 }
             ]
 

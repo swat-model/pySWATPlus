@@ -1,5 +1,6 @@
 import typing
 import typing_extensions
+from collections.abc import Iterable
 
 
 class ParamChange(
@@ -133,11 +134,13 @@ class ParameterChange(
             - `'absval'`: Use the absolute value (default).
             - `'abschg'`: Apply an absolute change (e.g., -0.5).
             - `'pctchg'`: Apply a percentage change (e.g., +10%).
-
+        units (Iterable[int], optional): An optional list of unit IDs to constrain the parameter change.
+            **Unit IDs should be 0-based**, i.e., the first object has ID 0.
     '''
     name: str
     value: float
     change_type: typing_extensions.NotRequired[typing.Literal['absval', 'abschg', 'pctchg']]
+    units: typing_extensions.NotRequired[Iterable[int]]
 
 
 ParameterChanges = ParameterChange | list[ParameterChange]
