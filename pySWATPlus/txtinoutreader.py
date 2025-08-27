@@ -816,7 +816,7 @@ class TxtinoutReader:
 
         Example:
             ```python
-            params = params = [
+            params = [
                 {
                     "name": "cn2",
                     "change_type": "absval",
