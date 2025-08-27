@@ -1,4 +1,4 @@
-from .types import ParamsType, ParamChange, ParameterChange, ParameterChanges
+from .types import ParamsType, ParamChange, ParameterChanges
 import pandas
 from collections.abc import Callable
 import pathlib
@@ -174,48 +174,37 @@ def _validate_date_str(
 # Function to format VAL to exactly 15 digits (including sign, integer, decimal point)
 
 
-def _format_val_to_15_digits(
-    value: float
-) -> str:
-    '''
-    Format a number for VAL column:
+def _format_val_field(value: float) -> str:
+    """
+    Format a number for the VAL column:
+    - 16 characters total: 1 leading space + 15-character numeric field
     - Right-aligned
-    - Max 15 characters total (including sign, digits, decimal point)
-    - Fixed-point if possible, scientific if integer part too big
-    '''
-    abs_val = abs(value)
-    sign = '-' if value < 0 else ''
+    - Fixed-point if integer part fits; scientific if too large
+    """
 
-    # number of digits in integer part
-    int_digits = len(str(int(abs_val)))
+    # Convert to string without formatting
+    s = str(value)
 
-    # total space for decimal part: 15 - int_digits - sign - decimal point
-    decimal_places = 15 - int_digits - len(sign) - 1
-
-    if decimal_places >= 0:
-        # fixed-point format fits
-        s = f"{value:.{decimal_places}f}"
+    if len(s) > 15:
+        # Use scientific notation
+        formatted = f"{value:.6e}"
     else:
-        # integer part too big, switch to scientific notation
-        # reserve 1 char for sign if negative
-        s = f"{value:.6e}"  # 6 decimals in scientific notation
+        # If it fits, just use normal string
+        formatted = s
 
-    # always right-align in 15 characters
-    return f"{s:>16}"
+    # Right-align to 16 characters
+    return f"{formatted:>16}"
 
 
 def _validate_calibration_params(
     params: ParameterChanges
 ) -> None:
     '''
-    Validate the structure and values of SWAT+ parameter modification input.
+    Validate the structure and values of SWAT+ parameter modification input that will be added to calibration.cal file
     '''
 
     if params is None:
         return
-
-    if not isinstance(params, ParameterChanges):
-        raise TypeError('Input variable "params" must be a list of ParameterChange dictionaries')
 
     if not isinstance(params, list):
         _params = [params]
@@ -225,22 +214,28 @@ def _validate_calibration_params(
     valid_change_types = ['absval', 'abschg', 'pctchg']
     mandatory_keys = ['name', 'value']
 
-    for param_change in _params:
-        if not isinstance(param_change, ParameterChange):
-            raise TypeError(f'Expected a dictionary, got {type(param_change).__name__}')
-
+    for i, param_change in enumerate(_params):
+        if not isinstance(param_change, dict):
+            raise TypeError(
+                f"Parameter {i}: expected a dict, got {type(param_change).__name__}"
+            )
         for key in mandatory_keys:
             if key not in param_change:
-                raise KeyError(f'Missing "{key}" key for "{param_change.get("name", "unknown")}" in `params`')
+                raise KeyError(f'Parameter {i}: missing required key "{key}"')
 
-        if not isinstance(param_change['name'], str):
-            raise TypeError('"name" key must be a string in `params`')
+        if not isinstance(param_change["name"], str):
+            raise TypeError(
+                f'Parameter {i}: "name" must be a string, got {type(param_change["name"]).__name__}'
+            )
 
-        if not isinstance(param_change['value'], (int, float)):
-            raise TypeError(f'"value" type for "{param_change["name"]}" in `params` must be numeric')
+        if not isinstance(param_change["value"], (int, float)):
+            raise TypeError(
+                f'Parameter {i} ("{param_change["name"]}"): "value" must be int or float, got {type(param_change["value"]).__name__}'
+            )
 
-        change_type = param_change.get('change_type', 'absval')
+        change_type = param_change.get("change_type", "absval")
         if change_type not in valid_change_types:
             raise ValueError(
-                f'Invalid change_type "{change_type}" for "{param_change["name"]}" in `params`. Expected one of: {valid_change_types}'
+                f'Parameter {i} ("{param_change["name"]}"): invalid change_type "{change_type}". '
+                f'Expected one of: {", ".join(valid_change_types)}'
             )

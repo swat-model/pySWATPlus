@@ -23,6 +23,10 @@ txtinout_reader = pySWATPlus.TxtinoutReader(
 
 The following sections demonstrate different approaches, including modifying input parameters, running a single simulation, and performing batch processing.
 
+!!! warning "Calibration Warning"
+    The `run_swat` and `run_swat_in_other_dir` functions currently **disable the use of the `calibration.cal` file**.  
+    Calibration via the `calibration.cal` file is still under development.
+
 
 ## A Trial Simulation
 

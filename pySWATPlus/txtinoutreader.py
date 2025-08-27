@@ -380,9 +380,12 @@ class TxtinoutReader:
 
         outfile = self.root_folder / "calibration.cal"
 
-        # check if calibration.cal exists
-        if not outfile.exists():
-            raise FileNotFoundError("calibration.cal file does not exist in the TxtInOut folder")
+        # If calibration.cal exists, remove it (always recreate)
+        if outfile.exists():
+            outfile.unlink()
+
+        # make sure calibration.cal is enabled in file.cio
+        self._add_or_remove_calibration_cal_to_file_cio(add=True)
 
         # check if parameters are correct
         self._check_swatplus_parameters(par_change)
@@ -435,7 +438,7 @@ class TxtinoutReader:
                     if col == "NAME":
                         line += f"{change[col]:<{col_widths[col]}}"   # left-align
                     elif col == "VAL":
-                        line += utils._format_val_to_15_digits(change[col])               # special VAL formatting
+                        line += utils._format_val_field(change[col])  # special VAL formatting
                     else:
                         line += f"{change[col]:>{col_widths[col]}}"  # right-align numeric columns
                 f.write(line + "\n")
@@ -465,21 +468,29 @@ class TxtinoutReader:
             if parameter not in cal_parms_df['name'].values:
                 raise ValueError(f"The parameter '{parameter}' is not in cal_parms.cal")
 
-    def _add_calibration_cal_to_file_cio(
-        self
+    def _add_or_remove_calibration_cal_to_file_cio(
+        self,
+        add: bool
     ):
         '''
-        Adds the calibration line to 'file.cio'
+        Adds or removes the calibration line to 'file.cio'
         '''
         file_path = self.root_folder / "file.cio"
         if not file_path.exists():
             raise FileNotFoundError("file.cio file does not exist in the TxtInOut folder")
+        if add:
+            line_to_add = (
+                "chg               cal_parms.cal     calibration.cal   null              "
+                "null              null              null              null              "
+                "null              null              null              null"
+            )
+        else:
+            line_to_add = (
+                "chg               null              calibration.cal   null              "
+                "null              null              null              null              "
+                "null              null              null              null"
+            )
 
-        line_to_add = (
-            "chg               cal_parms.cal     calibration.cal   null              "
-            "null              null              null              null              "
-            "null              null              null              null"
-        )
         line_index = 21
 
         # Read all lines
@@ -568,6 +579,10 @@ class TxtinoutReader:
         Returns:
             Path where the SWAT+ simulation was executed.
 
+
+        Note:
+            - This function will disable the use of `calibration.cal` in `file.cio`
+
         Example:
             ```python
             params = {
@@ -587,6 +602,10 @@ class TxtinoutReader:
         _params = params or {}
 
         utils._validate_params(_params)
+
+        # make sure calibration.cal is disabled.
+        # Otherwise, the params value will be changed during the execution of SWAT+
+        self._add_or_remove_calibration_cal_to_file_cio(add=False)
 
         # Modify files for simulation
         for filename, file_params in _params.items():
@@ -676,6 +695,9 @@ class TxtinoutReader:
 
         Returns:
             The path to the directory where the SWAT+ simulation was executed.
+
+        Note:
+            - This function will disable the use of `calibration.cal` in `file.cio`
 
         Example:
             ```python
@@ -809,6 +831,7 @@ class TxtinoutReader:
         _params = params or []
 
         utils._validate_calibration_params(_params)
+        self._write_calibration_file(_params)
 
         # Run simulation
         self._run_swat()
