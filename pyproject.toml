@@ -9,7 +9,7 @@ dynamic = ["version"]
 readme = "README.md"
 requires-python = ">=3.10"
 license = "GPL-3.0-or-later"
-license-files = ["LICEN[CS]E.*"]
+license-files = ["LICENSE"]
 authors = [
     {name = "Joan Saló", email = "joansalograu@gmail.com"},
     {name = "Debasish Pal", email = "bestdebasish@gmail.com"}

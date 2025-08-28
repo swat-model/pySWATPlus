@@ -1,0 +1,39 @@
+name: docs
+
+on:
+  push:
+    branches:
+      - main  # Trigger when pushing to the main branch
+    paths:
+      - '**/*.py'  # Any Python file anywhere in the repo
+      - 'docs/**'  # Any file inside the docs folder
+
+jobs:
+  deploy-docs:
+    runs-on: ubuntu-latest
+    
+    permissions:
+      contents: write  # Allow pushing to the repository
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.x'
+
+      - name: Install MkDocs and dependencies
+        run: |
+          pip install -r docs/requirements-docs.txt
+                
+      - name: Build MkDocs documentation
+        run: |
+          mkdocs build --site-dir public
+
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./public
