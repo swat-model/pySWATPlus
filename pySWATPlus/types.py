@@ -5,7 +5,6 @@ import typing_extensions
 class ParamChange(
     typing.TypedDict
 ):
-
     '''
     Describes a dictionary structure to change a parameter value in an input file of the SWAT+ model.
 

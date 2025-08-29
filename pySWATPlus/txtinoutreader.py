@@ -11,7 +11,6 @@ logger = logging.getLogger(__name__)
 
 
 class TxtinoutReader:
-
     '''
     Provide functionality for seamless reading, editing, and writing of
     SWAT+ model files located in the `TxtInOut` folder.

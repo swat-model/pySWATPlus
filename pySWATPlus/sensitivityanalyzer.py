@@ -16,7 +16,6 @@ from . import utils
 
 
 class SensitivityAnalyzer:
-
     '''
     Provides functionality for running scenario simulations and analyzing simulated data.
     '''

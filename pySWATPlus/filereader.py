@@ -5,7 +5,6 @@ import warnings
 
 
 class FileReader:
-
     '''
     Provide functionality to read, filter, and write data
     from a TXT file located in the `TxtInOut` folder.
