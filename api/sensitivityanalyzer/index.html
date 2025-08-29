@@ -12,7 +12,7 @@
         <link rel="prev" href="../filereader/">
       
       
-        <link rel="next" href="../types/">
+        <link rel="next" href="../performance_metrics/">
       
       
       <link rel="icon" href="../../assets/images/favicon.png">
@@ -20,7 +20,7 @@
     
     
       
-        <title>SensitivityAnalyzer.py - pySWATPlus</title>
+        <title>SensitivityAnalyzer - pySWATPlus</title>
       
     
     
@@ -108,7 +108,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              SensitivityAnalyzer.py
+              SensitivityAnalyzer
             
           </span>
         </div>
@@ -543,7 +543,7 @@
   
   
   <span class="md-ellipsis">
-    SensitivityAnalyzer.py
+    SensitivityAnalyzer
     
   </span>
   
@@ -556,7 +556,7 @@
   
   
   <span class="md-ellipsis">
-    SensitivityAnalyzer.py
+    SensitivityAnalyzer
     
   </span>
   
@@ -613,6 +613,29 @@
   
 </nav>
       
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../performance_metrics/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    PerformanceMetrics
+    
+  </span>
+  
+
+      </a>
     </li>
   
 
@@ -765,7 +788,7 @@
 
 
 
-  <h1>SensitivityAnalyzer.py</h1>
+  <h1>SensitivityAnalyzer</h1>
 
 <div class="doc doc-object doc-class">
 
@@ -1363,9 +1386,7 @@
 <span class="normal">586</span>
 <span class="normal">587</span>
 <span class="normal">588</span>
-<span class="normal">589</span>
-<span class="normal">590</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">SensitivityAnalyzer</span><span class="p">:</span>
-
+<span class="normal">589</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">SensitivityAnalyzer</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    Provides functionality for running scenario simulations and analyzing simulated data.</span>
 <span class="sd">    &#39;&#39;&#39;</span>
@@ -2143,7 +2164,8 @@ all columns from the input file are used.</p>
 
             <details class="quote">
               <summary>Source code in <code>pySWATPlus/sensitivityanalyzer.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 24</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 23</span>
+<span class="normal"> 24</span>
 <span class="normal"> 25</span>
 <span class="normal"> 26</span>
 <span class="normal"> 27</span>
@@ -2268,8 +2290,7 @@ all columns from the input file are used.</p>
 <span class="normal">146</span>
 <span class="normal">147</span>
 <span class="normal">148</span>
-<span class="normal">149</span>
-<span class="normal">150</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">simulated_timeseries_df</span><span class="p">(</span>
+<span class="normal">149</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">simulated_timeseries_df</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">data_file</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
     <span class="n">has_units</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
@@ -2749,7 +2770,8 @@ will be deleted dynamically after collecting the required data.</p>
 
             <details class="quote">
               <summary>Source code in <code>pySWATPlus/sensitivityanalyzer.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">232</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">231</span>
+<span class="normal">232</span>
 <span class="normal">233</span>
 <span class="normal">234</span>
 <span class="normal">235</span>
@@ -3106,8 +3128,7 @@ will be deleted dynamically after collecting the required data.</p>
 <span class="normal">586</span>
 <span class="normal">587</span>
 <span class="normal">588</span>
-<span class="normal">589</span>
-<span class="normal">590</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">simulation_by_sobol_sample</span><span class="p">(</span>
+<span class="normal">589</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">simulation_by_sobol_sample</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">var_names</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
     <span class="n">var_bounds</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="nb">float</span><span class="p">]],</span>
