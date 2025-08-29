@@ -411,19 +411,23 @@ class TxtinoutReader:
         _par_changes = []
 
         for change in par_change:
+            # get units
             units = change.get("units", [])
 
-            # Convert 0-based units to 1-based compact representation
+            # Convert to compact representation
             if units:
-                compacted_units = utils._compact_units_1based(units)
+                compacted_units = utils._compact_units(units)
             else:
                 compacted_units = []
 
+            # get conditions
+            parsed_conditions = utils._parse_conditions(change)
+
             _par_changes.append({
                 "NAME": change["name"],
-                "CHG_TYPE": change["chg_type"],
+                "CHG_TYPE": change["change_type"] if "change_type" in change else 'absval',
                 "VAL": change["value"],
-                "CONDS": 0,
+                "CONDS": len(parsed_conditions),
                 "LYR1": 0,
                 "LYR2": 0,
                 "YEAR1": 0,
@@ -431,7 +435,8 @@ class TxtinoutReader:
                 "DAY1": 0,
                 "DAY2": 0,
                 "OBJ_TOT": len(compacted_units),
-                "OBJ_LIST": compacted_units  # Store the compacted units
+                "OBJ_LIST": compacted_units,  # Store the compacted units
+                "PARSED_CONDITIONS": parsed_conditions
             })
 
         with open(outfile, "w") as f:
@@ -455,6 +460,8 @@ class TxtinoutReader:
                 # Append compacted units at the end (space-separated)
                 if change["OBJ_LIST"]:
                     line += "       " + "    ".join(str(u) for u in change["OBJ_LIST"])
+
+                line += "\n" + "\n".join(change["PARSED_CONDITIONS"]) if change["PARSED_CONDITIONS"] else ""
 
                 f.write(line + "\n")
 
@@ -806,6 +813,7 @@ class TxtinoutReader:
     def run_swat_calibration_cal(
         self,
         params: typing.Optional[ParameterChanges] = None,
+        skip_units_and_conditions_validation: bool = False
     ) -> pathlib.Path:
         '''
         Run the SWAT+ simulation with optional parameter changes.
@@ -821,11 +829,15 @@ class TxtinoutReader:
                                 "name": str,            # Name of the parameter to change
                                 "value": float,         # New value to assign
                                 "change_type": str,     # (Optional) One of: 'absval' (default), 'abschg', 'pctchg'
-                                "units": Iterable[int],  # (Optional) An optional list of unit IDs to constrain the parameter change
+                                "units": Iterable[int],  # (Optional) An optional list of unit IDs to constrain the parameter change.
+                                    **Unit IDs should be 1-based**, i.e., the first object has ID 0.
+                                "conditions": dict[str: list[str]],  # (Optional) A dictionary of conditions to apply to the parameter change.
                             },
                             # ... more changes
                         ]
                 ```
+            skip_units_and_conditions_validation (bool): If `True`, skip validation of units and conditions in parameter changes.
+
 
         Returns:
             Path where the SWAT+ simulation was executed.
@@ -835,9 +847,20 @@ class TxtinoutReader:
             params = [
                 {
                     "name": "cn2",
+                    "change_type": "pctchg",
+                    "value": 50,
+                },
+                {
+                    "name": "perco",
                     "change_type": "absval",
                     "value": 0.5,
-                    "units": [1, 2, 3]
+                    "conditions": {"hsg": ["A"]}
+                },
+                {
+                    "name": "bf_max",
+                    "change_type": "absval",
+                    "value": 0.3,
+                    "units": range(1, 194)
                 }
             ]
 
@@ -848,6 +871,9 @@ class TxtinoutReader:
         _params = params or []
 
         utils._validate_calibration_params(_params)
+
+        if not skip_units_and_conditions_validation:
+            utils._validate_conditions_and_units(_params, self.txtinout_path)
         self._write_calibration_file(_params)
 
         # Run simulation

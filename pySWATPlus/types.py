@@ -135,12 +135,14 @@ class ParameterChange(
             - `'abschg'`: Apply an absolute change (e.g., -0.5).
             - `'pctchg'`: Apply a percentage change (e.g., +10%).
         units (Iterable[int], optional): An optional list of unit IDs to constrain the parameter change.
-            **Unit IDs should be 0-based**, i.e., the first object has ID 0.
+            **Unit IDs should be 1-based**, i.e., the first object has ID 1.
+        conditions (dict[str: list[str]], optional): A dictionary of conditions to apply to the parameter change.
     '''
     name: str
     value: float
     change_type: typing_extensions.NotRequired[typing.Literal['absval', 'abschg', 'pctchg']]
     units: typing_extensions.NotRequired[Iterable[int]]
+    conditions: typing_extensions.NotRequired[dict[str, list[str]]]
 
 
 ParameterChanges = ParameterChange | list[ParameterChange]
@@ -153,8 +155,20 @@ Example:
 params = [
     {
         "name": "cn2",
+        "change_type": "pctchg",
+        "value": 50,
+    },
+    {
+        "name": "perco",
         "change_type": "absval",
         "value": 0.5,
+        "conditions": {"hsg": ["A"]}
+    },
+    {
+        "name": "bf_max",
+        "change_type": "absval",
+        "value": 0.3,
+        "units": range(1, 194)
     }
 ]
 ```
