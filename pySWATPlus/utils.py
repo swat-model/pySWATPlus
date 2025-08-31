@@ -370,8 +370,13 @@ def _validate_units(param_change: ParameterChange, txtinout_path: pathlib.Path) 
         'res': 'reservoir.res',
         'aqu': 'aquifer.aqu',
     }
+
     if obj_type not in obj_type_files:
-        raise ValueError(f"Parameter '{name}' has unsupported obj_type '{obj_type}'.")
+        supported = ", ".join(obj_type_files.keys())
+        raise ValueError(
+            f"Parameter '{name}' does not support units. "
+            f"Only parameters of type [{supported}] support units."
+        )
 
     file = obj_type_files[obj_type]
     file_path = txtinout_path / file

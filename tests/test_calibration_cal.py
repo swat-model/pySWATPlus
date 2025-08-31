@@ -2,6 +2,7 @@ import pySWATPlus
 import pytest
 import os
 import tempfile
+import pandas
 
 
 @pytest.fixture(scope='class')
@@ -107,6 +108,94 @@ def test_utils():
             "units": 123
         })
     assert '"units" must be an iterable of integers' in str(exc_info.value)
+
+    # --- pass test: valid range of units ---
+    output = pySWATPlus.utils._validate_calibration_params(params={
+        "name": "beta",
+        "value": 2.0,
+        "units": range(0, 5)
+    })
+    assert output is None
+
+    # --- error test: units contains negative IDs ---
+    with pytest.raises(ValueError) as exc_info:
+        pySWATPlus.utils._validate_calibration_params(params={
+            "name": "delta",
+            "value": 1.0,
+            "units": [0, -1, 2]
+        })
+    assert 'all elements in "units" must be integers >= 0' in str(exc_info.value)
+
+    # --- error test: units contains non-integer ---
+    with pytest.raises(ValueError) as exc_info:
+        pySWATPlus.utils._validate_calibration_params(params={
+            "name": "epsilon",
+            "value": 1.0,
+            "units": [0, 1.5, 2]
+        })
+    assert 'all elements in "units" must be integers >= 0' in str(exc_info.value)
+
+    # --- error test: units is not iterable ---
+    with pytest.raises(TypeError) as exc_info:
+        pySWATPlus.utils._validate_calibration_params(params={
+            "name": "zeta",
+            "value": 1.0,
+            "units": 123
+        })
+    assert '"units" must be an iterable of integers' in str(exc_info.value)
+
+    # ---------------------------
+    # CONDITIONS validation tests
+    # ---------------------------
+
+    # --- pass test: valid conditions dict ---
+    output = pySWATPlus.utils._validate_calibration_params(params={
+        "name": "perco",
+        "value": 0.5,
+        "change_type": "absval",
+        "conditions": {"hsg": ["A"]}
+    })
+    assert output is None
+
+    # --- error test: conditions not a dict ---
+    with pytest.raises(TypeError) as exc_info:
+        pySWATPlus.utils._validate_calibration_params(params={
+            "name": "perco",
+            "value": 0.5,
+            "change_type": "absval",
+            "conditions": ["not", "a", "dict"]
+        })
+    assert '"conditions" must be a dict' in str(exc_info.value)
+
+    # --- error test: condition key not string ---
+    with pytest.raises(TypeError) as exc_info:
+        pySWATPlus.utils._validate_calibration_params(params={
+            "name": "perco",
+            "value": 0.5,
+            "change_type": "absval",
+            "conditions": {10: ["A"]}
+        })
+    assert '"conditions" keys must be strings' in str(exc_info.value)
+
+    # --- error test: condition value not list ---
+    with pytest.raises(TypeError) as exc_info:
+        pySWATPlus.utils._validate_calibration_params(params={
+            "name": "perco",
+            "value": 0.5,
+            "change_type": "absval",
+            "conditions": {"hsg": "not-a-list"}
+        })
+    assert '"conditions" values must be lists' in str(exc_info.value)
+
+    # --- error test: condition list contains non-string ---
+    with pytest.raises(TypeError) as exc_info:
+        pySWATPlus.utils._validate_calibration_params(params={
+            "name": "perco",
+            "value": 0.5,
+            "change_type": "absval",
+            "conditions": {"hsg": [10, 'B']}
+        })
+    assert 'all elements in "conditions"["hsg"] must be strings' in str(exc_info.value)
 
 
 @pytest.mark.parametrize(
@@ -231,7 +320,7 @@ def test_write_calibration_file(
         # Parameter changes: 1 row
         par_change = [{
             "name": "cn2",
-            "chg_type": "pctchg",
+            "change_type": "pctchg",
             "value": -50.0
         }]
 
@@ -282,3 +371,128 @@ def test_compact_units():
 
     # --- single non-consecutive elements ---
     assert pySWATPlus.utils._compact_units([1, 2, 4, 6]) == [1, -2, 4, 6]
+
+
+def test_validate_units(
+    txtinout_reader
+):
+
+    # parameter that support units
+    par_change = {
+        "name": "cn2",
+        "change_type": "pctchg",
+        "value": -50.0,
+        "units": [1, 2, 3]
+    }
+
+    pySWATPlus.utils._validate_units(par_change, txtinout_reader.root_folder)
+
+    # Parameter that does not support units
+    par_change = {
+        "name": "organicn",
+        "change_type": "pctchg",
+        "value": -50.0,
+        "units": [1, 2, 3]
+    }
+
+    with pytest.raises(Exception) as exc_info:
+        pySWATPlus.utils._validate_units(par_change, txtinout_reader.root_folder)
+    assert "does not support units" in exc_info.value.args[0]
+
+    # check units that does not exist
+    df = pandas.read_csv(
+        filepath_or_buffer=txtinout_reader.root_folder / 'hru-data.hru',
+        skiprows=1,
+        sep=r'\s+',
+        usecols=['id']
+    )
+
+    par_change = {
+        "name": "cn2",
+        "change_type": "pctchg",
+        "value": -50.0,
+        "units": [len(df) + 1]
+    }
+
+    with pytest.raises(Exception) as exc_info:
+        pySWATPlus.utils._validate_units(par_change, txtinout_reader.root_folder)
+    assert "Invalid units for parameter" in exc_info.value.args[0]
+
+
+def test_validate_conditions(txtinout_reader):
+    folder = txtinout_reader.root_folder
+
+    # ------------------------
+    # Case 1: No conditions → pass
+    param_change = {"name": "cn2"}
+    pySWATPlus.utils._validate_conditions(param_change, folder)
+
+    # ------------------------
+    # Case 2: Supported conditions with valid values
+
+    # Patch soils.sol
+    df_textures = pandas.read_fwf(folder / 'soils.sol', skiprows=1)
+    valid_textures = df_textures['texture'].dropna().unique()
+
+    # Patch plants.plt
+    df_plants = pandas.read_fwf(folder / 'plants.plt', sep=r'\s+', skiprows=1)
+    valid_plants = df_plants['name'].dropna().unique()
+
+    # Patch landuse.lum
+    df_landuse = pandas.read_csv(folder / 'landuse.lum', sep=r'\s+', skiprows=1)
+    valid_landuse = df_landuse['plnt_com'].dropna().unique()
+
+    param_change = {
+        "name": "cn2",
+        "conditions": {
+            "hsg": ["A", "B"],
+            "texture": [valid_textures[0]],
+            "plant": [valid_plants[0]],
+            "landuse": [valid_landuse[0]]
+        }
+    }
+    pySWATPlus.utils._validate_conditions(param_change, folder)
+
+    # ------------------------
+    # Case 3: Unsupported condition name
+    param_change = {
+        "name": "cn2",
+        "conditions": {"invalid_cond": ["X"]}
+    }
+    with pytest.raises(ValueError) as exc_info:
+        pySWATPlus.utils._validate_conditions(param_change, folder)
+    assert "is not supported" in str(exc_info.value)
+
+    # ------------------------
+    # Case 4: Invalid value for supported condition
+    param_change = {
+        "name": "cn2",
+        "conditions": {"hsg": ["invalid"]}
+    }
+    with pytest.raises(ValueError) as exc_info:
+        pySWATPlus.utils._validate_conditions(param_change, folder)
+    assert "has invalid value" in str(exc_info.value)
+
+    param_change = {
+        "name": "cn2",
+        "conditions": {"texture": ["invalid"]}
+    }
+    with pytest.raises(ValueError) as exc_info:
+        pySWATPlus.utils._validate_conditions(param_change, folder)
+    assert "has invalid value" in str(exc_info.value)
+
+    param_change = {
+        "name": "cn2",
+        "conditions": {"plant": ["invalid"]}
+    }
+    with pytest.raises(ValueError) as exc_info:
+        pySWATPlus.utils._validate_conditions(param_change, folder)
+    assert "has invalid value" in str(exc_info.value)
+
+    param_change = {
+        "name": "cn2",
+        "conditions": {"landuse": ["invalid"]}
+    }
+    with pytest.raises(ValueError) as exc_info:
+        pySWATPlus.utils._validate_conditions(param_change, folder)
+    assert "has invalid value" in str(exc_info.value)

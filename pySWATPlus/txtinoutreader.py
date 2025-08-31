@@ -387,9 +387,6 @@ class TxtinoutReader:
         # make sure calibration.cal is enabled in file.cio
         self._add_or_remove_calibration_cal_to_file_cio(add=True)
 
-        # check if parameters are correct
-        self._check_swatplus_parameters(par_change)
-
         # Number of parameters (number of rows in the DataFrame)
         num_parameters = len(par_change)
 
@@ -871,9 +868,10 @@ class TxtinoutReader:
         _params = params or []
 
         utils._validate_calibration_params(_params)
+        self._check_swatplus_parameters(_params)
 
         if not skip_units_and_conditions_validation:
-            utils._validate_conditions_and_units(_params, self.txtinout_path)
+            utils._validate_conditions_and_units(_params, self.root_folder)
         self._write_calibration_file(_params)
 
         # Run simulation
