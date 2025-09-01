@@ -4,9 +4,9 @@ import pathlib
 import typing
 import logging
 from .filereader import FileReader
-from .types import ParamsType
+from .types import ParamsType, ParameterChanges
 from . import utils
-
+import pandas
 logger = logging.getLogger(__name__)
 
 
@@ -369,6 +369,163 @@ class TxtinoutReader:
 
         return dest_path
 
+    def _write_calibration_file(
+        self,
+        par_change: ParameterChanges
+    ):
+        '''
+        Writes `calibration.cal` file with parameter changes.
+        '''
+
+        outfile = self.root_folder / "calibration.cal"
+
+        # If calibration.cal exists, remove it (always recreate)
+        if outfile.exists():
+            outfile.unlink()
+
+        # make sure calibration.cal is enabled in file.cio
+        self._add_or_remove_calibration_cal_to_file_cio(add=True)
+
+        # Number of parameters (number of rows in the DataFrame)
+        num_parameters = len(par_change)
+
+        # Column widths for right-alignment
+        col_widths = {
+            "NAME": 12,      # left-aligned
+            "CHG_TYPE": 8,
+            "VAL": 16,
+            "CONDS": 16,
+            "LYR1": 8,
+            "LYR2": 8,
+            "YEAR1": 8,
+            "YEAR2": 8,
+            "DAY1": 8,
+            "DAY2": 8,
+            "OBJ_TOT": 8
+        }
+
+        _par_changes = []
+
+        for change in par_change:
+            # get units
+            units = change.get("units", [])
+
+            # Convert to compact representation
+            if units:
+                compacted_units = utils._compact_units(units)
+            else:
+                compacted_units = []
+
+            # get conditions
+            parsed_conditions = utils._parse_conditions(change)
+
+            _par_changes.append({
+                "NAME": change["name"],
+                "CHG_TYPE": change["change_type"] if "change_type" in change else 'absval',
+                "VAL": change["value"],
+                "CONDS": len(parsed_conditions),
+                "LYR1": 0,
+                "LYR2": 0,
+                "YEAR1": 0,
+                "YEAR2": 0,
+                "DAY1": 0,
+                "DAY2": 0,
+                "OBJ_TOT": len(compacted_units),
+                "OBJ_LIST": compacted_units,  # Store the compacted units
+                "PARSED_CONDITIONS": parsed_conditions
+            })
+
+        with open(outfile, "w") as f:
+            # Write header
+            f.write(f"Number of parameters:\n{num_parameters}\n")
+            headers = "NAME        CHG_TYPE             VAL           CONDS    LYR1    LYR2   YEAR1   YEAR2    DAY1    DAY2 OBJ_TOT"
+            f.write(f"{headers}\n")
+
+            # Write rows
+            for change in _par_changes:
+                line = ""
+                for col in ["NAME", "CHG_TYPE", "VAL", "CONDS", "LYR1", "LYR2",
+                            "YEAR1", "YEAR2", "DAY1", "DAY2", "OBJ_TOT"]:
+                    if col == "NAME":
+                        line += f"{change[col]:<{col_widths[col]}}"   # left-align
+                    elif col == "VAL":
+                        line += utils._format_val_field(change[col])  # special VAL formatting
+                    else:
+                        line += f"{change[col]:>{col_widths[col]}}"  # right-align numeric columns
+
+                # Append compacted units at the end (space-separated)
+                if change["OBJ_LIST"]:
+                    line += "       " + "    ".join(str(u) for u in change["OBJ_LIST"])
+
+                line += "\n" + "\n".join(change["PARSED_CONDITIONS"]) if change["PARSED_CONDITIONS"] else ""
+
+                f.write(line + "\n")
+
+    def _check_swatplus_parameters(
+        self,
+        par_change: ParameterChanges
+    ) -> None:
+        '''
+        Check if parameters exists in cal_parms.cal
+        '''
+
+        file_path = self.root_folder / "cal_parms.cal"
+
+        if not file_path.exists():
+            raise FileNotFoundError("cal_parms.cal file does not exist in the TxtInOut folder")
+
+        cal_parms_df = pandas.read_csv(
+            filepath_or_buffer=file_path,
+            skiprows=2,
+            sep=r'\s+'
+        )
+
+        parameter_names = [change['name'] for change in par_change]
+
+        for parameter in parameter_names:
+            if parameter not in cal_parms_df['name'].values:
+                raise ValueError(f"The parameter '{parameter}' is not in cal_parms.cal")
+
+    def _add_or_remove_calibration_cal_to_file_cio(
+        self,
+        add: bool
+    ):
+        '''
+        Adds or removes the calibration line to 'file.cio'
+        '''
+        file_path = self.root_folder / "file.cio"
+        if not file_path.exists():
+            raise FileNotFoundError("file.cio file does not exist in the TxtInOut folder")
+        if add:
+            line_to_add = (
+                "chg               cal_parms.cal     calibration.cal   null              "
+                "null              null              null              null              "
+                "null              null              null              null"
+            )
+        else:
+            line_to_add = (
+                "chg               null              calibration.cal   null              "
+                "null              null              null              null              "
+                "null              null              null              null"
+            )
+
+        line_index = 21
+
+        # Read all lines
+        with file_path.open("r") as f:
+            lines = f.readlines()
+
+        # Safety check: ensure the file has enough lines
+        if line_index >= len(lines):
+            raise IndexError(f"The file only has {len(lines)} lines, cannot replace line {line_index+1}.")
+
+        # Replace the line, ensure it ends with a newline
+        lines[line_index] = line_to_add.rstrip() + "\n"
+
+        # Write back
+        with file_path.open("w") as f:
+            f.writelines(lines)
+
     def _run_swat(
         self,
     ) -> None:
@@ -440,6 +597,10 @@ class TxtinoutReader:
         Returns:
             Path where the SWAT+ simulation was executed.
 
+
+        Note:
+            - This function will disable the use of `calibration.cal` in `file.cio`
+
         Example:
             ```python
             params = {
@@ -459,6 +620,10 @@ class TxtinoutReader:
         _params = params or {}
 
         utils._validate_params(_params)
+
+        # make sure calibration.cal is disabled.
+        # Otherwise, the params value will be changed during the execution of SWAT+
+        self._add_or_remove_calibration_cal_to_file_cio(add=False)
 
         # Modify files for simulation
         for filename, file_params in _params.items():
@@ -549,6 +714,9 @@ class TxtinoutReader:
         Returns:
             The path to the directory where the SWAT+ simulation was executed.
 
+        Note:
+            - This function will disable the use of `calibration.cal` in `file.cio`
+
         Example:
             ```python
             simulation = pySWATPlus.TxtinoutReader.run_swat_in_other_dir_new_method(
@@ -637,3 +805,75 @@ class TxtinoutReader:
         output = reader.run_swat(params=params)
 
         return output
+
+    def run_swat_calibration_cal(
+        self,
+        params: typing.Optional[ParameterChanges] = None,
+        skip_units_and_conditions_validation: bool = False
+    ) -> pathlib.Path:
+        '''
+        Run the SWAT+ simulation with optional parameter changes.
+
+        Args:
+            params (ParameterChanges, optional): list of dictionaries specifying parameter changes to apply.
+
+                The `params` dictionary should follow this structure:
+
+                ```python
+                params = [
+                            {
+                                "name": str,            # Name of the parameter to change
+                                "value": float,         # New value to assign
+                                "change_type": str,     # (Optional) One of: 'absval' (default), 'abschg', 'pctchg'
+                                "units": Iterable[int],  # (Optional) An optional list of unit IDs to constrain the parameter change.
+                                    **Unit IDs should be 1-based**, i.e., the first object has ID 0.
+                                "conditions": dict[str: list[str]],  # (Optional) A dictionary of conditions to apply to the parameter change.
+                            },
+                            # ... more changes
+                        ]
+                ```
+            skip_units_and_conditions_validation (bool): If `True`, skip validation of units and conditions in parameter changes.
+
+
+        Returns:
+            Path where the SWAT+ simulation was executed.
+
+        Example:
+            ```python
+            params = [
+                {
+                    "name": "cn2",
+                    "change_type": "pctchg",
+                    "value": 50,
+                },
+                {
+                    "name": "perco",
+                    "change_type": "absval",
+                    "value": 0.5,
+                    "conditions": {"hsg": ["A"]}
+                },
+                {
+                    "name": "bf_max",
+                    "change_type": "absval",
+                    "value": 0.3,
+                    "units": range(1, 194)
+                }
+            ]
+
+            reader.run_swat(params)
+            ```
+        '''
+
+        _params = params or []
+
+        utils._validate_calibration_params(_params)
+        self._check_swatplus_parameters(_params)
+
+        if not skip_units_and_conditions_validation:
+            utils._validate_conditions_and_units(_params, self.root_folder)
+        self._write_calibration_file(_params)
+
+        # Run simulation
+        self._run_swat()
+
+        return self.root_folder
