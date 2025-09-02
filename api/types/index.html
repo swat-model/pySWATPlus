@@ -632,9 +632,9 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#pySWATPlus.types.ParamSpec" class="md-nav__link">
+  <a href="#pySWATPlus.types.ParamChanges" class="md-nav__link">
     <span class="md-ellipsis">
-      ParamSpec
+      ParamChanges
     </span>
   </a>
   
@@ -752,9 +752,9 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#pySWATPlus.types.ParamSpec" class="md-nav__link">
+  <a href="#pySWATPlus.types.ParamChanges" class="md-nav__link">
     <span class="md-ellipsis">
-      ParamSpec
+      ParamChanges
     </span>
   </a>
   
@@ -875,8 +875,7 @@
 
               <details class="quote">
                 <summary>Source code in <code>pySWATPlus/types.py</code></summary>
-                <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 5</span>
-<span class="normal"> 6</span>
+                <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 6</span>
 <span class="normal"> 7</span>
 <span class="normal"> 8</span>
 <span class="normal"> 9</span>
@@ -895,7 +894,8 @@
 <span class="normal">22</span>
 <span class="normal">23</span>
 <span class="normal">24</span>
-<span class="normal">25</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">ParamChange</span><span class="p">(</span>
+<span class="normal">25</span>
+<span class="normal">26</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">ParamChange</span><span class="p">(</span>
     <span class="n">typing</span><span class="o">.</span><span class="n">TypedDict</span>
 <span class="p">):</span>
 <span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
@@ -944,8 +944,8 @@
 
 
 
-<h2 id="pySWATPlus.types.ParamSpec" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">ParamSpec</span> <span class="o">=</span> <span class="n">ParamChange</span> <span class="o">|</span> <span class="nb">list</span><span class="p">[</span><span class="n">ParamChange</span><span class="p">]</span></code>
+<h2 id="pySWATPlus.types.ParamChanges" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">ParamChanges</span> <span class="o">=</span> <span class="n">ParamChange</span> <span class="o">|</span> <span class="nb">list</span><span class="p">[</span><span class="n">ParamChange</span><span class="p">]</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-module-attribute"><code>module-attribute</code></small>
@@ -968,7 +968,7 @@ specified as either a single <code>ParamChange</code> or a list of them.</p>
 
 
 <h2 id="pySWATPlus.types.FileParams" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">FileParams</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">bool</span> <span class="o">|</span> <span class="n">ParamSpec</span><span class="p">]</span></code>
+            <code class="highlight language-python"><span class="n">FileParams</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">bool</span> <span class="o">|</span> <span class="n">ParamChanges</span><span class="p">]</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-module-attribute"><code>module-attribute</code></small>

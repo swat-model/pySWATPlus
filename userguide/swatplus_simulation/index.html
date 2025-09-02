@@ -816,6 +816,11 @@
 </code></pre></div>
 <p><code>pySWATPlus</code> offers multiple options for executing <code>SWAT+</code> simulations, providing flexibility for diverse workflows and automation needs.</p>
 <p>The following sections demonstrate different approaches, including modifying input parameters, running a single simulation, and performing batch processing.</p>
+<div class="admonition warning">
+<p class="admonition-title">Calibration Warning</p>
+<p>The <code>run_swat</code> and <code>run_swat_in_other_dir</code> functions currently <strong>disable the use of the <code>calibration.cal</code> file</strong>.<br />
+Calibration via the <code>calibration.cal</code> file is still under development.</p>
+</div>
 <h2 id="a-trial-simulation">A Trial Simulation</h2>
 <p>This simple example runs a <code>SWAT+</code> simulation without changing any input parameters, ensuring that the setup works correctly:</p>
 <div class="highlight"><pre><span></span><code><span class="n">txtinout_reader</span><span class="o">.</span><span class="n">run_swat</span><span class="p">()</span>
