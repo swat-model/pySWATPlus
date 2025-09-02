@@ -26,14 +26,14 @@ class ParamChange(
     filter_by: typing_extensions.NotRequired[str]
 
 
-ParamSpec = ParamChange | list[ParamChange]
+ParamChanges = ParamChange | list[ParamChange]
 
 '''
 Represents one or more parameter value changes,
 specified as either a single `ParamChange` or a list of them.
 '''
 
-FileParams = dict[str, bool | ParamSpec]
+FileParams = dict[str, bool | ParamChanges]
 
 '''
 Maps a parameter from an input file (e.g., `bm_e` from `plants.plt` or `epco` from `hydrology.hyd`)
@@ -115,9 +115,14 @@ params={
 ```
 '''
 
+"""
+Types for defining parameters using calibration.cal
+"""
 
-class ParameterChange(
-    typing.TypedDict
+
+class CalParamChangeBase(
+    typing.TypedDict,
+    total=False
 ):
 
     '''
@@ -126,8 +131,6 @@ class ParameterChange(
     Attributes:
 
         name (str): The name of the parameter.
-        value (float): The value to apply to the parameter.
-
         change_type (str): An optional key with a string value that specifies the type of change to apply, with options:
 
             - `'absval'`: Use the absolute value (default).
@@ -138,13 +141,25 @@ class ParameterChange(
         conditions (dict[str: list[str]], optional): A dictionary of conditions to apply to the parameter change.
     '''
     name: str
-    value: float
     change_type: typing_extensions.NotRequired[typing.Literal['absval', 'abschg', 'pctchg']]
     units: typing_extensions.NotRequired[Iterable[int]]
     conditions: typing_extensions.NotRequired[dict[str, list[str]]]
 
 
-ParameterChanges = ParameterChange | list[ParameterChange]
+class CalParamChange(CalParamChangeBase):
+
+    """Extends CalParamChangeBase with a fixed `value` field."""
+    value: float
+
+
+class CalParamChangeBounded(CalParamChangeBase):
+
+    """Extends CalParamChangeBase with fixed `lower_bound` and `upper_bound` fields."""
+    lower_bound: float
+    upper_bound: float
+
+
+CalParamChanges = CalParamChange | list[CalParamChange]
 
 '''
 Defines changes in parameter values.
@@ -169,6 +184,24 @@ params = [
         "value": 0.3,
         "units": range(1, 194)
     }
+]
+```
+'''
+
+CalParamChangesBounded = CalParamChangeBounded | list[CalParamChangeBounded]
+
+'''
+Defines changes in parameter values.
+
+Example:
+```python
+params = [
+    {
+        "name": "cn2",
+        "change_type": "pctchg",
+        "lower_bound": 40,
+        "upper_bound": 60
+    },
 ]
 ```
 '''

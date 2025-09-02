@@ -19,7 +19,7 @@ def txtinout_reader():
     yield txtinout_reader
 
 
-def test_utils():
+def test_utils(txtinout_reader):
 
     # --- pass test for None input ---
     output = pySWATPlus.utils._validate_calibration_params(params=None)
@@ -197,6 +197,31 @@ def test_utils():
         })
     assert 'all elements in "conditions"["hsg"] must be strings' in str(exc_info.value)
 
+    # --- Case 1: parameter exists (cn2) ---
+    par_change = [{"name": "cn2"}]
+    # Should not raise
+    pySWATPlus.utils._check_swatplus_parameters(txtinout_reader.root_folder, par_change)
+
+    # --- Case 2: parameter does not exist ---
+    par_change = [{"name": "obj_that_doesnt_exist"}]
+    with pytest.raises(ValueError, match="obj_that_doesnt_exist"):
+        pySWATPlus.utils._check_swatplus_parameters(txtinout_reader.root_folder, par_change)
+
+    with tempfile.TemporaryDirectory() as tmp1_dir:
+        # Initialize TxtinOutReader class by target directory
+        target_dir = txtinout_reader.copy_required_files(
+            target_dir=tmp1_dir
+        )
+
+        # Error if cal_parms.cal does not exist
+        cal_parms_path = target_dir / 'cal_parms.cal'
+        if cal_parms_path.exists():
+            cal_parms_path.unlink()
+
+        with pytest.raises(Exception) as exc_info:
+            pySWATPlus.utils._check_swatplus_parameters(target_dir, par_change)
+        assert exc_info.value.args[0] == 'cal_parms.cal file does not exist in the TxtInOut folder'
+
 
 @pytest.mark.parametrize(
     "value,expected",
@@ -271,38 +296,6 @@ def test_add_or_remove_calibration_cal_to_file_cio(
             "null              null              null              null"
         )
         assert lines[21] == expected_remove_line
-
-
-def test_check_swatplus_parameters(
-    txtinout_reader
-):
-    with tempfile.TemporaryDirectory() as tmp1_dir:
-        # Initialize TxtinOutReader class by target directory
-        target_dir = txtinout_reader.copy_required_files(
-            target_dir=tmp1_dir
-        )
-        target_reader = pySWATPlus.TxtinoutReader(
-            path=target_dir
-        )
-
-        # --- Case 1: parameter exists (cn2) ---
-        par_change = [{"name": "cn2"}]
-        # Should not raise
-        target_reader._check_swatplus_parameters(par_change)
-
-        # --- Case 2: parameter does not exist ---
-        par_change = [{"name": "obj_that_doesnt_exist"}]
-        with pytest.raises(ValueError, match="obj_that_doesnt_exist"):
-            target_reader._check_swatplus_parameters(par_change)
-
-        # Error if cal_parms.cal does not exist
-        cal_parms_path = target_dir / 'cal_parms.cal'
-        if cal_parms_path.exists():
-            cal_parms_path.unlink()
-
-        with pytest.raises(Exception) as exc_info:
-            target_reader._check_swatplus_parameters(par_change)
-        assert exc_info.value.args[0] == 'cal_parms.cal file does not exist in the TxtInOut folder'
 
 
 def test_write_calibration_file(

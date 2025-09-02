@@ -1,6 +1,6 @@
 ::: pySWATPlus.types.ParamChange
 
-::: pySWATPlus.types.ParamSpec
+::: pySWATPlus.types.ParamChanges
 
 ::: pySWATPlus.types.FileParams
 
