@@ -16,8 +16,9 @@ class SensitivityAnalyzer(BaseSensitivityAnalyzer):
     '''
     Provides functionality for running scenario simulations and analyzing simulated data.
     '''
-    @staticmethod
+    @classmethod
     def _simulation_in_cpu(
+        cls,
         track_sim: int,
         var_array: numpy.typing.NDArray[numpy.float64],
         num_sim: int,
@@ -52,7 +53,7 @@ class SensitivityAnalyzer(BaseSensitivityAnalyzer):
                     change_param = '|'.join([file_key, change_dict['filter_by']]) if 'filter_by' in change_dict else file_key
                     change_dict['value'] = var_dict[change_param]
 
-        dir_path, simulation_output = utils._setup_simulation_directory(
+        dir_path, simulation_output = cls._setup_simulation_directory(
             track_sim=track_sim,
             num_sim=num_sim,
             var_array=var_array,
@@ -71,7 +72,7 @@ class SensitivityAnalyzer(BaseSensitivityAnalyzer):
         )
 
         # Extract simulated data
-        simulation_output = utils._extract_simulation_data(
+        simulation_output = cls._extract_simulation_data(
             dir_path=dir_path,
             simulation_data=simulation_data,
             simulation_output=simulation_output,
@@ -246,7 +247,7 @@ class SensitivityAnalyzer(BaseSensitivityAnalyzer):
         # start time
         start_time = time.time()
 
-        utils._validate_simulation_by_sobol_sample_params(
+        cls._validate_simulation_by_sobol_sample_params(
             simulation_folder=simulation_folder,
             simulation_data=simulation_data,
             var_names=var_names,
@@ -303,7 +304,7 @@ class SensitivityAnalyzer(BaseSensitivityAnalyzer):
                 if p not in list(df.columns):
                     raise Exception(f'Parameter "{p}" not found in columns of the file "{key}"')
 
-        problem, sample_array, unique_array, num_sim = utils._prepare_sobol_samples(
+        problem, sample_array, unique_array, num_sim = cls._prepare_sobol_samples(
             var_names=var_names,
             var_bounds=var_bounds,
             sample_number=sample_number
@@ -338,7 +339,7 @@ class SensitivityAnalyzer(BaseSensitivityAnalyzer):
                 }
 
         # Generate sensitivity simulation output for all sample_array from unique_array outputs
-        output_dict = utils._collect_sobol_results(
+        output_dict = cls._collect_sobol_results(
             sample_array=sample_array,
             var_names=var_names,
             cpu_dict=cpu_dict,

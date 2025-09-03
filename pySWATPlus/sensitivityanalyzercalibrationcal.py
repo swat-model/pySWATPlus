@@ -4,7 +4,6 @@ import functools
 import typing
 import concurrent.futures
 from .types import ParamsType, CalParamChangesBounded
-from . import utils
 from .base_sensitivity_analyser import BaseSensitivityAnalyzer
 import json
 
@@ -17,9 +16,9 @@ class SensitivityAnalyzerCalibrationCal(BaseSensitivityAnalyzer):
         This class is currently under development and not recommended for use.
 
     '''
-
+    @classmethod
     def _simulation_in_cpu(
-        self,
+        cls,
         track_sim: int,
         var_array: numpy.typing.NDArray[numpy.float64],
         num_sim: int,
@@ -35,8 +34,9 @@ class SensitivityAnalyzerCalibrationCal(BaseSensitivityAnalyzer):
         '''
         pass
 
+    @classmethod
     def simulation_by_sobol_sample(
-        self,
+        cls,
         sample_number: int,
         simulation_folder: str,
         txtinout_folder: str,
@@ -179,7 +179,7 @@ class SensitivityAnalyzerCalibrationCal(BaseSensitivityAnalyzer):
         var_names = [json.dumps(param_change) for param_change in params.values()]
         var_bounds = [[param['lower_bound'], param['upper_bound']] for param in params.values()]
 
-        utils._validate_simulation_by_sobol_sample_params(
+        cls._validate_simulation_by_sobol_sample_params(
             simulation_folder=simulation_folder,
             simulation_data=simulation_data,
             var_names=var_names,
@@ -187,9 +187,9 @@ class SensitivityAnalyzerCalibrationCal(BaseSensitivityAnalyzer):
         )
 
         # validate that params is correct
-        utils._validate_params(params)
+        # utils._validate_params(params)        #validator is not implemented yet, should be: _validate_CalParamChangesBounded
 
-        problem, sample_array, unique_array, num_sim = utils._prepare_sobol_samples(
+        problem, sample_array, unique_array, num_sim = cls._prepare_sobol_samples(
             var_names=var_names,
             var_bounds=var_bounds,
             sample_number=sample_number
@@ -197,7 +197,7 @@ class SensitivityAnalyzerCalibrationCal(BaseSensitivityAnalyzer):
 
         # Function for individual CPU simulation
         cpu_sim = functools.partial(
-            self._simulation_in_cpu,
+            cls._simulation_in_cpu,
             num_sim=num_sim,
             var_names=var_names,
             simulation_folder=simulation_folder,
@@ -224,7 +224,7 @@ class SensitivityAnalyzerCalibrationCal(BaseSensitivityAnalyzer):
                 }
 
         # Generate sensitivity simulation output for all sample_array from unique_array outputs
-        output_dict = utils._collect_sobol_results(
+        output_dict = cls._collect_sobol_results(
             sample_array=sample_array,
             var_names=var_names,
             cpu_dict=cpu_dict,
