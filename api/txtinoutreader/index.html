@@ -1956,7 +1956,9 @@ SWAT+ model files located in the <code>TxtInOut</code> folder.</p>
 <span class="normal">969</span>
 <span class="normal">970</span>
 <span class="normal">971</span>
-<span class="normal">972</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">TxtinoutReader</span><span class="p">:</span>
+<span class="normal">972</span>
+<span class="normal">973</span>
+<span class="normal">974</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">TxtinoutReader</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    Provide functionality for seamless reading, editing, and writing of</span>
 <span class="sd">    SWAT+ model files located in the `TxtInOut` folder.</span>
@@ -2327,12 +2329,13 @@ SWAT+ model files located in the <code>TxtInOut</code> folder.</p>
     <span class="k">def</span><span class="w"> </span><span class="nf">_write_calibration_file</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">par_change</span><span class="p">:</span> <span class="n">CalParamChanges</span>
-    <span class="p">):</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">        Writes `calibration.cal` file with parameter changes.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
 
         <span class="n">outfile</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">root_folder</span> <span class="o">/</span> <span class="s2">&quot;calibration.cal&quot;</span>
+        <span class="n">_par_changes</span> <span class="o">=</span> <span class="n">par_change</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">par_change</span><span class="p">,</span> <span class="nb">list</span><span class="p">)</span> <span class="k">else</span> <span class="p">[</span><span class="n">par_change</span><span class="p">]</span>
 
         <span class="c1"># If calibration.cal exists, remove it (always recreate)</span>
         <span class="k">if</span> <span class="n">outfile</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
@@ -2342,7 +2345,7 @@ SWAT+ model files located in the <code>TxtInOut</code> folder.</p>
         <span class="bp">self</span><span class="o">.</span><span class="n">_add_or_remove_calibration_cal_to_file_cio</span><span class="p">(</span><span class="n">add</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
         <span class="c1"># Number of parameters (number of rows in the DataFrame)</span>
-        <span class="n">num_parameters</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">par_change</span><span class="p">)</span>
+        <span class="n">num_parameters</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">_par_changes</span><span class="p">)</span>
 
         <span class="c1"># Column widths for right-alignment</span>
         <span class="n">col_widths</span> <span class="o">=</span> <span class="p">{</span>
@@ -2359,9 +2362,8 @@ SWAT+ model files located in the <code>TxtInOut</code> folder.</p>
             <span class="s2">&quot;OBJ_TOT&quot;</span><span class="p">:</span> <span class="mi">8</span>
         <span class="p">}</span>
 
-        <span class="n">_par_changes</span> <span class="o">=</span> <span class="p">[]</span>
-
-        <span class="k">for</span> <span class="n">change</span> <span class="ow">in</span> <span class="n">par_change</span><span class="p">:</span>
+        <span class="n">calibration_cal_rows</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">change</span> <span class="ow">in</span> <span class="n">_par_changes</span><span class="p">:</span>
             <span class="c1"># get units</span>
             <span class="n">units</span> <span class="o">=</span> <span class="n">change</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;units&quot;</span><span class="p">,</span> <span class="p">[])</span>
 
@@ -2374,7 +2376,7 @@ SWAT+ model files located in the <code>TxtInOut</code> folder.</p>
             <span class="c1"># get conditions</span>
             <span class="n">parsed_conditions</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">_parse_conditions</span><span class="p">(</span><span class="n">change</span><span class="p">)</span>
 
-            <span class="n">_par_changes</span><span class="o">.</span><span class="n">append</span><span class="p">({</span>
+            <span class="n">calibration_cal_rows</span><span class="o">.</span><span class="n">append</span><span class="p">({</span>
                 <span class="s2">&quot;NAME&quot;</span><span class="p">:</span> <span class="n">change</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">],</span>
                 <span class="s2">&quot;CHG_TYPE&quot;</span><span class="p">:</span> <span class="n">change</span><span class="p">[</span><span class="s2">&quot;change_type&quot;</span><span class="p">]</span> <span class="k">if</span> <span class="s2">&quot;change_type&quot;</span> <span class="ow">in</span> <span class="n">change</span> <span class="k">else</span> <span class="s1">&#39;absval&#39;</span><span class="p">,</span>
                 <span class="s2">&quot;VAL&quot;</span><span class="p">:</span> <span class="n">change</span><span class="p">[</span><span class="s2">&quot;value&quot;</span><span class="p">],</span>
@@ -2397,29 +2399,31 @@ SWAT+ model files located in the <code>TxtInOut</code> folder.</p>
             <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">headers</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
 
             <span class="c1"># Write rows</span>
-            <span class="k">for</span> <span class="n">change</span> <span class="ow">in</span> <span class="n">_par_changes</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">calibration_cal_rows</span><span class="p">:</span>
                 <span class="n">line</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
                 <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;NAME&quot;</span><span class="p">,</span> <span class="s2">&quot;CHG_TYPE&quot;</span><span class="p">,</span> <span class="s2">&quot;VAL&quot;</span><span class="p">,</span> <span class="s2">&quot;CONDS&quot;</span><span class="p">,</span> <span class="s2">&quot;LYR1&quot;</span><span class="p">,</span> <span class="s2">&quot;LYR2&quot;</span><span class="p">,</span>
                             <span class="s2">&quot;YEAR1&quot;</span><span class="p">,</span> <span class="s2">&quot;YEAR2&quot;</span><span class="p">,</span> <span class="s2">&quot;DAY1&quot;</span><span class="p">,</span> <span class="s2">&quot;DAY2&quot;</span><span class="p">,</span> <span class="s2">&quot;OBJ_TOT&quot;</span><span class="p">]:</span>
                     <span class="k">if</span> <span class="n">col</span> <span class="o">==</span> <span class="s2">&quot;NAME&quot;</span><span class="p">:</span>
-                        <span class="n">line</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">change</span><span class="p">[</span><span class="n">col</span><span class="p">]</span><span class="si">:</span><span class="s2">&lt;</span><span class="si">{</span><span class="n">col_widths</span><span class="p">[</span><span class="n">col</span><span class="p">]</span><span class="si">}}</span><span class="s2">&quot;</span>   <span class="c1"># left-align</span>
-                    <span class="k">elif</span> <span class="n">col</span> <span class="o">==</span> <span class="s2">&quot;VAL&quot;</span><span class="p">:</span>
-                        <span class="n">line</span> <span class="o">+=</span> <span class="n">utils</span><span class="o">.</span><span class="n">_format_val_field</span><span class="p">(</span><span class="n">change</span><span class="p">[</span><span class="n">col</span><span class="p">])</span>  <span class="c1"># special VAL formatting</span>
+                        <span class="n">line</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">row</span><span class="p">[</span><span class="n">col</span><span class="p">]</span><span class="si">:</span><span class="s2">&lt;</span><span class="si">{</span><span class="n">col_widths</span><span class="p">[</span><span class="n">col</span><span class="p">]</span><span class="si">}}</span><span class="s2">&quot;</span>   <span class="c1"># left-align</span>
+                    <span class="k">elif</span> <span class="n">col</span> <span class="o">==</span> <span class="s2">&quot;VAL&quot;</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="n">col</span><span class="p">],</span> <span class="nb">float</span><span class="p">):</span>
+                        <span class="n">line</span> <span class="o">+=</span> <span class="n">utils</span><span class="o">.</span><span class="n">_format_val_field</span><span class="p">(</span><span class="n">typing</span><span class="o">.</span><span class="n">cast</span><span class="p">(</span><span class="nb">float</span><span class="p">,</span> <span class="n">row</span><span class="p">[</span><span class="n">col</span><span class="p">]))</span>  <span class="c1"># special VAL formatting</span>
                     <span class="k">else</span><span class="p">:</span>
-                        <span class="n">line</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">change</span><span class="p">[</span><span class="n">col</span><span class="p">]</span><span class="si">:</span><span class="s2">&gt;</span><span class="si">{</span><span class="n">col_widths</span><span class="p">[</span><span class="n">col</span><span class="p">]</span><span class="si">}}</span><span class="s2">&quot;</span>  <span class="c1"># right-align numeric columns</span>
+                        <span class="n">line</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">row</span><span class="p">[</span><span class="n">col</span><span class="p">]</span><span class="si">:</span><span class="s2">&gt;</span><span class="si">{</span><span class="n">col_widths</span><span class="p">[</span><span class="n">col</span><span class="p">]</span><span class="si">}}</span><span class="s2">&quot;</span>  <span class="c1"># right-align numeric columns</span>
 
                 <span class="c1"># Append compacted units at the end (space-separated)</span>
-                <span class="k">if</span> <span class="n">change</span><span class="p">[</span><span class="s2">&quot;OBJ_LIST&quot;</span><span class="p">]:</span>
-                    <span class="n">line</span> <span class="o">+=</span> <span class="s2">&quot;       &quot;</span> <span class="o">+</span> <span class="s2">&quot;    &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">u</span><span class="p">)</span> <span class="k">for</span> <span class="n">u</span> <span class="ow">in</span> <span class="n">change</span><span class="p">[</span><span class="s2">&quot;OBJ_LIST&quot;</span><span class="p">])</span>
+                <span class="k">if</span> <span class="n">row</span><span class="p">[</span><span class="s2">&quot;OBJ_LIST&quot;</span><span class="p">]:</span>
+                    <span class="n">line</span> <span class="o">+=</span> <span class="s2">&quot;       &quot;</span> <span class="o">+</span> <span class="s2">&quot;    &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">u</span><span class="p">)</span> <span class="k">for</span> <span class="n">u</span> <span class="ow">in</span> <span class="n">typing</span><span class="o">.</span><span class="n">cast</span><span class="p">(</span><span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">row</span><span class="p">[</span><span class="s2">&quot;OBJ_LIST&quot;</span><span class="p">]))</span>
 
-                <span class="n">line</span> <span class="o">+=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">change</span><span class="p">[</span><span class="s2">&quot;PARSED_CONDITIONS&quot;</span><span class="p">])</span> <span class="k">if</span> <span class="n">change</span><span class="p">[</span><span class="s2">&quot;PARSED_CONDITIONS&quot;</span><span class="p">]</span> <span class="k">else</span> <span class="s2">&quot;&quot;</span>
+                <span class="k">if</span> <span class="n">row</span><span class="p">[</span><span class="s2">&quot;PARSED_CONDITIONS&quot;</span><span class="p">]:</span>
+                    <span class="n">parsed_conditions</span> <span class="o">=</span> <span class="n">typing</span><span class="o">.</span><span class="n">cast</span><span class="p">(</span><span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">row</span><span class="p">[</span><span class="s2">&quot;PARSED_CONDITIONS&quot;</span><span class="p">])</span>
+                    <span class="n">line</span> <span class="o">+=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">parsed_conditions</span><span class="p">)</span>
 
                 <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">line</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_add_or_remove_calibration_cal_to_file_cio</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">add</span><span class="p">:</span> <span class="nb">bool</span>
-    <span class="p">):</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">        Adds or removes the calibration line to &#39;file.cio&#39;</span>
 <span class="sd">        &#39;&#39;&#39;</span>
@@ -2461,7 +2465,7 @@ SWAT+ model files located in the <code>TxtInOut</code> folder.</p>
         <span class="n">begin_and_end_year</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">warmup</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">print_prt_control</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">bool</span><span class="p">]]]</span> <span class="o">=</span> <span class="kc">None</span>
-    <span class="p">):</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">        Sets begin and end year for the simulation, the warm-up period, and toggles the elements in print.prt file</span>
 <span class="sd">        &#39;&#39;&#39;</span>
@@ -3216,9 +3220,7 @@ zero or multiple <code>.exe</code> files.</p>
 
             <details class="quote">
               <summary>Source code in <code>pySWATPlus/txtinoutreader.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">796</span>
-<span class="normal">797</span>
-<span class="normal">798</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">798</span>
 <span class="normal">799</span>
 <span class="normal">800</span>
 <span class="normal">801</span>
@@ -3290,7 +3292,9 @@ zero or multiple <code>.exe</code> files.</p>
 <span class="normal">867</span>
 <span class="normal">868</span>
 <span class="normal">869</span>
-<span class="normal">870</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">cal_run_swat</span><span class="p">(</span>
+<span class="normal">870</span>
+<span class="normal">871</span>
+<span class="normal">872</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">cal_run_swat</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">params</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">CalParamChanges</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">skip_units_and_conditions_validation</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
@@ -3480,9 +3484,7 @@ skip_units_and_conditions_validation (bool): If `True`, skip validation of units
 
             <details class="quote">
               <summary>Source code in <code>pySWATPlus/txtinoutreader.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">872</span>
-<span class="normal">873</span>
-<span class="normal">874</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">874</span>
 <span class="normal">875</span>
 <span class="normal">876</span>
 <span class="normal">877</span>
@@ -3580,7 +3582,9 @@ skip_units_and_conditions_validation (bool): If `True`, skip validation of units
 <span class="normal">969</span>
 <span class="normal">970</span>
 <span class="normal">971</span>
-<span class="normal">972</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">cal_run_swat_in_other_dir</span><span class="p">(</span>
+<span class="normal">972</span>
+<span class="normal">973</span>
+<span class="normal">974</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">cal_run_swat_in_other_dir</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">target_dir</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">,</span>
     <span class="n">params</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">CalParamChanges</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -4511,9 +4515,7 @@ a ValueError is raised. Defaults to False.</p>
 
             <details class="quote">
               <summary>Source code in <code>pySWATPlus/txtinoutreader.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">608</span>
-<span class="normal">609</span>
-<span class="normal">610</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">610</span>
 <span class="normal">611</span>
 <span class="normal">612</span>
 <span class="normal">613</span>
@@ -4602,7 +4604,9 @@ a ValueError is raised. Defaults to False.</p>
 <span class="normal">696</span>
 <span class="normal">697</span>
 <span class="normal">698</span>
-<span class="normal">699</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">run_swat</span><span class="p">(</span>
+<span class="normal">699</span>
+<span class="normal">700</span>
+<span class="normal">701</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">run_swat</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">params</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">ParamsType</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">:</span>
@@ -4897,9 +4901,7 @@ The time step keys represent:</p>
 
             <details class="quote">
               <summary>Source code in <code>pySWATPlus/txtinoutreader.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">701</span>
-<span class="normal">702</span>
-<span class="normal">703</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">703</span>
 <span class="normal">704</span>
 <span class="normal">705</span>
 <span class="normal">706</span>
@@ -4990,7 +4992,9 @@ The time step keys represent:</p>
 <span class="normal">791</span>
 <span class="normal">792</span>
 <span class="normal">793</span>
-<span class="normal">794</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">run_swat_in_other_dir</span><span class="p">(</span>
+<span class="normal">794</span>
+<span class="normal">795</span>
+<span class="normal">796</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">run_swat_in_other_dir</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">target_dir</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">,</span>
     <span class="n">params</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">ParamsType</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>

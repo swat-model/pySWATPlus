@@ -1140,9 +1140,9 @@
 <span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    Provides functionality for running scenario simulations and analyzing simulated data.</span>
 <span class="sd">    &#39;&#39;&#39;</span>
-
+    <span class="nd">@classmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">_simulation_in_cpu</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span>
+        <span class="bp">cls</span><span class="p">,</span>
         <span class="n">track_sim</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
         <span class="n">var_array</span><span class="p">:</span> <span class="n">numpy</span><span class="o">.</span><span class="n">typing</span><span class="o">.</span><span class="n">NDArray</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">float64</span><span class="p">],</span>
         <span class="n">num_sim</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
@@ -1177,7 +1177,7 @@
                     <span class="n">change_param</span> <span class="o">=</span> <span class="s1">&#39;|&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">file_key</span><span class="p">,</span> <span class="n">change_dict</span><span class="p">[</span><span class="s1">&#39;filter_by&#39;</span><span class="p">]])</span> <span class="k">if</span> <span class="s1">&#39;filter_by&#39;</span> <span class="ow">in</span> <span class="n">change_dict</span> <span class="k">else</span> <span class="n">file_key</span>
                     <span class="n">change_dict</span><span class="p">[</span><span class="s1">&#39;value&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">var_dict</span><span class="p">[</span><span class="n">change_param</span><span class="p">]</span>
 
-        <span class="n">dir_path</span><span class="p">,</span> <span class="n">simulation_output</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">_setup_simulation_directory</span><span class="p">(</span>
+        <span class="n">dir_path</span><span class="p">,</span> <span class="n">simulation_output</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_setup_simulation_directory</span><span class="p">(</span>
             <span class="n">track_sim</span><span class="o">=</span><span class="n">track_sim</span><span class="p">,</span>
             <span class="n">num_sim</span><span class="o">=</span><span class="n">num_sim</span><span class="p">,</span>
             <span class="n">var_array</span><span class="o">=</span><span class="n">var_array</span><span class="p">,</span>
@@ -1196,18 +1196,18 @@
         <span class="p">)</span>
 
         <span class="c1"># Extract simulated data</span>
-        <span class="n">simulation_output</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">_extract_simulation_data</span><span class="p">(</span>
+        <span class="n">simulation_output</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_extract_simulation_data</span><span class="p">(</span>
             <span class="n">dir_path</span><span class="o">=</span><span class="n">dir_path</span><span class="p">,</span>
             <span class="n">simulation_data</span><span class="o">=</span><span class="n">simulation_data</span><span class="p">,</span>
             <span class="n">simulation_output</span><span class="o">=</span><span class="n">simulation_output</span><span class="p">,</span>
-            <span class="n">simulated_timeseries_df</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">simulated_timeseries_df</span><span class="p">,</span>
             <span class="n">clean_setup</span><span class="o">=</span><span class="n">clean_setup</span><span class="p">,</span>
         <span class="p">)</span>
 
         <span class="k">return</span> <span class="n">simulation_output</span>
 
+    <span class="nd">@classmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">simulation_by_sobol_sample</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span>
+        <span class="bp">cls</span><span class="p">,</span>
         <span class="n">var_names</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
         <span class="n">var_bounds</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="nb">float</span><span class="p">]],</span>
         <span class="n">sample_number</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
@@ -1371,7 +1371,7 @@
         <span class="c1"># start time</span>
         <span class="n">start_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
 
-        <span class="n">utils</span><span class="o">.</span><span class="n">_validate_simulation_by_sobol_sample_params</span><span class="p">(</span>
+        <span class="bp">cls</span><span class="o">.</span><span class="n">_validate_simulation_by_sobol_sample_params</span><span class="p">(</span>
             <span class="n">simulation_folder</span><span class="o">=</span><span class="n">simulation_folder</span><span class="p">,</span>
             <span class="n">simulation_data</span><span class="o">=</span><span class="n">simulation_data</span><span class="p">,</span>
             <span class="n">var_names</span><span class="o">=</span><span class="n">var_names</span><span class="p">,</span>
@@ -1428,7 +1428,7 @@
                 <span class="k">if</span> <span class="n">p</span> <span class="ow">not</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">):</span>
                     <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Parameter &quot;</span><span class="si">{</span><span class="n">p</span><span class="si">}</span><span class="s1">&quot; not found in columns of the file &quot;</span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s1">&quot;&#39;</span><span class="p">)</span>
 
-        <span class="n">problem</span><span class="p">,</span> <span class="n">sample_array</span><span class="p">,</span> <span class="n">unique_array</span><span class="p">,</span> <span class="n">num_sim</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">_prepare_sobol_samples</span><span class="p">(</span>
+        <span class="n">problem</span><span class="p">,</span> <span class="n">sample_array</span><span class="p">,</span> <span class="n">unique_array</span><span class="p">,</span> <span class="n">num_sim</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_prepare_sobol_samples</span><span class="p">(</span>
             <span class="n">var_names</span><span class="o">=</span><span class="n">var_names</span><span class="p">,</span>
             <span class="n">var_bounds</span><span class="o">=</span><span class="n">var_bounds</span><span class="p">,</span>
             <span class="n">sample_number</span><span class="o">=</span><span class="n">sample_number</span>
@@ -1436,7 +1436,7 @@
 
         <span class="c1"># Function for individual CPU simulation</span>
         <span class="n">cpu_sim</span> <span class="o">=</span> <span class="n">functools</span><span class="o">.</span><span class="n">partial</span><span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_simulation_in_cpu</span><span class="p">,</span>
+            <span class="bp">cls</span><span class="o">.</span><span class="n">_simulation_in_cpu</span><span class="p">,</span>
             <span class="n">num_sim</span><span class="o">=</span><span class="n">num_sim</span><span class="p">,</span>
             <span class="n">var_names</span><span class="o">=</span><span class="n">var_names</span><span class="p">,</span>
             <span class="n">simulation_folder</span><span class="o">=</span><span class="n">simulation_folder</span><span class="p">,</span>
@@ -1463,7 +1463,7 @@
                 <span class="p">}</span>
 
         <span class="c1"># Generate sensitivity simulation output for all sample_array from unique_array outputs</span>
-        <span class="n">output_dict</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">_collect_sobol_results</span><span class="p">(</span>
+        <span class="n">output_dict</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_collect_sobol_results</span><span class="p">(</span>
             <span class="n">sample_array</span><span class="o">=</span><span class="n">sample_array</span><span class="p">,</span>
             <span class="n">var_names</span><span class="o">=</span><span class="n">var_names</span><span class="p">,</span>
             <span class="n">cpu_dict</span><span class="o">=</span><span class="n">cpu_dict</span><span class="p">,</span>
@@ -1495,6 +1495,10 @@
 
 <h3 id="pySWATPlus.SensitivityAnalyzer.simulation_by_sobol_sample" class="doc doc-heading">
             <code class="highlight language-python"><span class="n">simulation_by_sobol_sample</span><span class="p">(</span><span class="n">var_names</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">var_bounds</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="nb">float</span><span class="p">]],</span> <span class="n">sample_number</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">simulation_folder</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">txtinout_folder</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">params</span><span class="p">:</span> <span class="n">ParamsType</span><span class="p">,</span> <span class="n">simulation_data</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">typing</span><span class="o">.</span><span class="n">Any</span><span class="p">]],</span> <span class="n">max_workers</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">save_output</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">clean_setup</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">typing</span><span class="o">.</span><span class="n">Any</span><span class="p">]</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-classmethod"><code>classmethod</code></small>
+  </span>
 
 </h3>
 
@@ -1837,7 +1841,8 @@ will be deleted dynamically after collecting the required data.</p>
 
             <details class="quote">
               <summary>Source code in <code>pySWATPlus/sensitivityanalyzer.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 85</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 84</span>
+<span class="normal"> 85</span>
 <span class="normal"> 86</span>
 <span class="normal"> 87</span>
 <span class="normal"> 88</span>
@@ -2104,8 +2109,9 @@ will be deleted dynamically after collecting the required data.</p>
 <span class="normal">349</span>
 <span class="normal">350</span>
 <span class="normal">351</span>
-<span class="normal">352</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">simulation_by_sobol_sample</span><span class="p">(</span>
-    <span class="bp">self</span><span class="p">,</span>
+<span class="normal">352</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@classmethod</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">simulation_by_sobol_sample</span><span class="p">(</span>
+    <span class="bp">cls</span><span class="p">,</span>
     <span class="n">var_names</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
     <span class="n">var_bounds</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="nb">float</span><span class="p">]],</span>
     <span class="n">sample_number</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
@@ -2269,7 +2275,7 @@ will be deleted dynamically after collecting the required data.</p>
     <span class="c1"># start time</span>
     <span class="n">start_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
 
-    <span class="n">utils</span><span class="o">.</span><span class="n">_validate_simulation_by_sobol_sample_params</span><span class="p">(</span>
+    <span class="bp">cls</span><span class="o">.</span><span class="n">_validate_simulation_by_sobol_sample_params</span><span class="p">(</span>
         <span class="n">simulation_folder</span><span class="o">=</span><span class="n">simulation_folder</span><span class="p">,</span>
         <span class="n">simulation_data</span><span class="o">=</span><span class="n">simulation_data</span><span class="p">,</span>
         <span class="n">var_names</span><span class="o">=</span><span class="n">var_names</span><span class="p">,</span>
@@ -2326,7 +2332,7 @@ will be deleted dynamically after collecting the required data.</p>
             <span class="k">if</span> <span class="n">p</span> <span class="ow">not</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">):</span>
                 <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Parameter &quot;</span><span class="si">{</span><span class="n">p</span><span class="si">}</span><span class="s1">&quot; not found in columns of the file &quot;</span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s1">&quot;&#39;</span><span class="p">)</span>
 
-    <span class="n">problem</span><span class="p">,</span> <span class="n">sample_array</span><span class="p">,</span> <span class="n">unique_array</span><span class="p">,</span> <span class="n">num_sim</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">_prepare_sobol_samples</span><span class="p">(</span>
+    <span class="n">problem</span><span class="p">,</span> <span class="n">sample_array</span><span class="p">,</span> <span class="n">unique_array</span><span class="p">,</span> <span class="n">num_sim</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_prepare_sobol_samples</span><span class="p">(</span>
         <span class="n">var_names</span><span class="o">=</span><span class="n">var_names</span><span class="p">,</span>
         <span class="n">var_bounds</span><span class="o">=</span><span class="n">var_bounds</span><span class="p">,</span>
         <span class="n">sample_number</span><span class="o">=</span><span class="n">sample_number</span>
@@ -2334,7 +2340,7 @@ will be deleted dynamically after collecting the required data.</p>
 
     <span class="c1"># Function for individual CPU simulation</span>
     <span class="n">cpu_sim</span> <span class="o">=</span> <span class="n">functools</span><span class="o">.</span><span class="n">partial</span><span class="p">(</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_simulation_in_cpu</span><span class="p">,</span>
+        <span class="bp">cls</span><span class="o">.</span><span class="n">_simulation_in_cpu</span><span class="p">,</span>
         <span class="n">num_sim</span><span class="o">=</span><span class="n">num_sim</span><span class="p">,</span>
         <span class="n">var_names</span><span class="o">=</span><span class="n">var_names</span><span class="p">,</span>
         <span class="n">simulation_folder</span><span class="o">=</span><span class="n">simulation_folder</span><span class="p">,</span>
@@ -2361,7 +2367,7 @@ will be deleted dynamically after collecting the required data.</p>
             <span class="p">}</span>
 
     <span class="c1"># Generate sensitivity simulation output for all sample_array from unique_array outputs</span>
-    <span class="n">output_dict</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">_collect_sobol_results</span><span class="p">(</span>
+    <span class="n">output_dict</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_collect_sobol_results</span><span class="p">(</span>
         <span class="n">sample_array</span><span class="o">=</span><span class="n">sample_array</span><span class="p">,</span>
         <span class="n">var_names</span><span class="o">=</span><span class="n">var_names</span><span class="p">,</span>
         <span class="n">cpu_dict</span><span class="o">=</span><span class="n">cpu_dict</span><span class="p">,</span>
