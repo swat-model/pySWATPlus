@@ -380,12 +380,13 @@ class TxtinoutReader:
     def _write_calibration_file(
         self,
         par_change: CalParamChanges
-    ):
+    ) -> None:
         '''
         Writes `calibration.cal` file with parameter changes.
         '''
 
         outfile = self.root_folder / "calibration.cal"
+        _par_changes = par_change if isinstance(par_change, list) else [par_change]
 
         # If calibration.cal exists, remove it (always recreate)
         if outfile.exists():
@@ -395,7 +396,7 @@ class TxtinoutReader:
         self._add_or_remove_calibration_cal_to_file_cio(add=True)
 
         # Number of parameters (number of rows in the DataFrame)
-        num_parameters = len(par_change)
+        num_parameters = len(_par_changes)
 
         # Column widths for right-alignment
         col_widths = {
@@ -412,9 +413,8 @@ class TxtinoutReader:
             "OBJ_TOT": 8
         }
 
-        _par_changes = []
-
-        for change in par_change:
+        calibration_cal_rows = []
+        for change in _par_changes:
             # get units
             units = change.get("units", [])
 
@@ -427,7 +427,7 @@ class TxtinoutReader:
             # get conditions
             parsed_conditions = utils._parse_conditions(change)
 
-            _par_changes.append({
+            calibration_cal_rows.append({
                 "NAME": change["name"],
                 "CHG_TYPE": change["change_type"] if "change_type" in change else 'absval',
                 "VAL": change["value"],
@@ -450,29 +450,31 @@ class TxtinoutReader:
             f.write(f"{headers}\n")
 
             # Write rows
-            for change in _par_changes:
+            for row in calibration_cal_rows:
                 line = ""
                 for col in ["NAME", "CHG_TYPE", "VAL", "CONDS", "LYR1", "LYR2",
                             "YEAR1", "YEAR2", "DAY1", "DAY2", "OBJ_TOT"]:
                     if col == "NAME":
-                        line += f"{change[col]:<{col_widths[col]}}"   # left-align
-                    elif col == "VAL":
-                        line += utils._format_val_field(change[col])  # special VAL formatting
+                        line += f"{row[col]:<{col_widths[col]}}"   # left-align
+                    elif col == "VAL" and isinstance(row[col], float):
+                        line += utils._format_val_field(typing.cast(float, row[col]))  # special VAL formatting
                     else:
-                        line += f"{change[col]:>{col_widths[col]}}"  # right-align numeric columns
+                        line += f"{row[col]:>{col_widths[col]}}"  # right-align numeric columns
 
                 # Append compacted units at the end (space-separated)
-                if change["OBJ_LIST"]:
-                    line += "       " + "    ".join(str(u) for u in change["OBJ_LIST"])
+                if row["OBJ_LIST"]:
+                    line += "       " + "    ".join(str(u) for u in typing.cast(list[str], row["OBJ_LIST"]))
 
-                line += "\n" + "\n".join(change["PARSED_CONDITIONS"]) if change["PARSED_CONDITIONS"] else ""
+                if row["PARSED_CONDITIONS"]:
+                    parsed_conditions = typing.cast(list[str], row["PARSED_CONDITIONS"])
+                    line += "\n" + "\n".join(parsed_conditions)
 
                 f.write(line + "\n")
 
     def _add_or_remove_calibration_cal_to_file_cio(
         self,
         add: bool
-    ):
+    ) -> None:
         '''
         Adds or removes the calibration line to 'file.cio'
         '''
@@ -514,7 +516,7 @@ class TxtinoutReader:
         begin_and_end_year: typing.Optional[tuple[int, int]] = None,
         warmup: typing.Optional[int] = None,
         print_prt_control: typing.Optional[dict[str, dict[str, bool]]] = None
-    ):
+    ) -> None:
         '''
         Sets begin and end year for the simulation, the warm-up period, and toggles the elements in print.prt file
         '''

@@ -216,7 +216,7 @@ if __name__ == '__main__':
         }
     }
     # Sensitive simulation
-    output = pySWATPlus.SensitivityAnalyzer().simulation_by_sobol_sample(
+    output = pySWATPlus.SensitivityAnalyzer.simulation_by_sobol_sample(
         var_names=var_names,
         var_bounds=var_bounds,
         sample_number=1,

@@ -10,9 +10,8 @@ class BaseSensitivityAnalyzer(ABC):
     '''
     Provides functionality for running scenario simulations and analyzing simulated data.
     '''
-
+    @staticmethod
     def simulated_timeseries_df(
-        self,
         data_file: str,
         has_units: bool,
         start_date: typing.Optional[str] = None,
@@ -140,8 +139,9 @@ class BaseSensitivityAnalyzer(ABC):
         return df
 
     @abstractmethod
+    @classmethod
     def simulation_by_sobol_sample(
-        self,
+        cls,
         var_names: list[str],
         var_bounds: list[list[float]],
         sample_number: int,

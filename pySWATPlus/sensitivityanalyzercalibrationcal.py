@@ -12,6 +12,10 @@ import json
 class SensitivityAnalyzerCalibrationCal(BaseSensitivityAnalyzer):
     '''
     Provides functionality for running scenario simulations and analyzing simulated data.
+
+    Warning:
+        This class is currently under development and not recommended for use.
+
     '''
 
     def _simulation_in_cpu(

@@ -9,7 +9,7 @@ import tempfile
 def sensitivity_analyzer():
 
     # initialize TxtinoutReader class
-    sensitivity_analyzer = pySWATPlus.SensitivityAnalyzer()
+    sensitivity_analyzer = pySWATPlus.SensitivityAnalyzer
 
     yield sensitivity_analyzer
 
@@ -336,7 +336,7 @@ def test_simulated_timeseries_df(
 
     # error test for a apply_filter that no data can be extracted
     with pytest.raises(Exception) as exc_info:
-        pySWATPlus.SensitivityAnalyzer().simulated_timeseries_df(
+        pySWATPlus.SensitivityAnalyzer.simulated_timeseries_df(
             data_file=os.path.join(txtinout_folder, 'zrecall_yr.txt'),
             has_units=True,
             apply_filter={'name': ['hru007']}

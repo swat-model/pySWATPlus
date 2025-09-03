@@ -12,6 +12,7 @@ import copy
 import time
 import json
 import shutil
+from .base_sensitivity_analyser import BaseSensitivityAnalyzer
 
 
 def _build_line_to_add(
@@ -462,7 +463,8 @@ def _validate_conditions_and_units(params: CalParamChanges, txtinout_path: pathl
     - That specified units correspond to valid IDs in the relevant SWAT+ input files.
     - That conditions (if applicable) exist and are valid.
     '''
-    for param in params:
+    _params = params if isinstance(params, list) else [params]
+    for param in _params:
         try:
             _validate_conditions(param, txtinout_path)
             _validate_units(param, txtinout_path)
@@ -476,7 +478,7 @@ def _validate_conditions_and_units(params: CalParamChanges, txtinout_path: pathl
 
 def _check_swatplus_parameters(
     txtinout_folder: pathlib.Path,
-    par_change: CalParamChanges
+    params: CalParamChanges
 ) -> None:
     '''
     Check if parameters exists in cal_parms.cal
@@ -492,8 +494,8 @@ def _check_swatplus_parameters(
         skiprows=2,
         sep=r'\s+'
     )
-
-    parameter_names = [change['name'] for change in par_change]
+    _params = params if isinstance(params, list) else [params]
+    parameter_names = [change['name'] for change in _params]
 
     for parameter in parameter_names:
         if parameter not in cal_parms_df['name'].values:
@@ -557,9 +559,9 @@ def _validate_simulation_by_sobol_sample_params(
 
 def _prepare_sobol_samples(
     var_names: list[str],
-    var_bounds: list[tuple[float, float]],
+    var_bounds: list[list[float]],
     sample_number: int
-) -> tuple[dict[str, any], numpy.ndarray, numpy.ndarray, int]:
+) -> tuple[dict[str, typing.Any], numpy.ndarray, numpy.ndarray, int]:
     '''
     Prepare Sobol samples for sensitivity analysis.
     '''
@@ -588,7 +590,7 @@ def _prepare_sobol_samples(
 def _collect_sobol_results(
     sample_array: numpy.ndarray,
     var_names: list[str],
-    cpu_dict: dict[tuple, dict[str, typing.Any]],
+    cpu_dict: dict[tuple[float, ...], dict[str, typing.Any]],
     problem_dict: dict[str, typing.Any],
     start_time: float,
     simulation_folder: str,
@@ -624,16 +626,22 @@ def _collect_sobol_results(
     if save_output:
         write_dict = copy.deepcopy(output_dict)
 
-        # Convert numpy arrays and DataFrames
-        for key, value in write_dict.items():
-            if key == "sample":
-                write_dict[key] = value.tolist()
-            if key == "simulation":
-                for sub_key, sub_value in value.items():
-                    for k, v in sub_value.items():
-                        if k.endswith("_df"):
-                            v["date"] = v["date"].astype(str)
-                            write_dict[key][sub_key][k] = v.to_json()
+        # Handle "sample" key
+        if "sample" in write_dict:
+            sample = write_dict["sample"]
+            if isinstance(sample, numpy.ndarray):
+                write_dict["sample"] = sample.tolist()
+
+        # Handle "simulation" key with DataFrames
+        if "simulation" in write_dict:
+            simulation = write_dict["simulation"]
+            if isinstance(simulation, dict):
+                for sub_key, sub_value in simulation.items():
+                    if isinstance(sub_value, dict):
+                        for k, v in sub_value.items():
+                            if k.endswith("_df"):
+                                v["date"] = v["date"].astype(str)
+                                sub_value[k] = v.to_json()
 
         json_file = os.path.join(simulation_folder, "sensitivity_simulation_sobol.json")
         with open(json_file, "w") as output_write:
@@ -660,7 +668,7 @@ def _setup_simulation_directory(
     os.makedirs(name=dir_path, exist_ok=True)
 
     # Output simulation dictionary
-    simulation_output: dict[str, any] = {
+    simulation_output: dict[str, typing.Any] = {
         "dir": dir_name,
         "array": var_array,
     }
@@ -672,7 +680,6 @@ def _extract_simulation_data(
     dir_path: str,
     simulation_data: dict[str, dict[str, typing.Any]],
     simulation_output: dict[str, typing.Any],
-    simulated_timeseries_df: callable,
     clean_setup: bool
 ) -> dict[str, typing.Any]:
     """
@@ -680,7 +687,7 @@ def _extract_simulation_data(
     """
     # Extract simulated data
     for sim_fname, sim_fdict in simulation_data.items():
-        df = simulated_timeseries_df(
+        df = BaseSensitivityAnalyzer.simulated_timeseries_df(
             data_file=os.path.join(dir_path, sim_fname),
             **sim_fdict,
         )

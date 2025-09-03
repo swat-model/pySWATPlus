@@ -16,9 +16,8 @@ class SensitivityAnalyzer(BaseSensitivityAnalyzer):
     '''
     Provides functionality for running scenario simulations and analyzing simulated data.
     '''
-
+    @staticmethod
     def _simulation_in_cpu(
-        self,
         track_sim: int,
         var_array: numpy.typing.NDArray[numpy.float64],
         num_sim: int,
@@ -76,14 +75,14 @@ class SensitivityAnalyzer(BaseSensitivityAnalyzer):
             dir_path=dir_path,
             simulation_data=simulation_data,
             simulation_output=simulation_output,
-            simulated_timeseries_df=self.simulated_timeseries_df,
             clean_setup=clean_setup,
         )
 
         return simulation_output
 
+    @classmethod
     def simulation_by_sobol_sample(
-        self,
+        cls,
         var_names: list[str],
         var_bounds: list[list[float]],
         sample_number: int,
@@ -312,7 +311,7 @@ class SensitivityAnalyzer(BaseSensitivityAnalyzer):
 
         # Function for individual CPU simulation
         cpu_sim = functools.partial(
-            self._simulation_in_cpu,
+            cls._simulation_in_cpu,
             num_sim=num_sim,
             var_names=var_names,
             simulation_folder=simulation_folder,
