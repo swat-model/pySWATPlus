@@ -3,6 +3,7 @@ import shutil
 import pySWATPlus
 import pytest
 import tempfile
+from pySWATPlus.types import ParamChangeModel
 
 
 def test_filereader():
@@ -36,7 +37,7 @@ def test_filereader():
     pySWATPlus.utils._apply_param_change(
         df=df,
         param_name='latq_co',
-        change={'value': 0.6, 'filter_by': 'name == "hyd001"'}
+        change=ParamChangeModel(value=0.6, filter_by='name == "hyd001"')
     )
     assert df.iloc[0, -1] == 0.6
 
@@ -44,7 +45,7 @@ def test_filereader():
     pySWATPlus.utils._apply_param_change(
         df=df,
         param_name='pet_co',
-        change={'value': 0.6, 'change_type': 'abschg', 'filter_by': 'name == "hyd002"'}
+        change=ParamChangeModel(value=0.6, change_type='abschg', filter_by='name == "hyd002"')
     )
     assert df.loc[1, 'pet_co'] == 1.6
 
@@ -52,7 +53,7 @@ def test_filereader():
     pySWATPlus.utils._apply_param_change(
         df=df,
         param_name='perco',
-        change={'value': 50, 'change_type': 'pctchg', 'filter_by': 'name == "hyd003"'}
+        change=ParamChangeModel(value=50, change_type='pctchg', filter_by='name == "hyd003"')
     )
     assert round(df.loc[2, 'perco'], 2) == 0.08
 
@@ -94,7 +95,7 @@ def test_error_filereader():
             path=1,
             has_units=False
         )
-    assert exc_info.value.args[0] == 'path must be a string or Path object'
+    assert "Argument must be a string or Path object" in exc_info.value.args[0]
 
     # error test for non-existence of file
     with pytest.raises(Exception) as exc_info:

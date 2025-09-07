@@ -1,207 +1,281 @@
 import typing
-import typing_extensions
-from collections.abc import Iterable
+from pydantic import BaseModel, model_validator, field_validator
 
 
-class ParamChange(
-    typing.TypedDict
-):
-    '''
-    Describes a dictionary structure to change a parameter value in an input file of the SWAT+ model.
-
-    Attributes:
-        value (float): The value to apply to the parameter.
-
-        change_type (str): An optional key with a string value that specifies the type of change to apply, with options:
-
-            - `'absval'`: Use the absolute value (default).
-            - `'abschg'`: Apply an absolute change (e.g., -0.5).
-            - `'pctchg'`: Apply a percentage change (e.g., +10%).
-
-        filter_by (str): An optional key with a string value that filters `DataFrame` rows using `.query()` syntax.
-    '''
-
-    value: float
-    change_type: typing_extensions.NotRequired[typing.Literal['absval', 'abschg', 'pctchg']]
-    filter_by: typing_extensions.NotRequired[str]
+def ensure_list(val: typing.Any) -> list[typing.Any]:
+    """
+    Ensure the input is returned as a list
+    """
+    if isinstance(val, list):
+        return val
+    return [val]
 
 
-ParamChanges = ParamChange | list[ParamChange]
+def reshape_input(values: dict[str, typing.Any]) -> dict[str, typing.Any]:
+    """
+    Extract 'has_units' and normalize other keys into lists under 'params'.
+    """
+    has_units = values.get("has_units")
+    params = {k: v for k, v in values.items() if k != "has_units"}
 
-'''
-Represents one or more parameter value changes,
-specified as either a single `ParamChange` or a list of them.
-'''
+    # Normalize dicts into lists
+    normalized_params = {}
+    for key, val in params.items():
+        normalized_params[key] = ensure_list(val)
 
-FileParams = dict[str, bool | ParamChanges]
-
-'''
-Maps a parameter from an input file (e.g., `bm_e` from `plants.plt` or `epco` from `hydrology.hyd`)
-to the SWAT+ model as either a single `ParamChange` or a list of them.
-
-Special key:
-    - `'has_units'` (bool): Key indicating whether the
-            input file contains a row of units for columns.
-
-Example:
-```python
-# Example from `plants.plt` file with a list of `ParamChange` objects
-{
-    'has_units': False,
-    'bm_e': [
-        {'value': 100, 'change_type': 'absval'},
-        {'value': 110, 'filter_by': 'name == "almd"'}
-    ]
-}
-
-# Example from `hydrology.hyd` file with a single `ParamChange` object
-{
-    'has_units': False,
-    'epco': {'value': 0.5, 'change_type': 'absval'}
-}
-```
-'''
-
-ParamsType = dict[str, FileParams]
-
-'''
-Defines parameter modifications for one or more input files to the SWAT+ model.
-Each key is a input filename and the value is a `FileParams` object.
-
-The structure is as follows:
-```python
-{
-    '<file_1>': {
-        'has_units': bool,
-        '<variable_1>': {
-            'value': float,
-            'change_type': 'absval' | 'abschg' | 'pctchg',  # optional (default 'absval')
-            'filter_by': str  # optional
-        }
-        # OR a list of such dictionaries
-    },
-    '<file_2>': {
-        'has_units': bool,
-        '<variable_21>': {'value': float},
-        '<variable_22>': {'value': float, 'change_type': 'abschg'}
-    },
-    '<file_3>': {
-        'has_units': bool,
-        '<variable_3>': [
-            {'value': float, 'change_type': 'absval', 'filter_by': '<query_31>'},
-            {'value': float, 'change_type': 'pctchg', 'filter_by': '<query_32>'},
-        ],
-    },
-    # More file keys mapped to corresponding FileParams objects
-}
-```
-
-Example:
-```python
-params={
-    'plants.plt': {
-        'has_units': False,
-        'bm_e': [
-            {'value': 100, 'change_type': 'absval', 'filter_by': 'name == "agrl"'},
-            {'value': 110, 'change_type': 'absval', 'filter_by': 'name == "almd"'},
-        ],
-    },
-    'hydrology.hyd': {
-        'has_units': False,
-        'epco': {'value': 0.25, 'change_type': 'abschg'},
-        'perco': {'value': 0.1, 'change_type': 'absval'}
-    }
-}
-```
-'''
-
-"""
-Types for defining parameters using calibration.cal
-"""
+    return {"has_units": has_units, "params": normalized_params}
 
 
-class CalParamChangeBase(
-    typing.TypedDict,
-    total=False
-):
-
-    '''
-    Describes a dictionary structure to change a parameter value in an input file of the SWAT+ model.
-
-    Attributes:
-
-        name (str): The name of the parameter.
-        change_type (str): An optional key with a string value that specifies the type of change to apply, with options:
-
-            - `'absval'`: Use the absolute value (default).
-            - `'abschg'`: Apply an absolute change (e.g., -0.5).
-            - `'pctchg'`: Apply a percentage change (e.g., +10%).
-        units (Iterable[int], optional): An optional list of unit IDs to constrain the parameter change.
-            **Unit IDs should be 1-based**, i.e., the first object has ID 1.
-        conditions (dict[str: list[str]], optional): A dictionary of conditions to apply to the parameter change.
-    '''
-    name: str
-    change_type: typing_extensions.NotRequired[typing.Literal['absval', 'abschg', 'pctchg']]
-    units: typing_extensions.NotRequired[Iterable[int]]
-    conditions: typing_extensions.NotRequired[dict[str, list[str]]]
+M = typing.TypeVar("M", bound=BaseModel)
 
 
-class CalParamChange(CalParamChangeBase):
+# ======================================================
+# Param and ParamBounded
+# ======================================================
 
-    """Extends CalParamChangeBase with a fixed `value` field."""
+class ParamChangeBase(BaseModel):
+    change_type: typing.Literal['absval', 'abschg', 'pctchg'] = 'absval'
+    filter_by: str | None = None
+
+
+class ParamChangeModel(ParamChangeBase):
     value: float
 
 
-class CalParamChangeBounded(CalParamChangeBase):
-
-    """Extends CalParamChangeBase with fixed `lower_bound` and `upper_bound` fields."""
-    lower_bound: float
+class ParamBoundedChangeModel(ParamChangeBase):
     upper_bound: float
+    lower_bound: float
 
 
-CalParamChanges = CalParamChange | list[CalParamChange]
+class FileParamsModelBase(BaseModel):
+    has_units: bool
 
-'''
-Defines changes in parameter values.
+    @model_validator(mode="before")
+    @classmethod
+    def reshape_input(cls, values: dict[str, typing.Any]) -> dict[str, typing.Any]:
+        return reshape_input(values)
+
+
+class FileParamsModel(FileParamsModelBase):
+    params: dict[str, list[ParamChangeModel]]
+
+
+class FileParamsBoundedModel(FileParamsModelBase):
+    params: dict[str, list[ParamBoundedChangeModel]]
+
+
+T = typing.TypeVar("T", bound=BaseModel)
+
+
+def from_dict_generic(cls: typing.Type[M], data: dict[str, typing.Any], file_cls: typing.Type[T]) -> M:
+    """Generic constructor for top-level Params models."""
+    return cls(file_params={k: file_cls(**v) for k, v in data.items()})
+
+
+class ParamsModel(BaseModel):
+    file_params: dict[str, FileParamsModel]
+
+    @classmethod
+    def from_dict(cls, data: dict[str, typing.Any]) -> "ParamsModel":
+        return from_dict_generic(cls, data, FileParamsModel)
+
+
+class ParamsBoundedModel(BaseModel):
+    file_params: dict[str, FileParamsBoundedModel]
+
+    @classmethod
+    def from_dict(cls, data: dict[str, typing.Any]) -> "ParamsBoundedModel":
+        return from_dict_generic(cls, data, FileParamsBoundedModel)
+
+
+ParamsType: typing.TypeAlias = dict[str, dict[str, typing.Any]]
+"""
+Defines parameter modifications for SWAT+ model input files.
 
 Example:
-```python
-params = [
-    {
-        "name": "cn2",
-        "change_type": "pctchg",
-        "value": 50,
-    },
-    {
-        "name": "perco",
-        "change_type": "absval",
-        "value": 0.5,
-        "conditions": {"hsg": ["A"]}
-    },
-    {
-        "name": "bf_max",
-        "change_type": "absval",
-        "value": 0.3,
-        "units": range(1, 194)
+    ```python
+    params: ParamsType = {
+        'plants.plt': {
+            'has_units': False,
+            'bm_e': [
+                {'value': 100.0, 'change_type': 'absval', 'filter_by': 'name == "agrl"'},
+                {'value': 110.0, 'change_type': 'absval', 'filter_by': 'name == "almd"'}
+            ]
+        },
+        'hydrology.hyd': {
+            'has_units': False,
+            'epco': {'value': 0.25, 'change_type': 'abschg'},
+            'perco': {'value': 0.1, 'change_type': 'absval'}
+        }
     }
-]
-```
-'''
+    ```
 
-CalParamChangesBounded = CalParamChangeBounded | list[CalParamChangeBounded]
+Keys for each parameter change:
 
-'''
-Defines changes in parameter values.
+| Key          | Type   | Default   | Description                                             |
+|--------------|--------|-----------|---------------------------------------------------------|
+| change_type  | str    | 'absval'  | Type of change: 'absval', 'abschg', or 'pctchg'.        |
+| value        | float  | —         | The value to apply to the parameter.                    |
+| filter_by    | str    | None      | Pandas `.query()` string to filter rows for the change. |
+
+Notes:
+    - Each parameter (`<param_name>`) can be a **single dictionary** or a **list of dictionaries**.
+    - The `has_units` key is **required** for each file.
+
+"""
+
+
+ParamsBoundedType: typing.TypeAlias = dict[str, dict[str, typing.Any]]
+"""
+Defines bounded parameter modifications for SWAT+ model input files.
+
+This follows the same logic as `ParamsType`, but instead of a single `value`,
+each parameter specifies an `upper_bound` and `lower_bound`. Used for sensitivity analysis.
 
 Example:
-```python
-params = [
-    {
-        "name": "cn2",
-        "change_type": "pctchg",
-        "lower_bound": 40,
-        "upper_bound": 60
-    },
-]
-```
-'''
+    ```python
+    params: ParamsType = {
+        'plants.plt': {
+            'has_units': False,
+            'bm_e': [
+                {'lower_bound': 90.0, 'lower_bound': 100.0, 'change_type': 'absval', 'filter_by': 'name == "agrl"'},
+            ]
+        },
+    }
+    ```
+
+Keys for each parameter change:
+
+| Key          | Type   | Default   | Description                                             |
+|--------------|--------|-----------|---------------------------------------------------------|
+| change_type  | str    | 'absval'  | Type of change: 'absval', 'abschg', or 'pctchg'.       |
+| lower_bound  | float  | —         | The lower bound for the parameter.                     |
+| upper_bound  | float  | —         | The upper bound for the parameter.                     |
+| filter_by    | str    | None      | Pandas `.query()` string to filter rows for the change.|
+
+Notes:
+    - Each parameter (`<param_name>`) can be a **single dictionary** or a **list of dictionaries**.
+    - The `has_units` key is **required** for each file.
+
+"""
+
+
+# ======================================================
+# CalParam and CalParamBounded
+# ======================================================
+
+
+class CalParamChangeBase(BaseModel):
+    change_type: typing.Literal['absval', 'abschg', 'pctchg'] = 'absval'
+    units: typing.Optional[list[int]] = None
+    conditions: typing.Optional[dict[str, list[str]]] = None
+
+    @field_validator("units")
+    @classmethod
+    def validate_units(cls, v: typing.Optional[typing.Iterable[int]]) -> typing.Optional[typing.Iterable[int]]:
+        if v is not None and any(num <= 0 for num in v):
+            raise ValueError(f"All unit IDs must be > 0, got {list(v)}")
+        return list(v) if v is not None else None
+
+
+class CalParamChangeModel(CalParamChangeBase):
+    value: float
+
+
+class CalParamBoundedChangeModel(CalParamChangeBase):
+    upper_bound: float
+    lower_bound: float
+
+
+U = typing.TypeVar("U", bound=CalParamChangeBase)
+
+
+def cal_from_dict_generic(cls: typing.Type[M], data: dict[str, typing.Any], param_cls: typing.Type[U]) -> M:
+    return cls(params={k: [param_cls(**item) for item in ensure_list(v)] for k, v in data.items()})
+
+
+class CalParamsModel(BaseModel):
+    params: dict[str, list[CalParamChangeModel]]
+
+    @classmethod
+    def from_dict(cls, data: dict[str, typing.Any]) -> "CalParamsModel":
+        return cal_from_dict_generic(cls, data, CalParamChangeModel)
+
+
+class CalParamsBoundedModel(BaseModel):
+    params: dict[str, list[CalParamBoundedChangeModel]]
+
+    @classmethod
+    def from_dict(cls, data: dict[str, typing.Any]) -> "CalParamsBoundedModel":
+        return cal_from_dict_generic(cls, data, CalParamBoundedChangeModel)
+
+
+CalParamsType: typing.TypeAlias = dict[str, typing.Any]
+"""
+Defines parameter modifications for SWAT+ model input files.
+
+Example:
+    ```python
+    params = {
+        "cn2":    {
+            "change_type": "pctchg",
+            "value": 50,
+        },
+        "perco": {
+            "change_type": "absval",
+            "value": 0.5,
+            "conditions": {"hsg": ["A"]}
+        },
+        "bf_max": [{
+            "change_type": "absval",
+            "value": 0.3,
+            "units": range(1, 194)
+        }]
+    }
+    ```
+
+Keys for each parameter change:
+
+| Key          | Type                       | Default   | Description                                                                                  |
+|--------------|----------------------------|-----------|----------------------------------------------------------------------------------------------|
+| change_type  | str                        | 'absval'  | Type of change: 'absval', 'abschg', or 'pctchg'.                                             |
+| value        | float                      | —         | The value to apply to the parameter.                                                        |
+| units        | Iterable[int], optional    | None      | Optional list of 1-based unit IDs to constrain the parameter change.                        |
+| conditions   | dict[str, list[str]], optional | None  | Optional dictionary of conditions to apply when changing the parameter.                      |
+Notes:
+    - Each parameter (`<param_name>`) can be a **single dictionary** or a **list of dictionaries**.
+
+"""
+
+CalParamsBoundedType: typing.TypeAlias = dict[str, typing.Any]
+"""
+Defines bounded parameter modifications for SWAT+ model input files.
+
+This follows the same logic as `CalParamsType`, but instead of a single `value`,
+each parameter specifies `lower_bound` and `upper_bound`. Used for sensitivity analysis.
+
+Example:
+    ```python
+    params = {
+        "bf_max": [{
+            "change_type": "absval",
+            "lower_bound": 0.2,
+            "upper_bound": 0.3,
+            "units": range(1, 194)
+        }]
+    }
+    ```
+
+Keys for each parameter change:
+
+| Key          | Type                       | Default   | Description                                                                                  |
+|--------------|----------------------------|-----------|----------------------------------------------------------------------------------------------|
+| change_type  | str                        | 'absval'  | Type of change: 'absval', 'abschg', or 'pctchg'.                                             |
+| lower_bound  | float                      | —         | The lower bound for the parameter.                                                          |
+| upper_bound  | float                      | —         | The upper bound for the parameter.                                                          |
+| units        | Iterable[int], optional    | None      | Optional list of 1-based unit IDs to constrain the parameter change.                        |
+| conditions   | dict[str, list[str]], optional | None  | Optional dictionary of conditions to apply when changing the parameter.                      |
+
+Notes:
+    - Each parameter (`<param_name>`) can be a **single dictionary** or a **list of dictionaries**.
+"""

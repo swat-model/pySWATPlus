@@ -159,7 +159,7 @@ def test_error_txtinoutreader_class():
         pySWATPlus.TxtinoutReader(
             path=1
         )
-    assert exc_info.value.args[0] == 'path must be a string or Path object'
+    assert "Argument must be a string or Path object" in exc_info.value.args[0]
 
     # error test for .exe file
     with pytest.raises(Exception) as exc_info:
@@ -224,7 +224,7 @@ def test_error_run_swat_in_other_dir(
         txtinout_reader.run_swat_in_other_dir(
             target_dir=1
         )
-    assert exc_info.value.args[0] == 'target_dir must be a string or Path object'
+    assert "Argument must be a string or Path object" in exc_info.value.args[0]
 
     with tempfile.TemporaryDirectory() as tmp_dir:
         # error test for invalid begin and end year values type

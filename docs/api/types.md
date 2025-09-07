@@ -1,7 +1,7 @@
-::: pySWATPlus.types.ParamChange
-
-::: pySWATPlus.types.ParamChanges
-
-::: pySWATPlus.types.FileParams
-
 ::: pySWATPlus.types.ParamsType
+
+::: pySWATPlus.types.ParamsBoundedType
+
+::: pySWATPlus.types.CalParamsType
+
+::: pySWATPlus.types.CalParamsBoundedType

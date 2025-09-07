@@ -2,14 +2,13 @@ import numpy
 import time
 import functools
 import typing
-import os
-import copy
 import concurrent.futures
-from .types import ParamsType
-from .filereader import FileReader
+from .types import ParamsBoundedType, ParamsBoundedModel, ParamsType
 from .txtinoutreader import TxtinoutReader
 from . import utils
+from . import validators
 from .base_sensitivity_analyser import BaseSensitivityAnalyzer
+import pathlib
 
 
 class SensitivityAnalyzer(BaseSensitivityAnalyzer):
@@ -23,9 +22,9 @@ class SensitivityAnalyzer(BaseSensitivityAnalyzer):
         var_array: numpy.typing.NDArray[numpy.float64],
         num_sim: int,
         var_names: list[str],
-        simulation_folder: str,
-        txtinout_folder: str,
-        params: ParamsType,
+        simulation_folder: pathlib.Path,
+        txtinout_folder: pathlib.Path,
+        params: ParamsBoundedModel,
         simulation_data: dict[str, dict[str, typing.Any]],
         clean_setup: bool
     ) -> dict[str, typing.Any]:
@@ -38,20 +37,25 @@ class SensitivityAnalyzer(BaseSensitivityAnalyzer):
             var_names[i]: float(var_array[i]) for i in range(len(var_names))
         }
 
-        # modify 'params' dictionary
-        params_sim = copy.deepcopy(params)
-        for file_name, file_dict in params_sim.items():
-            # iterate entries for the file
-            for file_key, file_value in file_dict.items():
-                # skip loop for the has_units key with bool values
-                if isinstance(file_value, bool):
-                    continue
-                # change dictionary to list if required
-                change_list = file_value if isinstance(file_value, list) else [file_value]
-                # iterate dictionary in change list
+        # create 'params' dictionary with assigned value
+        params_sim: ParamsType = {}
+
+        for file_key, file_changes in params.file_params.items():
+            has_units = file_changes.has_units
+            params_sim[file_key] = {'has_units': has_units}
+            for param_key, change_list in file_changes.params.items():
+                params_sim[file_key][param_key] = []
                 for change_dict in change_list:
-                    change_param = '|'.join([file_key, change_dict['filter_by']]) if 'filter_by' in change_dict else file_key
-                    change_dict['value'] = var_dict[change_param]
+                    filter_by = change_dict.filter_by
+                    # change_param = '|'.join([param_key, filter_by]) if filter_by else param_key
+                    unique_name = utils._make_unique_param_name(param_key, change_dict)
+                    value = var_dict[unique_name]
+                    change_type = change_dict.change_type
+                    params_sim[file_key][param_key].append({
+                        'value': value,
+                        'change_type': change_type,
+                        'filter_by': filter_by
+                    })
 
         dir_path, simulation_output = cls._setup_simulation_directory(
             track_sim=track_sim,
@@ -84,12 +88,10 @@ class SensitivityAnalyzer(BaseSensitivityAnalyzer):
     @classmethod
     def simulation_by_sobol_sample(
         cls,
-        var_names: list[str],
-        var_bounds: list[list[float]],
+        params: ParamsBoundedType,
         sample_number: int,
-        simulation_folder: str,
-        txtinout_folder: str,
-        params: ParamsType,
+        simulation_folder: str | pathlib.Path,
+        txtinout_folder: str | pathlib.Path,
         simulation_data: dict[str, dict[str, typing.Any]],
         max_workers: typing.Optional[int] = None,
         save_output: bool = True,
@@ -113,53 +115,29 @@ class SensitivityAnalyzer(BaseSensitivityAnalyzer):
         the sample array, and the simulation results for further analysis.
 
         Args:
-            var_names (list[str]): List of parameter names used for sensitivity analysis, corresponding to entries in the input `params` dictionary.
-                If a parameter includes a `filter_by` condition, the name must be constructed as:
 
-                `'|'.join([<parameter>, <parameter['filter_by']>])`.
-
-                For the given `params` dictionary, the corresponding list is:
+            params (ParamsBoundedType):  Nested dictionary defining the parameter modifications to apply during the simulations.
+                Each parameter should include a the lower and upper bounds, and the parameter value
+                is dynamically assigned with the corresponding sampled value during execution.
                 ```python
-                var_names = [
-                    'esco',
-                    '|'.join(['bm_e', 'name == "agrl"'])
-                ]
+                params = {
+                    'plants.plt': {
+                        'has_units': False,
+                        'bm_e': [
+                            {'lower_bound': 90.0, 'lower_bound': 100.0, 'change_type': 'absval', 'filter_by': 'name == "agrl"'},
+                        ]
+                    },
+                }
                 ```
-
-            var_bounds (list[list[float]]): A list containing `[min, max]` bounds for each parameter in `var_names`, in the same order.
-                ```python
-                var_bounds = [
-                    [0, 1],  # bounds for 'esco'
-                    [30, 40]  # bounds for 'bm_e|name == "agrl"'
-                ]
-                ```
-
             sample_number (int): sample_number (int): Determines the number of samples.
                 Generates an array of length `2^N * (D + 1)`, where `D` is the length of `var_names`
                 and `N = sample_number + 1`. For example, when `sample_number` is 1, 12 samples will be generated.
 
-            simulation_folder (str): Path to the folder where individual simulations for each parameter set will be performed.
+            simulation_folder (str | pathlib.Path): Path to the folder where individual simulations for each parameter set will be performed.
                 Raises an error if the folder is not empty. This precaution helps prevent data deletion, overwriting directories,
                 and issues with reading required data files not generated by the simulation.
 
-            txtinout_folder (str): Path to the `TxtInOut` folder. Raises an error if the folder does not contain exactly one SWAT+ executable `.exe` file.
-
-            params (ParamsType):  Nested dictionary defining the parameter modifications to apply during the simulations.
-                Each parameter should include a default `value` 0 to maintain a valid structure.
-                Before each simulation, a deep copy (`copy.deepcopy(params)`) is made to ensure the original dictionary remains unchanged.
-                The parameter value is dynamically replaced with the corresponding sampled value during execution.
-                ```python
-                params = {
-                    'hydrology.hyd': {
-                        'has_units': False,
-                        'esco': {'value': 0}
-                    },
-                    'plants.plt': {
-                        'has_units': False,
-                        'bm_e': {'value': 0, 'filter_by': 'name == "agrl"'}
-                    }
-                }
-                ```
+            txtinout_folder (str | pathlib.Path): Path to the `TxtInOut` folder. Raises an error if the folder does not contain exactly one SWAT+ executable `.exe` file.
 
             simulation_data (dict[str, dict[str, typing.Any]]):  Nested dictionary that specifies how to extract data
                 from SWAT+ simulation-generated files. The keys are filenames (without paths) of the output files.
@@ -247,63 +225,33 @@ class SensitivityAnalyzer(BaseSensitivityAnalyzer):
         # start time
         start_time = time.time()
 
+        _txtinout_folder = utils._ensure_path(txtinout_folder)
+        _simulation_folder = utils._ensure_path(simulation_folder)
+
+        _params = ParamsBoundedModel.from_dict(params)
+        validators._validate_parameters(_txtinout_folder, _params)
+
+        var_names = []
+        var_bounds = []
+
+        # `'|'.join([<parameter>, <parameter['filter_by']>])`.
+        for file_changes in _params.file_params.values():
+            for param_key, change_list in file_changes.params.items():
+                for change_dict in change_list:
+                    # filter_by = change_dict.filter_by
+                    # change_param = '|'.join([param_key, filter_by]) if filter_by else param_key
+                    unique_name = utils._make_unique_param_name(param_key, change_dict)
+                    var_names.append(unique_name)
+                    var_bounds.append([change_dict.lower_bound, change_dict.upper_bound])
+
         cls._validate_simulation_by_sobol_sample_params(
-            simulation_folder=simulation_folder,
+            simulation_folder=_simulation_folder,
             simulation_data=simulation_data,
             var_names=var_names,
             var_bounds=var_bounds
         )
 
-        # validate that params is correct
-        utils._validate_params(params)
-
-        # Counting and collecting sensitive parameters from 'params' dictionary for robust error checking
-        count_params = 0
-        collect_params = []
-        for file_name, file_dict in params.items():
-            # iterate entries for the file
-            for file_key, file_value in file_dict.items():
-                # skip loop for the has_units key with bool values
-                if isinstance(file_value, bool):
-                    continue
-                # change dictionary to list if required
-                change_list = file_value if isinstance(file_value, list) else [file_value]
-                # update count parameters
-                count_params = count_params + len(change_list)
-                # iterate dictionary in change list
-                for change_dict in change_list:
-                    change_param = '|'.join([file_key, change_dict['filter_by']]) if 'filter_by' in change_dict else file_key
-                    collect_params.append(change_param)
-
-        # Check equality between number of variables and number of sensitivity parameters
-        if len(var_names) != count_params:
-            raise ValueError(
-                f'Mismatch between number of variables ({len(var_names)}) and sensitivity parameters ({count_params})'
-            )
-
-        # Check that all sensitive parameters are included in variable names
-        for p in collect_params:
-            if p not in var_names:
-                raise ValueError(
-                    f'The var_names list does not contain the parameter "{p}" from the params dictionary'
-                )
-
         # check file and parameter mapping in the 'params' dictionary
-        for key, value in params.items():
-            file_path = os.path.join(txtinout_folder, key)
-            has_units = value['has_units']
-            assert isinstance(has_units, bool)
-            file_reader = FileReader(
-                path=file_path,
-                has_units=has_units
-            )
-            df = file_reader.df
-            for p in value:
-                if p == 'has_units':
-                    continue
-                if p not in list(df.columns):
-                    raise Exception(f'Parameter "{p}" not found in columns of the file "{key}"')
-
         problem, sample_array, unique_array, num_sim = cls._prepare_sobol_samples(
             var_names=var_names,
             var_bounds=var_bounds,
@@ -315,9 +263,9 @@ class SensitivityAnalyzer(BaseSensitivityAnalyzer):
             cls._simulation_in_cpu,
             num_sim=num_sim,
             var_names=var_names,
-            simulation_folder=simulation_folder,
-            txtinout_folder=txtinout_folder,
-            params=params,
+            simulation_folder=_simulation_folder,
+            txtinout_folder=_txtinout_folder,
+            params=_params,
             simulation_data=simulation_data,
             clean_setup=clean_setup
         )
@@ -345,7 +293,7 @@ class SensitivityAnalyzer(BaseSensitivityAnalyzer):
             cpu_dict=cpu_dict,
             problem_dict=problem,
             start_time=start_time,
-            simulation_folder=simulation_folder,
+            simulation_folder=_simulation_folder,
             save_output=save_output
         )
 

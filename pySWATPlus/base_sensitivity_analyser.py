@@ -1,6 +1,5 @@
 import pandas
 import typing
-import os
 from .filereader import FileReader
 from . import utils
 from abc import ABC, abstractmethod
@@ -10,6 +9,8 @@ import copy
 import time
 import json
 import shutil
+import pathlib
+from . import validators
 
 
 class BaseSensitivityAnalyzer(ABC):
@@ -18,7 +19,7 @@ class BaseSensitivityAnalyzer(ABC):
     '''
     @staticmethod
     def simulated_timeseries_df(
-        data_file: str,
+        data_file: str | pathlib.Path,
         has_units: bool,
         start_date: typing.Optional[str] = None,
         end_date: typing.Optional[str] = None,
@@ -33,7 +34,7 @@ class BaseSensitivityAnalyzer(ABC):
         containing `datetime.date` objects created from the `yr`, `mon`, and `day` columns.
 
         Parameters:
-            data_file (str): Path to the target file used to generate the time series `DataFrame`.
+            data_file (str | pathlib.Path): Path to the target file used to generate the time series `DataFrame`.
             has_units (bool): If `True`, the third line of the input file contains units for the columns.
             start_date (str): Start date in `'yyyy-mm-dd'` format. If `None` (default),
                 the earliest date available in the file is used.
@@ -52,17 +53,19 @@ class BaseSensitivityAnalyzer(ABC):
                 `datetime.date` objects created from the `yr`, `mon`, and `day` columns.
         '''
 
+        _data_file = utils._ensure_path(data_file)
+
         # DataFrame from input file
         file_reader = FileReader(
-            path=data_file,
+            path=_data_file,
             has_units=has_units
         )
 
         # check that dates are in correct format
         if start_date is not None:
-            utils._validate_date_str(start_date)
+            validators._validate_date_str(start_date)
         if end_date is not None:
-            utils._validate_date_str(end_date)
+            validators._validate_date_str(end_date)
 
         # DataFrame
         df = file_reader.df
@@ -74,7 +77,7 @@ class BaseSensitivityAnalyzer(ABC):
         missing_cols = [col for col in time_cols if col not in df_cols]
         if len(missing_cols) > 0:
             raise ValueError(
-                f'Missing required time series columns "{missing_cols}" in file "{os.path.basename(data_file)}"'
+                f'Missing required time series columns "{missing_cols}" in file "{_data_file.name}"'
             )
         df[date_col] = pandas.to_datetime(
             df[time_cols].rename(columns={'yr': 'year', 'mon': 'month'})
@@ -88,7 +91,7 @@ class BaseSensitivityAnalyzer(ABC):
         # Check if filtering by date removed all rows
         if df.empty:
             raise ValueError(
-                f'No data available between "{start_date}" and "{end_date}" in file "{os.path.basename(data_file)}"'
+                f'No data available between "{start_date}" and "{end_date}" in file "{_data_file.name}"'
             )
 
         # Filter rows by dictionary criteria
@@ -96,17 +99,17 @@ class BaseSensitivityAnalyzer(ABC):
             for col, val in apply_filter.items():
                 if col not in df_cols:
                     raise ValueError(
-                        f'Column "{col}" in apply_filter is not present in file "{os.path.basename(data_file)}"'
+                        f'Column "{col}" in apply_filter is not present in file "{_data_file.name}"'
                     )
                 if not isinstance(val, list):
                     raise ValueError(
-                        f'Filter values for column "{col}" must be a list in file "{os.path.basename(data_file)}"'
+                        f'Filter values for column "{col}" must be a list in file "{_data_file.name}"'
                     )
                 df = df.loc[df[col].isin(val)]
                 # Check if filtering removed all rows
                 if df.empty:
                     raise ValueError(
-                        f'Filtering by column "{col}" with values "{val}" removed all rows from file "{os.path.basename(data_file)}"'
+                        f'Filtering by column "{col}" with values "{val}" removed all rows from file "{_data_file.name}"'
                     )
 
         # Reset DataFrame index
@@ -124,7 +127,7 @@ class BaseSensitivityAnalyzer(ABC):
             for col in usecols:
                 if col not in df_cols:
                     raise ValueError(
-                        f'Column "{col}" in usecols list is not present in file "{os.path.basename(data_file)}"'
+                        f'Column "{col}" in usecols list is not present in file "{_data_file.name}"'
                     )
             retain_cols = [date_col] + usecols
 
@@ -148,12 +151,10 @@ class BaseSensitivityAnalyzer(ABC):
     @abstractmethod
     def simulation_by_sobol_sample(
         cls,
-        var_names: list[str],
-        var_bounds: list[list[float]],
-        sample_number: int,
-        simulation_folder: str,
-        txtinout_folder: str,
         params: typing.Any,
+        sample_number: int,
+        simulation_folder: str | pathlib.Path,
+        txtinout_folder: str | pathlib.Path,
         simulation_data: dict[str, dict[str, typing.Any]],
         max_workers: typing.Optional[int] = None,
         save_output: bool = True,
@@ -180,7 +181,7 @@ class BaseSensitivityAnalyzer(ABC):
 
     @staticmethod
     def _validate_simulation_by_sobol_sample_params(
-        simulation_folder: str,
+        simulation_folder: pathlib.Path,
         simulation_data: dict[str, dict[str, typing.Any]],
         var_names: list[str],
         var_bounds: list[list[float]],
@@ -189,9 +190,9 @@ class BaseSensitivityAnalyzer(ABC):
         Validate parameters for the Sobol sampling simulation.
         '''
         # Check simulation folder
-        if not os.path.isdir(simulation_folder):
+        if not simulation_folder.is_dir():
             raise NotADirectoryError('Provided simulation_folder is not a valid directory path')
-        if len(os.listdir(simulation_folder)) > 0:
+        if any(simulation_folder.iterdir()):
             raise ValueError('Provided simulation_folder must be an empty directory')
 
         # check simulation data dictionary
@@ -265,7 +266,7 @@ class BaseSensitivityAnalyzer(ABC):
         cpu_dict: dict[tuple[float, ...], dict[str, typing.Any]],
         problem_dict: dict[str, typing.Any],
         start_time: float,
-        simulation_folder: str,
+        simulation_folder: pathlib.Path,
         save_output: bool = False
     ) -> dict[str, typing.Any]:
         """
@@ -315,7 +316,7 @@ class BaseSensitivityAnalyzer(ABC):
                                     v["date"] = v["date"].astype(str)
                                     sub_value[k] = v.to_json()
 
-            json_file = os.path.join(simulation_folder, "sensitivity_simulation_sobol.json")
+            json_file = simulation_folder / "sensitivity_simulation_sobol.json"
             with open(json_file, "w") as output_write:
                 json.dump(write_dict, output_write, indent=4)
 
@@ -326,8 +327,8 @@ class BaseSensitivityAnalyzer(ABC):
         track_sim: int,
         num_sim: int,
         var_array: numpy.ndarray,
-        simulation_folder: str
-    ) -> tuple[str, dict[str, typing.Any]]:
+        simulation_folder: pathlib.Path
+    ) -> tuple[pathlib.Path, dict[str, typing.Any]]:
         '''
         Creates a simulation directory and returns its path + initial simulation_output dict.
         '''
@@ -336,8 +337,8 @@ class BaseSensitivityAnalyzer(ABC):
 
         # Create simulation directory
         dir_name = f"sim_{track_sim}"
-        dir_path = os.path.join(simulation_folder, dir_name)
-        os.makedirs(name=dir_path, exist_ok=True)
+        dir_path = simulation_folder / dir_name
+        dir_path.mkdir(exist_ok=True)
 
         # Output simulation dictionary
         simulation_output: dict[str, typing.Any] = {
@@ -350,7 +351,7 @@ class BaseSensitivityAnalyzer(ABC):
     @classmethod
     def _extract_simulation_data(
         cls,
-        dir_path: str,
+        dir_path: pathlib.Path,
         simulation_data: dict[str, dict[str, typing.Any]],
         simulation_output: dict[str, typing.Any],
         clean_setup: bool
@@ -361,10 +362,11 @@ class BaseSensitivityAnalyzer(ABC):
         # Extract simulated data
         for sim_fname, sim_fdict in simulation_data.items():
             df = cls.simulated_timeseries_df(
-                data_file=os.path.join(dir_path, sim_fname),
+                data_file=dir_path / sim_fname,
                 **sim_fdict,
             )
-            simulation_output[f"{os.path.splitext(sim_fname)[0]}_df"] = df
+            sim_path = pathlib.Path(sim_fname)
+            simulation_output[f"{sim_path.stem}_df"] = df
 
         # Remove simulation directory
         if clean_setup:

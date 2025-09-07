@@ -4,8 +4,10 @@ import pathlib
 import typing
 import logging
 from .filereader import FileReader
-from .types import ParamsType, CalParamChanges
+from .types import ParamsType, ParamsModel, CalParamsType, CalParamsModel
 from . import utils
+from . import validators
+
 logger = logging.getLogger(__name__)
 
 
@@ -37,11 +39,7 @@ class TxtinoutReader:
                 zero or multiple `.exe` files.
         '''
 
-        # check if path is a string or a path
-        if not isinstance(path, (str, pathlib.Path)):
-            raise TypeError('path must be a string or Path object')
-
-        path = pathlib.Path(path).resolve()
+        path = utils._ensure_path(path)
 
         # check if folder exists
         if not path.is_dir():
@@ -358,11 +356,7 @@ class TxtinoutReader:
             The path to the target directory containing the copied files.
         '''
 
-        # Validate target directory
-        if not isinstance(target_dir, (str, pathlib.Path)):
-            raise TypeError('target_dir must be a string or Path object')
-
-        target_dir = pathlib.Path(target_dir).resolve()
+        target_dir = utils._ensure_path(target_dir)
 
         # Create the directory if it does not exist and copy necessary files
         target_dir.mkdir(parents=True, exist_ok=True)
@@ -379,14 +373,13 @@ class TxtinoutReader:
 
     def _write_calibration_file(
         self,
-        par_change: CalParamChanges
+        params: CalParamsModel
     ) -> None:
         '''
         Writes `calibration.cal` file with parameter changes.
         '''
 
         outfile = self.root_folder / "calibration.cal"
-        _par_changes = par_change if isinstance(par_change, list) else [par_change]
 
         # If calibration.cal exists, remove it (always recreate)
         if outfile.exists():
@@ -396,7 +389,7 @@ class TxtinoutReader:
         self._add_or_remove_calibration_cal_to_file_cio(add=True)
 
         # Number of parameters (number of rows in the DataFrame)
-        num_parameters = len(_par_changes)
+        num_parameters = sum([len(params_list) for params_list in params.params.values()])
 
         # Column widths for right-alignment
         col_widths = {
@@ -414,34 +407,31 @@ class TxtinoutReader:
         }
 
         calibration_cal_rows = []
-        for change in _par_changes:
-            # get units
-            units = change.get("units", [])
+        for name, changes in params.params.items():
+            for change in changes:
+                units = change.units
 
-            # Convert to compact representation
-            if units:
-                compacted_units = utils._compact_units(units)
-            else:
-                compacted_units = []
+                # Convert to compact representation
+                compacted_units = utils._compact_units(units) if units else []
 
-            # get conditions
-            parsed_conditions = utils._parse_conditions(change)
+                # get conditions
+                parsed_conditions = utils._parse_conditions(change)
 
-            calibration_cal_rows.append({
-                "NAME": change["name"],
-                "CHG_TYPE": change["change_type"] if "change_type" in change else 'absval',
-                "VAL": change["value"],
-                "CONDS": len(parsed_conditions),
-                "LYR1": 0,
-                "LYR2": 0,
-                "YEAR1": 0,
-                "YEAR2": 0,
-                "DAY1": 0,
-                "DAY2": 0,
-                "OBJ_TOT": len(compacted_units),
-                "OBJ_LIST": compacted_units,  # Store the compacted units
-                "PARSED_CONDITIONS": parsed_conditions
-            })
+                calibration_cal_rows.append({
+                    "NAME": name,
+                    "CHG_TYPE": change.change_type,
+                    "VAL": change.value,
+                    "CONDS": len(parsed_conditions),
+                    "LYR1": 0,
+                    "LYR2": 0,
+                    "YEAR1": 0,
+                    "YEAR2": 0,
+                    "DAY1": 0,
+                    "DAY2": 0,
+                    "OBJ_TOT": len(compacted_units),
+                    "OBJ_LIST": compacted_units,  # Store the compacted units
+                    "PARSED_CONDITIONS": parsed_conditions
+                })
 
         with open(outfile, "w") as f:
             # Write header
@@ -652,48 +642,37 @@ class TxtinoutReader:
                         {'value': 100, 'change_type': 'absval', 'filter_by': 'name == "agrl"'},
                         {'value': 110, 'change_type': 'absval', 'filter_by': 'name == "almd"'},
                     ],
-                },
+                },F
             }
 
             reader.run_swat(params)
             ```
         '''
+        if params:
+            _params = ParamsModel.from_dict(params)
+            validators._validate_parameters(self.root_folder, _params)
+            for filename, file_params in _params.file_params.items():
 
-        _params = params or {}
+                has_units = file_params.has_units
 
-        utils._validate_params(_params)
+                file = self.register_file(
+                    filename,
+                    has_units=has_units
+                )
+                df = file.df
+
+                for param_name, changes in file_params.params.items():
+
+                    # Process each parameter change
+                    for change in changes:
+                        utils._apply_param_change(df, param_name, change)
+
+                # Store the modified file
+                file.overwrite_file()
 
         # make sure calibration.cal is disabled.
         # Otherwise, the params value will be changed during the execution of SWAT+
         self._add_or_remove_calibration_cal_to_file_cio(add=False)
-
-        # Modify files for simulation
-        for filename, file_params in _params.items():
-
-            has_units = file_params['has_units']
-            assert isinstance(has_units, bool)
-
-            file = self.register_file(
-                filename,
-                has_units=has_units
-            )
-            df = file.df
-
-            for param_name, param_spec in file_params.items():
-
-                # Continue for bool varibale
-                if isinstance(param_spec, bool):
-                    continue
-
-                # Normalize to list of changes
-                changes = param_spec if isinstance(param_spec, list) else [param_spec]
-
-                # Process each parameter change
-                for change in changes:
-                    utils._apply_param_change(df, param_name, change)
-
-            # Store the modified file
-            file.overwrite_file()
 
         # Run simulation
         self._run_swat()
@@ -761,7 +740,7 @@ class TxtinoutReader:
 
         Example:
             ```python
-            simulation = pySWATPlus.TxtinoutReader.run_swat_in_other_dir_new_method(
+            simulation = pySWATPlus.TxtinoutReader.run_swat_in_other_dir(
                 target_dir="C:\\\\Users\\\\Username\\\\simulation_folder",
                 params={
                     'plants.plt': {
@@ -797,29 +776,31 @@ class TxtinoutReader:
 
     def cal_run_swat(
         self,
-        params: typing.Optional[CalParamChanges] = None,
+        params: typing.Optional[CalParamsType] = None,
         skip_units_and_conditions_validation: bool = False
     ) -> pathlib.Path:
         '''
         Run the SWAT+ simulation with optional parameter changes.
 
         Args:
-            params (CalParamChanges, optional): list of dictionaries specifying parameter changes to apply.
+            params (CalParamsType, optional): Nested dictionary specifying parameter changes.
 
                 The `params` dictionary should follow this structure:
 
                 ```python
-                params = [
-                            {
-                                "name": str,            # Name of the parameter to change
-                                "value": float,         # New value to assign
-                                "change_type": str,     # (Optional) One of: 'absval' (default), 'abschg', 'pctchg'
-                                "units": Iterable[int],  # (Optional) An optional list of unit IDs to constrain the parameter change.
-                                    **Unit IDs should be 1-based**, i.e., the first object has ID 0.
-                                "conditions": dict[str: list[str]],  # (Optional) A dictionary of conditions to apply to the parameter change.
-                            },
-                            # ... more changes
-                        ]
+                params = {
+                            "<parameter_to_change>": [
+                                    {
+                                        "value": float,         # New value to assign
+                                        "change_type": str,     # (Optional) One of: 'absval' (default), 'abschg', 'pctchg'
+                                        "units": Iterable[int],  # (Optional) An optional list of unit IDs to constrain the parameter change.
+                                            **Unit IDs should be 1-based**, i.e., the first object has ID 1.
+                                        "conditions": dict[str: list[str]],  # (Optional) A dictionary of conditions to apply to the parameter change.
+                                    },
+                                    #...
+                                ],
+                                # ...
+                        }
                 ```
             skip_units_and_conditions_validation (bool): If `True`, skip validation of units and conditions in parameter changes.
 
@@ -829,27 +810,25 @@ class TxtinoutReader:
 
         Example:
             ```python
-            params = [
-                {
-                    "name": "cn2",
+            params = {
+                "cn2": {
                     "change_type": "pctchg",
                     "value": 50,
                 },
-                {
-                    "name": "perco",
+                "perco": {
                     "change_type": "absval",
                     "value": 0.5,
                     "conditions": {"hsg": ["A"]}
                 },
-                {
-                    "name": "bf_max",
+                "bf_max": [{
                     "change_type": "absval",
                     "value": 0.3,
                     "units": range(1, 194)
-                }
-            ]
+                }]
+            }
 
-            reader.run_swat(params)
+
+            reader.cal_run_swat(params)
             ```
 
         Warning:
@@ -857,14 +836,15 @@ class TxtinoutReader:
 
         '''
 
-        _params = params or []
+        if params:
+            _params = CalParamsModel.from_dict(params)
 
-        utils._validate_calibration_params(_params)
-        utils._check_swatplus_parameters(self.root_folder, _params)
+            validators._validate_cal_parameters(self.root_folder, _params)
 
-        if not skip_units_and_conditions_validation:
-            utils._validate_conditions_and_units(_params, self.root_folder)
-        self._write_calibration_file(_params)
+            if not skip_units_and_conditions_validation:
+                validators._validate_conditions_and_units(_params, self.root_folder)
+
+            self._write_calibration_file(_params)
 
         # Run simulation
         self._run_swat()
@@ -874,7 +854,7 @@ class TxtinoutReader:
     def cal_run_swat_in_other_dir(
         self,
         target_dir: str | pathlib.Path,
-        params: typing.Optional[CalParamChanges] = None,
+        params: typing.Optional[CalParamsType] = None,
         begin_and_end_year: typing.Optional[tuple[int, int]] = None,
         warmup: typing.Optional[int] = None,
         print_prt_control: typing.Optional[dict[str, dict[str, bool]]] = None,
@@ -887,22 +867,24 @@ class TxtinoutReader:
 
             target_dir (str or Path): Path to the directory where the simulation will be done.
 
-            params (CalParamChanges, optional): list of dictionaries specifying parameter changes to apply.
+            params (CalParamsType, optional): Nested dictionary specifying parameter changes.
 
                 The `params` dictionary should follow this structure:
 
                 ```python
-                params = [
-                            {
-                                "name": str,            # Name of the parameter to change
-                                "value": float,         # New value to assign
-                                "change_type": str,     # (Optional) One of: 'absval' (default), 'abschg', 'pctchg'
-                                "units": Iterable[int],  # (Optional) An optional list of unit IDs to constrain the parameter change.
-                                    **Unit IDs should be 1-based**, i.e., the first object has ID 0.
-                                "conditions": dict[str: list[str]],  # (Optional) A dictionary of conditions to apply to the parameter change.
-                            },
-                            # ... more changes
-                        ]
+                params = {
+                            "<parameter_to_change>": [
+                                    {
+                                        "value": float,         # New value to assign
+                                        "change_type": str,     # (Optional) One of: 'absval' (default), 'abschg', 'pctchg'
+                                        "units": Iterable[int],  # (Optional) An optional list of unit IDs to constrain the parameter change.
+                                            **Unit IDs should be 1-based**, i.e., the first object has ID 1.
+                                        "conditions": dict[str: list[str]],  # (Optional) A dictionary of conditions to apply to the parameter change.
+                                    },
+                                    #...
+                                ],
+                                # ...
+                        }
                 ```
 
             begin_and_end_year (tuple[int, int]): A tuple of begin and end years of the simulation in YYYY format. For example, (2012, 2016).
@@ -929,29 +911,28 @@ class TxtinoutReader:
 
         Example:
             ```python
-            params = [
-                {
-                    "name": "cn2",
-                    "change_type": "pctchg",
-                    "value": 50,
+            simulation = pySWATPlus.TxtinoutReader.cal_run_swat_in_other_dir(
+                target_dir="C:\\\\Users\\\\Username\\\\simulation_folder",
+                params={
+                    "perco": {
+                        "change_type": "absval",
+                        "value": 0.5,
+                        "conditions": {"hsg": ["A"]}
+                    },
+                    "bf_max": [{
+                        "change_type": "absval",
+                        "value": 0.3,
+                        "units": range(1, 194)
+                    }]
                 },
-                {
-                    "name": "perco",
-                    "change_type": "absval",
-                    "value": 0.5,
-                    "conditions": {"hsg": ["A"]}
-                },
-                {
-                    "name": "bf_max",
-                    "change_type": "absval",
-                    "value": 0.3,
-                    "units": range(1, 194)
+                begin_and_end_year=(2012, 2016),
+                warmup=1,
+                print_prt_control = {
+                    'channel_sd': {'daily': False},
+                    'channel_sdmorph': {'monthly': False}
                 }
-            ]
-
-            reader.run_swat(params)
+            )
             ```
-
         Warning:
             This method is currently under development and not recommended for use.
 
