@@ -115,7 +115,6 @@ class SensitivityAnalyzer(BaseSensitivityAnalyzer):
         the sample array, and the simulation results for further analysis.
 
         Args:
-
             params (ParamsBoundedType):  Nested dictionary defining the parameter modifications to apply during the simulations.
                 Each parameter should include a the lower and upper bounds, and the parameter value
                 is dynamically assigned with the corresponding sampled value during execution.

@@ -5,14 +5,13 @@ import typing
 import concurrent.futures
 from .types import CalParamsBoundedType, CalParamsBoundedModel, CalParamsType
 from .base_sensitivity_analyser import BaseSensitivityAnalyzer
-import json
 import pathlib
-import utils
-import validators
+from . import utils
+from . import validators
 from .txtinoutreader import TxtinoutReader
 
 
-class SensitivityAnalyzerCalibrationCal(BaseSensitivityAnalyzer):
+class CalSensitivityAnalyzer(BaseSensitivityAnalyzer):
     '''
     Provides functionality for running scenario simulations and analyzing simulated data.
 
@@ -242,10 +241,6 @@ class SensitivityAnalyzerCalibrationCal(BaseSensitivityAnalyzer):
                 unique_name = utils._make_unique_param_name(param_key, param_change)
                 var_names.append(unique_name)
                 var_bounds.append([param_change.lower_bound, param_change.upper_bound])
-
-        var_names = [json.dumps(param_change) for param_change in _params.params.values()]
-
-        var_bounds = [[param['lower_bound'], param['upper_bound']] for param in params.values()]
 
         cls._validate_simulation_by_sobol_sample_params(
             simulation_folder=_simulation_folder,
