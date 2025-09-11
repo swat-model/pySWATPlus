@@ -1,6 +1,15 @@
 # Release Notes
 
 
+## Version 1.1.0 (August 26, 2025)
+
+- Introduced `SensitivityAnalyzer` class for sensitivity analysis of SWAT+ model parameters.
+
+- Added high-level method `simulation_by_sobol_sample` in `SensitivityAnalyzer` to automate the sensitivity simulation workflow using Sobol samples.
+
+- Updated `run_swat_in_other_dir` method in `TxtinoutReader` to support additional input variables, enabling SWAT+ simulation through a single interface.  
+ 
+
 ## Version 1.0.3 (July 30, 2025)
 
 - Configured GitHub Actions for automatic documentation builds.
