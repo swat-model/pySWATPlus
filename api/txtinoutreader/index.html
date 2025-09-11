@@ -234,7 +234,7 @@
   
     
   
-  Contributor Guide
+  Contributing
 
       </a>
     </li>
@@ -550,24 +550,6 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#pySWATPlus.TxtinoutReader.cal_run_swat" class="md-nav__link">
-    <span class="md-ellipsis">
-      cal_run_swat
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#pySWATPlus.TxtinoutReader.cal_run_swat_in_other_dir" class="md-nav__link">
-    <span class="md-ellipsis">
-      cal_run_swat_in_other_dir
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
   <a href="#pySWATPlus.TxtinoutReader.copy_required_files" class="md-nav__link">
     <span class="md-ellipsis">
       copy_required_files
@@ -616,6 +598,15 @@
   <a href="#pySWATPlus.TxtinoutReader.run_swat" class="md-nav__link">
     <span class="md-ellipsis">
       run_swat
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pySWATPlus.TxtinoutReader.run_swat_calibration_cal" class="md-nav__link">
+    <span class="md-ellipsis">
+      run_swat_calibration_cal
     </span>
   </a>
   
@@ -697,30 +688,7 @@
   
   
   <span class="md-ellipsis">
-    SensitivityAnalyzer
-    
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../performance_metrics/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    PerformanceMetrics
+    SensitivityAnalyzer.py
     
   </span>
   
@@ -773,7 +741,7 @@
   
   
   <span class="md-ellipsis">
-    Contributor Guide
+    Contributing
     
   </span>
   
@@ -849,24 +817,6 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#pySWATPlus.TxtinoutReader.cal_run_swat" class="md-nav__link">
-    <span class="md-ellipsis">
-      cal_run_swat
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#pySWATPlus.TxtinoutReader.cal_run_swat_in_other_dir" class="md-nav__link">
-    <span class="md-ellipsis">
-      cal_run_swat_in_other_dir
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
   <a href="#pySWATPlus.TxtinoutReader.copy_required_files" class="md-nav__link">
     <span class="md-ellipsis">
       copy_required_files
@@ -915,6 +865,15 @@
   <a href="#pySWATPlus.TxtinoutReader.run_swat" class="md-nav__link">
     <span class="md-ellipsis">
       run_swat
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pySWATPlus.TxtinoutReader.run_swat_calibration_cal" class="md-nav__link">
+    <span class="md-ellipsis">
+      run_swat_calibration_cal
     </span>
   </a>
   
@@ -996,7 +955,8 @@ SWAT+ model files located in the <code>TxtInOut</code> folder.</p>
 
               <details class="quote">
                 <summary>Source code in <code>pySWATPlus/txtinoutreader.py</code></summary>
-                <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 14</span>
+                <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 13</span>
+<span class="normal"> 14</span>
 <span class="normal"> 15</span>
 <span class="normal"> 16</span>
 <span class="normal"> 17</span>
@@ -1862,82 +1822,8 @@ SWAT+ model files located in the <code>TxtInOut</code> folder.</p>
 <span class="normal">877</span>
 <span class="normal">878</span>
 <span class="normal">879</span>
-<span class="normal">880</span>
-<span class="normal">881</span>
-<span class="normal">882</span>
-<span class="normal">883</span>
-<span class="normal">884</span>
-<span class="normal">885</span>
-<span class="normal">886</span>
-<span class="normal">887</span>
-<span class="normal">888</span>
-<span class="normal">889</span>
-<span class="normal">890</span>
-<span class="normal">891</span>
-<span class="normal">892</span>
-<span class="normal">893</span>
-<span class="normal">894</span>
-<span class="normal">895</span>
-<span class="normal">896</span>
-<span class="normal">897</span>
-<span class="normal">898</span>
-<span class="normal">899</span>
-<span class="normal">900</span>
-<span class="normal">901</span>
-<span class="normal">902</span>
-<span class="normal">903</span>
-<span class="normal">904</span>
-<span class="normal">905</span>
-<span class="normal">906</span>
-<span class="normal">907</span>
-<span class="normal">908</span>
-<span class="normal">909</span>
-<span class="normal">910</span>
-<span class="normal">911</span>
-<span class="normal">912</span>
-<span class="normal">913</span>
-<span class="normal">914</span>
-<span class="normal">915</span>
-<span class="normal">916</span>
-<span class="normal">917</span>
-<span class="normal">918</span>
-<span class="normal">919</span>
-<span class="normal">920</span>
-<span class="normal">921</span>
-<span class="normal">922</span>
-<span class="normal">923</span>
-<span class="normal">924</span>
-<span class="normal">925</span>
-<span class="normal">926</span>
-<span class="normal">927</span>
-<span class="normal">928</span>
-<span class="normal">929</span>
-<span class="normal">930</span>
-<span class="normal">931</span>
-<span class="normal">932</span>
-<span class="normal">933</span>
-<span class="normal">934</span>
-<span class="normal">935</span>
-<span class="normal">936</span>
-<span class="normal">937</span>
-<span class="normal">938</span>
-<span class="normal">939</span>
-<span class="normal">940</span>
-<span class="normal">941</span>
-<span class="normal">942</span>
-<span class="normal">943</span>
-<span class="normal">944</span>
-<span class="normal">945</span>
-<span class="normal">946</span>
-<span class="normal">947</span>
-<span class="normal">948</span>
-<span class="normal">949</span>
-<span class="normal">950</span>
-<span class="normal">951</span>
-<span class="normal">952</span>
-<span class="normal">953</span>
-<span class="normal">954</span>
-<span class="normal">955</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">TxtinoutReader</span><span class="p">:</span>
+<span class="normal">880</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">TxtinoutReader</span><span class="p">:</span>
+
 <span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    Provide functionality for seamless reading, editing, and writing of</span>
 <span class="sd">    SWAT+ model files located in the `TxtInOut` folder.</span>
@@ -1965,7 +1851,11 @@ SWAT+ model files located in the <code>TxtInOut</code> folder.</p>
 <span class="sd">                zero or multiple `.exe` files.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
 
-        <span class="n">path</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">_ensure_path</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+        <span class="c1"># check if path is a string or a path</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">)):</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s1">&#39;path must be a string or Path object&#39;</span><span class="p">)</span>
+
+        <span class="n">path</span> <span class="o">=</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="n">path</span><span class="p">)</span><span class="o">.</span><span class="n">resolve</span><span class="p">()</span>
 
         <span class="c1"># check if folder exists</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">path</span><span class="o">.</span><span class="n">is_dir</span><span class="p">():</span>
@@ -2282,11 +2172,6 @@ SWAT+ model files located in the <code>TxtInOut</code> folder.</p>
 <span class="sd">            The path to the target directory containing the copied files.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
 
-        <span class="n">target_dir</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">_ensure_path</span><span class="p">(</span><span class="n">target_dir</span><span class="p">)</span>
-
-        <span class="c1"># Create the directory if it does not exist and copy necessary files</span>
-        <span class="n">target_dir</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">parents</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-
         <span class="n">dest_path</span> <span class="o">=</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="n">target_dir</span><span class="p">)</span>
 
         <span class="c1"># Copy files from source folder</span>
@@ -2299,8 +2184,8 @@ SWAT+ model files located in the <code>TxtInOut</code> folder.</p>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_write_calibration_file</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
-        <span class="n">params</span><span class="p">:</span> <span class="n">CalParamsModel</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">par_change</span><span class="p">:</span> <span class="n">ParameterChanges</span>
+    <span class="p">):</span>
 <span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">        Writes `calibration.cal` file with parameter changes.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
@@ -2315,7 +2200,7 @@ SWAT+ model files located in the <code>TxtInOut</code> folder.</p>
         <span class="bp">self</span><span class="o">.</span><span class="n">_add_or_remove_calibration_cal_to_file_cio</span><span class="p">(</span><span class="n">add</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
         <span class="c1"># Number of parameters (number of rows in the DataFrame)</span>
-        <span class="n">num_parameters</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">([</span><span class="nb">len</span><span class="p">(</span><span class="n">params_list</span><span class="p">)</span> <span class="k">for</span> <span class="n">params_list</span> <span class="ow">in</span> <span class="n">params</span><span class="o">.</span><span class="n">params</span><span class="o">.</span><span class="n">values</span><span class="p">()])</span>
+        <span class="n">num_parameters</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">par_change</span><span class="p">)</span>
 
         <span class="c1"># Column widths for right-alignment</span>
         <span class="n">col_widths</span> <span class="o">=</span> <span class="p">{</span>
@@ -2332,32 +2217,36 @@ SWAT+ model files located in the <code>TxtInOut</code> folder.</p>
             <span class="s2">&quot;OBJ_TOT&quot;</span><span class="p">:</span> <span class="mi">8</span>
         <span class="p">}</span>
 
-        <span class="n">calibration_cal_rows</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">changes</span> <span class="ow">in</span> <span class="n">params</span><span class="o">.</span><span class="n">params</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-            <span class="k">for</span> <span class="n">change</span> <span class="ow">in</span> <span class="n">changes</span><span class="p">:</span>
-                <span class="n">units</span> <span class="o">=</span> <span class="n">change</span><span class="o">.</span><span class="n">units</span>
+        <span class="n">_par_changes</span> <span class="o">=</span> <span class="p">[]</span>
 
-                <span class="c1"># Convert to compact representation</span>
-                <span class="n">compacted_units</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">_compact_units</span><span class="p">(</span><span class="n">units</span><span class="p">)</span> <span class="k">if</span> <span class="n">units</span> <span class="k">else</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">change</span> <span class="ow">in</span> <span class="n">par_change</span><span class="p">:</span>
+            <span class="c1"># get units</span>
+            <span class="n">units</span> <span class="o">=</span> <span class="n">change</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;units&quot;</span><span class="p">,</span> <span class="p">[])</span>
 
-                <span class="c1"># get conditions</span>
-                <span class="n">parsed_conditions</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">_parse_conditions</span><span class="p">(</span><span class="n">change</span><span class="p">)</span>
+            <span class="c1"># Convert to compact representation</span>
+            <span class="k">if</span> <span class="n">units</span><span class="p">:</span>
+                <span class="n">compacted_units</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">_compact_units</span><span class="p">(</span><span class="n">units</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">compacted_units</span> <span class="o">=</span> <span class="p">[]</span>
 
-                <span class="n">calibration_cal_rows</span><span class="o">.</span><span class="n">append</span><span class="p">({</span>
-                    <span class="s2">&quot;NAME&quot;</span><span class="p">:</span> <span class="n">name</span><span class="p">,</span>
-                    <span class="s2">&quot;CHG_TYPE&quot;</span><span class="p">:</span> <span class="n">change</span><span class="o">.</span><span class="n">change_type</span><span class="p">,</span>
-                    <span class="s2">&quot;VAL&quot;</span><span class="p">:</span> <span class="n">change</span><span class="o">.</span><span class="n">value</span><span class="p">,</span>
-                    <span class="s2">&quot;CONDS&quot;</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">parsed_conditions</span><span class="p">),</span>
-                    <span class="s2">&quot;LYR1&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
-                    <span class="s2">&quot;LYR2&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
-                    <span class="s2">&quot;YEAR1&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
-                    <span class="s2">&quot;YEAR2&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
-                    <span class="s2">&quot;DAY1&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
-                    <span class="s2">&quot;DAY2&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
-                    <span class="s2">&quot;OBJ_TOT&quot;</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">compacted_units</span><span class="p">),</span>
-                    <span class="s2">&quot;OBJ_LIST&quot;</span><span class="p">:</span> <span class="n">compacted_units</span><span class="p">,</span>  <span class="c1"># Store the compacted units</span>
-                    <span class="s2">&quot;PARSED_CONDITIONS&quot;</span><span class="p">:</span> <span class="n">parsed_conditions</span>
-                <span class="p">})</span>
+            <span class="c1"># get conditions</span>
+            <span class="n">parsed_conditions</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">_parse_conditions</span><span class="p">(</span><span class="n">change</span><span class="p">)</span>
+
+            <span class="n">_par_changes</span><span class="o">.</span><span class="n">append</span><span class="p">({</span>
+                <span class="s2">&quot;NAME&quot;</span><span class="p">:</span> <span class="n">change</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">],</span>
+                <span class="s2">&quot;CHG_TYPE&quot;</span><span class="p">:</span> <span class="n">change</span><span class="p">[</span><span class="s2">&quot;change_type&quot;</span><span class="p">]</span> <span class="k">if</span> <span class="s2">&quot;change_type&quot;</span> <span class="ow">in</span> <span class="n">change</span> <span class="k">else</span> <span class="s1">&#39;absval&#39;</span><span class="p">,</span>
+                <span class="s2">&quot;VAL&quot;</span><span class="p">:</span> <span class="n">change</span><span class="p">[</span><span class="s2">&quot;value&quot;</span><span class="p">],</span>
+                <span class="s2">&quot;CONDS&quot;</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">parsed_conditions</span><span class="p">),</span>
+                <span class="s2">&quot;LYR1&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+                <span class="s2">&quot;LYR2&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+                <span class="s2">&quot;YEAR1&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+                <span class="s2">&quot;YEAR2&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+                <span class="s2">&quot;DAY1&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+                <span class="s2">&quot;DAY2&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+                <span class="s2">&quot;OBJ_TOT&quot;</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">compacted_units</span><span class="p">),</span>
+                <span class="s2">&quot;OBJ_LIST&quot;</span><span class="p">:</span> <span class="n">compacted_units</span><span class="p">,</span>  <span class="c1"># Store the compacted units</span>
+                <span class="s2">&quot;PARSED_CONDITIONS&quot;</span><span class="p">:</span> <span class="n">parsed_conditions</span>
+            <span class="p">})</span>
 
         <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">outfile</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
             <span class="c1"># Write header</span>
@@ -2366,31 +2255,54 @@ SWAT+ model files located in the <code>TxtInOut</code> folder.</p>
             <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">headers</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
 
             <span class="c1"># Write rows</span>
-            <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">calibration_cal_rows</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">change</span> <span class="ow">in</span> <span class="n">_par_changes</span><span class="p">:</span>
                 <span class="n">line</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
                 <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;NAME&quot;</span><span class="p">,</span> <span class="s2">&quot;CHG_TYPE&quot;</span><span class="p">,</span> <span class="s2">&quot;VAL&quot;</span><span class="p">,</span> <span class="s2">&quot;CONDS&quot;</span><span class="p">,</span> <span class="s2">&quot;LYR1&quot;</span><span class="p">,</span> <span class="s2">&quot;LYR2&quot;</span><span class="p">,</span>
                             <span class="s2">&quot;YEAR1&quot;</span><span class="p">,</span> <span class="s2">&quot;YEAR2&quot;</span><span class="p">,</span> <span class="s2">&quot;DAY1&quot;</span><span class="p">,</span> <span class="s2">&quot;DAY2&quot;</span><span class="p">,</span> <span class="s2">&quot;OBJ_TOT&quot;</span><span class="p">]:</span>
                     <span class="k">if</span> <span class="n">col</span> <span class="o">==</span> <span class="s2">&quot;NAME&quot;</span><span class="p">:</span>
-                        <span class="n">line</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">row</span><span class="p">[</span><span class="n">col</span><span class="p">]</span><span class="si">:</span><span class="s2">&lt;</span><span class="si">{</span><span class="n">col_widths</span><span class="p">[</span><span class="n">col</span><span class="p">]</span><span class="si">}}</span><span class="s2">&quot;</span>   <span class="c1"># left-align</span>
-                    <span class="k">elif</span> <span class="n">col</span> <span class="o">==</span> <span class="s2">&quot;VAL&quot;</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="n">col</span><span class="p">],</span> <span class="nb">float</span><span class="p">):</span>
-                        <span class="n">line</span> <span class="o">+=</span> <span class="n">utils</span><span class="o">.</span><span class="n">_format_val_field</span><span class="p">(</span><span class="n">typing</span><span class="o">.</span><span class="n">cast</span><span class="p">(</span><span class="nb">float</span><span class="p">,</span> <span class="n">row</span><span class="p">[</span><span class="n">col</span><span class="p">]))</span>  <span class="c1"># special VAL formatting</span>
+                        <span class="n">line</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">change</span><span class="p">[</span><span class="n">col</span><span class="p">]</span><span class="si">:</span><span class="s2">&lt;</span><span class="si">{</span><span class="n">col_widths</span><span class="p">[</span><span class="n">col</span><span class="p">]</span><span class="si">}}</span><span class="s2">&quot;</span>   <span class="c1"># left-align</span>
+                    <span class="k">elif</span> <span class="n">col</span> <span class="o">==</span> <span class="s2">&quot;VAL&quot;</span><span class="p">:</span>
+                        <span class="n">line</span> <span class="o">+=</span> <span class="n">utils</span><span class="o">.</span><span class="n">_format_val_field</span><span class="p">(</span><span class="n">change</span><span class="p">[</span><span class="n">col</span><span class="p">])</span>  <span class="c1"># special VAL formatting</span>
                     <span class="k">else</span><span class="p">:</span>
-                        <span class="n">line</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">row</span><span class="p">[</span><span class="n">col</span><span class="p">]</span><span class="si">:</span><span class="s2">&gt;</span><span class="si">{</span><span class="n">col_widths</span><span class="p">[</span><span class="n">col</span><span class="p">]</span><span class="si">}}</span><span class="s2">&quot;</span>  <span class="c1"># right-align numeric columns</span>
+                        <span class="n">line</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">change</span><span class="p">[</span><span class="n">col</span><span class="p">]</span><span class="si">:</span><span class="s2">&gt;</span><span class="si">{</span><span class="n">col_widths</span><span class="p">[</span><span class="n">col</span><span class="p">]</span><span class="si">}}</span><span class="s2">&quot;</span>  <span class="c1"># right-align numeric columns</span>
 
                 <span class="c1"># Append compacted units at the end (space-separated)</span>
-                <span class="k">if</span> <span class="n">row</span><span class="p">[</span><span class="s2">&quot;OBJ_LIST&quot;</span><span class="p">]:</span>
-                    <span class="n">line</span> <span class="o">+=</span> <span class="s2">&quot;       &quot;</span> <span class="o">+</span> <span class="s2">&quot;    &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">u</span><span class="p">)</span> <span class="k">for</span> <span class="n">u</span> <span class="ow">in</span> <span class="n">typing</span><span class="o">.</span><span class="n">cast</span><span class="p">(</span><span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">row</span><span class="p">[</span><span class="s2">&quot;OBJ_LIST&quot;</span><span class="p">]))</span>
+                <span class="k">if</span> <span class="n">change</span><span class="p">[</span><span class="s2">&quot;OBJ_LIST&quot;</span><span class="p">]:</span>
+                    <span class="n">line</span> <span class="o">+=</span> <span class="s2">&quot;       &quot;</span> <span class="o">+</span> <span class="s2">&quot;    &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">u</span><span class="p">)</span> <span class="k">for</span> <span class="n">u</span> <span class="ow">in</span> <span class="n">change</span><span class="p">[</span><span class="s2">&quot;OBJ_LIST&quot;</span><span class="p">])</span>
 
-                <span class="k">if</span> <span class="n">row</span><span class="p">[</span><span class="s2">&quot;PARSED_CONDITIONS&quot;</span><span class="p">]:</span>
-                    <span class="n">parsed_conditions</span> <span class="o">=</span> <span class="n">typing</span><span class="o">.</span><span class="n">cast</span><span class="p">(</span><span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">row</span><span class="p">[</span><span class="s2">&quot;PARSED_CONDITIONS&quot;</span><span class="p">])</span>
-                    <span class="n">line</span> <span class="o">+=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">parsed_conditions</span><span class="p">)</span>
+                <span class="n">line</span> <span class="o">+=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">change</span><span class="p">[</span><span class="s2">&quot;PARSED_CONDITIONS&quot;</span><span class="p">])</span> <span class="k">if</span> <span class="n">change</span><span class="p">[</span><span class="s2">&quot;PARSED_CONDITIONS&quot;</span><span class="p">]</span> <span class="k">else</span> <span class="s2">&quot;&quot;</span>
 
                 <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">line</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_check_swatplus_parameters</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">par_change</span><span class="p">:</span> <span class="n">ParameterChanges</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Check if parameters exists in cal_parms.cal</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+
+        <span class="n">file_path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">root_folder</span> <span class="o">/</span> <span class="s2">&quot;cal_parms.cal&quot;</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">file_path</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
+            <span class="k">raise</span> <span class="ne">FileNotFoundError</span><span class="p">(</span><span class="s2">&quot;cal_parms.cal file does not exist in the TxtInOut folder&quot;</span><span class="p">)</span>
+
+        <span class="n">cal_parms_df</span> <span class="o">=</span> <span class="n">pandas</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span>
+            <span class="n">filepath_or_buffer</span><span class="o">=</span><span class="n">file_path</span><span class="p">,</span>
+            <span class="n">skiprows</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+            <span class="n">sep</span><span class="o">=</span><span class="sa">r</span><span class="s1">&#39;\s+&#39;</span>
+        <span class="p">)</span>
+
+        <span class="n">parameter_names</span> <span class="o">=</span> <span class="p">[</span><span class="n">change</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">change</span> <span class="ow">in</span> <span class="n">par_change</span><span class="p">]</span>
+
+        <span class="k">for</span> <span class="n">parameter</span> <span class="ow">in</span> <span class="n">parameter_names</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">parameter</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">cal_parms_df</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;The parameter &#39;</span><span class="si">{</span><span class="n">parameter</span><span class="si">}</span><span class="s2">&#39; is not in cal_parms.cal&quot;</span><span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_add_or_remove_calibration_cal_to_file_cio</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">add</span><span class="p">:</span> <span class="nb">bool</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="p">):</span>
 <span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">        Adds or removes the calibration line to &#39;file.cio&#39;</span>
 <span class="sd">        &#39;&#39;&#39;</span>
@@ -2426,63 +2338,6 @@ SWAT+ model files located in the <code>TxtInOut</code> folder.</p>
         <span class="c1"># Write back</span>
         <span class="k">with</span> <span class="n">file_path</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
             <span class="n">f</span><span class="o">.</span><span class="n">writelines</span><span class="p">(</span><span class="n">lines</span><span class="p">)</span>
-
-    <span class="k">def</span><span class="w"> </span><span class="nf">_apply_swat_configuration</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span>
-        <span class="n">begin_and_end_year</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-        <span class="n">warmup</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-        <span class="n">print_prt_control</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">bool</span><span class="p">]]]</span> <span class="o">=</span> <span class="kc">None</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">        Sets begin and end year for the simulation, the warm-up period, and toggles the elements in print.prt file</span>
-<span class="sd">        &#39;&#39;&#39;</span>
-        <span class="c1"># Set simulation range time</span>
-        <span class="k">if</span> <span class="n">begin_and_end_year</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">begin_and_end_year</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">):</span>
-                <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s1">&#39;begin_and_end_year must be a tuple&#39;</span><span class="p">)</span>
-            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">begin_and_end_year</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">2</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;begin_and_end_year must contain exactly two elements&#39;</span><span class="p">)</span>
-            <span class="n">begin</span><span class="p">,</span> <span class="n">end</span> <span class="o">=</span> <span class="n">begin_and_end_year</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">set_begin_and_end_year</span><span class="p">(</span>
-                <span class="n">begin</span><span class="o">=</span><span class="n">begin</span><span class="p">,</span>
-                <span class="n">end</span><span class="o">=</span><span class="n">end</span>
-            <span class="p">)</span>
-
-        <span class="c1"># Set warmup period</span>
-        <span class="k">if</span> <span class="n">warmup</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">set_warmup_year</span><span class="p">(</span>
-                <span class="n">warmup</span><span class="o">=</span><span class="n">warmup</span>
-            <span class="p">)</span>
-
-        <span class="c1"># Update print.prt file to write output</span>
-        <span class="k">if</span> <span class="n">print_prt_control</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">print_prt_control</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
-                <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s1">&#39;print_prt_control must be a dictionary&#39;</span><span class="p">)</span>
-            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">print_prt_control</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;print_prt_control cannot be an empty dictionary&#39;</span><span class="p">)</span>
-            <span class="n">default_dict</span> <span class="o">=</span> <span class="p">{</span>
-                <span class="s1">&#39;daily&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
-                <span class="s1">&#39;monthly&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
-                <span class="s1">&#39;yearly&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
-                <span class="s1">&#39;avann&#39;</span><span class="p">:</span> <span class="kc">True</span>
-            <span class="p">}</span>
-            <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">print_prt_control</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-                <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
-                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Value of key &quot;</span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s1">&quot; must be a dictionary&#39;</span><span class="p">)</span>
-                <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">val</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Value of key &quot;</span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s1">&quot; cannot be an empty dictionary&#39;</span><span class="p">)</span>
-                <span class="n">key_dict</span> <span class="o">=</span> <span class="n">default_dict</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
-                <span class="k">for</span> <span class="n">sub_key</span><span class="p">,</span> <span class="n">sub_val</span> <span class="ow">in</span> <span class="n">val</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-                    <span class="k">if</span> <span class="n">sub_key</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">key_dict</span><span class="p">:</span>
-                        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Sub-key &quot;</span><span class="si">{</span><span class="n">sub_key</span><span class="si">}</span><span class="s1">&quot; for key &quot;</span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s1">&quot; is not valid&#39;</span><span class="p">)</span>
-                    <span class="n">key_dict</span><span class="p">[</span><span class="n">sub_key</span><span class="p">]</span> <span class="o">=</span> <span class="n">sub_val</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">enable_object_in_print_prt</span><span class="p">(</span>
-                    <span class="n">obj</span><span class="o">=</span><span class="n">key</span><span class="p">,</span>
-                    <span class="n">daily</span><span class="o">=</span><span class="n">key_dict</span><span class="p">[</span><span class="s1">&#39;daily&#39;</span><span class="p">],</span>
-                    <span class="n">monthly</span><span class="o">=</span><span class="n">key_dict</span><span class="p">[</span><span class="s1">&#39;monthly&#39;</span><span class="p">],</span>
-                    <span class="n">yearly</span><span class="o">=</span><span class="n">key_dict</span><span class="p">[</span><span class="s1">&#39;yearly&#39;</span><span class="p">],</span>
-                    <span class="n">avann</span><span class="o">=</span><span class="n">key_dict</span><span class="p">[</span><span class="s1">&#39;avann&#39;</span><span class="p">]</span>
-                <span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_run_swat</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
@@ -2568,37 +2423,48 @@ SWAT+ model files located in the <code>TxtInOut</code> folder.</p>
 <span class="sd">                        {&#39;value&#39;: 100, &#39;change_type&#39;: &#39;absval&#39;, &#39;filter_by&#39;: &#39;name == &quot;agrl&quot;&#39;},</span>
 <span class="sd">                        {&#39;value&#39;: 110, &#39;change_type&#39;: &#39;absval&#39;, &#39;filter_by&#39;: &#39;name == &quot;almd&quot;&#39;},</span>
 <span class="sd">                    ],</span>
-<span class="sd">                },F</span>
+<span class="sd">                },</span>
 <span class="sd">            }</span>
 
 <span class="sd">            reader.run_swat(params)</span>
 <span class="sd">            ```</span>
 <span class="sd">        &#39;&#39;&#39;</span>
-        <span class="k">if</span> <span class="n">params</span><span class="p">:</span>
-            <span class="n">_params</span> <span class="o">=</span> <span class="n">ParamsModel</span><span class="o">.</span><span class="n">from_dict</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
-            <span class="n">validators</span><span class="o">.</span><span class="n">_validate_parameters</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">root_folder</span><span class="p">,</span> <span class="n">_params</span><span class="p">)</span>
-            <span class="k">for</span> <span class="n">filename</span><span class="p">,</span> <span class="n">file_params</span> <span class="ow">in</span> <span class="n">_params</span><span class="o">.</span><span class="n">file_params</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
 
-                <span class="n">has_units</span> <span class="o">=</span> <span class="n">file_params</span><span class="o">.</span><span class="n">has_units</span>
+        <span class="n">_params</span> <span class="o">=</span> <span class="n">params</span> <span class="ow">or</span> <span class="p">{}</span>
 
-                <span class="n">file</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">register_file</span><span class="p">(</span>
-                    <span class="n">filename</span><span class="p">,</span>
-                    <span class="n">has_units</span><span class="o">=</span><span class="n">has_units</span>
-                <span class="p">)</span>
-                <span class="n">df</span> <span class="o">=</span> <span class="n">file</span><span class="o">.</span><span class="n">df</span>
-
-                <span class="k">for</span> <span class="n">param_name</span><span class="p">,</span> <span class="n">changes</span> <span class="ow">in</span> <span class="n">file_params</span><span class="o">.</span><span class="n">params</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-
-                    <span class="c1"># Process each parameter change</span>
-                    <span class="k">for</span> <span class="n">change</span> <span class="ow">in</span> <span class="n">changes</span><span class="p">:</span>
-                        <span class="n">utils</span><span class="o">.</span><span class="n">_apply_param_change</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">param_name</span><span class="p">,</span> <span class="n">change</span><span class="p">)</span>
-
-                <span class="c1"># Store the modified file</span>
-                <span class="n">file</span><span class="o">.</span><span class="n">overwrite_file</span><span class="p">()</span>
+        <span class="n">utils</span><span class="o">.</span><span class="n">_validate_params</span><span class="p">(</span><span class="n">_params</span><span class="p">)</span>
 
         <span class="c1"># make sure calibration.cal is disabled.</span>
         <span class="c1"># Otherwise, the params value will be changed during the execution of SWAT+</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_add_or_remove_calibration_cal_to_file_cio</span><span class="p">(</span><span class="n">add</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+        <span class="c1"># Modify files for simulation</span>
+        <span class="k">for</span> <span class="n">filename</span><span class="p">,</span> <span class="n">file_params</span> <span class="ow">in</span> <span class="n">_params</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+
+            <span class="n">has_units</span> <span class="o">=</span> <span class="n">file_params</span><span class="p">[</span><span class="s1">&#39;has_units&#39;</span><span class="p">]</span>
+            <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">has_units</span><span class="p">,</span> <span class="nb">bool</span><span class="p">)</span>
+
+            <span class="n">file</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">register_file</span><span class="p">(</span>
+                <span class="n">filename</span><span class="p">,</span>
+                <span class="n">has_units</span><span class="o">=</span><span class="n">has_units</span>
+            <span class="p">)</span>
+            <span class="n">df</span> <span class="o">=</span> <span class="n">file</span><span class="o">.</span><span class="n">df</span>
+
+            <span class="k">for</span> <span class="n">param_name</span><span class="p">,</span> <span class="n">param_spec</span> <span class="ow">in</span> <span class="n">file_params</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+
+                <span class="c1"># Continue for bool varibale</span>
+                <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">param_spec</span><span class="p">,</span> <span class="nb">bool</span><span class="p">):</span>
+                    <span class="k">continue</span>
+
+                <span class="c1"># Normalize to list of changes</span>
+                <span class="n">changes</span> <span class="o">=</span> <span class="n">param_spec</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">param_spec</span><span class="p">,</span> <span class="nb">list</span><span class="p">)</span> <span class="k">else</span> <span class="p">[</span><span class="n">param_spec</span><span class="p">]</span>
+
+                <span class="c1"># Process each parameter change</span>
+                <span class="k">for</span> <span class="n">change</span> <span class="ow">in</span> <span class="n">changes</span><span class="p">:</span>
+                    <span class="n">utils</span><span class="o">.</span><span class="n">_apply_param_change</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">param_name</span><span class="p">,</span> <span class="n">change</span><span class="p">)</span>
+
+            <span class="c1"># Store the modified file</span>
+            <span class="n">file</span><span class="o">.</span><span class="n">overwrite_file</span><span class="p">()</span>
 
         <span class="c1"># Run simulation</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_run_swat</span><span class="p">()</span>
@@ -2666,7 +2532,7 @@ SWAT+ model files located in the <code>TxtInOut</code> folder.</p>
 
 <span class="sd">        Example:</span>
 <span class="sd">            ```python</span>
-<span class="sd">            simulation = pySWATPlus.TxtinoutReader.run_swat_in_other_dir(</span>
+<span class="sd">            simulation = pySWATPlus.TxtinoutReader.run_swat_in_other_dir_new_method(</span>
 <span class="sd">                target_dir=&quot;C:\\\\Users\\\\Username\\\\simulation_folder&quot;,</span>
 <span class="sd">                params={</span>
 <span class="sd">                    &#39;plants.plt&#39;: {</span>
@@ -2687,46 +2553,97 @@ SWAT+ model files located in the <code>TxtInOut</code> folder.</p>
 <span class="sd">            ```</span>
 <span class="sd">        &#39;&#39;&#39;</span>
 
+        <span class="c1"># Validate target directory</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">target_dir</span><span class="p">,</span> <span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">)):</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s1">&#39;target_dir must be a string or Path object&#39;</span><span class="p">)</span>
+
+        <span class="n">target_dir</span> <span class="o">=</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="n">target_dir</span><span class="p">)</span><span class="o">.</span><span class="n">resolve</span><span class="p">()</span>
+
+        <span class="c1"># Create the directory if it does not exist and copy necessary files</span>
+        <span class="n">target_dir</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">parents</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
         <span class="n">tmp_path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">copy_required_files</span><span class="p">(</span><span class="n">target_dir</span><span class="o">=</span><span class="n">target_dir</span><span class="p">)</span>
 
         <span class="c1"># Initialize new TxtinoutReader class</span>
         <span class="n">reader</span> <span class="o">=</span> <span class="n">TxtinoutReader</span><span class="p">(</span><span class="n">tmp_path</span><span class="p">)</span>
 
-        <span class="c1"># Apply SWAT+ configuration changes</span>
-        <span class="n">reader</span><span class="o">.</span><span class="n">_apply_swat_configuration</span><span class="p">(</span><span class="n">begin_and_end_year</span><span class="p">,</span> <span class="n">warmup</span><span class="p">,</span> <span class="n">print_prt_control</span><span class="p">)</span>
+        <span class="c1"># Set simulation range time</span>
+        <span class="k">if</span> <span class="n">begin_and_end_year</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">begin_and_end_year</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s1">&#39;begin_and_end_year must be a tuple&#39;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">begin_and_end_year</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">2</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;begin_and_end_year must contain exactly two elements&#39;</span><span class="p">)</span>
+            <span class="n">begin</span><span class="p">,</span> <span class="n">end</span> <span class="o">=</span> <span class="n">begin_and_end_year</span>
+            <span class="n">reader</span><span class="o">.</span><span class="n">set_begin_and_end_year</span><span class="p">(</span>
+                <span class="n">begin</span><span class="o">=</span><span class="n">begin</span><span class="p">,</span>
+                <span class="n">end</span><span class="o">=</span><span class="n">end</span>
+            <span class="p">)</span>
+
+        <span class="c1"># Set warmup period</span>
+        <span class="k">if</span> <span class="n">warmup</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">reader</span><span class="o">.</span><span class="n">set_warmup_year</span><span class="p">(</span>
+                <span class="n">warmup</span><span class="o">=</span><span class="n">warmup</span>
+            <span class="p">)</span>
+
+        <span class="c1"># Update print.prt file to write output</span>
+        <span class="k">if</span> <span class="n">print_prt_control</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">print_prt_control</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s1">&#39;print_prt_control must be a dictionary&#39;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">print_prt_control</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;print_prt_control cannot be an empty dictionary&#39;</span><span class="p">)</span>
+            <span class="n">default_dict</span> <span class="o">=</span> <span class="p">{</span>
+                <span class="s1">&#39;daily&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+                <span class="s1">&#39;monthly&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+                <span class="s1">&#39;yearly&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+                <span class="s1">&#39;avann&#39;</span><span class="p">:</span> <span class="kc">True</span>
+            <span class="p">}</span>
+            <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">print_prt_control</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Value of key &quot;</span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s1">&quot; must be a dictionary&#39;</span><span class="p">)</span>
+                <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">val</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Value of key &quot;</span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s1">&quot; cannot be an empty dictionary&#39;</span><span class="p">)</span>
+                <span class="n">key_dict</span> <span class="o">=</span> <span class="n">default_dict</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+                <span class="k">for</span> <span class="n">sub_key</span><span class="p">,</span> <span class="n">sub_val</span> <span class="ow">in</span> <span class="n">val</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                    <span class="k">if</span> <span class="n">sub_key</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">key_dict</span><span class="p">:</span>
+                        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Sub-key &quot;</span><span class="si">{</span><span class="n">sub_key</span><span class="si">}</span><span class="s1">&quot; for key &quot;</span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s1">&quot; is not valid&#39;</span><span class="p">)</span>
+                    <span class="n">key_dict</span><span class="p">[</span><span class="n">sub_key</span><span class="p">]</span> <span class="o">=</span> <span class="n">sub_val</span>
+                <span class="n">reader</span><span class="o">.</span><span class="n">enable_object_in_print_prt</span><span class="p">(</span>
+                    <span class="n">obj</span><span class="o">=</span><span class="n">key</span><span class="p">,</span>
+                    <span class="n">daily</span><span class="o">=</span><span class="n">key_dict</span><span class="p">[</span><span class="s1">&#39;daily&#39;</span><span class="p">],</span>
+                    <span class="n">monthly</span><span class="o">=</span><span class="n">key_dict</span><span class="p">[</span><span class="s1">&#39;monthly&#39;</span><span class="p">],</span>
+                    <span class="n">yearly</span><span class="o">=</span><span class="n">key_dict</span><span class="p">[</span><span class="s1">&#39;yearly&#39;</span><span class="p">],</span>
+                    <span class="n">avann</span><span class="o">=</span><span class="n">key_dict</span><span class="p">[</span><span class="s1">&#39;avann&#39;</span><span class="p">]</span>
+                <span class="p">)</span>
 
         <span class="c1"># Run the SWAT+ simulation</span>
         <span class="n">output</span> <span class="o">=</span> <span class="n">reader</span><span class="o">.</span><span class="n">run_swat</span><span class="p">(</span><span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="n">output</span>
 
-    <span class="k">def</span><span class="w"> </span><span class="nf">cal_run_swat</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">run_swat_calibration_cal</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
-        <span class="n">params</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">CalParamsType</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">params</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">ParameterChanges</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">skip_units_and_conditions_validation</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">        Run the SWAT+ simulation with optional parameter changes.</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            params (CalParamsType, optional): Nested dictionary specifying parameter changes.</span>
+<span class="sd">            params (ParameterChanges, optional): list of dictionaries specifying parameter changes to apply.</span>
 
 <span class="sd">                The `params` dictionary should follow this structure:</span>
 
 <span class="sd">                ```python</span>
-<span class="sd">                params = {</span>
-<span class="sd">                            &quot;&lt;parameter_to_change&gt;&quot;: [</span>
-<span class="sd">                                    {</span>
-<span class="sd">                                        &quot;value&quot;: float,         # New value to assign</span>
-<span class="sd">                                        &quot;change_type&quot;: str,     # (Optional) One of: &#39;absval&#39; (default), &#39;abschg&#39;, &#39;pctchg&#39;</span>
-<span class="sd">                                        &quot;units&quot;: Iterable[int],  # (Optional) An optional list of unit IDs to constrain the parameter change.</span>
-<span class="sd">                                            **Unit IDs should be 1-based**, i.e., the first object has ID 1.</span>
-<span class="sd">                                        &quot;conditions&quot;: dict[str: list[str]],  # (Optional) A dictionary of conditions to apply to the parameter change.</span>
-<span class="sd">                                    },</span>
-<span class="sd">                                    #...</span>
-<span class="sd">                                ],</span>
-<span class="sd">                                # ...</span>
-<span class="sd">                        }</span>
+<span class="sd">                params = [</span>
+<span class="sd">                            {</span>
+<span class="sd">                                &quot;name&quot;: str,            # Name of the parameter to change</span>
+<span class="sd">                                &quot;value&quot;: float,         # New value to assign</span>
+<span class="sd">                                &quot;change_type&quot;: str,     # (Optional) One of: &#39;absval&#39; (default), &#39;abschg&#39;, &#39;pctchg&#39;</span>
+<span class="sd">                                &quot;units&quot;: Iterable[int],  # (Optional) An optional list of unit IDs to constrain the parameter change.</span>
+<span class="sd">                                    **Unit IDs should be 1-based**, i.e., the first object has ID 0.</span>
+<span class="sd">                                &quot;conditions&quot;: dict[str: list[str]],  # (Optional) A dictionary of conditions to apply to the parameter change.</span>
+<span class="sd">                            },</span>
+<span class="sd">                            # ... more changes</span>
+<span class="sd">                        ]</span>
 <span class="sd">                ```</span>
 <span class="sd">            skip_units_and_conditions_validation (bool): If `True`, skip validation of units and conditions in parameter changes.</span>
 
@@ -2736,149 +2653,43 @@ SWAT+ model files located in the <code>TxtInOut</code> folder.</p>
 
 <span class="sd">        Example:</span>
 <span class="sd">            ```python</span>
-<span class="sd">            params = {</span>
-<span class="sd">                &quot;cn2&quot;: {</span>
+<span class="sd">            params = [</span>
+<span class="sd">                {</span>
+<span class="sd">                    &quot;name&quot;: &quot;cn2&quot;,</span>
 <span class="sd">                    &quot;change_type&quot;: &quot;pctchg&quot;,</span>
 <span class="sd">                    &quot;value&quot;: 50,</span>
 <span class="sd">                },</span>
-<span class="sd">                &quot;perco&quot;: {</span>
+<span class="sd">                {</span>
+<span class="sd">                    &quot;name&quot;: &quot;perco&quot;,</span>
 <span class="sd">                    &quot;change_type&quot;: &quot;absval&quot;,</span>
 <span class="sd">                    &quot;value&quot;: 0.5,</span>
 <span class="sd">                    &quot;conditions&quot;: {&quot;hsg&quot;: [&quot;A&quot;]}</span>
 <span class="sd">                },</span>
-<span class="sd">                &quot;bf_max&quot;: [{</span>
+<span class="sd">                {</span>
+<span class="sd">                    &quot;name&quot;: &quot;bf_max&quot;,</span>
 <span class="sd">                    &quot;change_type&quot;: &quot;absval&quot;,</span>
 <span class="sd">                    &quot;value&quot;: 0.3,</span>
 <span class="sd">                    &quot;units&quot;: range(1, 194)</span>
-<span class="sd">                }]</span>
-<span class="sd">            }</span>
+<span class="sd">                }</span>
+<span class="sd">            ]</span>
 
-
-<span class="sd">            reader.cal_run_swat(params)</span>
+<span class="sd">            reader.run_swat(params)</span>
 <span class="sd">            ```</span>
-
-<span class="sd">        Warning:</span>
-<span class="sd">            This method is currently under development and not recommended for use.</span>
-
 <span class="sd">        &#39;&#39;&#39;</span>
 
-        <span class="k">if</span> <span class="n">params</span><span class="p">:</span>
-            <span class="n">_params</span> <span class="o">=</span> <span class="n">CalParamsModel</span><span class="o">.</span><span class="n">from_dict</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
+        <span class="n">_params</span> <span class="o">=</span> <span class="n">params</span> <span class="ow">or</span> <span class="p">[]</span>
 
-            <span class="n">validators</span><span class="o">.</span><span class="n">_validate_cal_parameters</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">root_folder</span><span class="p">,</span> <span class="n">_params</span><span class="p">)</span>
+        <span class="n">utils</span><span class="o">.</span><span class="n">_validate_calibration_params</span><span class="p">(</span><span class="n">_params</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_check_swatplus_parameters</span><span class="p">(</span><span class="n">_params</span><span class="p">)</span>
 
-            <span class="k">if</span> <span class="ow">not</span> <span class="n">skip_units_and_conditions_validation</span><span class="p">:</span>
-                <span class="n">validators</span><span class="o">.</span><span class="n">_validate_conditions_and_units</span><span class="p">(</span><span class="n">_params</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">root_folder</span><span class="p">)</span>
-
-            <span class="bp">self</span><span class="o">.</span><span class="n">_write_calibration_file</span><span class="p">(</span><span class="n">_params</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">skip_units_and_conditions_validation</span><span class="p">:</span>
+            <span class="n">utils</span><span class="o">.</span><span class="n">_validate_conditions_and_units</span><span class="p">(</span><span class="n">_params</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">root_folder</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_write_calibration_file</span><span class="p">(</span><span class="n">_params</span><span class="p">)</span>
 
         <span class="c1"># Run simulation</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_run_swat</span><span class="p">()</span>
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">root_folder</span>
-
-    <span class="k">def</span><span class="w"> </span><span class="nf">cal_run_swat_in_other_dir</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span>
-        <span class="n">target_dir</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">,</span>
-        <span class="n">params</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">CalParamsType</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-        <span class="n">begin_and_end_year</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-        <span class="n">warmup</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-        <span class="n">print_prt_control</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">bool</span><span class="p">]]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-        <span class="n">skip_units_and_conditions_validation</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">        Run the SWAT+ simulation with optional parameter changes.</span>
-
-<span class="sd">        Args:</span>
-
-<span class="sd">            target_dir (str or Path): Path to the directory where the simulation will be done.</span>
-
-<span class="sd">            params (CalParamsType, optional): Nested dictionary specifying parameter changes.</span>
-
-<span class="sd">                The `params` dictionary should follow this structure:</span>
-
-<span class="sd">                ```python</span>
-<span class="sd">                params = {</span>
-<span class="sd">                            &quot;&lt;parameter_to_change&gt;&quot;: [</span>
-<span class="sd">                                    {</span>
-<span class="sd">                                        &quot;value&quot;: float,         # New value to assign</span>
-<span class="sd">                                        &quot;change_type&quot;: str,     # (Optional) One of: &#39;absval&#39; (default), &#39;abschg&#39;, &#39;pctchg&#39;</span>
-<span class="sd">                                        &quot;units&quot;: Iterable[int],  # (Optional) An optional list of unit IDs to constrain the parameter change.</span>
-<span class="sd">                                            **Unit IDs should be 1-based**, i.e., the first object has ID 1.</span>
-<span class="sd">                                        &quot;conditions&quot;: dict[str: list[str]],  # (Optional) A dictionary of conditions to apply to the parameter change.</span>
-<span class="sd">                                    },</span>
-<span class="sd">                                    #...</span>
-<span class="sd">                                ],</span>
-<span class="sd">                                # ...</span>
-<span class="sd">                        }</span>
-<span class="sd">                ```</span>
-
-<span class="sd">            begin_and_end_year (tuple[int, int]): A tuple of begin and end years of the simulation in YYYY format. For example, (2012, 2016).</span>
-
-<span class="sd">            warmup (int): A positive integer representing the number of warm-up years (e.g., 1).</span>
-
-<span class="sd">            print_prt_control (dict[str, dict[str, bool]], optional): A dictionary to control output printing in the `print.prt` file.</span>
-<span class="sd">                Each outer key is an object name from `print.prt` (e.g., &#39;channel_sd&#39;, &#39;basin_wb&#39;).</span>
-<span class="sd">                Each value is a dictionary with keys `daily`, `monthly`, `yearly`, or `avann`, mapped to boolean values.</span>
-<span class="sd">                Set to `False` to disable printing for that time step; defaults to `True` if not specified.</span>
-<span class="sd">                An error is raised if an outer key has an empty dictionary.</span>
-<span class="sd">                The time step keys represent:</span>
-
-<span class="sd">                - `daily`: Output for each day of the simulation.</span>
-<span class="sd">                - `monthly`: Output aggregated for each month.</span>
-<span class="sd">                - `yearly`: Output aggregated for each year.</span>
-<span class="sd">                - `avann`: Average annual output over the entire simulation period.</span>
-
-<span class="sd">            skip_units_and_conditions_validation (bool): If `True`, skip validation of units and conditions in parameter changes.</span>
-
-
-<span class="sd">        Returns:</span>
-<span class="sd">            Path where the SWAT+ simulation was executed.</span>
-
-<span class="sd">        Example:</span>
-<span class="sd">            ```python</span>
-<span class="sd">            simulation = pySWATPlus.TxtinoutReader.cal_run_swat_in_other_dir(</span>
-<span class="sd">                target_dir=&quot;C:\\\\Users\\\\Username\\\\simulation_folder&quot;,</span>
-<span class="sd">                params={</span>
-<span class="sd">                    &quot;perco&quot;: {</span>
-<span class="sd">                        &quot;change_type&quot;: &quot;absval&quot;,</span>
-<span class="sd">                        &quot;value&quot;: 0.5,</span>
-<span class="sd">                        &quot;conditions&quot;: {&quot;hsg&quot;: [&quot;A&quot;]}</span>
-<span class="sd">                    },</span>
-<span class="sd">                    &quot;bf_max&quot;: [{</span>
-<span class="sd">                        &quot;change_type&quot;: &quot;absval&quot;,</span>
-<span class="sd">                        &quot;value&quot;: 0.3,</span>
-<span class="sd">                        &quot;units&quot;: range(1, 194)</span>
-<span class="sd">                    }]</span>
-<span class="sd">                },</span>
-<span class="sd">                begin_and_end_year=(2012, 2016),</span>
-<span class="sd">                warmup=1,</span>
-<span class="sd">                print_prt_control = {</span>
-<span class="sd">                    &#39;channel_sd&#39;: {&#39;daily&#39;: False},</span>
-<span class="sd">                    &#39;channel_sdmorph&#39;: {&#39;monthly&#39;: False}</span>
-<span class="sd">                }</span>
-<span class="sd">            )</span>
-<span class="sd">            ```</span>
-<span class="sd">        Warning:</span>
-<span class="sd">            This method is currently under development and not recommended for use.</span>
-
-<span class="sd">        &#39;&#39;&#39;</span>
-
-        <span class="n">tmp_path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">copy_required_files</span><span class="p">(</span><span class="n">target_dir</span><span class="o">=</span><span class="n">target_dir</span><span class="p">)</span>
-
-        <span class="c1"># Initialize new TxtinoutReader class</span>
-        <span class="n">reader</span> <span class="o">=</span> <span class="n">TxtinoutReader</span><span class="p">(</span><span class="n">tmp_path</span><span class="p">)</span>
-
-        <span class="c1"># Apply SWAT+ configuration changes</span>
-        <span class="n">reader</span><span class="o">.</span><span class="n">_apply_swat_configuration</span><span class="p">(</span><span class="n">begin_and_end_year</span><span class="p">,</span> <span class="n">warmup</span><span class="p">,</span> <span class="n">print_prt_control</span><span class="p">)</span>
-
-        <span class="c1"># Run the SWAT+ simulation</span>
-        <span class="n">output</span> <span class="o">=</span> <span class="n">reader</span><span class="o">.</span><span class="n">cal_run_swat</span><span class="p">(</span>
-            <span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">,</span>
-            <span class="n">skip_units_and_conditions_validation</span><span class="o">=</span><span class="n">skip_units_and_conditions_validation</span>
-        <span class="p">)</span>
-
-        <span class="k">return</span> <span class="n">output</span>
 </code></pre></div></td></tr></table></div>
               </details>
 
@@ -3000,7 +2811,11 @@ zero or multiple <code>.exe</code> files.</p>
 <span class="normal">56</span>
 <span class="normal">57</span>
 <span class="normal">58</span>
-<span class="normal">59</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
+<span class="normal">59</span>
+<span class="normal">60</span>
+<span class="normal">61</span>
+<span class="normal">62</span>
+<span class="normal">63</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">path</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
@@ -3016,7 +2831,11 @@ zero or multiple <code>.exe</code> files.</p>
 <span class="sd">            zero or multiple `.exe` files.</span>
 <span class="sd">    &#39;&#39;&#39;</span>
 
-    <span class="n">path</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">_ensure_path</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+    <span class="c1"># check if path is a string or a path</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">)):</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s1">&#39;path must be a string or Path object&#39;</span><span class="p">)</span>
+
+    <span class="n">path</span> <span class="o">=</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="n">path</span><span class="p">)</span><span class="o">.</span><span class="n">resolve</span><span class="p">()</span>
 
     <span class="c1"># check if folder exists</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">path</span><span class="o">.</span><span class="n">is_dir</span><span class="p">():</span>
@@ -3034,614 +2853,6 @@ zero or multiple <code>.exe</code> files.</p>
     <span class="c1"># find parent directory</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">root_folder</span> <span class="o">=</span> <span class="n">path</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">swat_exe_path</span> <span class="o">=</span> <span class="n">path</span> <span class="o">/</span> <span class="n">exe_list</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-</code></pre></div></td></tr></table></div>
-            </details>
-    </div>
-
-</div>
-
-<div class="doc doc-object doc-function">
-
-
-<h3 id="pySWATPlus.TxtinoutReader.cal_run_swat" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">cal_run_swat</span><span class="p">(</span><span class="n">params</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">CalParamsType</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">skip_units_and_conditions_validation</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span></code>
-
-</h3>
-
-
-    <div class="doc doc-contents ">
-
-        <p>Run the SWAT+ simulation with optional parameter changes.</p>
-
-
-<p><span class="doc-section-title">Parameters:</span></p>
-    <table>
-      <thead>
-        <tr>
-          <th>Name</th>
-          <th>Type</th>
-          <th>Description</th>
-          <th>Default</th>
-        </tr>
-      </thead>
-      <tbody>
-          <tr class="doc-section-item">
-            <td>
-                <code>params</code>
-            </td>
-            <td>
-                  <code><a class="autorefs autorefs-internal" title="CalParamsType: typing.TypeAlias = dict[str, typing.Any]
-
-  
-      module-attribute
-   (pySWATPlus.types.CalParamsType)" href="../types/#pySWATPlus.types.CalParamsType">CalParamsType</a></code>
-            </td>
-            <td>
-              <div class="doc-md-description">
-                <p>Nested dictionary specifying parameter changes.</p>
-<p>The <code>params</code> dictionary should follow this structure:</p>
-<div class="highlight"><pre><span></span><code><span class="n">params</span> <span class="o">=</span> <span class="p">{</span>
-            <span class="s2">&quot;&lt;parameter_to_change&gt;&quot;</span><span class="p">:</span> <span class="p">[</span>
-                    <span class="p">{</span>
-                        <span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>         <span class="c1"># New value to assign</span>
-                        <span class="s2">&quot;change_type&quot;</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>     <span class="c1"># (Optional) One of: &#39;absval&#39; (default), &#39;abschg&#39;, &#39;pctchg&#39;</span>
-                        <span class="s2">&quot;units&quot;</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span>  <span class="c1"># (Optional) An optional list of unit IDs to constrain the parameter change.</span>
-                            <span class="o">**</span><span class="n">Unit</span> <span class="n">IDs</span> <span class="n">should</span> <span class="n">be</span> <span class="mi">1</span><span class="o">-</span><span class="n">based</span><span class="o">**</span><span class="p">,</span> <span class="n">i</span><span class="o">.</span><span class="n">e</span><span class="o">.</span><span class="p">,</span> <span class="n">the</span> <span class="n">first</span> <span class="nb">object</span> <span class="n">has</span> <span class="n">ID</span> <span class="mf">1.</span>
-                        <span class="s2">&quot;conditions&quot;</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]],</span>  <span class="c1"># (Optional) A dictionary of conditions to apply to the parameter change.</span>
-                    <span class="p">},</span>
-                    <span class="c1">#...</span>
-                <span class="p">],</span>
-                <span class="c1"># ...</span>
-        <span class="p">}</span>
-</code></pre></div>
-              </div>
-            </td>
-            <td>
-                  <code>None</code>
-            </td>
-          </tr>
-          <tr class="doc-section-item">
-            <td>
-                <code>skip_units_and_conditions_validation</code>
-            </td>
-            <td>
-                  <code><span title="bool">bool</span></code>
-            </td>
-            <td>
-              <div class="doc-md-description">
-                <p>If <code>True</code>, skip validation of units and conditions in parameter changes.</p>
-              </div>
-            </td>
-            <td>
-                  <code>False</code>
-            </td>
-          </tr>
-      </tbody>
-    </table>
-
-
-    <p><span class="doc-section-title">Returns:</span></p>
-    <table>
-      <thead>
-        <tr>
-          <th>Type</th>
-          <th>Description</th>
-        </tr>
-      </thead>
-      <tbody>
-          <tr class="doc-section-item">
-            <td>
-                  <code><span title="pathlib.Path">Path</span></code>
-            </td>
-            <td>
-              <div class="doc-md-description">
-                <p>Path where the SWAT+ simulation was executed.</p>
-              </div>
-            </td>
-          </tr>
-      </tbody>
-    </table>
-
-
-<details class="example" open>
-  <summary>Example</summary>
-  <div class="highlight"><pre><span></span><code><span class="n">params</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="s2">&quot;cn2&quot;</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s2">&quot;change_type&quot;</span><span class="p">:</span> <span class="s2">&quot;pctchg&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="mi">50</span><span class="p">,</span>
-    <span class="p">},</span>
-    <span class="s2">&quot;perco&quot;</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s2">&quot;change_type&quot;</span><span class="p">:</span> <span class="s2">&quot;absval&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="mf">0.5</span><span class="p">,</span>
-        <span class="s2">&quot;conditions&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;hsg&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;A&quot;</span><span class="p">]}</span>
-    <span class="p">},</span>
-    <span class="s2">&quot;bf_max&quot;</span><span class="p">:</span> <span class="p">[{</span>
-        <span class="s2">&quot;change_type&quot;</span><span class="p">:</span> <span class="s2">&quot;absval&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="mf">0.3</span><span class="p">,</span>
-        <span class="s2">&quot;units&quot;</span><span class="p">:</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">194</span><span class="p">)</span>
-    <span class="p">}]</span>
-<span class="p">}</span>
-
-
-<span class="n">reader</span><span class="o">.</span><span class="n">cal_run_swat</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
-</code></pre></div>
-</details>
-
-<details class="warning" open>
-  <summary>Warning</summary>
-  <p>This method is currently under development and not recommended for use.</p>
-</details>
-
-            <details class="quote">
-              <summary>Source code in <code>pySWATPlus/txtinoutreader.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">777</span>
-<span class="normal">778</span>
-<span class="normal">779</span>
-<span class="normal">780</span>
-<span class="normal">781</span>
-<span class="normal">782</span>
-<span class="normal">783</span>
-<span class="normal">784</span>
-<span class="normal">785</span>
-<span class="normal">786</span>
-<span class="normal">787</span>
-<span class="normal">788</span>
-<span class="normal">789</span>
-<span class="normal">790</span>
-<span class="normal">791</span>
-<span class="normal">792</span>
-<span class="normal">793</span>
-<span class="normal">794</span>
-<span class="normal">795</span>
-<span class="normal">796</span>
-<span class="normal">797</span>
-<span class="normal">798</span>
-<span class="normal">799</span>
-<span class="normal">800</span>
-<span class="normal">801</span>
-<span class="normal">802</span>
-<span class="normal">803</span>
-<span class="normal">804</span>
-<span class="normal">805</span>
-<span class="normal">806</span>
-<span class="normal">807</span>
-<span class="normal">808</span>
-<span class="normal">809</span>
-<span class="normal">810</span>
-<span class="normal">811</span>
-<span class="normal">812</span>
-<span class="normal">813</span>
-<span class="normal">814</span>
-<span class="normal">815</span>
-<span class="normal">816</span>
-<span class="normal">817</span>
-<span class="normal">818</span>
-<span class="normal">819</span>
-<span class="normal">820</span>
-<span class="normal">821</span>
-<span class="normal">822</span>
-<span class="normal">823</span>
-<span class="normal">824</span>
-<span class="normal">825</span>
-<span class="normal">826</span>
-<span class="normal">827</span>
-<span class="normal">828</span>
-<span class="normal">829</span>
-<span class="normal">830</span>
-<span class="normal">831</span>
-<span class="normal">832</span>
-<span class="normal">833</span>
-<span class="normal">834</span>
-<span class="normal">835</span>
-<span class="normal">836</span>
-<span class="normal">837</span>
-<span class="normal">838</span>
-<span class="normal">839</span>
-<span class="normal">840</span>
-<span class="normal">841</span>
-<span class="normal">842</span>
-<span class="normal">843</span>
-<span class="normal">844</span>
-<span class="normal">845</span>
-<span class="normal">846</span>
-<span class="normal">847</span>
-<span class="normal">848</span>
-<span class="normal">849</span>
-<span class="normal">850</span>
-<span class="normal">851</span>
-<span class="normal">852</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">cal_run_swat</span><span class="p">(</span>
-    <span class="bp">self</span><span class="p">,</span>
-    <span class="n">params</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">CalParamsType</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">skip_units_and_conditions_validation</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">    Run the SWAT+ simulation with optional parameter changes.</span>
-
-<span class="sd">    Args:</span>
-<span class="sd">        params (CalParamsType, optional): Nested dictionary specifying parameter changes.</span>
-
-<span class="sd">            The `params` dictionary should follow this structure:</span>
-
-<span class="sd">            ```python</span>
-<span class="sd">            params = {</span>
-<span class="sd">                        &quot;&lt;parameter_to_change&gt;&quot;: [</span>
-<span class="sd">                                {</span>
-<span class="sd">                                    &quot;value&quot;: float,         # New value to assign</span>
-<span class="sd">                                    &quot;change_type&quot;: str,     # (Optional) One of: &#39;absval&#39; (default), &#39;abschg&#39;, &#39;pctchg&#39;</span>
-<span class="sd">                                    &quot;units&quot;: Iterable[int],  # (Optional) An optional list of unit IDs to constrain the parameter change.</span>
-<span class="sd">                                        **Unit IDs should be 1-based**, i.e., the first object has ID 1.</span>
-<span class="sd">                                    &quot;conditions&quot;: dict[str: list[str]],  # (Optional) A dictionary of conditions to apply to the parameter change.</span>
-<span class="sd">                                },</span>
-<span class="sd">                                #...</span>
-<span class="sd">                            ],</span>
-<span class="sd">                            # ...</span>
-<span class="sd">                    }</span>
-<span class="sd">            ```</span>
-<span class="sd">        skip_units_and_conditions_validation (bool): If `True`, skip validation of units and conditions in parameter changes.</span>
-
-
-<span class="sd">    Returns:</span>
-<span class="sd">        Path where the SWAT+ simulation was executed.</span>
-
-<span class="sd">    Example:</span>
-<span class="sd">        ```python</span>
-<span class="sd">        params = {</span>
-<span class="sd">            &quot;cn2&quot;: {</span>
-<span class="sd">                &quot;change_type&quot;: &quot;pctchg&quot;,</span>
-<span class="sd">                &quot;value&quot;: 50,</span>
-<span class="sd">            },</span>
-<span class="sd">            &quot;perco&quot;: {</span>
-<span class="sd">                &quot;change_type&quot;: &quot;absval&quot;,</span>
-<span class="sd">                &quot;value&quot;: 0.5,</span>
-<span class="sd">                &quot;conditions&quot;: {&quot;hsg&quot;: [&quot;A&quot;]}</span>
-<span class="sd">            },</span>
-<span class="sd">            &quot;bf_max&quot;: [{</span>
-<span class="sd">                &quot;change_type&quot;: &quot;absval&quot;,</span>
-<span class="sd">                &quot;value&quot;: 0.3,</span>
-<span class="sd">                &quot;units&quot;: range(1, 194)</span>
-<span class="sd">            }]</span>
-<span class="sd">        }</span>
-
-
-<span class="sd">        reader.cal_run_swat(params)</span>
-<span class="sd">        ```</span>
-
-<span class="sd">    Warning:</span>
-<span class="sd">        This method is currently under development and not recommended for use.</span>
-
-<span class="sd">    &#39;&#39;&#39;</span>
-
-    <span class="k">if</span> <span class="n">params</span><span class="p">:</span>
-        <span class="n">_params</span> <span class="o">=</span> <span class="n">CalParamsModel</span><span class="o">.</span><span class="n">from_dict</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
-
-        <span class="n">validators</span><span class="o">.</span><span class="n">_validate_cal_parameters</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">root_folder</span><span class="p">,</span> <span class="n">_params</span><span class="p">)</span>
-
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">skip_units_and_conditions_validation</span><span class="p">:</span>
-            <span class="n">validators</span><span class="o">.</span><span class="n">_validate_conditions_and_units</span><span class="p">(</span><span class="n">_params</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">root_folder</span><span class="p">)</span>
-
-        <span class="bp">self</span><span class="o">.</span><span class="n">_write_calibration_file</span><span class="p">(</span><span class="n">_params</span><span class="p">)</span>
-
-    <span class="c1"># Run simulation</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">_run_swat</span><span class="p">()</span>
-
-    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">root_folder</span>
-</code></pre></div></td></tr></table></div>
-            </details>
-    </div>
-
-</div>
-
-<div class="doc doc-object doc-function">
-
-
-<h3 id="pySWATPlus.TxtinoutReader.cal_run_swat_in_other_dir" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">cal_run_swat_in_other_dir</span><span class="p">(</span><span class="n">target_dir</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">,</span> <span class="n">params</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">CalParamsType</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">begin_and_end_year</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">warmup</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">print_prt_control</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">bool</span><span class="p">]]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">skip_units_and_conditions_validation</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span></code>
-
-</h3>
-
-
-    <div class="doc doc-contents ">
-
-        <p>Run the SWAT+ simulation with optional parameter changes.</p>
-<p>Args:</p>
-<div class="highlight"><pre><span></span><code>target_dir (str or Path): Path to the directory where the simulation will be done.
-
-params (CalParamsType, optional): Nested dictionary specifying parameter changes.
-
-    The `params` dictionary should follow this structure:
-
-    ```python
-    params = {
-                &quot;&lt;parameter_to_change&gt;&quot;: [
-                        {
-                            &quot;value&quot;: float,         # New value to assign
-                            &quot;change_type&quot;: str,     # (Optional) One of: &#39;absval&#39; (default), &#39;abschg&#39;, &#39;pctchg&#39;
-                            &quot;units&quot;: Iterable[int],  # (Optional) An optional list of unit IDs to constrain the parameter change.
-                                **Unit IDs should be 1-based**, i.e., the first object has ID 1.
-                            &quot;conditions&quot;: dict[str: list[str]],  # (Optional) A dictionary of conditions to apply to the parameter change.
-                        },
-                        #...
-                    ],
-                    # ...
-            }
-    ```
-
-begin_and_end_year (tuple[int, int]): A tuple of begin and end years of the simulation in YYYY format. For example, (2012, 2016).
-
-warmup (int): A positive integer representing the number of warm-up years (e.g., 1).
-
-print_prt_control (dict[str, dict[str, bool]], optional): A dictionary to control output printing in the `print.prt` file.
-    Each outer key is an object name from `print.prt` (e.g., &#39;channel_sd&#39;, &#39;basin_wb&#39;).
-    Each value is a dictionary with keys `daily`, `monthly`, `yearly`, or `avann`, mapped to boolean values.
-    Set to `False` to disable printing for that time step; defaults to `True` if not specified.
-    An error is raised if an outer key has an empty dictionary.
-    The time step keys represent:
-
-    - `daily`: Output for each day of the simulation.
-    - `monthly`: Output aggregated for each month.
-    - `yearly`: Output aggregated for each year.
-    - `avann`: Average annual output over the entire simulation period.
-
-skip_units_and_conditions_validation (bool): If `True`, skip validation of units and conditions in parameter changes.
-</code></pre></div>
-
-
-    <p><span class="doc-section-title">Returns:</span></p>
-    <table>
-      <thead>
-        <tr>
-          <th>Type</th>
-          <th>Description</th>
-        </tr>
-      </thead>
-      <tbody>
-          <tr class="doc-section-item">
-            <td>
-                  <code><span title="pathlib.Path">Path</span></code>
-            </td>
-            <td>
-              <div class="doc-md-description">
-                <p>Path where the SWAT+ simulation was executed.</p>
-              </div>
-            </td>
-          </tr>
-      </tbody>
-    </table>
-
-
-<details class="example" open>
-  <summary>Example</summary>
-  <div class="highlight"><pre><span></span><code><span class="n">simulation</span> <span class="o">=</span> <span class="n">pySWATPlus</span><span class="o">.</span><span class="n">TxtinoutReader</span><span class="o">.</span><span class="n">cal_run_swat_in_other_dir</span><span class="p">(</span>
-    <span class="n">target_dir</span><span class="o">=</span><span class="s2">&quot;C:</span><span class="se">\\</span><span class="s2">Users</span><span class="se">\\</span><span class="s2">Username</span><span class="se">\\</span><span class="s2">simulation_folder&quot;</span><span class="p">,</span>
-    <span class="n">params</span><span class="o">=</span><span class="p">{</span>
-        <span class="s2">&quot;perco&quot;</span><span class="p">:</span> <span class="p">{</span>
-            <span class="s2">&quot;change_type&quot;</span><span class="p">:</span> <span class="s2">&quot;absval&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="mf">0.5</span><span class="p">,</span>
-            <span class="s2">&quot;conditions&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;hsg&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;A&quot;</span><span class="p">]}</span>
-        <span class="p">},</span>
-        <span class="s2">&quot;bf_max&quot;</span><span class="p">:</span> <span class="p">[{</span>
-            <span class="s2">&quot;change_type&quot;</span><span class="p">:</span> <span class="s2">&quot;absval&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="mf">0.3</span><span class="p">,</span>
-            <span class="s2">&quot;units&quot;</span><span class="p">:</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">194</span><span class="p">)</span>
-        <span class="p">}]</span>
-    <span class="p">},</span>
-    <span class="n">begin_and_end_year</span><span class="o">=</span><span class="p">(</span><span class="mi">2012</span><span class="p">,</span> <span class="mi">2016</span><span class="p">),</span>
-    <span class="n">warmup</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
-    <span class="n">print_prt_control</span> <span class="o">=</span> <span class="p">{</span>
-        <span class="s1">&#39;channel_sd&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;daily&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">},</span>
-        <span class="s1">&#39;channel_sdmorph&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;monthly&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">}</span>
-    <span class="p">}</span>
-<span class="p">)</span>
-</code></pre></div>
-</details>        <p>Warning:
-    This method is currently under development and not recommended for use.</p>
-
-
-            <details class="quote">
-              <summary>Source code in <code>pySWATPlus/txtinoutreader.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">854</span>
-<span class="normal">855</span>
-<span class="normal">856</span>
-<span class="normal">857</span>
-<span class="normal">858</span>
-<span class="normal">859</span>
-<span class="normal">860</span>
-<span class="normal">861</span>
-<span class="normal">862</span>
-<span class="normal">863</span>
-<span class="normal">864</span>
-<span class="normal">865</span>
-<span class="normal">866</span>
-<span class="normal">867</span>
-<span class="normal">868</span>
-<span class="normal">869</span>
-<span class="normal">870</span>
-<span class="normal">871</span>
-<span class="normal">872</span>
-<span class="normal">873</span>
-<span class="normal">874</span>
-<span class="normal">875</span>
-<span class="normal">876</span>
-<span class="normal">877</span>
-<span class="normal">878</span>
-<span class="normal">879</span>
-<span class="normal">880</span>
-<span class="normal">881</span>
-<span class="normal">882</span>
-<span class="normal">883</span>
-<span class="normal">884</span>
-<span class="normal">885</span>
-<span class="normal">886</span>
-<span class="normal">887</span>
-<span class="normal">888</span>
-<span class="normal">889</span>
-<span class="normal">890</span>
-<span class="normal">891</span>
-<span class="normal">892</span>
-<span class="normal">893</span>
-<span class="normal">894</span>
-<span class="normal">895</span>
-<span class="normal">896</span>
-<span class="normal">897</span>
-<span class="normal">898</span>
-<span class="normal">899</span>
-<span class="normal">900</span>
-<span class="normal">901</span>
-<span class="normal">902</span>
-<span class="normal">903</span>
-<span class="normal">904</span>
-<span class="normal">905</span>
-<span class="normal">906</span>
-<span class="normal">907</span>
-<span class="normal">908</span>
-<span class="normal">909</span>
-<span class="normal">910</span>
-<span class="normal">911</span>
-<span class="normal">912</span>
-<span class="normal">913</span>
-<span class="normal">914</span>
-<span class="normal">915</span>
-<span class="normal">916</span>
-<span class="normal">917</span>
-<span class="normal">918</span>
-<span class="normal">919</span>
-<span class="normal">920</span>
-<span class="normal">921</span>
-<span class="normal">922</span>
-<span class="normal">923</span>
-<span class="normal">924</span>
-<span class="normal">925</span>
-<span class="normal">926</span>
-<span class="normal">927</span>
-<span class="normal">928</span>
-<span class="normal">929</span>
-<span class="normal">930</span>
-<span class="normal">931</span>
-<span class="normal">932</span>
-<span class="normal">933</span>
-<span class="normal">934</span>
-<span class="normal">935</span>
-<span class="normal">936</span>
-<span class="normal">937</span>
-<span class="normal">938</span>
-<span class="normal">939</span>
-<span class="normal">940</span>
-<span class="normal">941</span>
-<span class="normal">942</span>
-<span class="normal">943</span>
-<span class="normal">944</span>
-<span class="normal">945</span>
-<span class="normal">946</span>
-<span class="normal">947</span>
-<span class="normal">948</span>
-<span class="normal">949</span>
-<span class="normal">950</span>
-<span class="normal">951</span>
-<span class="normal">952</span>
-<span class="normal">953</span>
-<span class="normal">954</span>
-<span class="normal">955</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">cal_run_swat_in_other_dir</span><span class="p">(</span>
-    <span class="bp">self</span><span class="p">,</span>
-    <span class="n">target_dir</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">,</span>
-    <span class="n">params</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">CalParamsType</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">begin_and_end_year</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">warmup</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">print_prt_control</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">bool</span><span class="p">]]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">skip_units_and_conditions_validation</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">    Run the SWAT+ simulation with optional parameter changes.</span>
-
-<span class="sd">    Args:</span>
-
-<span class="sd">        target_dir (str or Path): Path to the directory where the simulation will be done.</span>
-
-<span class="sd">        params (CalParamsType, optional): Nested dictionary specifying parameter changes.</span>
-
-<span class="sd">            The `params` dictionary should follow this structure:</span>
-
-<span class="sd">            ```python</span>
-<span class="sd">            params = {</span>
-<span class="sd">                        &quot;&lt;parameter_to_change&gt;&quot;: [</span>
-<span class="sd">                                {</span>
-<span class="sd">                                    &quot;value&quot;: float,         # New value to assign</span>
-<span class="sd">                                    &quot;change_type&quot;: str,     # (Optional) One of: &#39;absval&#39; (default), &#39;abschg&#39;, &#39;pctchg&#39;</span>
-<span class="sd">                                    &quot;units&quot;: Iterable[int],  # (Optional) An optional list of unit IDs to constrain the parameter change.</span>
-<span class="sd">                                        **Unit IDs should be 1-based**, i.e., the first object has ID 1.</span>
-<span class="sd">                                    &quot;conditions&quot;: dict[str: list[str]],  # (Optional) A dictionary of conditions to apply to the parameter change.</span>
-<span class="sd">                                },</span>
-<span class="sd">                                #...</span>
-<span class="sd">                            ],</span>
-<span class="sd">                            # ...</span>
-<span class="sd">                    }</span>
-<span class="sd">            ```</span>
-
-<span class="sd">        begin_and_end_year (tuple[int, int]): A tuple of begin and end years of the simulation in YYYY format. For example, (2012, 2016).</span>
-
-<span class="sd">        warmup (int): A positive integer representing the number of warm-up years (e.g., 1).</span>
-
-<span class="sd">        print_prt_control (dict[str, dict[str, bool]], optional): A dictionary to control output printing in the `print.prt` file.</span>
-<span class="sd">            Each outer key is an object name from `print.prt` (e.g., &#39;channel_sd&#39;, &#39;basin_wb&#39;).</span>
-<span class="sd">            Each value is a dictionary with keys `daily`, `monthly`, `yearly`, or `avann`, mapped to boolean values.</span>
-<span class="sd">            Set to `False` to disable printing for that time step; defaults to `True` if not specified.</span>
-<span class="sd">            An error is raised if an outer key has an empty dictionary.</span>
-<span class="sd">            The time step keys represent:</span>
-
-<span class="sd">            - `daily`: Output for each day of the simulation.</span>
-<span class="sd">            - `monthly`: Output aggregated for each month.</span>
-<span class="sd">            - `yearly`: Output aggregated for each year.</span>
-<span class="sd">            - `avann`: Average annual output over the entire simulation period.</span>
-
-<span class="sd">        skip_units_and_conditions_validation (bool): If `True`, skip validation of units and conditions in parameter changes.</span>
-
-
-<span class="sd">    Returns:</span>
-<span class="sd">        Path where the SWAT+ simulation was executed.</span>
-
-<span class="sd">    Example:</span>
-<span class="sd">        ```python</span>
-<span class="sd">        simulation = pySWATPlus.TxtinoutReader.cal_run_swat_in_other_dir(</span>
-<span class="sd">            target_dir=&quot;C:\\\\Users\\\\Username\\\\simulation_folder&quot;,</span>
-<span class="sd">            params={</span>
-<span class="sd">                &quot;perco&quot;: {</span>
-<span class="sd">                    &quot;change_type&quot;: &quot;absval&quot;,</span>
-<span class="sd">                    &quot;value&quot;: 0.5,</span>
-<span class="sd">                    &quot;conditions&quot;: {&quot;hsg&quot;: [&quot;A&quot;]}</span>
-<span class="sd">                },</span>
-<span class="sd">                &quot;bf_max&quot;: [{</span>
-<span class="sd">                    &quot;change_type&quot;: &quot;absval&quot;,</span>
-<span class="sd">                    &quot;value&quot;: 0.3,</span>
-<span class="sd">                    &quot;units&quot;: range(1, 194)</span>
-<span class="sd">                }]</span>
-<span class="sd">            },</span>
-<span class="sd">            begin_and_end_year=(2012, 2016),</span>
-<span class="sd">            warmup=1,</span>
-<span class="sd">            print_prt_control = {</span>
-<span class="sd">                &#39;channel_sd&#39;: {&#39;daily&#39;: False},</span>
-<span class="sd">                &#39;channel_sdmorph&#39;: {&#39;monthly&#39;: False}</span>
-<span class="sd">            }</span>
-<span class="sd">        )</span>
-<span class="sd">        ```</span>
-<span class="sd">    Warning:</span>
-<span class="sd">        This method is currently under development and not recommended for use.</span>
-
-<span class="sd">    &#39;&#39;&#39;</span>
-
-    <span class="n">tmp_path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">copy_required_files</span><span class="p">(</span><span class="n">target_dir</span><span class="o">=</span><span class="n">target_dir</span><span class="p">)</span>
-
-    <span class="c1"># Initialize new TxtinoutReader class</span>
-    <span class="n">reader</span> <span class="o">=</span> <span class="n">TxtinoutReader</span><span class="p">(</span><span class="n">tmp_path</span><span class="p">)</span>
-
-    <span class="c1"># Apply SWAT+ configuration changes</span>
-    <span class="n">reader</span><span class="o">.</span><span class="n">_apply_swat_configuration</span><span class="p">(</span><span class="n">begin_and_end_year</span><span class="p">,</span> <span class="n">warmup</span><span class="p">,</span> <span class="n">print_prt_control</span><span class="p">)</span>
-
-    <span class="c1"># Run the SWAT+ simulation</span>
-    <span class="n">output</span> <span class="o">=</span> <span class="n">reader</span><span class="o">.</span><span class="n">cal_run_swat</span><span class="p">(</span>
-        <span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">,</span>
-        <span class="n">skip_units_and_conditions_validation</span><span class="o">=</span><span class="n">skip_units_and_conditions_validation</span>
-    <span class="p">)</span>
-
-    <span class="k">return</span> <span class="n">output</span>
 </code></pre></div></td></tr></table></div>
             </details>
     </div>
@@ -3719,11 +2930,7 @@ skip_units_and_conditions_validation (bool): If `True`, skip validation of units
 
             <details class="quote">
               <summary>Source code in <code>pySWATPlus/txtinoutreader.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">344</span>
-<span class="normal">345</span>
-<span class="normal">346</span>
-<span class="normal">347</span>
-<span class="normal">348</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">348</span>
 <span class="normal">349</span>
 <span class="normal">350</span>
 <span class="normal">351</span>
@@ -3746,8 +2953,7 @@ skip_units_and_conditions_validation (bool): If `True`, skip validation of units
 <span class="normal">368</span>
 <span class="normal">369</span>
 <span class="normal">370</span>
-<span class="normal">371</span>
-<span class="normal">372</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">copy_required_files</span><span class="p">(</span>
+<span class="normal">371</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">copy_required_files</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">target_dir</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">:</span>
@@ -3761,11 +2967,6 @@ skip_units_and_conditions_validation (bool): If `True`, skip validation of units
 <span class="sd">    Returns:</span>
 <span class="sd">        The path to the target directory containing the copied files.</span>
 <span class="sd">    &#39;&#39;&#39;</span>
-
-    <span class="n">target_dir</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">_ensure_path</span><span class="p">(</span><span class="n">target_dir</span><span class="p">)</span>
-
-    <span class="c1"># Create the directory if it does not exist and copy necessary files</span>
-    <span class="n">target_dir</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">parents</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
     <span class="n">dest_path</span> <span class="o">=</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="n">target_dir</span><span class="p">)</span>
 
@@ -3798,14 +2999,14 @@ skip_units_and_conditions_validation (bool): If `True`, skip validation of units
 
             <details class="quote">
               <summary>Source code in <code>pySWATPlus/txtinoutreader.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">315</span>
-<span class="normal">316</span>
-<span class="normal">317</span>
-<span class="normal">318</span>
-<span class="normal">319</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">319</span>
 <span class="normal">320</span>
 <span class="normal">321</span>
-<span class="normal">322</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">disable_csv_print</span><span class="p">(</span>
+<span class="normal">322</span>
+<span class="normal">323</span>
+<span class="normal">324</span>
+<span class="normal">325</span>
+<span class="normal">326</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">disable_csv_print</span><span class="p">(</span>
     <span class="bp">self</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
@@ -3835,14 +3036,14 @@ skip_units_and_conditions_validation (bool): If `True`, skip validation of units
 
             <details class="quote">
               <summary>Source code in <code>pySWATPlus/txtinoutreader.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">306</span>
-<span class="normal">307</span>
-<span class="normal">308</span>
-<span class="normal">309</span>
-<span class="normal">310</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">310</span>
 <span class="normal">311</span>
 <span class="normal">312</span>
-<span class="normal">313</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">enable_csv_print</span><span class="p">(</span>
+<span class="normal">313</span>
+<span class="normal">314</span>
+<span class="normal">315</span>
+<span class="normal">316</span>
+<span class="normal">317</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">enable_csv_print</span><span class="p">(</span>
     <span class="bp">self</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
@@ -3997,11 +3198,7 @@ a ValueError is raised. Defaults to False.</p>
 
             <details class="quote">
               <summary>Source code in <code>pySWATPlus/txtinoutreader.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 61</span>
-<span class="normal"> 62</span>
-<span class="normal"> 63</span>
-<span class="normal"> 64</span>
-<span class="normal"> 65</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 65</span>
 <span class="normal"> 66</span>
 <span class="normal"> 67</span>
 <span class="normal"> 68</span>
@@ -4106,7 +3303,11 @@ a ValueError is raised. Defaults to False.</p>
 <span class="normal">167</span>
 <span class="normal">168</span>
 <span class="normal">169</span>
-<span class="normal">170</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">enable_object_in_print_prt</span><span class="p">(</span>
+<span class="normal">170</span>
+<span class="normal">171</span>
+<span class="normal">172</span>
+<span class="normal">173</span>
+<span class="normal">174</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">enable_object_in_print_prt</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">obj</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
     <span class="n">daily</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
@@ -4308,11 +3509,7 @@ a ValueError is raised. Defaults to False.</p>
 
             <details class="quote">
               <summary>Source code in <code>pySWATPlus/txtinoutreader.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">324</span>
-<span class="normal">325</span>
-<span class="normal">326</span>
-<span class="normal">327</span>
-<span class="normal">328</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">328</span>
 <span class="normal">329</span>
 <span class="normal">330</span>
 <span class="normal">331</span>
@@ -4326,7 +3523,11 @@ a ValueError is raised. Defaults to False.</p>
 <span class="normal">339</span>
 <span class="normal">340</span>
 <span class="normal">341</span>
-<span class="normal">342</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">register_file</span><span class="p">(</span>
+<span class="normal">342</span>
+<span class="normal">343</span>
+<span class="normal">344</span>
+<span class="normal">345</span>
+<span class="normal">346</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">register_file</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">filename</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
     <span class="n">has_units</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
@@ -4381,7 +3582,7 @@ a ValueError is raised. Defaults to False.</p>
                 <code>params</code>
             </td>
             <td>
-                  <code><a class="autorefs autorefs-internal" title="ParamsType: typing.TypeAlias = dict[str, dict[str, typing.Any]]
+                  <code><a class="autorefs autorefs-internal" title="ParamsType = dict[str, FileParams]
 
   
       module-attribute
@@ -4455,7 +3656,7 @@ a ValueError is raised. Defaults to False.</p>
             <span class="p">{</span><span class="s1">&#39;value&#39;</span><span class="p">:</span> <span class="mi">100</span><span class="p">,</span> <span class="s1">&#39;change_type&#39;</span><span class="p">:</span> <span class="s1">&#39;absval&#39;</span><span class="p">,</span> <span class="s1">&#39;filter_by&#39;</span><span class="p">:</span> <span class="s1">&#39;name == &quot;agrl&quot;&#39;</span><span class="p">},</span>
             <span class="p">{</span><span class="s1">&#39;value&#39;</span><span class="p">:</span> <span class="mi">110</span><span class="p">,</span> <span class="s1">&#39;change_type&#39;</span><span class="p">:</span> <span class="s1">&#39;absval&#39;</span><span class="p">,</span> <span class="s1">&#39;filter_by&#39;</span><span class="p">:</span> <span class="s1">&#39;name == &quot;almd&quot;&#39;</span><span class="p">},</span>
         <span class="p">],</span>
-    <span class="p">},</span><span class="n">F</span>
+    <span class="p">},</span>
 <span class="p">}</span>
 
 <span class="n">reader</span><span class="o">.</span><span class="n">run_swat</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
@@ -4464,7 +3665,38 @@ a ValueError is raised. Defaults to False.</p>
 
             <details class="quote">
               <summary>Source code in <code>pySWATPlus/txtinoutreader.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">600</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">569</span>
+<span class="normal">570</span>
+<span class="normal">571</span>
+<span class="normal">572</span>
+<span class="normal">573</span>
+<span class="normal">574</span>
+<span class="normal">575</span>
+<span class="normal">576</span>
+<span class="normal">577</span>
+<span class="normal">578</span>
+<span class="normal">579</span>
+<span class="normal">580</span>
+<span class="normal">581</span>
+<span class="normal">582</span>
+<span class="normal">583</span>
+<span class="normal">584</span>
+<span class="normal">585</span>
+<span class="normal">586</span>
+<span class="normal">587</span>
+<span class="normal">588</span>
+<span class="normal">589</span>
+<span class="normal">590</span>
+<span class="normal">591</span>
+<span class="normal">592</span>
+<span class="normal">593</span>
+<span class="normal">594</span>
+<span class="normal">595</span>
+<span class="normal">596</span>
+<span class="normal">597</span>
+<span class="normal">598</span>
+<span class="normal">599</span>
+<span class="normal">600</span>
 <span class="normal">601</span>
 <span class="normal">602</span>
 <span class="normal">603</span>
@@ -4524,27 +3756,7 @@ a ValueError is raised. Defaults to False.</p>
 <span class="normal">657</span>
 <span class="normal">658</span>
 <span class="normal">659</span>
-<span class="normal">660</span>
-<span class="normal">661</span>
-<span class="normal">662</span>
-<span class="normal">663</span>
-<span class="normal">664</span>
-<span class="normal">665</span>
-<span class="normal">666</span>
-<span class="normal">667</span>
-<span class="normal">668</span>
-<span class="normal">669</span>
-<span class="normal">670</span>
-<span class="normal">671</span>
-<span class="normal">672</span>
-<span class="normal">673</span>
-<span class="normal">674</span>
-<span class="normal">675</span>
-<span class="normal">676</span>
-<span class="normal">677</span>
-<span class="normal">678</span>
-<span class="normal">679</span>
-<span class="normal">680</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">run_swat</span><span class="p">(</span>
+<span class="normal">660</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">run_swat</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">params</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">ParamsType</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">:</span>
@@ -4589,37 +3801,320 @@ a ValueError is raised. Defaults to False.</p>
 <span class="sd">                    {&#39;value&#39;: 100, &#39;change_type&#39;: &#39;absval&#39;, &#39;filter_by&#39;: &#39;name == &quot;agrl&quot;&#39;},</span>
 <span class="sd">                    {&#39;value&#39;: 110, &#39;change_type&#39;: &#39;absval&#39;, &#39;filter_by&#39;: &#39;name == &quot;almd&quot;&#39;},</span>
 <span class="sd">                ],</span>
-<span class="sd">            },F</span>
+<span class="sd">            },</span>
 <span class="sd">        }</span>
 
 <span class="sd">        reader.run_swat(params)</span>
 <span class="sd">        ```</span>
 <span class="sd">    &#39;&#39;&#39;</span>
-    <span class="k">if</span> <span class="n">params</span><span class="p">:</span>
-        <span class="n">_params</span> <span class="o">=</span> <span class="n">ParamsModel</span><span class="o">.</span><span class="n">from_dict</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
-        <span class="n">validators</span><span class="o">.</span><span class="n">_validate_parameters</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">root_folder</span><span class="p">,</span> <span class="n">_params</span><span class="p">)</span>
-        <span class="k">for</span> <span class="n">filename</span><span class="p">,</span> <span class="n">file_params</span> <span class="ow">in</span> <span class="n">_params</span><span class="o">.</span><span class="n">file_params</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
 
-            <span class="n">has_units</span> <span class="o">=</span> <span class="n">file_params</span><span class="o">.</span><span class="n">has_units</span>
+    <span class="n">_params</span> <span class="o">=</span> <span class="n">params</span> <span class="ow">or</span> <span class="p">{}</span>
 
-            <span class="n">file</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">register_file</span><span class="p">(</span>
-                <span class="n">filename</span><span class="p">,</span>
-                <span class="n">has_units</span><span class="o">=</span><span class="n">has_units</span>
-            <span class="p">)</span>
-            <span class="n">df</span> <span class="o">=</span> <span class="n">file</span><span class="o">.</span><span class="n">df</span>
-
-            <span class="k">for</span> <span class="n">param_name</span><span class="p">,</span> <span class="n">changes</span> <span class="ow">in</span> <span class="n">file_params</span><span class="o">.</span><span class="n">params</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-
-                <span class="c1"># Process each parameter change</span>
-                <span class="k">for</span> <span class="n">change</span> <span class="ow">in</span> <span class="n">changes</span><span class="p">:</span>
-                    <span class="n">utils</span><span class="o">.</span><span class="n">_apply_param_change</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">param_name</span><span class="p">,</span> <span class="n">change</span><span class="p">)</span>
-
-            <span class="c1"># Store the modified file</span>
-            <span class="n">file</span><span class="o">.</span><span class="n">overwrite_file</span><span class="p">()</span>
+    <span class="n">utils</span><span class="o">.</span><span class="n">_validate_params</span><span class="p">(</span><span class="n">_params</span><span class="p">)</span>
 
     <span class="c1"># make sure calibration.cal is disabled.</span>
     <span class="c1"># Otherwise, the params value will be changed during the execution of SWAT+</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">_add_or_remove_calibration_cal_to_file_cio</span><span class="p">(</span><span class="n">add</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+    <span class="c1"># Modify files for simulation</span>
+    <span class="k">for</span> <span class="n">filename</span><span class="p">,</span> <span class="n">file_params</span> <span class="ow">in</span> <span class="n">_params</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+
+        <span class="n">has_units</span> <span class="o">=</span> <span class="n">file_params</span><span class="p">[</span><span class="s1">&#39;has_units&#39;</span><span class="p">]</span>
+        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">has_units</span><span class="p">,</span> <span class="nb">bool</span><span class="p">)</span>
+
+        <span class="n">file</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">register_file</span><span class="p">(</span>
+            <span class="n">filename</span><span class="p">,</span>
+            <span class="n">has_units</span><span class="o">=</span><span class="n">has_units</span>
+        <span class="p">)</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="n">file</span><span class="o">.</span><span class="n">df</span>
+
+        <span class="k">for</span> <span class="n">param_name</span><span class="p">,</span> <span class="n">param_spec</span> <span class="ow">in</span> <span class="n">file_params</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+
+            <span class="c1"># Continue for bool varibale</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">param_spec</span><span class="p">,</span> <span class="nb">bool</span><span class="p">):</span>
+                <span class="k">continue</span>
+
+            <span class="c1"># Normalize to list of changes</span>
+            <span class="n">changes</span> <span class="o">=</span> <span class="n">param_spec</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">param_spec</span><span class="p">,</span> <span class="nb">list</span><span class="p">)</span> <span class="k">else</span> <span class="p">[</span><span class="n">param_spec</span><span class="p">]</span>
+
+            <span class="c1"># Process each parameter change</span>
+            <span class="k">for</span> <span class="n">change</span> <span class="ow">in</span> <span class="n">changes</span><span class="p">:</span>
+                <span class="n">utils</span><span class="o">.</span><span class="n">_apply_param_change</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">param_name</span><span class="p">,</span> <span class="n">change</span><span class="p">)</span>
+
+        <span class="c1"># Store the modified file</span>
+        <span class="n">file</span><span class="o">.</span><span class="n">overwrite_file</span><span class="p">()</span>
+
+    <span class="c1"># Run simulation</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_run_swat</span><span class="p">()</span>
+
+    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">root_folder</span>
+</code></pre></div></td></tr></table></div>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="pySWATPlus.TxtinoutReader.run_swat_calibration_cal" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">run_swat_calibration_cal</span><span class="p">(</span><span class="n">params</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">ParameterChanges</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">skip_units_and_conditions_validation</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span></code>
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Run the SWAT+ simulation with optional parameter changes.</p>
+
+
+<p><span class="doc-section-title">Parameters:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+          <th>Default</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                <code>params</code>
+            </td>
+            <td>
+                  <code><span title="pySWATPlus.types.ParameterChanges">ParameterChanges</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>list of dictionaries specifying parameter changes to apply.</p>
+<p>The <code>params</code> dictionary should follow this structure:</p>
+<div class="highlight"><pre><span></span><code><span class="n">params</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="p">{</span>
+                <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>            <span class="c1"># Name of the parameter to change</span>
+                <span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>         <span class="c1"># New value to assign</span>
+                <span class="s2">&quot;change_type&quot;</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>     <span class="c1"># (Optional) One of: &#39;absval&#39; (default), &#39;abschg&#39;, &#39;pctchg&#39;</span>
+                <span class="s2">&quot;units&quot;</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span>  <span class="c1"># (Optional) An optional list of unit IDs to constrain the parameter change.</span>
+                    <span class="o">**</span><span class="n">Unit</span> <span class="n">IDs</span> <span class="n">should</span> <span class="n">be</span> <span class="mi">1</span><span class="o">-</span><span class="n">based</span><span class="o">**</span><span class="p">,</span> <span class="n">i</span><span class="o">.</span><span class="n">e</span><span class="o">.</span><span class="p">,</span> <span class="n">the</span> <span class="n">first</span> <span class="nb">object</span> <span class="n">has</span> <span class="n">ID</span> <span class="mf">0.</span>
+                <span class="s2">&quot;conditions&quot;</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]],</span>  <span class="c1"># (Optional) A dictionary of conditions to apply to the parameter change.</span>
+            <span class="p">},</span>
+            <span class="c1"># ... more changes</span>
+        <span class="p">]</span>
+</code></pre></div>
+              </div>
+            </td>
+            <td>
+                  <code>None</code>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>skip_units_and_conditions_validation</code>
+            </td>
+            <td>
+                  <code><span title="bool">bool</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>If <code>True</code>, skip validation of units and conditions in parameter changes.</p>
+              </div>
+            </td>
+            <td>
+                  <code>False</code>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+    <p><span class="doc-section-title">Returns:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                  <code><span title="pathlib.Path">Path</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Path where the SWAT+ simulation was executed.</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+<details class="example" open>
+  <summary>Example</summary>
+  <div class="highlight"><pre><span></span><code><span class="n">params</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">{</span>
+        <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;cn2&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;change_type&quot;</span><span class="p">:</span> <span class="s2">&quot;pctchg&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="mi">50</span><span class="p">,</span>
+    <span class="p">},</span>
+    <span class="p">{</span>
+        <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;perco&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;change_type&quot;</span><span class="p">:</span> <span class="s2">&quot;absval&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="mf">0.5</span><span class="p">,</span>
+        <span class="s2">&quot;conditions&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;hsg&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;A&quot;</span><span class="p">]}</span>
+    <span class="p">},</span>
+    <span class="p">{</span>
+        <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;bf_max&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;change_type&quot;</span><span class="p">:</span> <span class="s2">&quot;absval&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="mf">0.3</span><span class="p">,</span>
+        <span class="s2">&quot;units&quot;</span><span class="p">:</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">194</span><span class="p">)</span>
+    <span class="p">}</span>
+<span class="p">]</span>
+
+<span class="n">reader</span><span class="o">.</span><span class="n">run_swat</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
+</code></pre></div>
+</details>
+
+            <details class="quote">
+              <summary>Source code in <code>pySWATPlus/txtinoutreader.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">810</span>
+<span class="normal">811</span>
+<span class="normal">812</span>
+<span class="normal">813</span>
+<span class="normal">814</span>
+<span class="normal">815</span>
+<span class="normal">816</span>
+<span class="normal">817</span>
+<span class="normal">818</span>
+<span class="normal">819</span>
+<span class="normal">820</span>
+<span class="normal">821</span>
+<span class="normal">822</span>
+<span class="normal">823</span>
+<span class="normal">824</span>
+<span class="normal">825</span>
+<span class="normal">826</span>
+<span class="normal">827</span>
+<span class="normal">828</span>
+<span class="normal">829</span>
+<span class="normal">830</span>
+<span class="normal">831</span>
+<span class="normal">832</span>
+<span class="normal">833</span>
+<span class="normal">834</span>
+<span class="normal">835</span>
+<span class="normal">836</span>
+<span class="normal">837</span>
+<span class="normal">838</span>
+<span class="normal">839</span>
+<span class="normal">840</span>
+<span class="normal">841</span>
+<span class="normal">842</span>
+<span class="normal">843</span>
+<span class="normal">844</span>
+<span class="normal">845</span>
+<span class="normal">846</span>
+<span class="normal">847</span>
+<span class="normal">848</span>
+<span class="normal">849</span>
+<span class="normal">850</span>
+<span class="normal">851</span>
+<span class="normal">852</span>
+<span class="normal">853</span>
+<span class="normal">854</span>
+<span class="normal">855</span>
+<span class="normal">856</span>
+<span class="normal">857</span>
+<span class="normal">858</span>
+<span class="normal">859</span>
+<span class="normal">860</span>
+<span class="normal">861</span>
+<span class="normal">862</span>
+<span class="normal">863</span>
+<span class="normal">864</span>
+<span class="normal">865</span>
+<span class="normal">866</span>
+<span class="normal">867</span>
+<span class="normal">868</span>
+<span class="normal">869</span>
+<span class="normal">870</span>
+<span class="normal">871</span>
+<span class="normal">872</span>
+<span class="normal">873</span>
+<span class="normal">874</span>
+<span class="normal">875</span>
+<span class="normal">876</span>
+<span class="normal">877</span>
+<span class="normal">878</span>
+<span class="normal">879</span>
+<span class="normal">880</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">run_swat_calibration_cal</span><span class="p">(</span>
+    <span class="bp">self</span><span class="p">,</span>
+    <span class="n">params</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">ParameterChanges</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">skip_units_and_conditions_validation</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Run the SWAT+ simulation with optional parameter changes.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        params (ParameterChanges, optional): list of dictionaries specifying parameter changes to apply.</span>
+
+<span class="sd">            The `params` dictionary should follow this structure:</span>
+
+<span class="sd">            ```python</span>
+<span class="sd">            params = [</span>
+<span class="sd">                        {</span>
+<span class="sd">                            &quot;name&quot;: str,            # Name of the parameter to change</span>
+<span class="sd">                            &quot;value&quot;: float,         # New value to assign</span>
+<span class="sd">                            &quot;change_type&quot;: str,     # (Optional) One of: &#39;absval&#39; (default), &#39;abschg&#39;, &#39;pctchg&#39;</span>
+<span class="sd">                            &quot;units&quot;: Iterable[int],  # (Optional) An optional list of unit IDs to constrain the parameter change.</span>
+<span class="sd">                                **Unit IDs should be 1-based**, i.e., the first object has ID 0.</span>
+<span class="sd">                            &quot;conditions&quot;: dict[str: list[str]],  # (Optional) A dictionary of conditions to apply to the parameter change.</span>
+<span class="sd">                        },</span>
+<span class="sd">                        # ... more changes</span>
+<span class="sd">                    ]</span>
+<span class="sd">            ```</span>
+<span class="sd">        skip_units_and_conditions_validation (bool): If `True`, skip validation of units and conditions in parameter changes.</span>
+
+
+<span class="sd">    Returns:</span>
+<span class="sd">        Path where the SWAT+ simulation was executed.</span>
+
+<span class="sd">    Example:</span>
+<span class="sd">        ```python</span>
+<span class="sd">        params = [</span>
+<span class="sd">            {</span>
+<span class="sd">                &quot;name&quot;: &quot;cn2&quot;,</span>
+<span class="sd">                &quot;change_type&quot;: &quot;pctchg&quot;,</span>
+<span class="sd">                &quot;value&quot;: 50,</span>
+<span class="sd">            },</span>
+<span class="sd">            {</span>
+<span class="sd">                &quot;name&quot;: &quot;perco&quot;,</span>
+<span class="sd">                &quot;change_type&quot;: &quot;absval&quot;,</span>
+<span class="sd">                &quot;value&quot;: 0.5,</span>
+<span class="sd">                &quot;conditions&quot;: {&quot;hsg&quot;: [&quot;A&quot;]}</span>
+<span class="sd">            },</span>
+<span class="sd">            {</span>
+<span class="sd">                &quot;name&quot;: &quot;bf_max&quot;,</span>
+<span class="sd">                &quot;change_type&quot;: &quot;absval&quot;,</span>
+<span class="sd">                &quot;value&quot;: 0.3,</span>
+<span class="sd">                &quot;units&quot;: range(1, 194)</span>
+<span class="sd">            }</span>
+<span class="sd">        ]</span>
+
+<span class="sd">        reader.run_swat(params)</span>
+<span class="sd">        ```</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+
+    <span class="n">_params</span> <span class="o">=</span> <span class="n">params</span> <span class="ow">or</span> <span class="p">[]</span>
+
+    <span class="n">utils</span><span class="o">.</span><span class="n">_validate_calibration_params</span><span class="p">(</span><span class="n">_params</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_check_swatplus_parameters</span><span class="p">(</span><span class="n">_params</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">skip_units_and_conditions_validation</span><span class="p">:</span>
+        <span class="n">utils</span><span class="o">.</span><span class="n">_validate_conditions_and_units</span><span class="p">(</span><span class="n">_params</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">root_folder</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_write_calibration_file</span><span class="p">(</span><span class="n">_params</span><span class="p">)</span>
 
     <span class="c1"># Run simulation</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">_run_swat</span><span class="p">()</span>
@@ -4679,7 +4174,7 @@ given <code>target_dir</code>, applies any parameter changes, and executes the S
                 <code>params</code>
             </td>
             <td>
-                  <code><a class="autorefs autorefs-internal" title="ParamsType: typing.TypeAlias = dict[str, dict[str, typing.Any]]
+                  <code><a class="autorefs autorefs-internal" title="ParamsType = dict[str, FileParams]
 
   
       module-attribute
@@ -4805,7 +4300,7 @@ The time step keys represent:</p>
 
 <details class="example" open>
   <summary>Example</summary>
-  <div class="highlight"><pre><span></span><code><span class="n">simulation</span> <span class="o">=</span> <span class="n">pySWATPlus</span><span class="o">.</span><span class="n">TxtinoutReader</span><span class="o">.</span><span class="n">run_swat_in_other_dir</span><span class="p">(</span>
+  <div class="highlight"><pre><span></span><code><span class="n">simulation</span> <span class="o">=</span> <span class="n">pySWATPlus</span><span class="o">.</span><span class="n">TxtinoutReader</span><span class="o">.</span><span class="n">run_swat_in_other_dir_new_method</span><span class="p">(</span>
     <span class="n">target_dir</span><span class="o">=</span><span class="s2">&quot;C:</span><span class="se">\\</span><span class="s2">Users</span><span class="se">\\</span><span class="s2">Username</span><span class="se">\\</span><span class="s2">simulation_folder&quot;</span><span class="p">,</span>
     <span class="n">params</span><span class="o">=</span><span class="p">{</span>
         <span class="s1">&#39;plants.plt&#39;</span><span class="p">:</span> <span class="p">{</span>
@@ -4828,7 +4323,27 @@ The time step keys represent:</p>
 
             <details class="quote">
               <summary>Source code in <code>pySWATPlus/txtinoutreader.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">682</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">662</span>
+<span class="normal">663</span>
+<span class="normal">664</span>
+<span class="normal">665</span>
+<span class="normal">666</span>
+<span class="normal">667</span>
+<span class="normal">668</span>
+<span class="normal">669</span>
+<span class="normal">670</span>
+<span class="normal">671</span>
+<span class="normal">672</span>
+<span class="normal">673</span>
+<span class="normal">674</span>
+<span class="normal">675</span>
+<span class="normal">676</span>
+<span class="normal">677</span>
+<span class="normal">678</span>
+<span class="normal">679</span>
+<span class="normal">680</span>
+<span class="normal">681</span>
+<span class="normal">682</span>
 <span class="normal">683</span>
 <span class="normal">684</span>
 <span class="normal">685</span>
@@ -4921,7 +4436,40 @@ The time step keys represent:</p>
 <span class="normal">772</span>
 <span class="normal">773</span>
 <span class="normal">774</span>
-<span class="normal">775</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">run_swat_in_other_dir</span><span class="p">(</span>
+<span class="normal">775</span>
+<span class="normal">776</span>
+<span class="normal">777</span>
+<span class="normal">778</span>
+<span class="normal">779</span>
+<span class="normal">780</span>
+<span class="normal">781</span>
+<span class="normal">782</span>
+<span class="normal">783</span>
+<span class="normal">784</span>
+<span class="normal">785</span>
+<span class="normal">786</span>
+<span class="normal">787</span>
+<span class="normal">788</span>
+<span class="normal">789</span>
+<span class="normal">790</span>
+<span class="normal">791</span>
+<span class="normal">792</span>
+<span class="normal">793</span>
+<span class="normal">794</span>
+<span class="normal">795</span>
+<span class="normal">796</span>
+<span class="normal">797</span>
+<span class="normal">798</span>
+<span class="normal">799</span>
+<span class="normal">800</span>
+<span class="normal">801</span>
+<span class="normal">802</span>
+<span class="normal">803</span>
+<span class="normal">804</span>
+<span class="normal">805</span>
+<span class="normal">806</span>
+<span class="normal">807</span>
+<span class="normal">808</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">run_swat_in_other_dir</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">target_dir</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">,</span>
     <span class="n">params</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">ParamsType</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -4982,7 +4530,7 @@ The time step keys represent:</p>
 
 <span class="sd">    Example:</span>
 <span class="sd">        ```python</span>
-<span class="sd">        simulation = pySWATPlus.TxtinoutReader.run_swat_in_other_dir(</span>
+<span class="sd">        simulation = pySWATPlus.TxtinoutReader.run_swat_in_other_dir_new_method(</span>
 <span class="sd">            target_dir=&quot;C:\\\\Users\\\\Username\\\\simulation_folder&quot;,</span>
 <span class="sd">            params={</span>
 <span class="sd">                &#39;plants.plt&#39;: {</span>
@@ -5003,13 +4551,66 @@ The time step keys represent:</p>
 <span class="sd">        ```</span>
 <span class="sd">    &#39;&#39;&#39;</span>
 
+    <span class="c1"># Validate target directory</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">target_dir</span><span class="p">,</span> <span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">)):</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s1">&#39;target_dir must be a string or Path object&#39;</span><span class="p">)</span>
+
+    <span class="n">target_dir</span> <span class="o">=</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="n">target_dir</span><span class="p">)</span><span class="o">.</span><span class="n">resolve</span><span class="p">()</span>
+
+    <span class="c1"># Create the directory if it does not exist and copy necessary files</span>
+    <span class="n">target_dir</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">parents</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
     <span class="n">tmp_path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">copy_required_files</span><span class="p">(</span><span class="n">target_dir</span><span class="o">=</span><span class="n">target_dir</span><span class="p">)</span>
 
     <span class="c1"># Initialize new TxtinoutReader class</span>
     <span class="n">reader</span> <span class="o">=</span> <span class="n">TxtinoutReader</span><span class="p">(</span><span class="n">tmp_path</span><span class="p">)</span>
 
-    <span class="c1"># Apply SWAT+ configuration changes</span>
-    <span class="n">reader</span><span class="o">.</span><span class="n">_apply_swat_configuration</span><span class="p">(</span><span class="n">begin_and_end_year</span><span class="p">,</span> <span class="n">warmup</span><span class="p">,</span> <span class="n">print_prt_control</span><span class="p">)</span>
+    <span class="c1"># Set simulation range time</span>
+    <span class="k">if</span> <span class="n">begin_and_end_year</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">begin_and_end_year</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s1">&#39;begin_and_end_year must be a tuple&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">begin_and_end_year</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;begin_and_end_year must contain exactly two elements&#39;</span><span class="p">)</span>
+        <span class="n">begin</span><span class="p">,</span> <span class="n">end</span> <span class="o">=</span> <span class="n">begin_and_end_year</span>
+        <span class="n">reader</span><span class="o">.</span><span class="n">set_begin_and_end_year</span><span class="p">(</span>
+            <span class="n">begin</span><span class="o">=</span><span class="n">begin</span><span class="p">,</span>
+            <span class="n">end</span><span class="o">=</span><span class="n">end</span>
+        <span class="p">)</span>
+
+    <span class="c1"># Set warmup period</span>
+    <span class="k">if</span> <span class="n">warmup</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">reader</span><span class="o">.</span><span class="n">set_warmup_year</span><span class="p">(</span>
+            <span class="n">warmup</span><span class="o">=</span><span class="n">warmup</span>
+        <span class="p">)</span>
+
+    <span class="c1"># Update print.prt file to write output</span>
+    <span class="k">if</span> <span class="n">print_prt_control</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">print_prt_control</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s1">&#39;print_prt_control must be a dictionary&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">print_prt_control</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;print_prt_control cannot be an empty dictionary&#39;</span><span class="p">)</span>
+        <span class="n">default_dict</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;daily&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+            <span class="s1">&#39;monthly&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+            <span class="s1">&#39;yearly&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+            <span class="s1">&#39;avann&#39;</span><span class="p">:</span> <span class="kc">True</span>
+        <span class="p">}</span>
+        <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">print_prt_control</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Value of key &quot;</span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s1">&quot; must be a dictionary&#39;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">val</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Value of key &quot;</span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s1">&quot; cannot be an empty dictionary&#39;</span><span class="p">)</span>
+            <span class="n">key_dict</span> <span class="o">=</span> <span class="n">default_dict</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+            <span class="k">for</span> <span class="n">sub_key</span><span class="p">,</span> <span class="n">sub_val</span> <span class="ow">in</span> <span class="n">val</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="k">if</span> <span class="n">sub_key</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">key_dict</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Sub-key &quot;</span><span class="si">{</span><span class="n">sub_key</span><span class="si">}</span><span class="s1">&quot; for key &quot;</span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s1">&quot; is not valid&#39;</span><span class="p">)</span>
+                <span class="n">key_dict</span><span class="p">[</span><span class="n">sub_key</span><span class="p">]</span> <span class="o">=</span> <span class="n">sub_val</span>
+            <span class="n">reader</span><span class="o">.</span><span class="n">enable_object_in_print_prt</span><span class="p">(</span>
+                <span class="n">obj</span><span class="o">=</span><span class="n">key</span><span class="p">,</span>
+                <span class="n">daily</span><span class="o">=</span><span class="n">key_dict</span><span class="p">[</span><span class="s1">&#39;daily&#39;</span><span class="p">],</span>
+                <span class="n">monthly</span><span class="o">=</span><span class="n">key_dict</span><span class="p">[</span><span class="s1">&#39;monthly&#39;</span><span class="p">],</span>
+                <span class="n">yearly</span><span class="o">=</span><span class="n">key_dict</span><span class="p">[</span><span class="s1">&#39;yearly&#39;</span><span class="p">],</span>
+                <span class="n">avann</span><span class="o">=</span><span class="n">key_dict</span><span class="p">[</span><span class="s1">&#39;avann&#39;</span><span class="p">]</span>
+            <span class="p">)</span>
 
     <span class="c1"># Run the SWAT+ simulation</span>
     <span class="n">output</span> <span class="o">=</span> <span class="n">reader</span><span class="o">.</span><span class="n">run_swat</span><span class="p">(</span><span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">)</span>
@@ -5108,11 +4709,7 @@ the begin and end years in the <code>time.sim</code> file.</p>
 
             <details class="quote">
               <summary>Source code in <code>pySWATPlus/txtinoutreader.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">172</span>
-<span class="normal">173</span>
-<span class="normal">174</span>
-<span class="normal">175</span>
-<span class="normal">176</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">176</span>
 <span class="normal">177</span>
 <span class="normal">178</span>
 <span class="normal">179</span>
@@ -5164,7 +4761,11 @@ the begin and end years in the <code>time.sim</code> file.</p>
 <span class="normal">225</span>
 <span class="normal">226</span>
 <span class="normal">227</span>
-<span class="normal">228</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">set_begin_and_end_year</span><span class="p">(</span>
+<span class="normal">228</span>
+<span class="normal">229</span>
+<span class="normal">230</span>
+<span class="normal">231</span>
+<span class="normal">232</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">set_begin_and_end_year</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">begin</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
     <span class="n">end</span><span class="p">:</span> <span class="nb">int</span>
@@ -5298,11 +4899,7 @@ the simulation will use for warm-up (e.g., 1).</p>
 
             <details class="quote">
               <summary>Source code in <code>pySWATPlus/txtinoutreader.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">230</span>
-<span class="normal">231</span>
-<span class="normal">232</span>
-<span class="normal">233</span>
-<span class="normal">234</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">234</span>
 <span class="normal">235</span>
 <span class="normal">236</span>
 <span class="normal">237</span>
@@ -5343,7 +4940,11 @@ the simulation will use for warm-up (e.g., 1).</p>
 <span class="normal">272</span>
 <span class="normal">273</span>
 <span class="normal">274</span>
-<span class="normal">275</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">set_warmup_year</span><span class="p">(</span>
+<span class="normal">275</span>
+<span class="normal">276</span>
+<span class="normal">277</span>
+<span class="normal">278</span>
+<span class="normal">279</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">set_warmup_year</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">warmup</span><span class="p">:</span> <span class="nb">int</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>

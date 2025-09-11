@@ -230,7 +230,7 @@
   
     
   
-  Contributor Guide
+  Contributing
 
       </a>
     </li>
@@ -529,30 +529,7 @@
   
   
   <span class="md-ellipsis">
-    SensitivityAnalyzer
-    
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../api/performance_metrics/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    PerformanceMetrics
+    SensitivityAnalyzer.py
     
   </span>
   
@@ -605,7 +582,7 @@
   
   
   <span class="md-ellipsis">
-    Contributor Guide
+    Contributing
     
   </span>
   
@@ -1139,27 +1116,13 @@
 <h2 id="version-110-august-26-2025">Version 1.1.0 (August 26, 2025)</h2>
 <ul>
 <li>
-<p>Added a new class <code>pySWATPlus.SensitivityAnalyzer</code> to support sensitivity simulations with two main methods:</p>
-<ul>
-<li><code>simulated_timeseries_df</code>: Generates a time series <code>DataFrame</code> directly from a simulation output file.  </li>
-<li><code>simulation_by_sobol_sample</code>: Provides a high-level interface for running sensitivity simulations with parallel computing and extracting results from multiple output files.</li>
-</ul>
+<p>Introduced <code>SensitivityAnalyzer</code> class for sensitivity analysis of SWAT+ model parameters.</p>
 </li>
 <li>
-<p>Changes in <code>pySWATPlus.TxtinoutReader</code> class:</p>
-<ul>
-<li><code>copy_required_files</code>: New method to copy required files into a separate directory before running simulations. This protects the main <code>TxtInOut</code> folder and enables safer, more controlled workflows.</li>
-<li><code>run_swat_in_other_dir</code>: Enhanced with new optional parameters, allowing users to configure all necessary inputs in a single call for improved usability.</li>
-</ul>
+<p>Added high-level method <code>simulation_by_sobol_sample</code> in <code>SensitivityAnalyzer</code> to automate the sensitivity simulation workflow using Sobol samples.</p>
 </li>
 <li>
-<p>The <code>has_units</code> input parameter, which specifies whether the third line of <code>SWAT+</code> input or output files contains column units, is now <strong>mandatory</strong> across the <code>pySWATPlus</code> package (previously optional) to ensure consistent file handling.</p>
-</li>
-<li>
-<p>Added <a href="https://swat-model.github.io/pySWATPlus/CONTRIBUTING">Contributing Guidelines</a> with clear instructions for setting up the development environment, reporting issues, and submitting contributions.</p>
-</li>
-<li>
-<p>Added <a href="https://github.com/swat-model/pySWATPlus/blob/main/CODE_OF_CONDUCT.md">Code of Conduct</a> to define standards for a welcoming, respectful, and inclusive community.</p>
+<p>Updated <code>run_swat_in_other_dir</code> method in <code>TxtinoutReader</code> to support additional input variables, enabling SWAT+ simulation through a single interface.  </p>
 </li>
 </ul>
 <h2 id="version-103-july-30-2025">Version 1.0.3 (July 30, 2025)</h2>

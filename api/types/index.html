@@ -9,7 +9,7 @@
       
       
       
-        <link rel="prev" href="../performance_metrics/">
+        <link rel="prev" href="../sensitivityanalyzer/">
       
       
         <link rel="next" href="../../CONTRIBUTING/">
@@ -74,7 +74,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#pySWATPlus.types.ParamsType" class="md-skip">
+        <a href="#pySWATPlus.types.ParamChange" class="md-skip">
           Skip to content
         </a>
       
@@ -234,7 +234,7 @@
   
     
   
-  Contributor Guide
+  Contributing
 
       </a>
     </li>
@@ -536,30 +536,7 @@
   
   
   <span class="md-ellipsis">
-    SensitivityAnalyzer
-    
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../performance_metrics/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    PerformanceMetrics
+    SensitivityAnalyzer.py
     
   </span>
   
@@ -623,36 +600,36 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#pySWATPlus.types.ParamChange" class="md-nav__link">
+    <span class="md-ellipsis">
+      ParamChange
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pySWATPlus.types.ParamSpec" class="md-nav__link">
+    <span class="md-ellipsis">
+      ParamSpec
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pySWATPlus.types.FileParams" class="md-nav__link">
+    <span class="md-ellipsis">
+      FileParams
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#pySWATPlus.types.ParamsType" class="md-nav__link">
     <span class="md-ellipsis">
       ParamsType
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#pySWATPlus.types.ParamsBoundedType" class="md-nav__link">
-    <span class="md-ellipsis">
-      ParamsBoundedType
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#pySWATPlus.types.CalParamsType" class="md-nav__link">
-    <span class="md-ellipsis">
-      CalParamsType
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#pySWATPlus.types.CalParamsBoundedType" class="md-nav__link">
-    <span class="md-ellipsis">
-      CalParamsBoundedType
     </span>
   </a>
   
@@ -686,7 +663,7 @@
   
   
   <span class="md-ellipsis">
-    Contributor Guide
+    Contributing
     
   </span>
   
@@ -743,36 +720,36 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#pySWATPlus.types.ParamChange" class="md-nav__link">
+    <span class="md-ellipsis">
+      ParamChange
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pySWATPlus.types.ParamSpec" class="md-nav__link">
+    <span class="md-ellipsis">
+      ParamSpec
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pySWATPlus.types.FileParams" class="md-nav__link">
+    <span class="md-ellipsis">
+      FileParams
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#pySWATPlus.types.ParamsType" class="md-nav__link">
     <span class="md-ellipsis">
       ParamsType
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#pySWATPlus.types.ParamsBoundedType" class="md-nav__link">
-    <span class="md-ellipsis">
-      ParamsBoundedType
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#pySWATPlus.types.CalParamsType" class="md-nav__link">
-    <span class="md-ellipsis">
-      CalParamsType
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#pySWATPlus.types.CalParamsBoundedType" class="md-nav__link">
-    <span class="md-ellipsis">
-      CalParamsBoundedType
     </span>
   </a>
   
@@ -796,12 +773,158 @@
 
   <h1>pySWATPlus.types</h1>
 
+<div class="doc doc-object doc-class">
+
+
+
+<h2 id="pySWATPlus.types.ParamChange" class="doc doc-heading">
+            <code>ParamChange</code>
+
+
+</h2>
+
+
+    <div class="doc doc-contents first">
+            <p class="doc doc-class-bases">
+              Bases: <code><span title="typing.TypedDict">TypedDict</span></code></p>
+
+
+        <p>Describes a dictionary structure to change a parameter value in an input file of the SWAT+ model.</p>
+
+
+<p><span class="doc-section-title">Attributes:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td><code><span title="pySWATPlus.types.ParamChange.value">value</span></code></td>
+            <td>
+                  <code><span title="float">float</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The value to apply to the parameter.</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code><span title="pySWATPlus.types.ParamChange.change_type">change_type</span></code></td>
+            <td>
+                  <code><span title="str">str</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>An optional key with a string value that specifies the type of change to apply, with options:</p>
+<ul>
+<li><code>'absval'</code>: Use the absolute value (default).</li>
+<li><code>'abschg'</code>: Apply an absolute change (e.g., -0.5).</li>
+<li><code>'pctchg'</code>: Apply a percentage change (e.g., +10%).</li>
+</ul>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code><span title="pySWATPlus.types.ParamChange.filter_by">filter_by</span></code></td>
+            <td>
+                  <code><span title="str">str</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>An optional key with a string value that filters <code>DataFrame</code> rows using <code>.query()</code> syntax.</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+
+
+
+
+
+
+              <details class="quote">
+                <summary>Source code in <code>pySWATPlus/types.py</code></summary>
+                <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span>
+<span class="normal">13</span>
+<span class="normal">14</span>
+<span class="normal">15</span>
+<span class="normal">16</span>
+<span class="normal">17</span>
+<span class="normal">18</span>
+<span class="normal">19</span>
+<span class="normal">20</span>
+<span class="normal">21</span>
+<span class="normal">22</span>
+<span class="normal">23</span>
+<span class="normal">24</span>
+<span class="normal">25</span>
+<span class="normal">26</span>
+<span class="normal">27</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">ParamChange</span><span class="p">(</span>
+    <span class="n">typing</span><span class="o">.</span><span class="n">TypedDict</span>
+<span class="p">):</span>
+
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Describes a dictionary structure to change a parameter value in an input file of the SWAT+ model.</span>
+
+<span class="sd">    Attributes:</span>
+<span class="sd">        value (float): The value to apply to the parameter.</span>
+
+<span class="sd">        change_type (str): An optional key with a string value that specifies the type of change to apply, with options:</span>
+
+<span class="sd">            - `&#39;absval&#39;`: Use the absolute value (default).</span>
+<span class="sd">            - `&#39;abschg&#39;`: Apply an absolute change (e.g., -0.5).</span>
+<span class="sd">            - `&#39;pctchg&#39;`: Apply a percentage change (e.g., +10%).</span>
+
+<span class="sd">        filter_by (str): An optional key with a string value that filters `DataFrame` rows using `.query()` syntax.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+
+    <span class="n">value</span><span class="p">:</span> <span class="nb">float</span>
+    <span class="n">change_type</span><span class="p">:</span> <span class="n">typing_extensions</span><span class="o">.</span><span class="n">NotRequired</span><span class="p">[</span><span class="n">typing</span><span class="o">.</span><span class="n">Literal</span><span class="p">[</span><span class="s1">&#39;absval&#39;</span><span class="p">,</span> <span class="s1">&#39;abschg&#39;</span><span class="p">,</span> <span class="s1">&#39;pctchg&#39;</span><span class="p">]]</span>
+    <span class="n">filter_by</span><span class="p">:</span> <span class="n">typing_extensions</span><span class="o">.</span><span class="n">NotRequired</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>
+</code></pre></div></td></tr></table></div>
+              </details>
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
 <div class="doc doc-object doc-attribute">
 
 
 
-<h2 id="pySWATPlus.types.ParamsType" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">ParamsType</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">TypeAlias</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">typing</span><span class="o">.</span><span class="n">Any</span><span class="p">]]</span></code>
+<h2 id="pySWATPlus.types.ParamSpec" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">ParamSpec</span> <span class="o">=</span> <span class="n">ParamChange</span> <span class="o">|</span> <span class="nb">list</span><span class="p">[</span><span class="n">ParamChange</span><span class="p">]</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-module-attribute"><code>module-attribute</code></small>
@@ -812,18 +935,112 @@
 
     <div class="doc doc-contents first">
 
-        <p>Defines parameter modifications for SWAT+ model input files.</p>
+        <p>Represents one or more parameter value changes,
+specified as either a single <code>ParamChange</code> or a list of them.</p>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
 
 
-<details class="example" open>
-  <summary>Example</summary>
-  <div class="highlight"><pre><span></span><code><span class="n">params</span><span class="p">:</span> <span class="n">ParamsType</span> <span class="o">=</span> <span class="p">{</span>
+
+<h2 id="pySWATPlus.types.FileParams" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">FileParams</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">bool</span> <span class="o">|</span> <span class="n">ParamSpec</span><span class="p">]</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-module-attribute"><code>module-attribute</code></small>
+  </span>
+
+</h2>
+
+
+    <div class="doc doc-contents first">
+
+        <p>Maps a parameter from an input file (e.g., <code>bm_e</code> from <code>plants.plt</code> or <code>epco</code> from <code>hydrology.hyd</code>)
+to the SWAT+ model as either a single <code>ParamChange</code> or a list of them.</p>
+
+
+<details class="special-key" open>
+  <summary>Special key</summary>
+  <ul>
+<li><code>'has_units'</code> (bool): Key indicating whether the
+        input file contains a row of units for columns.</li>
+</ul>
+</details>        <p>Example:
+<div class="highlight"><pre><span></span><code><span class="c1"># Example from `plants.plt` file with a list of `ParamChange` objects</span>
+<span class="p">{</span>
+    <span class="s1">&#39;has_units&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="s1">&#39;bm_e&#39;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="p">{</span><span class="s1">&#39;value&#39;</span><span class="p">:</span> <span class="mi">100</span><span class="p">,</span> <span class="s1">&#39;change_type&#39;</span><span class="p">:</span> <span class="s1">&#39;absval&#39;</span><span class="p">},</span>
+        <span class="p">{</span><span class="s1">&#39;value&#39;</span><span class="p">:</span> <span class="mi">110</span><span class="p">,</span> <span class="s1">&#39;filter_by&#39;</span><span class="p">:</span> <span class="s1">&#39;name == &quot;almd&quot;&#39;</span><span class="p">}</span>
+    <span class="p">]</span>
+<span class="p">}</span>
+
+<span class="c1"># Example from `hydrology.hyd` file with a single `ParamChange` object</span>
+<span class="p">{</span>
+    <span class="s1">&#39;has_units&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="s1">&#39;epco&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;value&#39;</span><span class="p">:</span> <span class="mf">0.5</span><span class="p">,</span> <span class="s1">&#39;change_type&#39;</span><span class="p">:</span> <span class="s1">&#39;absval&#39;</span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></p>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h2 id="pySWATPlus.types.ParamsType" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">ParamsType</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">FileParams</span><span class="p">]</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-module-attribute"><code>module-attribute</code></small>
+  </span>
+
+</h2>
+
+
+    <div class="doc doc-contents first">
+
+        <p>Defines parameter modifications for one or more input files to the SWAT+ model.
+Each key is a input filename and the value is a <code>FileParams</code> object.</p>
+<p>The structure is as follows:
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+    <span class="s1">&#39;&lt;file_1&gt;&#39;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s1">&#39;has_units&#39;</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
+        <span class="s1">&#39;&lt;variable_1&gt;&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s1">&#39;value&#39;</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+            <span class="s1">&#39;change_type&#39;</span><span class="p">:</span> <span class="s1">&#39;absval&#39;</span> <span class="o">|</span> <span class="s1">&#39;abschg&#39;</span> <span class="o">|</span> <span class="s1">&#39;pctchg&#39;</span><span class="p">,</span>  <span class="c1"># optional (default &#39;absval&#39;)</span>
+            <span class="s1">&#39;filter_by&#39;</span><span class="p">:</span> <span class="nb">str</span>  <span class="c1"># optional</span>
+        <span class="p">}</span>
+        <span class="c1"># OR a list of such dictionaries</span>
+    <span class="p">},</span>
+    <span class="s1">&#39;&lt;file_2&gt;&#39;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s1">&#39;has_units&#39;</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
+        <span class="s1">&#39;&lt;variable_21&gt;&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;value&#39;</span><span class="p">:</span> <span class="nb">float</span><span class="p">},</span>
+        <span class="s1">&#39;&lt;variable_22&gt;&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;value&#39;</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="s1">&#39;change_type&#39;</span><span class="p">:</span> <span class="s1">&#39;abschg&#39;</span><span class="p">}</span>
+    <span class="p">},</span>
+    <span class="s1">&#39;&lt;file_3&gt;&#39;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s1">&#39;has_units&#39;</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
+        <span class="s1">&#39;&lt;variable_3&gt;&#39;</span><span class="p">:</span> <span class="p">[</span>
+            <span class="p">{</span><span class="s1">&#39;value&#39;</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="s1">&#39;change_type&#39;</span><span class="p">:</span> <span class="s1">&#39;absval&#39;</span><span class="p">,</span> <span class="s1">&#39;filter_by&#39;</span><span class="p">:</span> <span class="s1">&#39;&lt;query_31&gt;&#39;</span><span class="p">},</span>
+            <span class="p">{</span><span class="s1">&#39;value&#39;</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="s1">&#39;change_type&#39;</span><span class="p">:</span> <span class="s1">&#39;pctchg&#39;</span><span class="p">,</span> <span class="s1">&#39;filter_by&#39;</span><span class="p">:</span> <span class="s1">&#39;&lt;query_32&gt;&#39;</span><span class="p">},</span>
+        <span class="p">],</span>
+    <span class="p">},</span>
+    <span class="c1"># More file keys mapped to corresponding FileParams objects</span>
+<span class="p">}</span>
+</code></pre></div></p>
+<p>Example:
+<div class="highlight"><pre><span></span><code><span class="n">params</span><span class="o">=</span><span class="p">{</span>
     <span class="s1">&#39;plants.plt&#39;</span><span class="p">:</span> <span class="p">{</span>
         <span class="s1">&#39;has_units&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
         <span class="s1">&#39;bm_e&#39;</span><span class="p">:</span> <span class="p">[</span>
-            <span class="p">{</span><span class="s1">&#39;value&#39;</span><span class="p">:</span> <span class="mf">100.0</span><span class="p">,</span> <span class="s1">&#39;change_type&#39;</span><span class="p">:</span> <span class="s1">&#39;absval&#39;</span><span class="p">,</span> <span class="s1">&#39;filter_by&#39;</span><span class="p">:</span> <span class="s1">&#39;name == &quot;agrl&quot;&#39;</span><span class="p">},</span>
-            <span class="p">{</span><span class="s1">&#39;value&#39;</span><span class="p">:</span> <span class="mf">110.0</span><span class="p">,</span> <span class="s1">&#39;change_type&#39;</span><span class="p">:</span> <span class="s1">&#39;absval&#39;</span><span class="p">,</span> <span class="s1">&#39;filter_by&#39;</span><span class="p">:</span> <span class="s1">&#39;name == &quot;almd&quot;&#39;</span><span class="p">}</span>
-        <span class="p">]</span>
+            <span class="p">{</span><span class="s1">&#39;value&#39;</span><span class="p">:</span> <span class="mi">100</span><span class="p">,</span> <span class="s1">&#39;change_type&#39;</span><span class="p">:</span> <span class="s1">&#39;absval&#39;</span><span class="p">,</span> <span class="s1">&#39;filter_by&#39;</span><span class="p">:</span> <span class="s1">&#39;name == &quot;agrl&quot;&#39;</span><span class="p">},</span>
+            <span class="p">{</span><span class="s1">&#39;value&#39;</span><span class="p">:</span> <span class="mi">110</span><span class="p">,</span> <span class="s1">&#39;change_type&#39;</span><span class="p">:</span> <span class="s1">&#39;absval&#39;</span><span class="p">,</span> <span class="s1">&#39;filter_by&#39;</span><span class="p">:</span> <span class="s1">&#39;name == &quot;almd&quot;&#39;</span><span class="p">},</span>
+        <span class="p">],</span>
     <span class="p">},</span>
     <span class="s1">&#39;hydrology.hyd&#39;</span><span class="p">:</span> <span class="p">{</span>
         <span class="s1">&#39;has_units&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
@@ -831,308 +1048,8 @@
         <span class="s1">&#39;perco&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;value&#39;</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">,</span> <span class="s1">&#39;change_type&#39;</span><span class="p">:</span> <span class="s1">&#39;absval&#39;</span><span class="p">}</span>
     <span class="p">}</span>
 <span class="p">}</span>
-</code></pre></div>
-</details>        <p>Keys for each parameter change:</p>
-<table>
-<thead>
-<tr>
-<th>Key</th>
-<th>Type</th>
-<th>Default</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>change_type</td>
-<td>str</td>
-<td>'absval'</td>
-<td>Type of change: 'absval', 'abschg', or 'pctchg'.</td>
-</tr>
-<tr>
-<td>value</td>
-<td>float</td>
-<td>—</td>
-<td>The value to apply to the parameter.</td>
-</tr>
-<tr>
-<td>filter_by</td>
-<td>str</td>
-<td>None</td>
-<td>Pandas <code>.query()</code> string to filter rows for the change.</td>
-</tr>
-</tbody>
-</table>
+</code></pre></div></p>
 
-
-<details class="notes" open>
-  <summary>Notes</summary>
-  <ul>
-<li>Each parameter (<code>&lt;param_name&gt;</code>) can be a <strong>single dictionary</strong> or a <strong>list of dictionaries</strong>.</li>
-<li>The <code>has_units</code> key is <strong>required</strong> for each file.</li>
-</ul>
-</details>
-    </div>
-
-</div>
-
-<div class="doc doc-object doc-attribute">
-
-
-
-<h2 id="pySWATPlus.types.ParamsBoundedType" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">ParamsBoundedType</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">TypeAlias</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">typing</span><span class="o">.</span><span class="n">Any</span><span class="p">]]</span></code>
-
-  <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-module-attribute"><code>module-attribute</code></small>
-  </span>
-
-</h2>
-
-
-    <div class="doc doc-contents first">
-
-        <p>Defines bounded parameter modifications for SWAT+ model input files.</p>
-<p>This follows the same logic as <code>ParamsType</code>, but instead of a single <code>value</code>,
-each parameter specifies an <code>upper_bound</code> and <code>lower_bound</code>. Used for sensitivity analysis.</p>
-
-
-<details class="example" open>
-  <summary>Example</summary>
-  <div class="highlight"><pre><span></span><code><span class="n">params</span><span class="p">:</span> <span class="n">ParamsType</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="s1">&#39;plants.plt&#39;</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s1">&#39;has_units&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
-        <span class="s1">&#39;bm_e&#39;</span><span class="p">:</span> <span class="p">[</span>
-            <span class="p">{</span><span class="s1">&#39;lower_bound&#39;</span><span class="p">:</span> <span class="mf">90.0</span><span class="p">,</span> <span class="s1">&#39;lower_bound&#39;</span><span class="p">:</span> <span class="mf">100.0</span><span class="p">,</span> <span class="s1">&#39;change_type&#39;</span><span class="p">:</span> <span class="s1">&#39;absval&#39;</span><span class="p">,</span> <span class="s1">&#39;filter_by&#39;</span><span class="p">:</span> <span class="s1">&#39;name == &quot;agrl&quot;&#39;</span><span class="p">},</span>
-        <span class="p">]</span>
-    <span class="p">},</span>
-<span class="p">}</span>
-</code></pre></div>
-</details>        <p>Keys for each parameter change:</p>
-<table>
-<thead>
-<tr>
-<th>Key</th>
-<th>Type</th>
-<th>Default</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>change_type</td>
-<td>str</td>
-<td>'absval'</td>
-<td>Type of change: 'absval', 'abschg', or 'pctchg'.</td>
-</tr>
-<tr>
-<td>lower_bound</td>
-<td>float</td>
-<td>—</td>
-<td>The lower bound for the parameter.</td>
-</tr>
-<tr>
-<td>upper_bound</td>
-<td>float</td>
-<td>—</td>
-<td>The upper bound for the parameter.</td>
-</tr>
-<tr>
-<td>filter_by</td>
-<td>str</td>
-<td>None</td>
-<td>Pandas <code>.query()</code> string to filter rows for the change.</td>
-</tr>
-</tbody>
-</table>
-
-
-<details class="notes" open>
-  <summary>Notes</summary>
-  <ul>
-<li>Each parameter (<code>&lt;param_name&gt;</code>) can be a <strong>single dictionary</strong> or a <strong>list of dictionaries</strong>.</li>
-<li>The <code>has_units</code> key is <strong>required</strong> for each file.</li>
-</ul>
-</details>
-    </div>
-
-</div>
-
-<div class="doc doc-object doc-attribute">
-
-
-
-<h2 id="pySWATPlus.types.CalParamsType" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">CalParamsType</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">TypeAlias</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">typing</span><span class="o">.</span><span class="n">Any</span><span class="p">]</span></code>
-
-  <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-module-attribute"><code>module-attribute</code></small>
-  </span>
-
-</h2>
-
-
-    <div class="doc doc-contents first">
-
-        <p>Defines parameter modifications for SWAT+ model input files.</p>
-
-
-<details class="example" open>
-  <summary>Example</summary>
-  <div class="highlight"><pre><span></span><code><span class="n">params</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="s2">&quot;cn2&quot;</span><span class="p">:</span>    <span class="p">{</span>
-        <span class="s2">&quot;change_type&quot;</span><span class="p">:</span> <span class="s2">&quot;pctchg&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="mi">50</span><span class="p">,</span>
-    <span class="p">},</span>
-    <span class="s2">&quot;perco&quot;</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s2">&quot;change_type&quot;</span><span class="p">:</span> <span class="s2">&quot;absval&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="mf">0.5</span><span class="p">,</span>
-        <span class="s2">&quot;conditions&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;hsg&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;A&quot;</span><span class="p">]}</span>
-    <span class="p">},</span>
-    <span class="s2">&quot;bf_max&quot;</span><span class="p">:</span> <span class="p">[{</span>
-        <span class="s2">&quot;change_type&quot;</span><span class="p">:</span> <span class="s2">&quot;absval&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="mf">0.3</span><span class="p">,</span>
-        <span class="s2">&quot;units&quot;</span><span class="p">:</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">194</span><span class="p">)</span>
-    <span class="p">}]</span>
-<span class="p">}</span>
-</code></pre></div>
-</details>        <p>Keys for each parameter change:</p>
-<table>
-<thead>
-<tr>
-<th>Key</th>
-<th>Type</th>
-<th>Default</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>change_type</td>
-<td>str</td>
-<td>'absval'</td>
-<td>Type of change: 'absval', 'abschg', or 'pctchg'.</td>
-</tr>
-<tr>
-<td>value</td>
-<td>float</td>
-<td>—</td>
-<td>The value to apply to the parameter.</td>
-</tr>
-<tr>
-<td>units</td>
-<td>Iterable[int], optional</td>
-<td>None</td>
-<td>Optional list of 1-based unit IDs to constrain the parameter change.</td>
-</tr>
-<tr>
-<td>conditions</td>
-<td>dict[str, list[str]], optional</td>
-<td>None</td>
-<td>Optional dictionary of conditions to apply when changing the parameter.</td>
-</tr>
-<tr>
-<td>Notes:</td>
-<td></td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td>- Each parameter (<code>&lt;param_name&gt;</code>) can be a <strong>single dictionary</strong> or a <strong>list of dictionaries</strong>.</td>
-<td></td>
-<td></td>
-<td></td>
-</tr>
-</tbody>
-</table>
-
-    </div>
-
-</div>
-
-<div class="doc doc-object doc-attribute">
-
-
-
-<h2 id="pySWATPlus.types.CalParamsBoundedType" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">CalParamsBoundedType</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">TypeAlias</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">typing</span><span class="o">.</span><span class="n">Any</span><span class="p">]</span></code>
-
-  <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-module-attribute"><code>module-attribute</code></small>
-  </span>
-
-</h2>
-
-
-    <div class="doc doc-contents first">
-
-        <p>Defines bounded parameter modifications for SWAT+ model input files.</p>
-<p>This follows the same logic as <code>CalParamsType</code>, but instead of a single <code>value</code>,
-each parameter specifies <code>lower_bound</code> and <code>upper_bound</code>. Used for sensitivity analysis.</p>
-
-
-<details class="example" open>
-  <summary>Example</summary>
-  <div class="highlight"><pre><span></span><code><span class="n">params</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="s2">&quot;bf_max&quot;</span><span class="p">:</span> <span class="p">[{</span>
-        <span class="s2">&quot;change_type&quot;</span><span class="p">:</span> <span class="s2">&quot;absval&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;lower_bound&quot;</span><span class="p">:</span> <span class="mf">0.2</span><span class="p">,</span>
-        <span class="s2">&quot;upper_bound&quot;</span><span class="p">:</span> <span class="mf">0.3</span><span class="p">,</span>
-        <span class="s2">&quot;units&quot;</span><span class="p">:</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">194</span><span class="p">)</span>
-    <span class="p">}]</span>
-<span class="p">}</span>
-</code></pre></div>
-</details>        <p>Keys for each parameter change:</p>
-<table>
-<thead>
-<tr>
-<th>Key</th>
-<th>Type</th>
-<th>Default</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>change_type</td>
-<td>str</td>
-<td>'absval'</td>
-<td>Type of change: 'absval', 'abschg', or 'pctchg'.</td>
-</tr>
-<tr>
-<td>lower_bound</td>
-<td>float</td>
-<td>—</td>
-<td>The lower bound for the parameter.</td>
-</tr>
-<tr>
-<td>upper_bound</td>
-<td>float</td>
-<td>—</td>
-<td>The upper bound for the parameter.</td>
-</tr>
-<tr>
-<td>units</td>
-<td>Iterable[int], optional</td>
-<td>None</td>
-<td>Optional list of 1-based unit IDs to constrain the parameter change.</td>
-</tr>
-<tr>
-<td>conditions</td>
-<td>dict[str, list[str]], optional</td>
-<td>None</td>
-<td>Optional dictionary of conditions to apply when changing the parameter.</td>
-</tr>
-</tbody>
-</table>
-
-
-<details class="notes" open>
-  <summary>Notes</summary>
-  <ul>
-<li>Each parameter (<code>&lt;param_name&gt;</code>) can be a <strong>single dictionary</strong> or a <strong>list of dictionaries</strong>.</li>
-</ul>
-</details>
     </div>
 
 </div>

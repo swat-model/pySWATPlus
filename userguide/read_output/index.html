@@ -234,7 +234,7 @@
   
     
   
-  Contributor Guide
+  Contributing
 
       </a>
     </li>
@@ -596,30 +596,7 @@
   
   
   <span class="md-ellipsis">
-    SensitivityAnalyzer
-    
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../api/performance_metrics/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    PerformanceMetrics
+    SensitivityAnalyzer.py
     
   </span>
   
@@ -672,7 +649,7 @@
   
   
   <span class="md-ellipsis">
-    Contributor Guide
+    Contributing
     
   </span>
   
@@ -770,7 +747,7 @@ It covers accessing results from both standard simulations and Sobol-based sensi
 <hr />
 <h2 id="read-time-series-data">Read Time Series Data</h2>
 <p>A standard <code>SWAT+</code> simulation generates TXT files with time series columns: <code>day</code>, <code>mon</code>, and <code>yr</code> for day, month, and year, respectively. To create a time series <code>DataFrame</code> that includes a new <code>date</code> column with <code>datetime.date</code> objects. Additionally, the method can optionally save the resulting DataFrame to a JSON file. This is controlled by the parameters <code>save_df</code> and <code>json_file</code>: setting <code>save_df=True</code> enables the saving process, and <code>json_file</code> specifies the path where the DataFrame will be written.</p>
-<div class="highlight"><pre><span></span><code><span class="n">output</span> <span class="o">=</span> <span class="n">pySWATPlus</span><span class="o">.</span><span class="n">SensitivityAnalyzer</span><span class="o">.</span><span class="n">simulated_timeseries_df</span><span class="p">(</span>
+<div class="highlight"><pre><span></span><code><span class="n">output</span> <span class="o">=</span> <span class="n">pySWATPlus</span><span class="o">.</span><span class="n">SensitivityAnalyzer</span><span class="p">()</span><span class="o">.</span><span class="n">simulated_timeseries_df</span><span class="p">(</span>
     <span class="n">data_file</span><span class="o">=</span><span class="sa">r</span><span class="s2">&quot;C:\Users\Username\simulation_folder_2\channel_sd_mon.txt&quot;</span><span class="p">,</span>
     <span class="n">has_units</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
     <span class="n">start_date</span><span class="o">=</span><span class="s1">&#39;2014-06-01&#39;</span><span class="p">,</span>
