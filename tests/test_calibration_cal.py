@@ -2,7 +2,7 @@ import pySWATPlus
 import pytest
 import os
 import tempfile
-from pySWATPlus.types import CalParamsModel, CalParamChangeModel
+from pySWATPlus.types import CalParamModel
 import pandas
 
 
@@ -27,12 +27,14 @@ def test_utils(txtinout_reader):
     # ---------------------------
 
     # --- Case 1: parameter exists (cn2) ---
-    par_change = CalParamsModel.from_dict({"cn2": {'value': 0.5}})
+    par_change = [CalParamModel(**{'name': 'cn2', 'value': 0.5})]
+
     # Should not raise
     pySWATPlus.validators._validate_cal_parameters(txtinout_reader.root_folder, par_change)
 
     # --- Case 2: parameter does not exist ---
-    par_change = CalParamsModel.from_dict({"obj_that_doesnt_exist": {'value': 0.5}})
+    par_change = [CalParamModel(**{'name': 'obj_that_doesnt_exist', 'value': 0.5})]
+
     with pytest.raises(ValueError, match="obj_that_doesnt_exist"):
         pySWATPlus.validators._validate_cal_parameters(txtinout_reader.root_folder, par_change)
 
@@ -103,28 +105,39 @@ def test_add_or_remove_calibration_cal_to_file_cio(
             path=target_dir
         )
 
+        file_path = target_reader.root_folder / "file.cio"
+
+        fmt = (
+            f"{'{:<18}'}"  # chg
+            f"{'{:<18}'}"  # cal_parms.cal / null
+            f"{'{:<18}'}"  # calibration.cal
+            f"{'{:<18}'}"  # null
+            f"{'{:<18}'}"  # null
+            f"{'{:<18}'}"  # null
+            f"{'{:<18}'}"  # null
+            f"{'{:<18}'}"  # null
+            f"{'{:<18}'}"  # null
+            f"{'{:<18}'}"  # null
+            f"{'{:<18}'}"  # null
+            f"{'{:<4}'}"   # null
+        )
+
         # --- Test adding calibration line ---
         target_reader._add_or_remove_calibration_cal_to_file_cio(add=True)
-        file_path = target_reader.root_folder / "file.cio"
         lines = file_path.read_text().splitlines()
-
-        expected_add_line = (
-            "chg               cal_parms.cal     calibration.cal   null              "
-            "null              null              null              null              "
-            "null              null              null              null"
+        expected_line = fmt.format(
+            "chg", "cal_parms.cal", "calibration.cal", *["null"] * 9
         )
-        assert lines[21] == expected_add_line
+        assert lines[21] == expected_line
 
         # --- Test removing calibration line ---
         target_reader._add_or_remove_calibration_cal_to_file_cio(add=False)
         lines = file_path.read_text().splitlines()
 
-        expected_remove_line = (
-            "chg               null              calibration.cal   null              "
-            "null              null              null              null              "
-            "null              null              null              null"
+        expected_line = fmt.format(
+            "chg", "null", "calibration.cal", *["null"] * 9
         )
-        assert lines[21] == expected_remove_line
+        assert lines[21] == expected_line
 
 
 def test_write_calibration_file(
@@ -140,7 +153,7 @@ def test_write_calibration_file(
         )
 
         # Parameter changes: 1 row
-        par_change = CalParamsModel.from_dict({"cn2": {'value': -50.0, "change_type": "pctchg"}})
+        par_change = [CalParamModel(**{'name': 'cn2', 'value': -50.0, "change_type": "pctchg"})]
 
         # Run the method
         target_reader._write_calibration_file(par_change)
@@ -196,21 +209,21 @@ def test_validate_units(
 ):
 
     # parameter that support units
-    par_change = CalParamChangeModel(change_type="pctchg", value=-50, units=[1, 2, 3])
-    pySWATPlus.validators._validate_units("cn2", par_change, txtinout_reader.root_folder)
+    par_change = CalParamModel(name="cn2", change_type="pctchg", value=-50, units=[1, 2, 3])
+    pySWATPlus.validators._validate_units(par_change, txtinout_reader.root_folder)
 
     # parameter that support units with range
-    par_change = CalParamChangeModel(change_type="pctchg", value=-50, units=range(1, 4))
-    pySWATPlus.validators._validate_units("cn2", par_change, txtinout_reader.root_folder)
+    par_change = CalParamModel(name="cn2", change_type="pctchg", value=-50, units=range(1, 4))
+    pySWATPlus.validators._validate_units(par_change, txtinout_reader.root_folder)
 
     # parameter that support units with set
-    par_change = CalParamChangeModel(change_type="pctchg", value=-50, units={1, 2, 3})
-    pySWATPlus.validators._validate_units("cn2", par_change, txtinout_reader.root_folder)
+    par_change = CalParamModel(name="cn2", change_type="pctchg", value=-50, units={1, 2, 3})
+    pySWATPlus.validators._validate_units(par_change, txtinout_reader.root_folder)
 
     # Parameter that does not support units
-    par_change = CalParamChangeModel(change_type="pctchg", value=-50, units=[1, 2, 3])
+    par_change = CalParamModel(name="organicn", change_type="pctchg", value=-50, units=[1, 2, 3])
     with pytest.raises(Exception) as exc_info:
-        pySWATPlus.validators._validate_units("organicn", par_change, txtinout_reader.root_folder)
+        pySWATPlus.validators._validate_units(par_change, txtinout_reader.root_folder)
     assert "does not support units" in exc_info.value.args[0]
 
     # check units that does not exist
@@ -221,10 +234,10 @@ def test_validate_units(
         usecols=['id']
     )
 
-    par_change = CalParamChangeModel(change_type="pctchg", value=-50, units=[len(df) + 1])
+    par_change = CalParamModel(name="cn2", change_type="pctchg", value=-50, units=[len(df) + 1])
 
     with pytest.raises(Exception) as exc_info:
-        pySWATPlus.validators._validate_units("cn2", par_change, txtinout_reader.root_folder)
+        pySWATPlus.validators._validate_units(par_change, txtinout_reader.root_folder)
     assert "Invalid units for parameter" in exc_info.value.args[0]
 
 
@@ -232,8 +245,8 @@ def test_validate_conditions(txtinout_reader):
     folder = txtinout_reader.root_folder
 
     # Case 1: No conditions → pass
-    param_change = CalParamChangeModel(change_type="pctchg", value=-50)
-    pySWATPlus.validators._validate_conditions("cn2", param_change, folder)
+    param_change = CalParamModel(name="cn2", change_type="pctchg", value=-50)
+    pySWATPlus.validators._validate_conditions(param_change, folder)
 
     # Case 2: Supported conditions with valid values
 
@@ -256,18 +269,18 @@ def test_validate_conditions(txtinout_reader):
         "landuse": [valid_landuse[0]]
     }
 
-    param_change = CalParamChangeModel(change_type="pctchg", value=-50, conditions=conditions)
-    pySWATPlus.validators._validate_conditions("cn2", param_change, folder)
+    param_change = CalParamModel(name="cn2", change_type="pctchg", value=-50, conditions=conditions)
+    pySWATPlus.validators._validate_conditions(param_change, folder)
 
     # Case 3: Unsupported condition name
     conditions = {
         "invalid_cond": ["A", "B"],
     }
 
-    param_change = CalParamChangeModel(change_type="pctchg", value=-50, conditions=conditions)
+    param_change = CalParamModel(name="cn2", change_type="pctchg", value=-50, conditions=conditions)
 
     with pytest.raises(ValueError) as exc_info:
-        pySWATPlus.validators._validate_conditions("cn2", param_change, folder)
+        pySWATPlus.validators._validate_conditions(param_change, folder)
     assert "is not supported" in str(exc_info.value)
 
     # Case 4: Invalid value for supported condition
@@ -275,38 +288,38 @@ def test_validate_conditions(txtinout_reader):
         "hsg": ["invalid"],
     }
 
-    param_change = CalParamChangeModel(change_type="pctchg", value=-50, conditions=conditions)
+    param_change = CalParamModel(name="cn2", change_type="pctchg", value=-50, conditions=conditions)
 
     with pytest.raises(ValueError) as exc_info:
-        pySWATPlus.validators._validate_conditions("cn2", param_change, folder)
+        pySWATPlus.validators._validate_conditions(param_change, folder)
     assert "has invalid value" in str(exc_info.value)
 
     conditions = {
         "texture": ["invalid"],
     }
 
-    param_change = CalParamChangeModel(change_type="pctchg", value=-50, conditions=conditions)
+    param_change = CalParamModel(name="cn2", change_type="pctchg", value=-50, conditions=conditions)
 
     with pytest.raises(ValueError) as exc_info:
-        pySWATPlus.validators._validate_conditions("cn2", param_change, folder)
+        pySWATPlus.validators._validate_conditions(param_change, folder)
     assert "has invalid value" in str(exc_info.value)
 
     conditions = {
         "plant": ["invalid"],
     }
 
-    param_change = CalParamChangeModel(change_type="pctchg", value=-50, conditions=conditions)
+    param_change = CalParamModel(name="cn2", change_type="pctchg", value=-50, conditions=conditions)
 
     with pytest.raises(ValueError) as exc_info:
-        pySWATPlus.validators._validate_conditions("cn2", param_change, folder)
+        pySWATPlus.validators._validate_conditions(param_change, folder)
     assert "has invalid value" in str(exc_info.value)
 
     conditions = {
         "landuse": ["invalid"],
     }
 
-    param_change = CalParamChangeModel(change_type="pctchg", value=-50, conditions=conditions)
+    param_change = CalParamModel(name="cn2", change_type="pctchg", value=-50, conditions=conditions)
 
     with pytest.raises(ValueError) as exc_info:
-        pySWATPlus.validators._validate_conditions("cn2", param_change, folder)
+        pySWATPlus.validators._validate_conditions(param_change, folder)
     assert "has invalid value" in str(exc_info.value)

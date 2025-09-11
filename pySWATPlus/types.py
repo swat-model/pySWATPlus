@@ -165,7 +165,8 @@ Notes:
 # ======================================================
 
 
-class CalParamChangeBase(BaseModel):
+class CalParamBase(BaseModel):
+    name: str
     change_type: typing.Literal['absval', 'abschg', 'pctchg'] = 'absval'
     units: typing.Optional[list[int]] = None
     conditions: typing.Optional[dict[str, list[str]]] = None
@@ -178,104 +179,83 @@ class CalParamChangeBase(BaseModel):
         return list(v) if v is not None else None
 
 
-class CalParamChangeModel(CalParamChangeBase):
+class CalParamModel(CalParamBase):
     value: float
 
 
-class CalParamBoundedChangeModel(CalParamChangeBase):
+class CalParamBoundedModel(CalParamBase):
     upper_bound: float
     lower_bound: float
 
 
-U = typing.TypeVar("U", bound=CalParamChangeBase)
-
-
-def cal_from_dict_generic(cls: typing.Type[M], data: dict[str, typing.Any], param_cls: typing.Type[U]) -> M:
-    return cls(params={k: [param_cls(**item) for item in ensure_list(v)] for k, v in data.items()})
-
-
-class CalParamsModel(BaseModel):
-    params: dict[str, list[CalParamChangeModel]]
-
-    @classmethod
-    def from_dict(cls, data: dict[str, typing.Any]) -> "CalParamsModel":
-        return cal_from_dict_generic(cls, data, CalParamChangeModel)
-
-
-class CalParamsBoundedModel(BaseModel):
-    params: dict[str, list[CalParamBoundedChangeModel]]
-
-    @classmethod
-    def from_dict(cls, data: dict[str, typing.Any]) -> "CalParamsBoundedModel":
-        return cal_from_dict_generic(cls, data, CalParamBoundedChangeModel)
-
-
-CalParamsType: typing.TypeAlias = dict[str, typing.Any]
+CalParamsType: typing.TypeAlias = list[dict[str, typing.Any]]
 """
 Defines parameter modifications for SWAT+ model input files.
 
 Example:
     ```python
-    params = {
-        "cn2":    {
+    params = [
+        {
+            "name": 'cn2',
             "change_type": "pctchg",
             "value": 50,
         },
-        "perco": {
+        {
+            "name": 'perco',
             "change_type": "absval",
             "value": 0.5,
             "conditions": {"hsg": ["A"]}
         },
-        "bf_max": [{
+        {
+            'name': 'bf_max',
             "change_type": "absval",
             "value": 0.3,
             "units": range(1, 194)
-        }]
-    }
+        }
+    ]
     ```
 
 Keys for each parameter change:
 
 | Key          | Type                       | Default   | Description                                                                                  |
 |--------------|----------------------------|-----------|----------------------------------------------------------------------------------------------|
+| name         | str                        | -         | Name of the parameter to which the changes will be applied.                                  |
 | change_type  | str                        | 'absval'  | Type of change: 'absval', 'abschg', or 'pctchg'.                                             |
-| value        | float                      | —         | The value to apply to the parameter.                                                        |
-| units        | Iterable[int], optional    | None      | Optional list of 1-based unit IDs to constrain the parameter change.                        |
+| value        | float                      | —         | The value to apply to the parameter.                                                         |
+| units        | Iterable[int], optional    | None      | Optional list of 1-based unit IDs to constrain the parameter change.                         |
 | conditions   | dict[str, list[str]], optional | None  | Optional dictionary of conditions to apply when changing the parameter.                      |
-Notes:
-    - Each parameter (`<param_name>`) can be a **single dictionary** or a **list of dictionaries**.
 
 """
 
-CalParamsBoundedType: typing.TypeAlias = dict[str, typing.Any]
+CalParamsBoundedType: typing.TypeAlias = list[dict[str, typing.Any]]
 """
 Defines bounded parameter modifications for SWAT+ model input files.
 
 This follows the same logic as `CalParamsType`, but instead of a single `value`,
-each parameter specifies `lower_bound` and `upper_bound`. Used for sensitivity analysis.
+each parameter specifies `lower_bound` and `upper_bound`. Used for sensitivity analysis and calibration.
 
 Example:
     ```python
-    params = {
-        "bf_max": [{
+    params = [
+        {
+            "name": "bf_max",
             "change_type": "absval",
             "lower_bound": 0.2,
             "upper_bound": 0.3,
             "units": range(1, 194)
-        }]
-    }
+        }
+    ]
     ```
 
 Keys for each parameter change:
 
 | Key          | Type                       | Default   | Description                                                                                  |
 |--------------|----------------------------|-----------|----------------------------------------------------------------------------------------------|
+| name         | str                        | -         | Name of the parameter to which the changes will be applied.                                  |
 | change_type  | str                        | 'absval'  | Type of change: 'absval', 'abschg', or 'pctchg'.                                             |
-| lower_bound  | float                      | —         | The lower bound for the parameter.                                                          |
-| upper_bound  | float                      | —         | The upper bound for the parameter.                                                          |
-| units        | Iterable[int], optional    | None      | Optional list of 1-based unit IDs to constrain the parameter change.                        |
+| lower_bound  | float                      | —         | The lower bound for the parameter.                                                           |
+| upper_bound  | float                      | —         | The upper bound for the parameter.                                                           |
+| units        | Iterable[int], optional    | None      | Optional list of 1-based unit IDs to constrain the parameter change.                         |
 | conditions   | dict[str, list[str]], optional | None  | Optional dictionary of conditions to apply when changing the parameter.                      |
 
-Notes:
-    - Each parameter (`<param_name>`) can be a **single dictionary** or a **list of dictionaries**.
 """

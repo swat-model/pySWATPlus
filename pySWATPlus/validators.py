@@ -1,4 +1,4 @@
-from .types import CalParamsModel, CalParamsBoundedModel, CalParamChangeModel, ParamsModel, ParamsBoundedModel
+from .types import CalParamModel, CalParamBoundedModel, ParamsModel, ParamsBoundedModel
 import pandas
 import pathlib
 from datetime import datetime
@@ -40,12 +40,13 @@ def _validate_date_str(
         raise ValueError(f'Invalid date format: "{date_str}". Expected YYYY-MM-DD.')
 
 
-def _validate_units(param_name: str, param_change: CalParamChangeModel, txtinout_path: pathlib.Path) -> None:
+def _validate_units(param_change: CalParamModel, txtinout_path: pathlib.Path) -> None:
     '''
     Validate units for a given parameter change against calibration parameters.
     '''
 
     units = param_change.units
+    name = param_change.name
 
     if not units:
         return
@@ -57,9 +58,9 @@ def _validate_units(param_name: str, param_change: CalParamChangeModel, txtinout
     )
 
     # Get the object type for the parameter
-    row = cal_parms_df.loc[cal_parms_df['name'] == param_name, 'obj_typ']
+    row = cal_parms_df.loc[cal_parms_df['name'] == name, 'obj_typ']
     if row.empty:
-        raise ValueError(f"Parameter '{param_name}' not found in file 'cal_parms.cal'.")
+        raise ValueError(f"Parameter '{name}' not found in file 'cal_parms.cal'.")
 
     obj_type = row.iloc[0]
     if not obj_type:
@@ -76,7 +77,7 @@ def _validate_units(param_name: str, param_change: CalParamChangeModel, txtinout
     if obj_type not in obj_type_files:
         supported = ", ".join(obj_type_files.keys())
         raise ValueError(
-            f"Parameter '{param_name}' does not support units. "
+            f"Parameter '{name}' does not support units. "
             f"Only parameters of type [{supported}] support units."
         )
 
@@ -95,18 +96,19 @@ def _validate_units(param_name: str, param_change: CalParamChangeModel, txtinout
     max_unit = max(units)
     if len(df) < max_unit:
         raise ValueError(
-            f"Invalid units for parameter '{param_name}'. "
+            f"Invalid units for parameter '{name}'. "
             f"Some ids exceed the maximum available in {file} "
             f"(requested up to {max_unit}, available {len(df)})."
         )
 
 
-def _validate_conditions(param_name: str, param_change: CalParamChangeModel, txtinout_path: pathlib.Path) -> None:
+def _validate_conditions(param_change: CalParamModel, txtinout_path: pathlib.Path) -> None:
     '''
     Validate conditions for a given parameter change against calibration parameters.
     '''
 
     conditions = param_change.conditions
+    name = param_change.name
     if not conditions:
         return
 
@@ -131,7 +133,7 @@ def _validate_conditions(param_name: str, param_change: CalParamChangeModel, txt
     for cond_name, cond_values in conditions.items():
         if cond_name not in supported_conditions:
             raise ValueError(
-                f"Condition '{cond_name}' for parameter '{param_name}' is not supported. "
+                f"Condition '{cond_name}' for parameter '{name}' is not supported. "
                 f"Available conditions are: {', '.join(sorted(supported_conditions))}."
             )
 
@@ -139,13 +141,13 @@ def _validate_conditions(param_name: str, param_change: CalParamChangeModel, txt
         for val in cond_values:
             if val not in valid_values:
                 raise ValueError(
-                    f"Condition '{cond_name}' for parameter '{param_name}' "
+                    f"Condition '{cond_name}' for parameter '{name}' "
                     f"has invalid value '{val}'. "
                     f"Valid values are: {sorted(valid_values)}."
                 )
 
 
-def _validate_conditions_and_units(params: CalParamsModel, txtinout_path: pathlib.Path) -> None:
+def _validate_conditions_and_units(params: list[CalParamModel], txtinout_path: pathlib.Path) -> None:
     '''
     This function checks:
     - That the parameter exists in the calibration parameters.
@@ -153,22 +155,21 @@ def _validate_conditions_and_units(params: CalParamsModel, txtinout_path: pathli
     - That specified units correspond to valid IDs in the relevant SWAT+ input files.
     - That conditions (if applicable) exist and are valid.
     '''
-    for name, param_changes in params.params.items():
-        for param_change in param_changes:
-            try:
-                _validate_conditions(name, param_change, txtinout_path)
-                _validate_units(name, param_change, txtinout_path)
-            except ValueError as e:
-                raise ValueError(
-                    f"{e}\n\n"
-                    f"If you want to ignore the validation, set "
-                    f"'skip_units_and_conditions_validation=True'"
-                ) from e
+    for param_change in params:
+        try:
+            _validate_conditions(param_change, txtinout_path)
+            _validate_units(param_change, txtinout_path)
+        except ValueError as e:
+            raise ValueError(
+                f"{e}\n\n"
+                f"If you want to ignore the validation, set "
+                f"'skip_units_and_conditions_validation=True'"
+            ) from e
 
 
 def _validate_cal_parameters(
     txtinout_folder: pathlib.Path,
-    params: CalParamsModel | CalParamsBoundedModel
+    params: list[CalParamBoundedModel] | list[CalParamModel]
 ) -> None:
     '''
     Check if parameters exists in cal_parms.cal
@@ -185,8 +186,6 @@ def _validate_cal_parameters(
         sep=r'\s+'
     )
 
-    parameter_names = params.params.keys()
-
-    for parameter in parameter_names:
-        if parameter not in cal_parms_df['name'].values:
-            raise ValueError(f"The parameter '{parameter}' is not in cal_parms.cal")
+    for param in params:
+        if param.name not in cal_parms_df['name'].values:
+            raise ValueError(f"The parameter '{param.name}' is not in cal_parms.cal")

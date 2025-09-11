@@ -1,4 +1,4 @@
-from .types import ParamChangeModel, CalParamChangeModel
+from .types import ParamChangeModel, CalParamModel
 import pandas
 from collections.abc import Callable
 import pathlib
@@ -176,7 +176,7 @@ def _compact_units(unit_list: Iterable[int]) -> list[int]:
 
 
 def _parse_conditions(
-    params: CalParamChangeModel
+    params: CalParamModel
 ) -> list[str]:
     '''
     Parse the conditions that must be added to that parameter in calibration.cal file

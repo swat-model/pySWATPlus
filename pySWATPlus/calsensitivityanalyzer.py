@@ -3,7 +3,7 @@ import time
 import functools
 import typing
 import concurrent.futures
-from .types import CalParamsBoundedType, CalParamsBoundedModel, CalParamsType
+from .types import CalParamsBoundedType, CalParamsType, CalParamBoundedModel
 from .base_sensitivity_analyser import BaseSensitivityAnalyzer
 import pathlib
 from . import utils
@@ -28,7 +28,7 @@ class CalSensitivityAnalyzer(BaseSensitivityAnalyzer):
         var_names: list[str],
         simulation_folder: pathlib.Path,
         txtinout_folder: pathlib.Path,
-        params: CalParamsBoundedModel,
+        params: list[CalParamBoundedModel],
         simulation_data: dict[str, dict[str, typing.Any]],
         clean_setup: bool
     ) -> dict[str, typing.Any]:
@@ -41,22 +41,22 @@ class CalSensitivityAnalyzer(BaseSensitivityAnalyzer):
         }
 
         # create 'params' dictionary with assigned value
-        params_sim: CalParamsType = {}
+        params_sim: CalParamsType = []
 
-        for param_key, change_list in params.params.items():
-            params_sim[param_key] = []
-            for change_dict in change_list:
-                change_type = change_dict.change_type
-                units = change_dict.units
-                unique_name = utils._make_unique_param_name(param_key, change_dict)
-                value = var_dict[unique_name]
-                conditions = change_dict.conditions
-                params_sim[param_key].append({
-                    'value': value,
-                    'change_type': change_type,
-                    'units': units,
-                    'conditions': conditions
-                })
+        for param in params:
+            name = param.name
+            change_type = param.change_type
+            units = param.units
+            unique_name = utils._make_unique_param_name(name, param)
+            value = var_dict[unique_name]
+            conditions = param.conditions
+            params_sim.append({
+                'name': name,
+                'value': value,
+                'change_type': change_type,
+                'units': units,
+                'conditions': conditions
+            })
 
         dir_path, simulation_output = cls._setup_simulation_directory(
             track_sim=track_sim,
@@ -231,16 +231,15 @@ class CalSensitivityAnalyzer(BaseSensitivityAnalyzer):
         _txtinout_folder = utils._ensure_path(txtinout_folder)
         _simulation_folder = utils._ensure_path(simulation_folder)
 
-        _params = CalParamsBoundedModel.from_dict(params)
+        _params = [CalParamBoundedModel(**param) for param in params]
         validators._validate_cal_parameters(_txtinout_folder, _params)
 
         var_names = []
         var_bounds = []
-        for param_key, list_changes in _params.params.items():
-            for param_change in list_changes:
-                unique_name = utils._make_unique_param_name(param_key, param_change)
-                var_names.append(unique_name)
-                var_bounds.append([param_change.lower_bound, param_change.upper_bound])
+        for param in _params:
+            unique_name = utils._make_unique_param_name(param.name, param)
+            var_names.append(unique_name)
+            var_bounds.append([param.lower_bound, param.upper_bound])
 
         cls._validate_simulation_by_sobol_sample_params(
             simulation_folder=_simulation_folder,
