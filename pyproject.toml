@@ -34,7 +34,8 @@ classifiers = [
 ]
 dependencies = [
     "SALib",
-    "typing-extensions"
+    "typing-extensions",
+    "pydantic"
 ]
 
 [project.urls]
