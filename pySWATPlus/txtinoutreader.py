@@ -363,6 +363,9 @@ class TxtinoutReader:
 
         dest_path = pathlib.Path(target_dir)
 
+        if any(dest_path.iterdir()):
+            raise FileExistsError(f"Target directory {dest_path} is not empty.")
+
         # Copy files from source folder
         for file in self.root_folder.iterdir():
             if file.is_dir() or file.name.endswith(self.IGNORED_FILE_PATTERNS):
