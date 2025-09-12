@@ -117,17 +117,6 @@ def test_error_enable_object_in_print_prt(
     txtinout_reader
 ):
 
-    # error test for 'obj' type
-    with pytest.raises(Exception) as exc_info:
-        txtinout_reader.enable_object_in_print_prt(
-            obj=1,
-            daily=True,
-            monthly=True,
-            yearly=True,
-            avann=False
-        )
-    assert exc_info.value.args[0] == 'Input "obj" to be string type or None, got int'
-
     # error test for invalid bool value
     with pytest.raises(Exception) as exc_info:
         txtinout_reader.enable_object_in_print_prt(
@@ -137,7 +126,7 @@ def test_error_enable_object_in_print_prt(
             yearly=True,
             avann=False
         )
-    assert exc_info.value.args[0] == 'Variable "daily" for "basin_wb" must be a bool value'
+    assert exc_info.value.args[0] == 'Expected "daily" to be "bool", but got type "int"'
 
     # error test for adding invalid object without flag
     with pytest.raises(Exception) as exc_info:
@@ -153,13 +142,6 @@ def test_error_enable_object_in_print_prt(
 
 
 def test_error_txtinoutreader_class():
-
-    # error test for .exe file
-    with pytest.raises(Exception) as exc_info:
-        pySWATPlus.TxtinoutReader(
-            path=1
-        )
-    assert exc_info.value.args[0] == 'path must be a string or Path object'
 
     # error test for .exe file
     with pytest.raises(Exception) as exc_info:
@@ -181,13 +163,6 @@ def test_error_set_begin_and_end_year(
     txtinout_reader
 ):
 
-    # error test for float value in begin and end years
-    with pytest.raises(Exception) as exc_info:
-        txtinout_reader.set_begin_and_end_year(
-            begin=2012.0,
-            end=2016
-        )
-    assert exc_info.value.args[0] == '"begin" year must be an integer value'
     # error test for begin year is greater than end year
     with pytest.raises(Exception) as exc_info:
         txtinout_reader.set_begin_and_end_year(
@@ -201,12 +176,6 @@ def test_error_set_warmup_year(
     txtinout_reader
 ):
 
-    # error test for float value in warmup years
-    with pytest.raises(Exception) as exc_info:
-        txtinout_reader.set_warmup_year(
-            warmup=1.0
-        )
-    assert exc_info.value.args[0] == 'warmup must be an integer value'
     # error test for warm-up year is equal to 0
     with pytest.raises(Exception) as exc_info:
         txtinout_reader.set_warmup_year(

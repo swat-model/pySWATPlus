@@ -1,7 +1,9 @@
 import pathlib
-from . import utils
 import pandas
 import warnings
+import typing
+from . import utils
+from . import validators
 
 
 class FileReader:
@@ -15,7 +17,7 @@ class FileReader:
         self,
         path: str | pathlib.Path,
         has_units: bool,
-    ):
+    ) -> None:
         '''
         Initialize a FileReader instance to read data from a TXT file.
 
@@ -32,8 +34,13 @@ class FileReader:
             ```
         '''
 
-        if not isinstance(path, (str, pathlib.Path)):
-            raise TypeError("path must be a string or Path object")
+        # Check input variables type
+        validators._variable_origin_static_type(
+            vars_types=typing.get_type_hints(
+                obj=self.__init__
+            ),
+            vars_values=locals()
+        )
 
         path = pathlib.Path(path).resolve()
 
