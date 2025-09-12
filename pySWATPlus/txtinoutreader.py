@@ -3,10 +3,12 @@ import shutil
 import pathlib
 import typing
 import logging
+import pandas
 from .filereader import FileReader
 from .types import ParamsType, ParameterChanges
 from . import utils
-import pandas
+from . import validators
+
 logger = logging.getLogger(__name__)
 
 
@@ -16,12 +18,6 @@ class TxtinoutReader:
     Provide functionality for seamless reading, editing, and writing of
     SWAT+ model files located in the `TxtInOut` folder.
     '''
-
-    IGNORED_FILE_PATTERNS: typing.Final[tuple[str, ...]] = tuple(
-        f'_{suffix}.{ext}'
-        for suffix in ('day', 'mon', 'yr', 'aa')
-        for ext in ('txt', 'csv')
-    )
 
     def __init__(
         self,
@@ -33,15 +29,15 @@ class TxtinoutReader:
         Args:
             path (str or Path): Path to the `TxtInOut` folder, which must contain
                 exactly one SWAT+ executable `.exe` file.
-
-        Raises:
-            TypeError: If the path is not a valid string or Path, or if the folder contains
-                zero or multiple `.exe` files.
         '''
 
-        # check if path is a string or a path
-        if not isinstance(path, (str, pathlib.Path)):
-            raise TypeError('path must be a string or Path object')
+        # Check input variables type
+        validators._variable_origin_static_type(
+            vars_types=typing.get_type_hints(
+                obj=self.__init__
+            ),
+            vars_values=locals()
+        )
 
         path = pathlib.Path(path).resolve()
 
@@ -96,6 +92,15 @@ class TxtinoutReader:
                 a ValueError is raised. Defaults to False.
         '''
 
+        # Check input variables type
+        validators._variable_origin_static_type(
+            vars_types=typing.get_type_hints(
+                obj=self.enable_object_in_print_prt
+            ),
+            vars_values=locals()
+        )
+
+        # Dictionary of available objects
         obj_dict = {
             'model_components': ['channel_sd', 'channel_sdmorph', 'aquifer', 'reservoir', 'recall', 'ru', 'hyd', 'water_allo'],
             'basin_model_components': ['basin_sd_cha', 'basin_sd_chamorph', 'basin_aqu', 'basin_res', 'basin_psc'],
@@ -107,11 +112,8 @@ class TxtinoutReader:
             'constituents': ['basin_cs', 'hru_cs', 'ru_cs', 'aqu_cs', 'channel_cs', 'res_cs', 'wetland_cs']
         }
 
+        # List of objects obtained from the dictionary
         obj_list = [i for v in obj_dict.values() for i in v]
-
-        # Check 'obj' is either string or NoneType
-        if not (isinstance(obj, str) or obj is None):
-            raise TypeError(f'Input "obj" to be string type or None, got {type(obj).__name__}')
 
         # Check 'obj' is valid
         if obj and obj not in obj_list and not allow_unavailable_object:
@@ -119,26 +121,16 @@ class TxtinoutReader:
                 f'Object "{obj}" not found in print.prt file. Use allow_unavailable_object=True to proceed.'
             )
 
-        # Time frequency dictionary
-        time_dict = {
-            'daily': daily,
-            'monthly': monthly,
-            'yearly': yearly,
-            'avann': avann
-        }
-
-        for key, val in time_dict.items():
-            if not isinstance(val, bool):
-                raise TypeError(f'Variable "{key}" for "{obj}" must be a bool value')
-
         # read all print_prt file, line by line
         print_prt_path = self.root_folder / 'print.prt'
-        new_print_prt = ""
+        new_print_prt = ''
         found = False
 
         # Check if file exists
         if not print_prt_path.exists():
-            raise FileNotFoundError("print.prt file does not exist")
+            raise FileNotFoundError(
+                f'Missing required "print.prt" file in folder: {self.root_folder}'
+            )
 
         with open(print_prt_path, 'r', newline='') as file:
             for i, line in enumerate(file, start=1):
@@ -185,20 +177,17 @@ class TxtinoutReader:
         Args:
             begin (int): Beginning year of the simulation in YYYY format (e.g., 2010).
             end (int): Ending year of the simulation in YYYY format (e.g., 2016).
-
-        Raises:
-            ValueError: If the begin year is greater than or equal to the end year.
         '''
 
-        year_dict = {
-            'begin': begin,
-            'end': end
-        }
+        # Check input variables type
+        validators._variable_origin_static_type(
+            vars_types=typing.get_type_hints(
+                obj=self.set_begin_and_end_year
+            ),
+            vars_values=locals()
+        )
 
-        for key, val in year_dict.items():
-            if not isinstance(val, int):
-                raise TypeError(f'"{key}" year must be an integer value')
-
+        # Check begin is less than end year
         if begin >= end:
             raise ValueError('begin year must be less than end year')
 
@@ -208,7 +197,9 @@ class TxtinoutReader:
 
         # Check if file exists
         if not time_sim_path.exists():
-            raise FileNotFoundError("time.sim file does not exist")
+            raise FileNotFoundError(
+                f'Missing required "time.sim" file in folder: {self.root_folder}'
+            )
 
         # Open the file in read mode and read its contents
         with open(time_sim_path, 'r') as file:
@@ -241,13 +232,17 @@ class TxtinoutReader:
         Args:
             warmup (int): A positive integer representing the number of years
                 the simulation will use for warm-up (e.g., 1).
-
-        Raises:
-            ValueError: If the warmup year is less than or equal to 0.
         '''
 
-        if not isinstance(warmup, int):
-            raise TypeError('warmup must be an integer value')
+        # Check input variables type
+        validators._variable_origin_static_type(
+            vars_types=typing.get_type_hints(
+                obj=self.set_warmup_year
+            ),
+            vars_values=locals()
+        )
+
+        # check warmup year is greater than 0
         if warmup <= 0:
             raise ValueError('warmup must be a positive integer')
 
@@ -255,7 +250,9 @@ class TxtinoutReader:
 
         # Check if file exists
         if not print_prt_path.exists():
-            raise FileNotFoundError("print.prt file does not exist")
+            raise FileNotFoundError(
+                f'Missing required "print.prt" file in folder: {self.root_folder}'
+            )
 
         # Open the file in read mode and read its contents
         with open(print_prt_path, 'r') as file:
@@ -360,11 +357,27 @@ class TxtinoutReader:
             The path to the target directory containing the copied files.
         '''
 
+        # Check input variables type
+        validators._variable_origin_static_type(
+            vars_types=typing.get_type_hints(
+                obj=self.copy_required_files
+            ),
+            vars_values=locals()
+        )
+
+        # Destination folder path
         dest_path = pathlib.Path(target_dir)
+
+        # Ignored files
+        _ignored_files = tuple(
+            f'_{suffix}.{ext}'
+            for suffix in ('day', 'mon', 'yr', 'aa')
+            for ext in ('txt', 'csv')
+        )
 
         # Copy files from source folder
         for file in self.root_folder.iterdir():
-            if file.is_dir() or file.name.endswith(self.IGNORED_FILE_PATTERNS):
+            if file.is_dir() or file.name.endswith(_ignored_files):
                 continue
             shutil.copy2(file, dest_path / file.name)
 
@@ -518,7 +531,7 @@ class TxtinoutReader:
 
         # Safety check: ensure the file has enough lines
         if line_index >= len(lines):
-            raise IndexError(f"The file only has {len(lines)} lines, cannot replace line {line_index+1}.")
+            raise IndexError(f"The file only has {len(lines)} lines, cannot replace line {line_index + 1}.")
 
         # Replace the line, ensure it ends with a newline
         lines[line_index] = line_to_add.rstrip() + "\n"
