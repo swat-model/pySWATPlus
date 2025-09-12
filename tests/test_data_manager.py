@@ -73,8 +73,8 @@ def test_simulated_timeseries_df(
             has_units=True,
             apply_filter={'name': ['hru007']}
         )
-    # val = ['hru007']
-    assert exc_info.value.args[0] == f'Filtering by column "name" with values "{['hru007']}" removed all rows from file "zrecall_yr.txt"'
+    val = ['hru007']
+    assert exc_info.value.args[0] == f'Filtering by column "name" with values "{val}" removed all rows from file "zrecall_yr.txt"'
 
     # error test for invalid start_date format
     with pytest.raises(Exception) as exc_info:
