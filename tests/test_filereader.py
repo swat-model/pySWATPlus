@@ -94,7 +94,7 @@ def test_error_filereader():
             path=1,
             has_units=False
         )
-    assert exc_info.value.args[0] == 'path must be a string or Path object'
+    assert exc_info.value.args[0] == f'Expected "path" to be one of {['str', 'Path']}, but got type "int"'
 
     # error test for non-existence of file
     with pytest.raises(Exception) as exc_info:
