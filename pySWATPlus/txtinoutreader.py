@@ -617,79 +617,6 @@ class TxtinoutReader:
 
     def run_swat(
         self,
-        params: typing.Optional[ParamsType] = None,
-        skip_units_and_conditions_validation: bool = False
-    ) -> pathlib.Path:
-        '''
-        Run the SWAT+ simulation with optional parameter changes.
-
-        Args:
-            params (ParamsType, optional): Nested dictionary specifying parameter changes.
-
-                The `params` dictionary should follow this structure:
-
-                ```python
-                params = [
-                    {
-                        "name": str,            # Name of the parameter to which the changes will be applied
-                        "value": float,         # New value to assign
-                        "change_type": str,     # One of: 'absval', 'abschg', 'pctchg'
-                        "units": Iterable[int],  # (Optional) An optional list of unit IDs to constrain the parameter change.
-                            **Unit IDs should be 1-based**, i.e., the first object has ID 1.
-                        "conditions": dict[str: list[str]],  # (Optional) A dictionary of conditions to apply to the parameter change.
-                    },
-                    ...
-                ]
-                ```
-            skip_units_and_conditions_validation (bool): If `True`, skip validation of units and conditions in parameter changes.
-
-
-        Returns:
-            Path where the SWAT+ simulation was executed.
-
-        Example:
-            ```python
-            params = [
-                {
-                    "name": 'cn2',
-                    "change_type": "pctchg",
-                    "value": 50,
-                },
-                {
-                    "name": 'perco',
-                    "change_type": "absval",
-                    "value": 0.5,                        
-                    "conditions": {"hsg": ["A"]}
-                },
-                {
-                    'name': 'bf_max',
-                    "change_type": "absval",
-                    "value": 0.3,
-                    "units": range(1, 194)
-                }
-            ]
-
-            reader.run_swat(params)
-            ```
-        '''
-
-        if params:
-            _params = [ParamModel(**param) for param in params]
-
-            validators._validate_cal_parameters(self.root_folder, _params)
-
-            if not skip_units_and_conditions_validation:
-                validators._validate_conditions_and_units(_params, self.root_folder)
-
-            self._write_calibration_file(_params)
-
-        # Run simulation
-        self._run_swat()
-
-        return self.root_folder
-
-    def run_swat_in_other_dir(
-        self,
         target_dir: str | pathlib.Path,
         params: typing.Optional[ParamsType] = None,
         begin_and_end_year: typing.Optional[tuple[int, int]] = None,
@@ -711,10 +638,9 @@ class TxtinoutReader:
                 ```python
                 params = [
                     {
-                        "name": str,            # Name of the parameter to which the changes will be applied
-                        "lower_bound": str      # The lower bound for the parameter
-                        "upper_bound": str      # The upper bound for the parameter
-                        "change_type": str,     # One of: 'absval', 'abschg', 'pctchg'
+                        "name": str,             # Name of the parameter to which the changes will be applied
+                        "value": float           # The value to apply to the parameter   
+                        "change_type": str,      # One of: 'absval', 'abschg', 'pctchg'
                         "units": Iterable[int],  # (Optional) An optional list of unit IDs to constrain the parameter change.
                             **Unit IDs should be 1-based**, i.e., the first object has ID 1.
                         "conditions": dict[str: list[str]],  # (Optional) A dictionary of conditions to apply to the parameter change.
@@ -747,14 +673,13 @@ class TxtinoutReader:
 
         Example:
             ```python
-            simulation = pySWATPlus.TxtinoutReader.run_swat_in_other_dir(
+            simulation = pySWATPlus.TxtinoutReader.run_swat(
                 target_dir="C:\\\\Users\\\\Username\\\\simulation_folder",
                 params = [
                     {
                         "name": "bf_max",
+                        "value": 0.3,
                         "change_type": "absval",
-                        "lower_bound": 0.2,
-                        "upper_bound": 0.3,
                         "units": range(1, 194)
                     }
                 ]
@@ -768,6 +693,13 @@ class TxtinoutReader:
             ```
         '''
 
+        _target_dir = utils._ensure_path(target_dir)
+
+        # Resolve to absolute paths
+        if self.root_folder.resolve() == _target_dir.resolve():
+            raise ValueError(
+                "`target_dir` parameter must be different from the existing TxtInOut path!"
+            )
         tmp_path = self.copy_required_files(target_dir=target_dir)
 
         # Initialize new TxtinoutReader class
@@ -776,10 +708,17 @@ class TxtinoutReader:
         # Apply SWAT+ configuration changes
         reader._apply_swat_configuration(begin_and_end_year, warmup, print_prt_control)
 
-        # Run the SWAT+ simulation
-        output = reader.run_swat(
-            params=params,
-            skip_units_and_conditions_validation=skip_units_and_conditions_validation
-        )
+        if params:
+            _params = [ParamModel(**param) for param in params]
 
-        return output
+            validators._validate_cal_parameters(reader.root_folder, _params)
+
+            if not skip_units_and_conditions_validation:
+                validators._validate_conditions_and_units(_params, reader.root_folder)
+
+            reader._write_calibration_file(_params)
+
+        # Run simulation
+        reader._run_swat()
+
+        return tmp_path

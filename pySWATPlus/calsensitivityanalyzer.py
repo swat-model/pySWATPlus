@@ -71,7 +71,7 @@ class SensitivityAnalyzer(BaseSensitivityAnalyzer):
         )
 
         # Run SWAT+ model in other directory
-        txtinout_reader.run_swat_in_other_dir(
+        txtinout_reader.run_swat(
             target_dir=dir_path,
             params=params_sim
         )
