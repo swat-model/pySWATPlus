@@ -1,6 +1,6 @@
 from .txtinoutreader import TxtinoutReader
 from .filereader import FileReader
-from .calsensitivityanalyzer import CalSensitivityAnalyzer
+from .calsensitivityanalyzer import SensitivityAnalyzer
 from .performance_metrics import PerformanceMetrics
 from importlib.metadata import version, PackageNotFoundError
 
@@ -14,7 +14,7 @@ except PackageNotFoundError:
 __all__ = [
     'TxtinoutReader',
     'FileReader',
-    'CalSensitivityAnalyzer',
+    'SensitivityAnalyzer',
     'PerformanceMetrics',
     '__version__'
 ]

@@ -2,7 +2,7 @@ import typing
 from pydantic import BaseModel, field_validator
 
 
-class CalParamBase(BaseModel):
+class ParamBase(BaseModel):
     name: str
     change_type: typing.Literal['absval', 'abschg', 'pctchg']
     units: typing.Optional[list[int]] = None
@@ -16,16 +16,16 @@ class CalParamBase(BaseModel):
         return list(v) if v is not None else None
 
 
-class CalParamModel(CalParamBase):
+class ParamModel(ParamBase):
     value: float
 
 
-class CalParamBoundedModel(CalParamBase):
+class ParamBoundedModel(ParamBase):
     upper_bound: float
     lower_bound: float
 
 
-CalParamsType: typing.TypeAlias = list[dict[str, typing.Any]]
+ParamsType: typing.TypeAlias = list[dict[str, typing.Any]]
 """
 Defines parameter modifications for SWAT+ model input files.
 
@@ -64,11 +64,11 @@ Keys for each parameter change:
 
 """
 
-CalParamsBoundedType: typing.TypeAlias = list[dict[str, typing.Any]]
+ParamsBoundedType: typing.TypeAlias = list[dict[str, typing.Any]]
 """
 Defines bounded parameter modifications for SWAT+ model input files.
 
-This follows the same logic as `CalParamsType`, but instead of a single `value`,
+This follows the same logic as `ParamsType`, but instead of a single `value`,
 each parameter specifies `lower_bound` and `upper_bound`. Used for sensitivity analysis and calibration.
 
 Example:

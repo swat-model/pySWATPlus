@@ -3,7 +3,7 @@ import time
 import functools
 import typing
 import concurrent.futures
-from .types import CalParamsBoundedType, CalParamsType, CalParamBoundedModel
+from .types import ParamsBoundedType, ParamsType, ParamBoundedModel
 from .base_sensitivity_analyser import BaseSensitivityAnalyzer
 import pathlib
 from . import utils
@@ -11,7 +11,7 @@ from . import validators
 from .txtinoutreader import TxtinoutReader
 
 
-class CalSensitivityAnalyzer(BaseSensitivityAnalyzer):
+class SensitivityAnalyzer(BaseSensitivityAnalyzer):
     '''
     Provides functionality for running scenario simulations and analyzing simulated data.
 
@@ -28,7 +28,7 @@ class CalSensitivityAnalyzer(BaseSensitivityAnalyzer):
         var_names: list[str],
         simulation_folder: pathlib.Path,
         txtinout_folder: pathlib.Path,
-        params: list[CalParamBoundedModel],
+        params: list[ParamBoundedModel],
         simulation_data: dict[str, dict[str, typing.Any]],
         clean_setup: bool
     ) -> dict[str, typing.Any]:
@@ -41,7 +41,7 @@ class CalSensitivityAnalyzer(BaseSensitivityAnalyzer):
         }
 
         # create 'params' dictionary with assigned value
-        params_sim: CalParamsType = []
+        params_sim: ParamsType = []
 
         for param in params:
             name = param.name
@@ -71,7 +71,7 @@ class CalSensitivityAnalyzer(BaseSensitivityAnalyzer):
         )
 
         # Run SWAT+ model in other directory
-        txtinout_reader.cal_run_swat_in_other_dir(
+        txtinout_reader.run_swat_in_other_dir(
             target_dir=dir_path,
             params=params_sim
         )
@@ -89,7 +89,7 @@ class CalSensitivityAnalyzer(BaseSensitivityAnalyzer):
     @classmethod
     def simulation_by_sobol_sample(
         cls,
-        params: CalParamsBoundedType,
+        params: ParamsBoundedType,
         sample_number: int,
         simulation_folder: str | pathlib.Path,
         txtinout_folder: str | pathlib.Path,
@@ -117,7 +117,7 @@ class CalSensitivityAnalyzer(BaseSensitivityAnalyzer):
 
         Args:
 
-            params (CalParamsBoundedType):  Nested dictionary defining the parameter modifications to apply during the simulations.
+            params (ParamsBoundedType):  Nested dictionary defining the parameter modifications to apply during the simulations.
                 Each parameter should include a the lower and upper bounds, and the parameter value
                 is dynamically assigned with the corresponding sampled value during execution.
                 ```python
@@ -231,7 +231,7 @@ class CalSensitivityAnalyzer(BaseSensitivityAnalyzer):
         _txtinout_folder = utils._ensure_path(txtinout_folder)
         _simulation_folder = utils._ensure_path(simulation_folder)
 
-        _params = [CalParamBoundedModel(**param) for param in params]
+        _params = [ParamBoundedModel(**param) for param in params]
         validators._validate_cal_parameters(_txtinout_folder, _params)
 
         var_names = []

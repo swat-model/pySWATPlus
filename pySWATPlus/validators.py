@@ -1,4 +1,4 @@
-from .types import CalParamModel, CalParamBoundedModel
+from .types import ParamModel, ParamBoundedModel
 import pandas
 import pathlib
 from datetime import datetime
@@ -17,7 +17,7 @@ def _validate_date_str(
         raise ValueError(f'Invalid date format: "{date_str}". Expected YYYY-MM-DD.')
 
 
-def _validate_units(param_change: CalParamModel, txtinout_path: pathlib.Path) -> None:
+def _validate_units(param_change: ParamModel, txtinout_path: pathlib.Path) -> None:
     '''
     Validate units for a given parameter change against calibration parameters.
     '''
@@ -79,7 +79,7 @@ def _validate_units(param_change: CalParamModel, txtinout_path: pathlib.Path) ->
         )
 
 
-def _validate_conditions(param_change: CalParamModel, txtinout_path: pathlib.Path) -> None:
+def _validate_conditions(param_change: ParamModel, txtinout_path: pathlib.Path) -> None:
     '''
     Validate conditions for a given parameter change against calibration parameters.
     '''
@@ -124,7 +124,7 @@ def _validate_conditions(param_change: CalParamModel, txtinout_path: pathlib.Pat
                 )
 
 
-def _validate_conditions_and_units(params: list[CalParamModel], txtinout_path: pathlib.Path) -> None:
+def _validate_conditions_and_units(params: list[ParamModel], txtinout_path: pathlib.Path) -> None:
     '''
     This function checks:
     - That the parameter exists in the calibration parameters.
@@ -146,7 +146,7 @@ def _validate_conditions_and_units(params: list[CalParamModel], txtinout_path: p
 
 def _validate_cal_parameters(
     txtinout_folder: pathlib.Path,
-    params: list[CalParamBoundedModel] | list[CalParamModel]
+    params: list[ParamBoundedModel] | list[ParamModel]
 ) -> None:
     '''
     Check if parameters exists in cal_parms.cal

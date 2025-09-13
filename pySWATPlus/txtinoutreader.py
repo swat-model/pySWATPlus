@@ -4,7 +4,7 @@ import pathlib
 import typing
 import logging
 from .filereader import FileReader
-from .types import CalParamsType, CalParamModel
+from .types import ParamsType, ParamModel
 from . import utils
 from . import validators
 
@@ -376,7 +376,7 @@ class TxtinoutReader:
 
     def _write_calibration_file(
         self,
-        params: list[CalParamModel]
+        params: list[ParamModel]
     ) -> None:
         '''
         Writes `calibration.cal` file with parameter changes.
@@ -615,16 +615,16 @@ class TxtinoutReader:
             logger.error(f"Failed to run SWAT: {str(e)}")
             raise
 
-    def cal_run_swat(
+    def run_swat(
         self,
-        params: typing.Optional[CalParamsType] = None,
+        params: typing.Optional[ParamsType] = None,
         skip_units_and_conditions_validation: bool = False
     ) -> pathlib.Path:
         '''
         Run the SWAT+ simulation with optional parameter changes.
 
         Args:
-            params (CalParamsType, optional): Nested dictionary specifying parameter changes.
+            params (ParamsType, optional): Nested dictionary specifying parameter changes.
 
                 The `params` dictionary should follow this structure:
 
@@ -669,12 +669,12 @@ class TxtinoutReader:
                 }
             ]
 
-            reader.cal_run_swat(params)
+            reader.run_swat(params)
             ```
         '''
 
         if params:
-            _params = [CalParamModel(**param) for param in params]
+            _params = [ParamModel(**param) for param in params]
 
             validators._validate_cal_parameters(self.root_folder, _params)
 
@@ -688,10 +688,10 @@ class TxtinoutReader:
 
         return self.root_folder
 
-    def cal_run_swat_in_other_dir(
+    def run_swat_in_other_dir(
         self,
         target_dir: str | pathlib.Path,
-        params: typing.Optional[CalParamsType] = None,
+        params: typing.Optional[ParamsType] = None,
         begin_and_end_year: typing.Optional[tuple[int, int]] = None,
         warmup: typing.Optional[int] = None,
         print_prt_control: typing.Optional[dict[str, dict[str, bool]]] = None,
@@ -704,7 +704,7 @@ class TxtinoutReader:
 
             target_dir (str or Path): Path to the directory where the simulation will be done.
 
-            params (CalParamsType, optional): Nested dictionary specifying parameter changes.
+            params (ParamsType, optional): Nested dictionary specifying parameter changes.
 
                 The `params` dictionary should follow this structure:
 
@@ -747,7 +747,7 @@ class TxtinoutReader:
 
         Example:
             ```python
-            simulation = pySWATPlus.TxtinoutReader.cal_run_swat_in_other_dir(
+            simulation = pySWATPlus.TxtinoutReader.run_swat_in_other_dir(
                 target_dir="C:\\\\Users\\\\Username\\\\simulation_folder",
                 params = [
                     {
@@ -777,7 +777,7 @@ class TxtinoutReader:
         reader._apply_swat_configuration(begin_and_end_year, warmup, print_prt_control)
 
         # Run the SWAT+ simulation
-        output = reader.cal_run_swat(
+        output = reader.run_swat(
             params=params,
             skip_units_and_conditions_validation=skip_units_and_conditions_validation
         )
