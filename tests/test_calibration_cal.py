@@ -27,7 +27,7 @@ def test_utils(txtinout_reader):
     # ---------------------------
 
     # --- Case 1: parameter exists (cn2) ---
-    par_change = [CalParamModel(**{'name': 'cn2', 'value': 0.5})]
+    par_change = [CalParamModel(**{'name': 'cn2', 'value': 0.5, 'change_type': 'absval'})]
 
     # Should not raise
     pySWATPlus.validators._validate_cal_parameters(txtinout_reader.root_folder, par_change)

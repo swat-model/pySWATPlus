@@ -1,4 +1,4 @@
-from .types import ParamChangeModel, CalParamModel
+from .types import CalParamModel
 import pandas
 from collections.abc import Callable
 import pathlib
@@ -33,29 +33,6 @@ def _build_line_to_add(
         arg_to_add += periodicity.ljust(14)
 
     return arg_to_add.rstrip() + '\n'
-
-
-def _apply_param_change(
-    df: pandas.DataFrame,
-    param_name: str,
-    change: ParamChangeModel
-) -> None:
-    '''
-    Apply parameter change to a DataFrame
-    '''
-
-    value = change.value
-    change_type = change.change_type
-    filter_by = change.filter_by
-
-    mask = df.query(filter_by).index if filter_by else df.index
-
-    if change_type == 'absval':
-        df.loc[mask, param_name] = value
-    elif change_type == 'abschg':
-        df.loc[mask, param_name] += value
-    elif change_type == 'pctchg':
-        df.loc[mask, param_name] *= (1 + value / 100)
 
 
 def _clean(

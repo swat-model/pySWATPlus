@@ -10,7 +10,6 @@ class PerformanceMetrics:
     def error_options(
         self
     ) -> dict[str, str]:
-
         '''
         Returns a dictionary of available error options. Keys are the commonly used abbreviations,
         and values are the corresponding full error metric names.

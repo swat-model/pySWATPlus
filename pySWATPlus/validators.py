@@ -1,30 +1,7 @@
-from .types import CalParamModel, CalParamBoundedModel, ParamsModel, ParamsBoundedModel
+from .types import CalParamModel, CalParamBoundedModel
 import pandas
 import pathlib
 from datetime import datetime
-from .filereader import FileReader
-
-
-def _validate_parameters(
-    txtinout_folder: pathlib.Path,
-    params: ParamsBoundedModel | ParamsModel
-) -> None:
-    '''
-    Check that parameters exist in file
-    '''
-
-    for key, file_parameters in params.file_params.items():
-
-        file_path = txtinout_folder / key
-        has_units = file_parameters.has_units
-        file_reader = FileReader(
-            path=file_path,
-            has_units=has_units
-        )
-        df = file_reader.df
-        for column in file_parameters.params:
-            if column not in list(df.columns):
-                raise Exception(f'Parameter "{column}" not found in columns of the file "{key}"')
 
 
 def _validate_date_str(
