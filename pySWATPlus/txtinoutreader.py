@@ -810,7 +810,7 @@ class TxtinoutReader:
                     {
                         "name": str,            # Name of the parameter to which the changes will be applied
                         "value": float,         # New value to assign
-                        "change_type": str,     # (Optional) One of: 'absval' (default), 'abschg', 'pctchg'
+                        "change_type": str,     # One of: 'absval', 'abschg', 'pctchg'
                         "units": Iterable[int],  # (Optional) An optional list of unit IDs to constrain the parameter change.
                             **Unit IDs should be 1-based**, i.e., the first object has ID 1.
                         "conditions": dict[str: list[str]],  # (Optional) A dictionary of conditions to apply to the parameter change.
@@ -840,7 +840,7 @@ class TxtinoutReader:
                 },
                 {
                     'name': 'bf_max',
-                    "change_type": "absval",                        
+                    "change_type": "absval",
                     "value": 0.3,
                     "units": range(1, 194)
                 }
@@ -848,10 +848,6 @@ class TxtinoutReader:
 
             reader.cal_run_swat(params)
             ```
-
-        Warning:
-            This method is currently under development and not recommended for use.
-
         '''
 
         if params:
@@ -895,7 +891,7 @@ class TxtinoutReader:
                         "name": str,            # Name of the parameter to which the changes will be applied
                         "lower_bound": str      # The lower bound for the parameter
                         "upper_bound": str      # The upper bound for the parameter
-                        "change_type": str,     # (Optional) One of: 'absval' (default), 'abschg', 'pctchg'
+                        "change_type": str,     # One of: 'absval', 'abschg', 'pctchg'
                         "units": Iterable[int],  # (Optional) An optional list of unit IDs to constrain the parameter change.
                             **Unit IDs should be 1-based**, i.e., the first object has ID 1.
                         "conditions": dict[str: list[str]],  # (Optional) A dictionary of conditions to apply to the parameter change.
@@ -947,9 +943,6 @@ class TxtinoutReader:
                 }
             )
             ```
-        Warning:
-            This method is currently under development and not recommended for use.
-
         '''
 
         tmp_path = self.copy_required_files(target_dir=target_dir)
