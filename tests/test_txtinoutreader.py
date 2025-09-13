@@ -3,6 +3,7 @@ import pandas
 import pySWATPlus
 import pytest
 import tempfile
+from pySWATPlus.types import ParamModel
 
 
 @pytest.fixture(scope='class')
@@ -290,7 +291,7 @@ def test_error_run_swat_in_other_dir(
                 print_prt_control={'basin_wb': {'dailyy': False}}
             )
         assert exc_info.value.args[0] == 'Sub-key "dailyy" for key "basin_wb" is not valid'
-    
+
     """
     # error test for subprocess.CalledProcessError
     with tempfile.TemporaryDirectory() as tmp_dir:
@@ -371,3 +372,152 @@ def test_error_time_sim_does_not_exist(
                 end=2020
             )
         assert exc_info.value.args[0] == 'time.sim file does not exist'
+
+
+def test_add_or_remove_calibration_cal_to_file_cio(
+    txtinout_reader
+):
+
+    with tempfile.TemporaryDirectory() as tmp1_dir:
+        # Intialize TxtinOutReader class by target direcotry
+        target_dir = txtinout_reader.copy_required_files(
+            target_dir=tmp1_dir
+        )
+        target_reader = pySWATPlus.TxtinoutReader(
+            path=target_dir
+        )
+
+        file_path = target_reader.root_folder / "file.cio"
+
+        fmt = (
+            f"{'{:<18}'}"  # chg
+            f"{'{:<18}'}"  # cal_parms.cal / null
+            f"{'{:<18}'}"  # calibration.cal
+            f"{'{:<18}'}"  # null
+            f"{'{:<18}'}"  # null
+            f"{'{:<18}'}"  # null
+            f"{'{:<18}'}"  # null
+            f"{'{:<18}'}"  # null
+            f"{'{:<18}'}"  # null
+            f"{'{:<18}'}"  # null
+            f"{'{:<18}'}"  # null
+            f"{'{:<4}'}"   # null
+        )
+
+        # --- Test adding calibration line ---
+        target_reader._add_or_remove_calibration_cal_to_file_cio(add=True)
+        lines = file_path.read_text().splitlines()
+        expected_line = fmt.format(
+            "chg", "cal_parms.cal", "calibration.cal", *["null"] * 9
+        )
+        assert lines[21] == expected_line
+
+        # --- Test removing calibration line ---
+        target_reader._add_or_remove_calibration_cal_to_file_cio(add=False)
+        lines = file_path.read_text().splitlines()
+
+        expected_line = fmt.format(
+            "chg", "null", "calibration.cal", *["null"] * 9
+        )
+        assert lines[21] == expected_line
+
+
+def test_write_calibration_file(
+    txtinout_reader
+):
+    with tempfile.TemporaryDirectory() as tmp1_dir:
+        # Initialize TxtinOutReader class by target directory
+        target_dir = txtinout_reader.copy_required_files(
+            target_dir=tmp1_dir
+        )
+        target_reader = pySWATPlus.TxtinoutReader(
+            path=target_dir
+        )
+
+        par_change = [
+            ParamModel(name="cn2", change_type="pctchg", value=50),
+            ParamModel(name="cn3_swf", change_type="absval", value=0.5),
+            ParamModel(name="ovn", change_type="pctchg", value=50),
+            ParamModel(name="lat_ttime", change_type="absval", value=100),
+            ParamModel(name="latq_co", change_type="absval", value=0.5),
+            ParamModel(name="lat_len", change_type="pctchg", value=50),
+            ParamModel(name="canmx", change_type="absval", value=50),
+            ParamModel(name="esco", change_type="absval", value=0.5),
+            ParamModel(name="epco", change_type="absval", value=0.5),
+
+            ParamModel(name="perco", change_type="absval", value=0.5, conditions={"hsg": ["A"]}),
+            ParamModel(name="perco", change_type="absval", value=0.5, conditions={"hsg": ["B"]}),
+            ParamModel(name="perco", change_type="absval", value=0.5, conditions={"hsg": ["C"]}),
+            ParamModel(name="perco", change_type="absval", value=0.5, conditions={"hsg": ["D"]}),
+
+            ParamModel(name="z", change_type="pctchg", value=20),
+            ParamModel(name="bd", change_type="pctchg", value=50),
+            ParamModel(name="awc", change_type="pctchg", value=100),
+            ParamModel(name="k", change_type="pctchg", value=100),
+
+            ParamModel(name="surlag", change_type="absval", value=10),
+            ParamModel(name="evrch", change_type="absval", value=0.8),
+            ParamModel(name="evlai", change_type="absval", value=5),
+            ParamModel(name="ffcb", change_type="absval", value=0.5),
+
+            ParamModel(name="chn", change_type="absval", value=0.05),
+            ParamModel(name="chk", change_type="absval", value=100),
+
+            ParamModel(name="alpha", change_type="absval", value=0.3, units=list(range(1, 143))),
+            ParamModel(name="bf_max", change_type="absval", value=0.3, units=list(range(1, 143))),
+            ParamModel(name="deep_seep", change_type="absval", value=0.1, units=list(range(1, 143))),
+            ParamModel(name="sp_yld", change_type="absval", value=0.2, units=list(range(1, 143))),
+            ParamModel(name="flo_min", change_type="absval", value=10, units=list(range(1, 143))),
+            ParamModel(name="revap_co", change_type="absval", value=0.1, units=list(range(1, 143))),
+            ParamModel(name="revap_min", change_type="absval", value=5, units=list(range(1, 143))),
+        ]
+
+        # Run the method
+        target_reader._write_calibration_file(par_change)
+
+        # Expected output
+        expected_content = (
+            "Number of parameters:\n"
+            "30\n"
+            "NAME        CHG_TYPE             VAL           CONDS    LYR1    LYR2   YEAR1   YEAR2    DAY1    DAY2 OBJ_TOT\n"
+            "cn2           pctchg            50.0               0       0       0       0       0       0       0       0\n"
+            "cn3_swf       absval             0.5               0       0       0       0       0       0       0       0\n"
+            "ovn           pctchg            50.0               0       0       0       0       0       0       0       0\n"
+            "lat_ttime     absval           100.0               0       0       0       0       0       0       0       0\n"
+            "latq_co       absval             0.5               0       0       0       0       0       0       0       0\n"
+            "lat_len       pctchg            50.0               0       0       0       0       0       0       0       0\n"
+            "canmx         absval            50.0               0       0       0       0       0       0       0       0\n"
+            "esco          absval             0.5               0       0       0       0       0       0       0       0\n"
+            "epco          absval             0.5               0       0       0       0       0       0       0       0\n"
+            "perco         absval             0.5               1       0       0       0       0       0       0       0\n"
+            "hsg                =               0               A\n"
+            "perco         absval             0.5               1       0       0       0       0       0       0       0\n"
+            "hsg                =               0               B\n"
+            "perco         absval             0.5               1       0       0       0       0       0       0       0\n"
+            "hsg                =               0               C\n"
+            "perco         absval             0.5               1       0       0       0       0       0       0       0\n"
+            "hsg                =               0               D\n"
+            "z             pctchg            20.0               0       0       0       0       0       0       0       0\n"
+            "bd            pctchg            50.0               0       0       0       0       0       0       0       0\n"
+            "awc           pctchg           100.0               0       0       0       0       0       0       0       0\n"
+            "k             pctchg           100.0               0       0       0       0       0       0       0       0\n"
+            "surlag        absval            10.0               0       0       0       0       0       0       0       0\n"
+            "evrch         absval             0.8               0       0       0       0       0       0       0       0\n"
+            "evlai         absval             5.0               0       0       0       0       0       0       0       0\n"
+            "ffcb          absval             0.5               0       0       0       0       0       0       0       0\n"
+            "chn           absval            0.05               0       0       0       0       0       0       0       0\n"
+            "chk           absval           100.0               0       0       0       0       0       0       0       0\n"
+            "alpha         absval             0.3               0       0       0       0       0       0       0       2       1    -142\n"
+            "bf_max        absval             0.3               0       0       0       0       0       0       0       2       1    -142\n"
+            "deep_seep     absval             0.1               0       0       0       0       0       0       0       2       1    -142\n"
+            "sp_yld        absval             0.2               0       0       0       0       0       0       0       2       1    -142\n"
+            "flo_min       absval            10.0               0       0       0       0       0       0       0       2       1    -142\n"
+            "revap_co      absval             0.1               0       0       0       0       0       0       0       2       1    -142\n"
+            "revap_min     absval             5.0               0       0       0       0       0       0       0       2       1    -142\n"
+        )
+
+        # Compare file content
+        cal_file = target_reader.root_folder / "calibration.cal"
+        content = cal_file.read_text()
+
+        assert content == expected_content
