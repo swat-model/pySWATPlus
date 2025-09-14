@@ -358,6 +358,10 @@ class TxtinoutReader:
 
         target_dir = utils._ensure_path(target_dir)
 
+        # Enforce that it's a directory, not a file path
+        if target_dir.suffix:
+            raise ValueError(f"`target_dir` must be a directory, not a file path: {target_dir}")
+
         # Create the directory if it does not exist and copy necessary files
         target_dir.mkdir(parents=True, exist_ok=True)
 
@@ -617,7 +621,7 @@ class TxtinoutReader:
 
     def run_swat(
         self,
-        target_dir: str | pathlib.Path,
+        target_dir: typing.Optional[str | pathlib.Path],
         parameters: typing.Optional[ParametersType] = None,
         begin_and_end_year: typing.Optional[tuple[int, int]] = None,
         warmup: typing.Optional[int] = None,
@@ -629,7 +633,8 @@ class TxtinoutReader:
 
         Args:
 
-            target_dir (str or Path): Path to the directory where the simulation will be done.
+            target_dir (str or Path, optional): Path to the directory where the simulation will be done.
+                If None, the simulation runs directly in the current folder.
 
             parameters (ParametersType, optional): Nested dictionary specifying parameter changes.
 
@@ -699,17 +704,21 @@ class TxtinoutReader:
             ```
         '''
 
-        _target_dir = utils._ensure_path(target_dir)
+        if target_dir:
+            _target_dir = utils._ensure_path(target_dir)
 
-        # Resolve to absolute paths
-        if self.root_folder.resolve() == _target_dir.resolve():
-            raise ValueError(
-                "`target_dir` parameter must be different from the existing TxtInOut path!"
-            )
-        tmp_path = self.copy_required_files(target_dir=target_dir)
+            # Resolve to absolute paths
+            if self.root_folder.resolve() == _target_dir.resolve():
+                raise ValueError(
+                    "`target_dir` parameter must be different from the existing TxtInOut path!"
+                )
+            run_path = self.copy_required_files(target_dir=target_dir)
 
-        # Initialize new TxtinoutReader class
-        reader = TxtinoutReader(tmp_path)
+            # Initialize new TxtinoutReader class
+            reader = TxtinoutReader(run_path)
+        else:
+            reader = self
+            run_path = self.root_folder
 
         # Apply SWAT+ configuration changes
         reader._apply_swat_configuration(begin_and_end_year, warmup, print_prt_control)
@@ -727,4 +736,4 @@ class TxtinoutReader:
         # Run simulation
         reader._run_swat()
 
-        return tmp_path
+        return run_path
