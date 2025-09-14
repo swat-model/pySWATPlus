@@ -23,10 +23,6 @@ txtinout_reader = pySWATPlus.TxtinoutReader(
 
 The following sections demonstrate different approaches, including modifying input parameters, running a single simulation, and performing batch processing.
 
-!!! warning "Calibration Warning"
-    The `run_swat` and `run_swat_in_other_dir` functions currently **disable the use of the `calibration.cal` file**.  
-    Calibration via the `calibration.cal` file is still under development.
-
 
 ## A Trial Simulation
 
@@ -134,15 +130,16 @@ Instead of performing each step separately as explained above, you can run a `SW
 
 ```python
 # Configure input parameters
-params = {
-    'hydrology.hyd': {
-        'has_units': False,
-        'esco': {'value': 0.6}
+params = [
+    {
+        "name": "bf_max",
+        "value": 0.3,
+        "change_type": "absval",
     }
-}
+]
 
 # Run SWAT+ simulation from the original `TxtInOut` folder
-txtinout_reader.run_swat_in_other_dir(
+txtinout_reader.run_swat(
     target_dir=r"C:\Users\Username\simulation_folder_2",  # mandatory
     params=params,  # optional
     begin_and_end_year=(2012, 2016),  # optional
@@ -161,25 +158,20 @@ To run multiple SWAT+ simulations in parallel with modified parameters, the foll
 import multiprocessing
 import tempfile
 
-# Define multiple parameter sets
-param_sets = [
+# Define parameter changes
+params = [
     {
-        'hydrology.hyd': {
-            'has_units': False,
-            'esco': [
-                {'value': 0.6, 'change_type': 'absval'}
-            ],
-        }
+        "name": 'perco',
+        "change_type": "absval",
+        "value": 0.5,
+        "conditions": {"hsg": ["A"]}
     },
     {
-        'plants.plt': {
-            'has_units': False,
-            'bm_e': [
-                {'value': 30, 'change_type': 'absval', 'filter_by': 'name == "agrl"'},
-                {'value': 15, 'change_type': 'absval', 'filter_by': 'name == "almd"'},
-            ],
-        }
-    },
+        'name': 'bf_max',
+        "change_type": "absval",
+        "value": 0.3,
+        "units": range(1, 194)
+    }
 ]
 
 # Define the function
@@ -189,7 +181,7 @@ def run_simulation(params):
         reader = pySWATPlus.TxtinoutReader(
             path=txtinout_path
         )
-        output = reader.run_swat_in_other_dir(
+        output = reader.run_swat(
             target_dir=tmp_dir,
             params=params
         )
@@ -200,7 +192,7 @@ def run_simulation(params):
 if __name__ == '__main__':
     # Run simulations in parallel
     with multiprocessing.Pool(processes=2) as pool:
-        results = pool.map(run_simulation, param_sets)
+        results = pool.map(run_simulation, params)
     # Print output directories
     for path in results:
         print("Simulation directory:", path)

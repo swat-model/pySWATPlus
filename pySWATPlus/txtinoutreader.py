@@ -4,7 +4,7 @@ import pathlib
 import typing
 import logging
 from .filereader import FileReader
-from .types import ParamsType, ParamModel
+from .types import ParametersType, ParameterModel
 from . import utils
 from . import validators
 
@@ -376,7 +376,7 @@ class TxtinoutReader:
 
     def _write_calibration_file(
         self,
-        params: list[ParamModel]
+        parameters: list[ParameterModel]
     ) -> None:
         '''
         Writes `calibration.cal` file with parameter changes.
@@ -392,7 +392,7 @@ class TxtinoutReader:
         self._add_or_remove_calibration_cal_to_file_cio(add=True)
 
         # Number of parameters (number of rows in the DataFrame)
-        num_parameters = len(params)
+        num_parameters = len(parameters)
 
         # Column widths for right-alignment
         col_widths = {
@@ -410,7 +410,7 @@ class TxtinoutReader:
         }
 
         calibration_cal_rows = []
-        for change in params:
+        for change in parameters:
             units = change.units
 
             # Convert to compact representation
@@ -618,7 +618,7 @@ class TxtinoutReader:
     def run_swat(
         self,
         target_dir: str | pathlib.Path,
-        params: typing.Optional[ParamsType] = None,
+        parameters: typing.Optional[ParametersType] = None,
         begin_and_end_year: typing.Optional[tuple[int, int]] = None,
         warmup: typing.Optional[int] = None,
         print_prt_control: typing.Optional[dict[str, dict[str, bool]]] = None,
@@ -631,12 +631,12 @@ class TxtinoutReader:
 
             target_dir (str or Path): Path to the directory where the simulation will be done.
 
-            params (ParamsType, optional): Nested dictionary specifying parameter changes.
+            parameters (ParametersType, optional): Nested dictionary specifying parameter changes.
 
-                The `params` dictionary should follow this structure:
+                The `parameters` dictionary should follow this structure:
 
                 ```python
-                params = [
+                parameters = [
                     {
                         "name": str,             # Name of the parameter to which the changes will be applied
                         "value": float           # The value to apply to the parameter   
@@ -675,11 +675,17 @@ class TxtinoutReader:
             ```python
             simulation = pySWATPlus.TxtinoutReader.run_swat(
                 target_dir="C:\\\\Users\\\\Username\\\\simulation_folder",
-                params = [
+                parameters = [
                     {
-                        "name": "bf_max",
-                        "value": 0.3,
+                        "name": 'perco',
                         "change_type": "absval",
+                        "value": 0.5,
+                        "conditions": {"hsg": ["A"]}
+                    },
+                    {
+                        'name': 'bf_max',
+                        "change_type": "absval",
+                        "value": 0.3,
                         "units": range(1, 194)
                     }
                 ]
@@ -708,8 +714,8 @@ class TxtinoutReader:
         # Apply SWAT+ configuration changes
         reader._apply_swat_configuration(begin_and_end_year, warmup, print_prt_control)
 
-        if params:
-            _params = [ParamModel(**param) for param in params]
+        if parameters:
+            _params = [ParameterModel(**param) for param in parameters]
 
             validators._validate_cal_parameters(reader.root_folder, _params)
 

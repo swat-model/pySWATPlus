@@ -3,7 +3,7 @@ import time
 import functools
 import typing
 import concurrent.futures
-from .types import ParamsBoundedType, ParamsType, ParamBoundedModel
+from .types import ParametersBoundedType, ParametersType, ParameterBoundedModel
 from .base_sensitivity_analyser import BaseSensitivityAnalyzer
 import pathlib
 from . import utils
@@ -28,7 +28,7 @@ class SensitivityAnalyzer(BaseSensitivityAnalyzer):
         var_names: list[str],
         simulation_folder: pathlib.Path,
         txtinout_folder: pathlib.Path,
-        params: list[ParamBoundedModel],
+        params: list[ParameterBoundedModel],
         simulation_data: dict[str, dict[str, typing.Any]],
         clean_setup: bool
     ) -> dict[str, typing.Any]:
@@ -41,7 +41,7 @@ class SensitivityAnalyzer(BaseSensitivityAnalyzer):
         }
 
         # create 'params' dictionary with assigned value
-        params_sim: ParamsType = []
+        params_sim: ParametersType = []
 
         for param in params:
             name = param.name
@@ -73,7 +73,7 @@ class SensitivityAnalyzer(BaseSensitivityAnalyzer):
         # Run SWAT+ model in other directory
         txtinout_reader.run_swat(
             target_dir=dir_path,
-            params=params_sim
+            parameters=params_sim
         )
 
         # Extract simulated data
@@ -89,7 +89,7 @@ class SensitivityAnalyzer(BaseSensitivityAnalyzer):
     @classmethod
     def simulation_by_sobol_sample(
         cls,
-        params: ParamsBoundedType,
+        params: ParametersBoundedType,
         sample_number: int,
         simulation_folder: str | pathlib.Path,
         txtinout_folder: str | pathlib.Path,
@@ -117,7 +117,7 @@ class SensitivityAnalyzer(BaseSensitivityAnalyzer):
 
         Args:
 
-            params (ParamsBoundedType):  Nested dictionary defining the parameter modifications to apply during the simulations.
+            params (ParametersBoundedType):  Nested dictionary defining the parameter modifications to apply during the simulations.
                 Each parameter should include a the lower and upper bounds, and the parameter value
                 is dynamically assigned with the corresponding sampled value during execution.
                 ```python
@@ -231,7 +231,7 @@ class SensitivityAnalyzer(BaseSensitivityAnalyzer):
         _txtinout_folder = utils._ensure_path(txtinout_folder)
         _simulation_folder = utils._ensure_path(simulation_folder)
 
-        _params = [ParamBoundedModel(**param) for param in params]
+        _params = [ParameterBoundedModel(**param) for param in params]
         validators._validate_cal_parameters(_txtinout_folder, _params)
 
         var_names = []

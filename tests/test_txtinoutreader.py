@@ -3,7 +3,7 @@ import pandas
 import pySWATPlus
 import pytest
 import tempfile
-from pySWATPlus.types import ParamModel
+from pySWATPlus.types import ParameterModel
 
 
 @pytest.fixture(scope='class')
@@ -309,7 +309,7 @@ def test_error_run_swat(
         with pytest.raises(Exception) as exc_info:
             txtinout_reader.run_swat(
                 target_dir=tmp_dir,
-                params={
+                parameters={
                     'plants.plt': {
                         'has_units': False,
                         'bm_e': {'value': 200, 'filter_by': 'name == "agrl"'}
@@ -446,41 +446,41 @@ def test_write_calibration_file(
         )
 
         par_change = [
-            ParamModel(name="cn2", change_type="pctchg", value=50),
-            ParamModel(name="cn3_swf", change_type="absval", value=0.5),
-            ParamModel(name="ovn", change_type="pctchg", value=50),
-            ParamModel(name="lat_ttime", change_type="absval", value=100),
-            ParamModel(name="latq_co", change_type="absval", value=0.5),
-            ParamModel(name="lat_len", change_type="pctchg", value=50),
-            ParamModel(name="canmx", change_type="absval", value=50),
-            ParamModel(name="esco", change_type="absval", value=0.5),
-            ParamModel(name="epco", change_type="absval", value=0.5),
+            ParameterModel(name="cn2", change_type="pctchg", value=50),
+            ParameterModel(name="cn3_swf", change_type="absval", value=0.5),
+            ParameterModel(name="ovn", change_type="pctchg", value=50),
+            ParameterModel(name="lat_ttime", change_type="absval", value=100),
+            ParameterModel(name="latq_co", change_type="absval", value=0.5),
+            ParameterModel(name="lat_len", change_type="pctchg", value=50),
+            ParameterModel(name="canmx", change_type="absval", value=50),
+            ParameterModel(name="esco", change_type="absval", value=0.5),
+            ParameterModel(name="epco", change_type="absval", value=0.5),
 
-            ParamModel(name="perco", change_type="absval", value=0.5, conditions={"hsg": ["A"]}),
-            ParamModel(name="perco", change_type="absval", value=0.5, conditions={"hsg": ["B"]}),
-            ParamModel(name="perco", change_type="absval", value=0.5, conditions={"hsg": ["C"]}),
-            ParamModel(name="perco", change_type="absval", value=0.5, conditions={"hsg": ["D"]}),
+            ParameterModel(name="perco", change_type="absval", value=0.5, conditions={"hsg": ["A"]}),
+            ParameterModel(name="perco", change_type="absval", value=0.5, conditions={"hsg": ["B"]}),
+            ParameterModel(name="perco", change_type="absval", value=0.5, conditions={"hsg": ["C"]}),
+            ParameterModel(name="perco", change_type="absval", value=0.5, conditions={"hsg": ["D"]}),
 
-            ParamModel(name="z", change_type="pctchg", value=20),
-            ParamModel(name="bd", change_type="pctchg", value=50),
-            ParamModel(name="awc", change_type="pctchg", value=100),
-            ParamModel(name="k", change_type="pctchg", value=100),
+            ParameterModel(name="z", change_type="pctchg", value=20),
+            ParameterModel(name="bd", change_type="pctchg", value=50),
+            ParameterModel(name="awc", change_type="pctchg", value=100),
+            ParameterModel(name="k", change_type="pctchg", value=100),
 
-            ParamModel(name="surlag", change_type="absval", value=10),
-            ParamModel(name="evrch", change_type="absval", value=0.8),
-            ParamModel(name="evlai", change_type="absval", value=5),
-            ParamModel(name="ffcb", change_type="absval", value=0.5),
+            ParameterModel(name="surlag", change_type="absval", value=10),
+            ParameterModel(name="evrch", change_type="absval", value=0.8),
+            ParameterModel(name="evlai", change_type="absval", value=5),
+            ParameterModel(name="ffcb", change_type="absval", value=0.5),
 
-            ParamModel(name="chn", change_type="absval", value=0.05),
-            ParamModel(name="chk", change_type="absval", value=100),
+            ParameterModel(name="chn", change_type="absval", value=0.05),
+            ParameterModel(name="chk", change_type="absval", value=100),
 
-            ParamModel(name="alpha", change_type="absval", value=0.3, units=list(range(1, 143))),
-            ParamModel(name="bf_max", change_type="absval", value=0.3, units=list(range(1, 143))),
-            ParamModel(name="deep_seep", change_type="absval", value=0.1, units=list(range(1, 143))),
-            ParamModel(name="sp_yld", change_type="absval", value=0.2, units=list(range(1, 143))),
-            ParamModel(name="flo_min", change_type="absval", value=10, units=list(range(1, 143))),
-            ParamModel(name="revap_co", change_type="absval", value=0.1, units=list(range(1, 143))),
-            ParamModel(name="revap_min", change_type="absval", value=5, units=list(range(1, 143))),
+            ParameterModel(name="alpha", change_type="absval", value=0.3, units=list(range(1, 143))),
+            ParameterModel(name="bf_max", change_type="absval", value=0.3, units=list(range(1, 143))),
+            ParameterModel(name="deep_seep", change_type="absval", value=0.1, units=list(range(1, 143))),
+            ParameterModel(name="sp_yld", change_type="absval", value=0.2, units=list(range(1, 143))),
+            ParameterModel(name="flo_min", change_type="absval", value=10, units=list(range(1, 143))),
+            ParameterModel(name="revap_co", change_type="absval", value=0.1, units=list(range(1, 143))),
+            ParameterModel(name="revap_min", change_type="absval", value=5, units=list(range(1, 143))),
         ]
 
         # Run the method

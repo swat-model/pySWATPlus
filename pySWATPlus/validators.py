@@ -1,4 +1,4 @@
-from .types import ParamModel, ParamBoundedModel
+from .types import ParameterModel, ParameterBoundedModel
 import pandas
 import pathlib
 from datetime import datetime
@@ -17,7 +17,7 @@ def _validate_date_str(
         raise ValueError(f'Invalid date format: "{date_str}". Expected YYYY-MM-DD.')
 
 
-def _validate_units(param_change: ParamModel, txtinout_path: pathlib.Path) -> None:
+def _validate_units(param_change: ParameterModel, txtinout_path: pathlib.Path) -> None:
     '''
     Validate units for a given parameter change against calibration parameters.
     '''
@@ -79,7 +79,7 @@ def _validate_units(param_change: ParamModel, txtinout_path: pathlib.Path) -> No
         )
 
 
-def _validate_conditions(param_change: ParamModel, txtinout_path: pathlib.Path) -> None:
+def _validate_conditions(param_change: ParameterModel, txtinout_path: pathlib.Path) -> None:
     '''
     Validate conditions for a given parameter change against calibration parameters.
     '''
@@ -124,7 +124,7 @@ def _validate_conditions(param_change: ParamModel, txtinout_path: pathlib.Path) 
                 )
 
 
-def _validate_conditions_and_units(params: list[ParamModel], txtinout_path: pathlib.Path) -> None:
+def _validate_conditions_and_units(parameters: list[ParameterModel], txtinout_path: pathlib.Path) -> None:
     '''
     This function checks:
     - That the parameter exists in the calibration parameters.
@@ -132,7 +132,7 @@ def _validate_conditions_and_units(params: list[ParamModel], txtinout_path: path
     - That specified units correspond to valid IDs in the relevant SWAT+ input files.
     - That conditions (if applicable) exist and are valid.
     '''
-    for param_change in params:
+    for param_change in parameters:
         try:
             _validate_conditions(param_change, txtinout_path)
             _validate_units(param_change, txtinout_path)
@@ -146,7 +146,7 @@ def _validate_conditions_and_units(params: list[ParamModel], txtinout_path: path
 
 def _validate_cal_parameters(
     txtinout_folder: pathlib.Path,
-    params: list[ParamBoundedModel] | list[ParamModel]
+    parameters: list[ParameterBoundedModel] | list[ParameterModel]
 ) -> None:
     '''
     Check if parameters exists in cal_parms.cal
@@ -163,6 +163,6 @@ def _validate_cal_parameters(
         sep=r'\s+'
     )
 
-    for param in params:
+    for param in parameters:
         if param.name not in cal_parms_df['name'].values:
             raise ValueError(f"The parameter '{param.name}' is not in cal_parms.cal")
