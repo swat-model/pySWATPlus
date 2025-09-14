@@ -151,7 +151,7 @@ class BaseSensitivityAnalyzer(ABC):
     @abstractmethod
     def simulation_by_sobol_sample(
         cls,
-        params: typing.Any,
+        parameters: typing.Any,
         sample_number: int,
         simulation_folder: str | pathlib.Path,
         txtinout_folder: str | pathlib.Path,

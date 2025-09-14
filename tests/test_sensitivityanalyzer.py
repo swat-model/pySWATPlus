@@ -51,12 +51,14 @@ def test_simulation_by_sobol_sample():
             warmup=1
         )
         # Sensitivity 'params' dictionary to run SWAT+ model
-        params = {
-            'hydrology.hyd': {
-                'has_units': False,
-                'esco': {'lower_bound': 0, 'upper_bound': 1}
+        params = [
+            {
+                'name': 'esco',
+                'lower_bound': 0,
+                'upper_bound': 1,
+                'change_type': 'absval'
             }
-        }
+        ]
         # Sensitivity simulation_data dictionary to extract data
         simulation_data = {
             'channel_sdmorph_mon.txt': {
@@ -74,7 +76,7 @@ def test_simulation_by_sobol_sample():
         }
         with tempfile.TemporaryDirectory() as tmp2_dir:
             output = pySWATPlus.SensitivityAnalyzer.simulation_by_sobol_sample(
-                params=params,
+                parameters=params,
                 sample_number=1,
                 simulation_folder=tmp2_dir,
                 txtinout_folder=tmp1_dir,
@@ -103,12 +105,15 @@ def test_error_simulation_by_sobol_sample():
     # set up TxtInOut folder path
     txtinout_folder = os.path.join(os.path.dirname(__file__), 'TxtInOut')
     # Sensitivity 'params' dictionary to run SWAT+ model
-    params = {
-        'hydrology.hyd': {
-            'has_units': False,
-            'esco': {'lower_bound': 0, 'upper_bound': 1}
+    params = [
+        {
+            'name': 'esco',
+            'lower_bound': 0,
+            'upper_bound': 1,
+            'change_type': 'absval'
         }
-    }
+    ]
+
     # Sensitivity simulation_data dictionary to extract data
     simulation_data = {
         'channel_sd_yr.txt': {
@@ -120,7 +125,7 @@ def test_error_simulation_by_sobol_sample():
     # error test for invalid simulation folder path
     with pytest.raises(Exception) as exc_info:
         pySWATPlus.SensitivityAnalyzer.simulation_by_sobol_sample(
-            params,
+            parameters=params,
             sample_number=1,
             simulation_folder='nonexist_folder',
             txtinout_folder=txtinout_folder,
@@ -136,7 +141,7 @@ def test_error_simulation_by_sobol_sample():
         )
         with pytest.raises(Exception) as exc_info:
             pySWATPlus.SensitivityAnalyzer.simulation_by_sobol_sample(
-                params=params,
+                parameters=params,
                 sample_number=1,
                 simulation_folder=tmp_dir,
                 txtinout_folder=txtinout_folder,
@@ -148,7 +153,7 @@ def test_error_simulation_by_sobol_sample():
         # error test for invalid simulation data type
         with pytest.raises(Exception) as exc_info:
             pySWATPlus.SensitivityAnalyzer.simulation_by_sobol_sample(
-                params=params,
+                parameters=params,
                 sample_number=1,
                 simulation_folder=tmp_dir,
                 txtinout_folder=txtinout_folder,
@@ -158,7 +163,7 @@ def test_error_simulation_by_sobol_sample():
         # error test for invalid simulation data type
         with pytest.raises(Exception) as exc_info:
             pySWATPlus.SensitivityAnalyzer.simulation_by_sobol_sample(
-                params=params,
+                parameters=params,
                 sample_number=1,
                 simulation_folder=tmp_dir,
                 txtinout_folder=txtinout_folder,
@@ -170,7 +175,7 @@ def test_error_simulation_by_sobol_sample():
         # error test for invalid simulation data type
         with pytest.raises(Exception) as exc_info:
             pySWATPlus.SensitivityAnalyzer.simulation_by_sobol_sample(
-                params=params,
+                parameters=params,
                 sample_number=1,
                 simulation_folder=tmp_dir,
                 txtinout_folder=txtinout_folder,
@@ -188,7 +193,7 @@ def test_error_simulation_by_sobol_sample():
         ]
         with pytest.raises(Exception) as exc_info:
             pySWATPlus.SensitivityAnalyzer.simulation_by_sobol_sample(
-                params=params,
+                parameters=params,
                 sample_number=1,
                 simulation_folder=tmp_dir,
                 txtinout_folder=txtinout_folder,
@@ -200,23 +205,6 @@ def test_error_simulation_by_sobol_sample():
                 }
             )
         assert exc_info.value.args[0] == f'Invalid key "start_datee" for "channel_sd_yr.txt" in simulation_data. Expected one of: {sim_validkeys}'
-
-        # error test for invalid sensitive parameter an their file mapping
-
-        with pytest.raises(Exception) as exc_info:
-            pySWATPlus.SensitivityAnalyzer.simulation_by_sobol_sample(
-                params={
-                    'topography.hyd': {
-                        'has_units': False,
-                        'esco': {'lower_bound': 0, 'upper_bound': 1}
-                    }
-                },
-                sample_number=1,
-                simulation_folder=tmp_dir,
-                txtinout_folder=txtinout_folder,
-                simulation_data=simulation_data
-            )
-        assert exc_info.value.args[0] == 'Parameter "esco" not found in columns of the file "topography.hyd"'
 
 
 def test_simulated_timeseries_df():

@@ -89,7 +89,7 @@ class SensitivityAnalyzer(BaseSensitivityAnalyzer):
     @classmethod
     def simulation_by_sobol_sample(
         cls,
-        params: ParametersBoundedType,
+        parameters: ParametersBoundedType,
         sample_number: int,
         simulation_folder: str | pathlib.Path,
         txtinout_folder: str | pathlib.Path,
@@ -117,11 +117,11 @@ class SensitivityAnalyzer(BaseSensitivityAnalyzer):
 
         Args:
 
-            params (ParametersBoundedType):  Nested dictionary defining the parameter modifications to apply during the simulations.
+            parameters (ParametersBoundedType):  Nested dictionary defining the parameter modifications to apply during the simulations.
                 Each parameter should include a the lower and upper bounds, and the parameter value
                 is dynamically assigned with the corresponding sampled value during execution.
                 ```python
-                params = {
+                parameters = {
                     "bf_max": [{
                         "change_type": "absval",
                         "lower_bound": 0.2,
@@ -231,7 +231,7 @@ class SensitivityAnalyzer(BaseSensitivityAnalyzer):
         _txtinout_folder = utils._ensure_path(txtinout_folder)
         _simulation_folder = utils._ensure_path(simulation_folder)
 
-        _params = [ParameterBoundedModel(**param) for param in params]
+        _params = [ParameterBoundedModel(**param) for param in parameters]
         validators._validate_cal_parameters(_txtinout_folder, _params)
 
         var_names = []
