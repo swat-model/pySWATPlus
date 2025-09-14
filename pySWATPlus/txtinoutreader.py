@@ -622,7 +622,7 @@ class TxtinoutReader:
         begin_and_end_year: typing.Optional[tuple[int, int]] = None,
         warmup: typing.Optional[int] = None,
         print_prt_control: typing.Optional[dict[str, dict[str, bool]]] = None,
-        skip_units_and_conditions_validation: bool = False
+        skip_validation: bool = False
     ) -> pathlib.Path:
         '''
         Run the SWAT+ simulation with optional parameter changes.
@@ -665,7 +665,7 @@ class TxtinoutReader:
                 - `yearly`: Output aggregated for each year.
                 - `avann`: Average annual output over the entire simulation period.
 
-            skip_units_and_conditions_validation (bool): If `True`, skip validation of units and conditions in parameter changes.
+            skip_validation (bool): If `True`, skip validation of units and conditions in parameter changes.
 
 
         Returns:
@@ -719,7 +719,7 @@ class TxtinoutReader:
 
             validators._validate_cal_parameters(reader.root_folder, _params)
 
-            if not skip_units_and_conditions_validation:
+            if not skip_validation:
                 validators._validate_conditions_and_units(_params, reader.root_folder)
 
             reader._write_calibration_file(_params)
