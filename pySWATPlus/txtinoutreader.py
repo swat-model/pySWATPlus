@@ -7,6 +7,7 @@ from .filereader import FileReader
 from .types import ParametersType, ParameterModel
 from . import utils
 from . import validators
+from datetime import date
 
 logger = logging.getLogger(__name__)
 
@@ -169,36 +170,45 @@ class TxtinoutReader:
         with open(print_prt_path, 'w', newline='') as file:
             file.write(new_print_prt)
 
-    def set_begin_and_end_year(
+    def set_begin_and_end_date(
         self,
-        begin: int,
-        end: int
+        begin_date: date,
+        end_date: date,
+        step: typing.Optional[int] = 0
     ) -> None:
         '''
         Modify the simulation period by updating
-        the begin and end years in the `time.sim` file.
+        the begin and end dates in the `time.sim` file.
 
         Args:
-            begin (int): Beginning year of the simulation in YYYY format (e.g., 2010).
-            end (int): Ending year of the simulation in YYYY format (e.g., 2016).
-
-        Raises:
-            ValueError: If the begin year is greater than or equal to the end year.
+            begin_date (date): Beginning date of the simulation.
+            end_date (date): Ending date of the simulation.
+            step (int, optional): Timestep of the simulation.
+                0 = daily
+                1 = increment (12 hrs)
+                24 = hourly
+                96 = 15 mins
+                1440 = minute
         '''
+        if not isinstance(begin_date, date) or not isinstance(end_date, date):
+            raise TypeError("begin_date and end_date must be datetime.date objects")
 
-        year_dict = {
-            'begin': begin,
-            'end': end
-        }
+        if begin_date >= end_date:
+            raise ValueError("begin_date must be earlier than end_date")
 
-        for key, val in year_dict.items():
-            if not isinstance(val, int):
-                raise TypeError(f'"{key}" year must be an integer value')
+        if not isinstance(step, int):
+            raise TypeError("step must be an integer")
+        valid_steps = [0, 1, 24, 96, 1440]
+        if step not in valid_steps:
+            raise ValueError(f"Invalid step: {step}. Must be one of {valid_steps}")
 
-        if begin >= end:
-            raise ValueError('begin year must be less than end year')
+        # Extract years and Julian days
+        begin_day = begin_date.timetuple().tm_yday
+        begin_year = begin_date.year
+        end_day = end_date.timetuple().tm_yday
+        end_year = end_date.year
 
-        nth_line = 3
+        nth_line = 3  # line in time.sim file to modify
 
         time_sim_path = self.root_folder / 'time.sim'
 
@@ -210,14 +220,15 @@ class TxtinoutReader:
         with open(time_sim_path, 'r') as file:
             lines = file.readlines()
 
-        year_line = lines[nth_line - 1]
+        # Split existing line
+        elements = lines[2].split()
 
-        # Split the input string by spaces
-        elements = year_line.split()
-
-        # insert years
-        elements[1] = str(begin)
-        elements[3] = str(end)
+        # Update values
+        elements[0] = str(begin_day)
+        elements[1] = str(begin_year)
+        elements[2] = str(end_day)
+        elements[3] = str(end_year)
+        elements[4] = str(step)
 
         # Reconstruct the result string while maintaining spaces
         result_string = '{: >8} {: >10} {: >10} {: >10} {: >10} \n'.format(*elements)
@@ -525,7 +536,7 @@ class TxtinoutReader:
 
     def _apply_swat_configuration(
         self,
-        begin_and_end_year: typing.Optional[tuple[int, int]] = None,
+        begin_and_end_date: typing.Optional[dict[str, typing.Any]] = None,
         warmup: typing.Optional[int] = None,
         print_prt_control: typing.Optional[dict[str, dict[str, bool]]] = None
     ) -> None:
@@ -533,16 +544,11 @@ class TxtinoutReader:
         Sets begin and end year for the simulation, the warm-up period, and toggles the elements in print.prt file
         '''
         # Set simulation range time
-        if begin_and_end_year is not None:
-            if not isinstance(begin_and_end_year, tuple):
-                raise TypeError('begin_and_end_year must be a tuple')
-            if len(begin_and_end_year) != 2:
-                raise ValueError('begin_and_end_year must contain exactly two elements')
-            begin, end = begin_and_end_year
-            self.set_begin_and_end_year(
-                begin=begin,
-                end=end
-            )
+        if begin_and_end_date is not None:
+            if not isinstance(begin_and_end_date, dict):
+                raise TypeError('begin_and_end_date must be a dictionary')
+
+            self.set_begin_and_end_date(**begin_and_end_date)
 
         # Set warmup period
         if warmup is not None:
@@ -623,7 +629,7 @@ class TxtinoutReader:
         self,
         target_dir: typing.Optional[str | pathlib.Path],
         parameters: typing.Optional[ParametersType] = None,
-        begin_and_end_year: typing.Optional[tuple[int, int]] = None,
+        begin_and_end_date: typing.Optional[dict[str, typing.Any]] = None,
         warmup: typing.Optional[int] = None,
         print_prt_control: typing.Optional[dict[str, dict[str, bool]]] = None,
         skip_validation: bool = False
@@ -654,7 +660,18 @@ class TxtinoutReader:
                 ]
                 ```
 
-            begin_and_end_year (tuple[int, int]): A tuple of begin and end years of the simulation in YYYY format. For example, (2012, 2016).
+            begin_and_end_date (dict, optional): Dictionary defining the simulation period (and optionally timestep).
+                Must contain the following keys:
+
+                - `begin_date` (date): Start date of the simulation.
+                - `end_date` (date): End date of the simulation.
+                - `step` (int, optional): Timestep of the simulation. Defaults to `0` (daily) if not provided.
+                    Allowed values:
+                    - `0` = daily
+                    - `1` = 12-hour increments
+                    - `24` = hourly
+                    - `96` = 15-minute increments
+                    - `1440` = minute
 
             warmup (int): A positive integer representing the number of warm-up years (e.g., 1).
 
@@ -694,7 +711,11 @@ class TxtinoutReader:
                         "units": range(1, 194)
                     }
                 ]
-                begin_and_end_year=(2012, 2016),
+                begin_and_end_date={
+                    "begin_date": date(2012, 1, 1),
+                    "end_date": date(2016, 12, 31)
+                    # step defaults to 0 (daily)
+                },
                 warmup=1,
                 print_prt_control = {
                     'channel_sd': {'daily': False},
@@ -721,7 +742,7 @@ class TxtinoutReader:
             run_path = self.root_folder
 
         # Apply SWAT+ configuration changes
-        reader._apply_swat_configuration(begin_and_end_year, warmup, print_prt_control)
+        reader._apply_swat_configuration(begin_and_end_date, warmup, print_prt_control)
 
         if parameters:
             _params = [ParameterModel(**param) for param in parameters]

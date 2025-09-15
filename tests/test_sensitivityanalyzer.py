@@ -3,6 +3,7 @@ import shutil
 import pySWATPlus
 import pytest
 import tempfile
+from datetime import date
 
 
 @pytest.fixture(scope='class')
@@ -42,9 +43,10 @@ def test_simulation_by_sobol_sample():
             avann=True
         )
         # Set begin and end year
-        target_reader.set_begin_and_end_year(
-            begin=2010,
-            end=2012
+        target_reader.set_begin_and_end_date(
+            begin_date=date(2010, 1, 1),
+            end_date=date(2012, 12, 31),
+            step=0  # optional, defaults to daily
         )
         # Set warmup year
         target_reader.set_warmup_year(

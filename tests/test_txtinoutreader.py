@@ -4,6 +4,7 @@ import pySWATPlus
 import pytest
 import tempfile
 from pySWATPlus.types import ParameterModel
+from datetime import date
 
 
 @pytest.fixture(scope='class')
@@ -58,7 +59,9 @@ def test_reader_error(
             # pass test for run SWAT+ in other directory
             target_dir = target_reader.run_swat(
                 target_dir=tmp2_dir,
-                begin_and_end_year=(2010, 2012),
+                begin_and_end_date={
+                    "begin_date": date(2010, 1, 1), "end_date": date(2012, 1, 1)
+                },
                 warmup=1,
                 print_prt_control={'channel_sd': {'daily': False}}
             )
@@ -189,42 +192,87 @@ def test_run_swat_dir_in_same_dir(
     assert "`target_dir` parameter must be different from the existing TxtInOut path!" == exc_info.value.args[0]
 
 
-def test_error_set_begin_and_end_year(
-    txtinout_reader
-):
-
-    # error test for float value in begin and end years
-    with pytest.raises(Exception) as exc_info:
-        txtinout_reader.set_begin_and_end_year(
-            begin=2012.0,
-            end=2016
+def test_error_set_begin_and_end_date(txtinout_reader):
+    # --- error: begin_date is not a date object ---
+    with pytest.raises(TypeError) as exc_info:
+        txtinout_reader.set_begin_and_end_date(
+            begin_date="2012-01-01",  # string instead of date
+            end_date=date(2016, 1, 1)
         )
-    assert exc_info.value.args[0] == '"begin" year must be an integer value'
-    # error test for begin year is greater than end year
-    with pytest.raises(Exception) as exc_info:
-        txtinout_reader.set_begin_and_end_year(
-            begin=2016,
-            end=2012
+    assert exc_info.value.args[0] == "begin_date and end_date must be datetime.date objects"
+
+    # --- error: end_date is not a date object ---
+    with pytest.raises(TypeError) as exc_info:
+        txtinout_reader.set_begin_and_end_date(
+            begin_date=date(2012, 1, 1),
+            end_date="2016-01-01"  # string instead of date
         )
-    assert exc_info.value.args[0] == 'begin year must be less than end year'
+    assert exc_info.value.args[0] == "begin_date and end_date must be datetime.date objects"
+
+    # --- error: begin_date >= end_date ---
+    with pytest.raises(ValueError) as exc_info:
+        txtinout_reader.set_begin_and_end_date(
+            begin_date=date(2016, 1, 1),
+            end_date=date(2012, 1, 1)
+        )
+    assert exc_info.value.args[0] == "begin_date must be earlier than end_date"
+
+    # --- error: step is not an integer ---
+    with pytest.raises(TypeError) as exc_info:
+        txtinout_reader.set_begin_and_end_date(
+            begin_date=date(2012, 1, 1),
+            end_date=date(2016, 1, 1),
+            step="daily"  # string instead of int
+        )
+    assert exc_info.value.args[0] == "step must be an integer"
+
+    # --- error: step is invalid ---
+    with pytest.raises(ValueError) as exc_info:
+        txtinout_reader.set_begin_and_end_date(
+            begin_date=date(2012, 1, 1),
+            end_date=date(2016, 1, 1),
+            step=7  # not in {0,1,24,96,1440}
+        )
+    assert exc_info.value.args[0] == "Invalid step: 7. Must be one of [0, 1, 24, 96, 1440]"
 
 
-def test_error_set_warmup_year(
-    txtinout_reader
-):
+def test_set_begin_and_end_date_updates_time_sim(txtinout_reader):
+    """
+    Test that set_begin_and_end_date correctly updates line 3 in time.sim
+    with proper year and Julian day values, formatted correctly.
+    """
 
-    # error test for float value in warmup years
-    with pytest.raises(Exception) as exc_info:
-        txtinout_reader.set_warmup_year(
-            warmup=1.0
+    with tempfile.TemporaryDirectory() as tmp_dir:
+
+        target_dir = txtinout_reader.copy_required_files(tmp_dir)
+        target_reader = pySWATPlus.TxtinoutReader(target_dir)
+
+        # Call the function
+        begin_date = date(2010, 3, 15)  # March 15, 2010
+        end_date = date(2012, 10, 20)   # Oct 20, 2012
+        step = 0
+
+        target_reader.set_begin_and_end_date(
+            begin_date=begin_date,
+            end_date=end_date,
+            step=step
         )
-    assert exc_info.value.args[0] == 'warmup must be an integer value'
-    # error test for warm-up year is equal to 0
-    with pytest.raises(Exception) as exc_info:
-        txtinout_reader.set_warmup_year(
-            warmup=0
-        )
-    assert exc_info.value.args[0] == 'warmup must be a positive integer'
+
+        # Calculate expected values
+        begin_day = begin_date.timetuple().tm_yday
+        begin_year = begin_date.year
+        end_day = end_date.timetuple().tm_yday
+        end_year = end_date.year
+
+        expected_elements = [str(begin_day), str(begin_year), str(end_day), str(end_year), str(step)]
+        expected_line = '{: >8} {: >10} {: >10} {: >10} {: >10} \n'.format(*expected_elements)
+
+        # Read the file again
+        with open(target_dir / 'time.sim', 'r') as f:
+            lines = f.readlines()
+
+        # Check line 3
+        assert lines[2] == expected_line, f"Expected:\n{expected_line}\nGot:\n{lines[2]}"
 
 
 def test_error_run_swat(
@@ -244,20 +292,19 @@ def test_error_run_swat(
         with pytest.raises(Exception) as exc_info:
             txtinout_reader.run_swat(
                 target_dir=tmp_dir,
-                begin_and_end_year=[]
+                begin_and_end_date=[]
             )
-        assert exc_info.value.args[0] == 'begin_and_end_year must be a tuple'
+        assert exc_info.value.args[0] == "begin_and_end_date must be a dictionary"
 
     # error test for invalid begin and end years tuple length
     with tempfile.TemporaryDirectory() as tmp_dir:
         with pytest.raises(Exception) as exc_info:
             txtinout_reader.run_swat(
                 target_dir=tmp_dir,
-                begin_and_end_year=(1, 2, 3)
+                begin_and_end_date={"begin_date": date(2010, 1, 1)}  # missing end_date
             )
 
-        assert exc_info.value.args[0] == 'begin_and_end_year must contain exactly two elements'
-
+        assert "missing 1 required positional argument" in exc_info.value.args[0]
     # error test for invalid print_prt_control type
     with tempfile.TemporaryDirectory() as tmp_dir:
         with pytest.raises(Exception) as exc_info:
@@ -378,10 +425,12 @@ def test_error_time_sim_does_not_exist(
             time_sim_path.unlink()
 
         with pytest.raises(Exception) as exc_info:
-            target_reader.set_begin_and_end_year(
-                begin=2000,
-                end=2020
+            target_reader.set_begin_and_end_date(
+                begin_date=date(2000, 1, 1),
+                end_date=date(2020, 12, 31),
+                step=0  # optional, defaults to daily
             )
+
         assert exc_info.value.args[0] == 'time.sim file does not exist'
 
 
