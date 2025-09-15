@@ -9,10 +9,10 @@
       
       
       
-        <link rel="prev" href="../performance_metrics/">
+        <link rel="prev" href="../sensitivityanalyzer/">
       
       
-        <link rel="next" href="../../CONTRIBUTING/">
+        <link rel="next" href="../types/">
       
       
       <link rel="icon" href="../../assets/images/favicon.png">
@@ -20,7 +20,7 @@
     
     
       
-        <title>pySWATPlus.types - pySWATPlus</title>
+        <title>PerformanceMetrics - pySWATPlus</title>
       
     
     
@@ -74,7 +74,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#pySWATPlus.types.ParametersType" class="md-skip">
+        <a href="#pySWATPlus.PerformanceMetrics" class="md-skip">
           Skip to content
         </a>
       
@@ -108,7 +108,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              pySWATPlus.types
+              PerformanceMetrics
             
           </span>
         </div>
@@ -551,29 +551,6 @@
                 
   
   
-  
-  
-    <li class="md-nav__item">
-      <a href="../performance_metrics/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    PerformanceMetrics
-    
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
     
   
   
@@ -589,7 +566,7 @@
   
   
   <span class="md-ellipsis">
-    pySWATPlus.types
+    PerformanceMetrics
     
   </span>
   
@@ -602,7 +579,7 @@
   
   
   <span class="md-ellipsis">
-    pySWATPlus.types
+    PerformanceMetrics
     
   </span>
   
@@ -623,20 +600,26 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#pySWATPlus.types.ParametersType" class="md-nav__link">
+  <a href="#pySWATPlus.PerformanceMetrics" class="md-nav__link">
     <span class="md-ellipsis">
-      ParametersType
+      PerformanceMetrics
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="PerformanceMetrics">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#pySWATPlus.PerformanceMetrics.error_options" class="md-nav__link">
+    <span class="md-ellipsis">
+      error_options
     </span>
   </a>
   
 </li>
-      
-        <li class="md-nav__item">
-  <a href="#pySWATPlus.types.ParametersBoundedType" class="md-nav__link">
-    <span class="md-ellipsis">
-      ParametersBoundedType
-    </span>
-  </a>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -644,6 +627,29 @@
   
 </nav>
       
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../types/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    pySWATPlus.types
+    
+  </span>
+  
+
+      </a>
     </li>
   
 
@@ -725,20 +731,26 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#pySWATPlus.types.ParametersType" class="md-nav__link">
+  <a href="#pySWATPlus.PerformanceMetrics" class="md-nav__link">
     <span class="md-ellipsis">
-      ParametersType
+      PerformanceMetrics
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="PerformanceMetrics">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#pySWATPlus.PerformanceMetrics.error_options" class="md-nav__link">
+    <span class="md-ellipsis">
+      error_options
     </span>
   </a>
   
 </li>
-      
-        <li class="md-nav__item">
-  <a href="#pySWATPlus.types.ParametersBoundedType" class="md-nav__link">
-    <span class="md-ellipsis">
-      ParametersBoundedType
-    </span>
-  </a>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -758,179 +770,133 @@
 
 
 
-  <h1>pySWATPlus.types</h1>
+  <h1>PerformanceMetrics</h1>
 
-<div class="doc doc-object doc-attribute">
+<div class="doc doc-object doc-class">
 
 
 
-<h2 id="pySWATPlus.types.ParametersType" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">ParametersType</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">TypeAlias</span> <span class="o">=</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">typing</span><span class="o">.</span><span class="n">Any</span><span class="p">]]</span></code>
+<h2 id="pySWATPlus.PerformanceMetrics" class="doc doc-heading">
+            <code>PerformanceMetrics</code>
 
-  <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-module-attribute"><code>module-attribute</code></small>
-  </span>
 
 </h2>
 
 
     <div class="doc doc-contents first">
 
-        <p>Defines parameter modifications for SWAT+ model input files.</p>
 
 
-<details class="example" open>
-  <summary>Example</summary>
-  <div class="highlight"><pre><span></span><code><span class="n">parameters</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="p">{</span>
-        <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s1">&#39;cn2&#39;</span><span class="p">,</span>
-        <span class="s2">&quot;change_type&quot;</span><span class="p">:</span> <span class="s2">&quot;pctchg&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="mi">50</span><span class="p">,</span>
-    <span class="p">},</span>
-    <span class="p">{</span>
-        <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s1">&#39;perco&#39;</span><span class="p">,</span>
-        <span class="s2">&quot;change_type&quot;</span><span class="p">:</span> <span class="s2">&quot;absval&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="mf">0.5</span><span class="p">,</span>
-        <span class="s2">&quot;conditions&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;hsg&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;A&quot;</span><span class="p">]}</span>
-    <span class="p">},</span>
-    <span class="p">{</span>
-        <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;bf_max&#39;</span><span class="p">,</span>
-        <span class="s2">&quot;change_type&quot;</span><span class="p">:</span> <span class="s2">&quot;absval&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="mf">0.3</span><span class="p">,</span>
-        <span class="s2">&quot;units&quot;</span><span class="p">:</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">194</span><span class="p">)</span>
-    <span class="p">}</span>
-<span class="p">]</span>
-</code></pre></div>
-</details>        <p>Keys for each parameter change:</p>
-<table>
-<thead>
-<tr>
-<th>Key</th>
-<th>Type</th>
-<th>Default</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>name</td>
-<td>str</td>
-<td>-</td>
-<td>Name of the parameter to which the changes will be applied.</td>
-</tr>
-<tr>
-<td>change_type</td>
-<td>str</td>
-<td>-</td>
-<td>Type of change: 'absval', 'abschg', or 'pctchg'.</td>
-</tr>
-<tr>
-<td>value</td>
-<td>float</td>
-<td>—</td>
-<td>The value to apply to the parameter.</td>
-</tr>
-<tr>
-<td>units</td>
-<td>Iterable[int], optional</td>
-<td>None</td>
-<td>Optional list of 1-based unit IDs to constrain the parameter change.</td>
-</tr>
-<tr>
-<td>conditions</td>
-<td>dict[str, list[str]], optional</td>
-<td>None</td>
-<td>Optional dictionary of conditions to apply when changing the parameter.</td>
-</tr>
-</tbody>
-</table>
+
+<details class="warning" open>
+  <summary>WARNING</summary>
+  <p>This class is currently under development and not recommended for use.</p>
+</details>        <p>Provides functionality to compute error and efficiency metrics for the SWAT+ model.</p>
+
+
+
+
+
+
+
+
+              <details class="quote">
+                <summary>Source code in <code>pySWATPlus/performance_metrics.py</code></summary>
+                <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span>
+<span class="normal">13</span>
+<span class="normal">14</span>
+<span class="normal">15</span>
+<span class="normal">16</span>
+<span class="normal">17</span>
+<span class="normal">18</span>
+<span class="normal">19</span>
+<span class="normal">20</span>
+<span class="normal">21</span>
+<span class="normal">22</span>
+<span class="normal">23</span>
+<span class="normal">24</span>
+<span class="normal">25</span>
+<span class="normal">26</span>
+<span class="normal">27</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">PerformanceMetrics</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    WARNING:</span>
+<span class="sd">        This class is currently under development and not recommended for use.</span>
+
+<span class="sd">    Provides functionality to compute error and efficiency metrics for the SWAT+ model.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">error_options</span><span class="p">(</span>
+        <span class="bp">self</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Returns a dictionary of available error options. Keys are the commonly used abbreviations,</span>
+<span class="sd">        and values are the corresponding full error metric names.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+
+        <span class="n">error_names</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;NSE&#39;</span><span class="p">:</span> <span class="s1">&#39;Nash-Sutcliffe Efficiency&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;KGE&#39;</span><span class="p">:</span> <span class="s1">&#39;Kling-Gupta Efficiency&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;MSE&#39;</span><span class="p">:</span> <span class="s1">&#39;Mean Squared Error&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;RMSE&#39;</span><span class="p">:</span> <span class="s1">&#39;Root Mean Squared Error&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;PBIAS&#39;</span><span class="p">:</span> <span class="s1">&#39;Percent Bias&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;MARE&#39;</span><span class="p">:</span> <span class="s1">&#39;Mean Absolute Relative Error&#39;</span>
+        <span class="p">}</span>
+
+        <span class="k">return</span> <span class="n">error_names</span>
+</code></pre></div></td></tr></table></div>
+              </details>
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="pySWATPlus.PerformanceMetrics.error_options" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">error_options</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-property"><code>property</code></small>
+  </span>
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Returns a dictionary of available error options. Keys are the commonly used abbreviations,
+and values are the corresponding full error metric names.</p>
 
     </div>
 
 </div>
 
-<div class="doc doc-object doc-attribute">
 
 
 
-<h2 id="pySWATPlus.types.ParametersBoundedType" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">ParametersBoundedType</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">TypeAlias</span> <span class="o">=</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">typing</span><span class="o">.</span><span class="n">Any</span><span class="p">]]</span></code>
-
-  <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-module-attribute"><code>module-attribute</code></small>
-  </span>
-
-</h2>
 
 
-    <div class="doc doc-contents first">
-
-        <p>Defines bounded parameter modifications for SWAT+ model input files.</p>
-<p>This follows the same logic as <code>ParametersType</code>, but instead of a single <code>value</code>,
-each parameter specifies <code>lower_bound</code> and <code>upper_bound</code>. Used for sensitivity analysis and calibration.</p>
-
-
-<details class="example" open>
-  <summary>Example</summary>
-  <div class="highlight"><pre><span></span><code><span class="n">parameters</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="p">{</span>
-        <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;bf_max&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;change_type&quot;</span><span class="p">:</span> <span class="s2">&quot;absval&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;lower_bound&quot;</span><span class="p">:</span> <span class="mf">0.2</span><span class="p">,</span>
-        <span class="s2">&quot;upper_bound&quot;</span><span class="p">:</span> <span class="mf">0.3</span><span class="p">,</span>
-        <span class="s2">&quot;units&quot;</span><span class="p">:</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">194</span><span class="p">)</span>
-    <span class="p">}</span>
-<span class="p">]</span>
-</code></pre></div>
-</details>        <p>Keys for each parameter change:</p>
-<table>
-<thead>
-<tr>
-<th>Key</th>
-<th>Type</th>
-<th>Default</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>name</td>
-<td>str</td>
-<td>-</td>
-<td>Name of the parameter to which the changes will be applied.</td>
-</tr>
-<tr>
-<td>change_type</td>
-<td>str</td>
-<td>-</td>
-<td>Type of change: 'absval', 'abschg', or 'pctchg'.</td>
-</tr>
-<tr>
-<td>lower_bound</td>
-<td>float</td>
-<td>—</td>
-<td>The lower bound for the parameter.</td>
-</tr>
-<tr>
-<td>upper_bound</td>
-<td>float</td>
-<td>—</td>
-<td>The upper bound for the parameter.</td>
-</tr>
-<tr>
-<td>units</td>
-<td>Iterable[int], optional</td>
-<td>None</td>
-<td>Optional list of 1-based unit IDs to constrain the parameter change.</td>
-</tr>
-<tr>
-<td>conditions</td>
-<td>dict[str, list[str]], optional</td>
-<td>None</td>
-<td>Optional dictionary of conditions to apply when changing the parameter.</td>
-</tr>
-</tbody>
-</table>
+  </div>
 
     </div>
 

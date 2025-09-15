@@ -16,7 +16,7 @@
       
       
       <link rel="icon" href="../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.19">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.20">
     
     
       
@@ -24,7 +24,7 @@
       
     
     
-      <link rel="stylesheet" href="../../assets/stylesheets/main.7e37652d.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.e53b48f4.min.css">
       
         
         <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
@@ -234,7 +234,7 @@
   
     
   
-  Contributing
+  Contributor Guide
 
       </a>
     </li>
@@ -614,7 +614,30 @@
   
   
   <span class="md-ellipsis">
-    SensitivityAnalyzer.py
+    SensitivityAnalyzer
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/performance_metrics/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    PerformanceMetrics
     
   </span>
   
@@ -667,7 +690,7 @@
   
   
   <span class="md-ellipsis">
-    Contributing
+    Contributor Guide
     
   </span>
   
@@ -793,11 +816,6 @@
 </code></pre></div>
 <p><code>pySWATPlus</code> offers multiple options for executing <code>SWAT+</code> simulations, providing flexibility for diverse workflows and automation needs.</p>
 <p>The following sections demonstrate different approaches, including modifying input parameters, running a single simulation, and performing batch processing.</p>
-<div class="admonition warning">
-<p class="admonition-title">Calibration Warning</p>
-<p>The <code>run_swat</code> and <code>run_swat_in_other_dir</code> functions currently <strong>disable the use of the <code>calibration.cal</code> file</strong>.<br />
-Calibration via the <code>calibration.cal</code> file is still under development.</p>
-</div>
 <h2 id="a-trial-simulation">A Trial Simulation</h2>
 <p>This simple example runs a <code>SWAT+</code> simulation without changing any input parameters, ensuring that the setup works correctly:</p>
 <div class="highlight"><pre><span></span><code><span class="n">txtinout_reader</span><span class="o">.</span><span class="n">run_swat</span><span class="p">()</span>
@@ -826,9 +844,9 @@ Calibration via the <code>calibration.cal</code> file is still under development
 <li>
 <p>Modify simulation timeline:</p>
 <div class="highlight"><pre><span></span><code><span class="c1"># Update timeline in `time.sim` file</span>
-<span class="n">target_reader</span><span class="o">.</span><span class="n">set_begin_and_end_year</span><span class="p">(</span>
-    <span class="n">begin</span><span class="o">=</span><span class="mi">2012</span><span class="p">,</span>
-    <span class="n">end</span><span class="o">=</span><span class="mi">2016</span>
+<span class="n">target_reader</span><span class="o">.</span><span class="n">set_begin_and_end_date</span><span class="p">(</span>
+        <span class="n">begin_date</span><span class="o">=</span><span class="n">date</span><span class="p">(</span><span class="mi">2012</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
+        <span class="n">end_date</span><span class="o">=</span><span class="n">date</span><span class="p">(</span><span class="mi">2016</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">31</span><span class="p">),</span>
 <span class="p">)</span>
 </code></pre></div>
 </li>
@@ -870,34 +888,29 @@ Calibration via the <code>calibration.cal</code> file is still under development
 </li>
 <li>
 <p>Run the SWAT+ simulation:</p>
-<div class="highlight"><pre><span></span><code><span class="c1"># Another way to modify `esco` parameter and perform simulation</span>
-<span class="n">params</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="s1">&#39;hydrology.hyd&#39;</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s1">&#39;has_units&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
-        <span class="s1">&#39;esco&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;value&#39;</span><span class="p">:</span> <span class="mf">0.6</span><span class="p">}</span>
-    <span class="p">}</span>
-<span class="p">}</span>
-<span class="n">target_reader</span><span class="o">.</span><span class="n">run_swat</span><span class="p">(</span>
-    <span class="n">params</span><span class="o">=</span><span class="n">params</span>  <span class="c1"># optional</span>
-<span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="n">target_reader</span><span class="o">.</span><span class="n">run_swat</span><span class="p">()</span>
 </code></pre></div>
 </li>
 </ul>
 <h2 id="run-configurable-simulations-in-a-single-function">Run Configurable Simulations in a Single Function</h2>
 <p>Instead of performing each step separately as explained above, you can run a <code>SWAT+</code> simulation in a separate directory by configuring all options at once using a single function:</p>
 <div class="highlight"><pre><span></span><code><span class="c1"># Configure input parameters</span>
-<span class="n">params</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="s1">&#39;hydrology.hyd&#39;</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s1">&#39;has_units&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
-        <span class="s1">&#39;esco&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;value&#39;</span><span class="p">:</span> <span class="mf">0.6</span><span class="p">}</span>
+<span class="n">params</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">{</span>
+        <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;bf_max&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="mf">0.3</span><span class="p">,</span>
+        <span class="s2">&quot;change_type&quot;</span><span class="p">:</span> <span class="s2">&quot;absval&quot;</span><span class="p">,</span>
     <span class="p">}</span>
-<span class="p">}</span>
+<span class="p">]</span>
 
 <span class="c1"># Run SWAT+ simulation from the original `TxtInOut` folder</span>
-<span class="n">txtinout_reader</span><span class="o">.</span><span class="n">run_swat_in_other_dir</span><span class="p">(</span>
+<span class="n">txtinout_reader</span><span class="o">.</span><span class="n">run_swat</span><span class="p">(</span>
     <span class="n">target_dir</span><span class="o">=</span><span class="sa">r</span><span class="s2">&quot;C:\Users\Username\simulation_folder_2&quot;</span><span class="p">,</span>  <span class="c1"># mandatory</span>
     <span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">,</span>  <span class="c1"># optional</span>
-    <span class="n">begin_and_end_year</span><span class="o">=</span><span class="p">(</span><span class="mi">2012</span><span class="p">,</span> <span class="mi">2016</span><span class="p">),</span>  <span class="c1"># optional</span>
+    <span class="n">begin_and_end_date</span><span class="o">=</span><span class="p">{</span>
+        <span class="s2">&quot;begin_date&quot;</span><span class="p">:</span> <span class="n">date</span><span class="p">(</span><span class="mi">2012</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
+        <span class="s2">&quot;end_date&quot;</span><span class="p">:</span> <span class="n">date</span><span class="p">(</span><span class="mi">2016</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">31</span><span class="p">)</span>
+    <span class="p">},</span>
     <span class="n">warmup</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>  <span class="c1"># optional</span>
     <span class="n">print_prt_control</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;channel_sd&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;daily&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">}}</span>  <span class="c1"># optional</span>
 <span class="p">)</span>
@@ -907,25 +920,20 @@ Calibration via the <code>calibration.cal</code> file is still under development
 <div class="highlight"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">multiprocessing</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">tempfile</span>
 
-<span class="c1"># Define multiple parameter sets</span>
-<span class="n">param_sets</span> <span class="o">=</span> <span class="p">[</span>
+<span class="c1"># Define parameter changes</span>
+<span class="n">params</span> <span class="o">=</span> <span class="p">[</span>
     <span class="p">{</span>
-        <span class="s1">&#39;hydrology.hyd&#39;</span><span class="p">:</span> <span class="p">{</span>
-            <span class="s1">&#39;has_units&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
-            <span class="s1">&#39;esco&#39;</span><span class="p">:</span> <span class="p">[</span>
-                <span class="p">{</span><span class="s1">&#39;value&#39;</span><span class="p">:</span> <span class="mf">0.6</span><span class="p">,</span> <span class="s1">&#39;change_type&#39;</span><span class="p">:</span> <span class="s1">&#39;absval&#39;</span><span class="p">}</span>
-            <span class="p">],</span>
-        <span class="p">}</span>
+        <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s1">&#39;perco&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;change_type&quot;</span><span class="p">:</span> <span class="s2">&quot;absval&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="mf">0.5</span><span class="p">,</span>
+        <span class="s2">&quot;conditions&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;hsg&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;A&quot;</span><span class="p">]}</span>
     <span class="p">},</span>
     <span class="p">{</span>
-        <span class="s1">&#39;plants.plt&#39;</span><span class="p">:</span> <span class="p">{</span>
-            <span class="s1">&#39;has_units&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
-            <span class="s1">&#39;bm_e&#39;</span><span class="p">:</span> <span class="p">[</span>
-                <span class="p">{</span><span class="s1">&#39;value&#39;</span><span class="p">:</span> <span class="mi">30</span><span class="p">,</span> <span class="s1">&#39;change_type&#39;</span><span class="p">:</span> <span class="s1">&#39;absval&#39;</span><span class="p">,</span> <span class="s1">&#39;filter_by&#39;</span><span class="p">:</span> <span class="s1">&#39;name == &quot;agrl&quot;&#39;</span><span class="p">},</span>
-                <span class="p">{</span><span class="s1">&#39;value&#39;</span><span class="p">:</span> <span class="mi">15</span><span class="p">,</span> <span class="s1">&#39;change_type&#39;</span><span class="p">:</span> <span class="s1">&#39;absval&#39;</span><span class="p">,</span> <span class="s1">&#39;filter_by&#39;</span><span class="p">:</span> <span class="s1">&#39;name == &quot;almd&quot;&#39;</span><span class="p">},</span>
-            <span class="p">],</span>
-        <span class="p">}</span>
-    <span class="p">},</span>
+        <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;bf_max&#39;</span><span class="p">,</span>
+        <span class="s2">&quot;change_type&quot;</span><span class="p">:</span> <span class="s2">&quot;absval&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="mf">0.3</span><span class="p">,</span>
+        <span class="s2">&quot;units&quot;</span><span class="p">:</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">194</span><span class="p">)</span>
+    <span class="p">}</span>
 <span class="p">]</span>
 
 <span class="c1"># Define the function</span>
@@ -935,7 +943,7 @@ Calibration via the <code>calibration.cal</code> file is still under development
         <span class="n">reader</span> <span class="o">=</span> <span class="n">pySWATPlus</span><span class="o">.</span><span class="n">TxtinoutReader</span><span class="p">(</span>
             <span class="n">path</span><span class="o">=</span><span class="n">txtinout_path</span>
         <span class="p">)</span>
-        <span class="n">output</span> <span class="o">=</span> <span class="n">reader</span><span class="o">.</span><span class="n">run_swat_in_other_dir</span><span class="p">(</span>
+        <span class="n">output</span> <span class="o">=</span> <span class="n">reader</span><span class="o">.</span><span class="n">run_swat</span><span class="p">(</span>
             <span class="n">target_dir</span><span class="o">=</span><span class="n">tmp_dir</span><span class="p">,</span>
             <span class="n">params</span><span class="o">=</span><span class="n">params</span>
         <span class="p">)</span>
@@ -946,7 +954,7 @@ Calibration via the <code>calibration.cal</code> file is still under development
 <span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
     <span class="c1"># Run simulations in parallel</span>
     <span class="k">with</span> <span class="n">multiprocessing</span><span class="o">.</span><span class="n">Pool</span><span class="p">(</span><span class="n">processes</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span> <span class="k">as</span> <span class="n">pool</span><span class="p">:</span>
-        <span class="n">results</span> <span class="o">=</span> <span class="n">pool</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">run_simulation</span><span class="p">,</span> <span class="n">param_sets</span><span class="p">)</span>
+        <span class="n">results</span> <span class="o">=</span> <span class="n">pool</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">run_simulation</span><span class="p">,</span> <span class="n">params</span><span class="p">)</span>
     <span class="c1"># Print output directories</span>
     <span class="k">for</span> <span class="n">path</span> <span class="ow">in</span> <span class="n">results</span><span class="p">:</span>
         <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Simulation directory:&quot;</span><span class="p">,</span> <span class="n">path</span><span class="p">)</span>
@@ -1002,7 +1010,7 @@ Calibration via the <code>calibration.cal</code> file is still under development
       <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.tabs", "content.code.annotate"], "search": "../../assets/javascripts/workers/search.973d3a69.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
-      <script src="../../assets/javascripts/bundle.92b07e13.min.js"></script>
+      <script src="../../assets/javascripts/bundle.f55a23d4.min.js"></script>
       
     
   </body>

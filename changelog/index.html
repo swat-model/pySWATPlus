@@ -14,7 +14,7 @@
       
       
       <link rel="icon" href="../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.19">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.20">
     
     
       
@@ -22,7 +22,7 @@
       
     
     
-      <link rel="stylesheet" href="../assets/stylesheets/main.7e37652d.min.css">
+      <link rel="stylesheet" href="../assets/stylesheets/main.e53b48f4.min.css">
       
         
         <link rel="stylesheet" href="../assets/stylesheets/palette.06af60db.min.css">
@@ -230,7 +230,7 @@
   
     
   
-  Contributing
+  Contributor Guide
 
       </a>
     </li>
@@ -529,7 +529,30 @@
   
   
   <span class="md-ellipsis">
-    SensitivityAnalyzer.py
+    SensitivityAnalyzer
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/performance_metrics/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    PerformanceMetrics
     
   </span>
   
@@ -582,7 +605,7 @@
   
   
   <span class="md-ellipsis">
-    Contributing
+    Contributor Guide
     
   </span>
   
@@ -1116,13 +1139,27 @@
 <h2 id="version-110-august-26-2025">Version 1.1.0 (August 26, 2025)</h2>
 <ul>
 <li>
-<p>Introduced <code>SensitivityAnalyzer</code> class for sensitivity analysis of SWAT+ model parameters.</p>
+<p>Added a new class <code>pySWATPlus.SensitivityAnalyzer</code> to support sensitivity simulations with two main methods:</p>
+<ul>
+<li><code>simulated_timeseries_df</code>: Generates a time series <code>DataFrame</code> directly from a simulation output file.  </li>
+<li><code>simulation_by_sobol_sample</code>: Provides a high-level interface for running sensitivity simulations with parallel computing and extracting results from multiple output files.</li>
+</ul>
 </li>
 <li>
-<p>Added high-level method <code>simulation_by_sobol_sample</code> in <code>SensitivityAnalyzer</code> to automate the sensitivity simulation workflow using Sobol samples.</p>
+<p>Changes in <code>pySWATPlus.TxtinoutReader</code> class:</p>
+<ul>
+<li><code>copy_required_files</code>: New method to copy required files into a separate directory before running simulations. This protects the main <code>TxtInOut</code> folder and enables safer, more controlled workflows.</li>
+<li><code>run_swat_in_other_dir</code>: Enhanced with new optional parameters, allowing users to configure all necessary inputs in a single call for improved usability.</li>
+</ul>
 </li>
 <li>
-<p>Updated <code>run_swat_in_other_dir</code> method in <code>TxtinoutReader</code> to support additional input variables, enabling SWAT+ simulation through a single interface.  </p>
+<p>The <code>has_units</code> input parameter, which specifies whether the third line of <code>SWAT+</code> input or output files contains column units, is now <strong>mandatory</strong> across the <code>pySWATPlus</code> package (previously optional) to ensure consistent file handling.</p>
+</li>
+<li>
+<p>Added <a href="https://swat-model.github.io/pySWATPlus/CONTRIBUTING">Contributing Guidelines</a> with clear instructions for setting up the development environment, reporting issues, and submitting contributions.</p>
+</li>
+<li>
+<p>Added <a href="https://github.com/swat-model/pySWATPlus/blob/main/CODE_OF_CONDUCT.md">Code of Conduct</a> to define standards for a welcoming, respectful, and inclusive community.</p>
 </li>
 </ul>
 <h2 id="version-103-july-30-2025">Version 1.0.3 (July 30, 2025)</h2>
@@ -1369,7 +1406,7 @@
       <script id="__config" type="application/json">{"base": "..", "features": ["navigation.tabs", "content.code.annotate"], "search": "../assets/javascripts/workers/search.973d3a69.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
-      <script src="../assets/javascripts/bundle.92b07e13.min.js"></script>
+      <script src="../assets/javascripts/bundle.f55a23d4.min.js"></script>
       
     
   </body>
