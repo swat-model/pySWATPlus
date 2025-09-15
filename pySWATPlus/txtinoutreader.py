@@ -4,14 +4,15 @@ import pathlib
 import typing
 import logging
 from .filereader import FileReader
-from .types import ParamsType, ParameterChanges
+from .types import ParametersType, ParameterModel
 from . import utils
-import pandas
+from . import validators
+from datetime import date
+
 logger = logging.getLogger(__name__)
 
 
 class TxtinoutReader:
-
     '''
     Provide functionality for seamless reading, editing, and writing of
     SWAT+ model files located in the `TxtInOut` folder.
@@ -39,11 +40,7 @@ class TxtinoutReader:
                 zero or multiple `.exe` files.
         '''
 
-        # check if path is a string or a path
-        if not isinstance(path, (str, pathlib.Path)):
-            raise TypeError('path must be a string or Path object')
-
-        path = pathlib.Path(path).resolve()
+        path = utils._ensure_path(path)
 
         # check if folder exists
         if not path.is_dir():
@@ -173,36 +170,45 @@ class TxtinoutReader:
         with open(print_prt_path, 'w', newline='') as file:
             file.write(new_print_prt)
 
-    def set_begin_and_end_year(
+    def set_begin_and_end_date(
         self,
-        begin: int,
-        end: int
+        begin_date: date,
+        end_date: date,
+        step: typing.Optional[int] = 0
     ) -> None:
         '''
         Modify the simulation period by updating
-        the begin and end years in the `time.sim` file.
+        the begin and end dates in the `time.sim` file.
 
         Args:
-            begin (int): Beginning year of the simulation in YYYY format (e.g., 2010).
-            end (int): Ending year of the simulation in YYYY format (e.g., 2016).
-
-        Raises:
-            ValueError: If the begin year is greater than or equal to the end year.
+            begin_date (date): Beginning date of the simulation.
+            end_date (date): Ending date of the simulation.
+            step (int, optional): Timestep of the simulation.
+                0 = daily
+                1 = increment (12 hrs)
+                24 = hourly
+                96 = 15 mins
+                1440 = minute
         '''
+        if not isinstance(begin_date, date) or not isinstance(end_date, date):
+            raise TypeError("begin_date and end_date must be datetime.date objects")
 
-        year_dict = {
-            'begin': begin,
-            'end': end
-        }
+        if begin_date >= end_date:
+            raise ValueError("begin_date must be earlier than end_date")
 
-        for key, val in year_dict.items():
-            if not isinstance(val, int):
-                raise TypeError(f'"{key}" year must be an integer value')
+        if not isinstance(step, int):
+            raise TypeError("step must be an integer")
+        valid_steps = [0, 1, 24, 96, 1440]
+        if step not in valid_steps:
+            raise ValueError(f"Invalid step: {step}. Must be one of {valid_steps}")
 
-        if begin >= end:
-            raise ValueError('begin year must be less than end year')
+        # Extract years and Julian days
+        begin_day = begin_date.timetuple().tm_yday
+        begin_year = begin_date.year
+        end_day = end_date.timetuple().tm_yday
+        end_year = end_date.year
 
-        nth_line = 3
+        nth_line = 3  # line in time.sim file to modify
 
         time_sim_path = self.root_folder / 'time.sim'
 
@@ -214,14 +220,15 @@ class TxtinoutReader:
         with open(time_sim_path, 'r') as file:
             lines = file.readlines()
 
-        year_line = lines[nth_line - 1]
+        # Split existing line
+        elements = lines[2].split()
 
-        # Split the input string by spaces
-        elements = year_line.split()
-
-        # insert years
-        elements[1] = str(begin)
-        elements[3] = str(end)
+        # Update values
+        elements[0] = str(begin_day)
+        elements[1] = str(begin_year)
+        elements[2] = str(end_day)
+        elements[3] = str(end_year)
+        elements[4] = str(step)
 
         # Reconstruct the result string while maintaining spaces
         result_string = '{: >8} {: >10} {: >10} {: >10} {: >10} \n'.format(*elements)
@@ -360,7 +367,19 @@ class TxtinoutReader:
             The path to the target directory containing the copied files.
         '''
 
+        target_dir = utils._ensure_path(target_dir)
+
+        # Enforce that it's a directory, not a file path
+        if target_dir.suffix:
+            raise ValueError(f"`target_dir` must be a directory, not a file path: {target_dir}")
+
+        # Create the directory if it does not exist and copy necessary files
+        target_dir.mkdir(parents=True, exist_ok=True)
+
         dest_path = pathlib.Path(target_dir)
+
+        if any(dest_path.iterdir()):
+            raise FileExistsError(f"Target directory {dest_path} is not empty.")
 
         # Copy files from source folder
         for file in self.root_folder.iterdir():
@@ -372,8 +391,8 @@ class TxtinoutReader:
 
     def _write_calibration_file(
         self,
-        par_change: ParameterChanges
-    ):
+        parameters: list[ParameterModel]
+    ) -> None:
         '''
         Writes `calibration.cal` file with parameter changes.
         '''
@@ -388,7 +407,7 @@ class TxtinoutReader:
         self._add_or_remove_calibration_cal_to_file_cio(add=True)
 
         # Number of parameters (number of rows in the DataFrame)
-        num_parameters = len(par_change)
+        num_parameters = len(parameters)
 
         # Column widths for right-alignment
         col_widths = {
@@ -405,25 +424,20 @@ class TxtinoutReader:
             "OBJ_TOT": 8
         }
 
-        _par_changes = []
-
-        for change in par_change:
-            # get units
-            units = change.get("units", [])
+        calibration_cal_rows = []
+        for change in parameters:
+            units = change.units
 
             # Convert to compact representation
-            if units:
-                compacted_units = utils._compact_units(units)
-            else:
-                compacted_units = []
+            compacted_units = utils._compact_units(units) if units else []
 
             # get conditions
             parsed_conditions = utils._parse_conditions(change)
 
-            _par_changes.append({
-                "NAME": change["name"],
-                "CHG_TYPE": change["change_type"] if "change_type" in change else 'absval',
-                "VAL": change["value"],
+            calibration_cal_rows.append({
+                "NAME": change.name,
+                "CHG_TYPE": change.change_type,
+                "VAL": change.value,
                 "CONDS": len(parsed_conditions),
                 "LYR1": 0,
                 "LYR2": 0,
@@ -439,76 +453,69 @@ class TxtinoutReader:
         with open(outfile, "w") as f:
             # Write header
             f.write(f"Number of parameters:\n{num_parameters}\n")
-            headers = "NAME        CHG_TYPE             VAL           CONDS    LYR1    LYR2   YEAR1   YEAR2    DAY1    DAY2 OBJ_TOT"
+            headers = (
+                f"{'NAME':<12}{'CHG_TYPE':<21}{'VAL':<14}{'CONDS':<9}"
+                f"{'LYR1':<8}{'LYR2':<7}{'YEAR1':<8}{'YEAR2':<9}"
+                f"{'DAY1':<8}{'DAY2':<5}{'OBJ_TOT':>7}"
+            )
             f.write(f"{headers}\n")
 
             # Write rows
-            for change in _par_changes:
+            for row in calibration_cal_rows:
                 line = ""
                 for col in ["NAME", "CHG_TYPE", "VAL", "CONDS", "LYR1", "LYR2",
                             "YEAR1", "YEAR2", "DAY1", "DAY2", "OBJ_TOT"]:
                     if col == "NAME":
-                        line += f"{change[col]:<{col_widths[col]}}"   # left-align
-                    elif col == "VAL":
-                        line += utils._format_val_field(change[col])  # special VAL formatting
+                        line += f"{row[col]:<{col_widths[col]}}"   # left-align
+                    elif col == "VAL" and isinstance(row[col], float):
+                        line += utils._format_val_field(typing.cast(float, row[col]))  # special VAL formatting
                     else:
-                        line += f"{change[col]:>{col_widths[col]}}"  # right-align numeric columns
+                        line += f"{row[col]:>{col_widths[col]}}"  # right-align numeric columns
 
                 # Append compacted units at the end (space-separated)
-                if change["OBJ_LIST"]:
-                    line += "       " + "    ".join(str(u) for u in change["OBJ_LIST"])
+                if row["OBJ_LIST"]:
+                    line += "       " + "    ".join(str(u) for u in typing.cast(list[str], row["OBJ_LIST"]))
 
-                line += "\n" + "\n".join(change["PARSED_CONDITIONS"]) if change["PARSED_CONDITIONS"] else ""
+                if row["PARSED_CONDITIONS"]:
+                    parsed_conditions = typing.cast(list[str], row["PARSED_CONDITIONS"])
+                    line += "\n" + "\n".join(parsed_conditions)
 
                 f.write(line + "\n")
-
-    def _check_swatplus_parameters(
-        self,
-        par_change: ParameterChanges
-    ) -> None:
-        '''
-        Check if parameters exists in cal_parms.cal
-        '''
-
-        file_path = self.root_folder / "cal_parms.cal"
-
-        if not file_path.exists():
-            raise FileNotFoundError("cal_parms.cal file does not exist in the TxtInOut folder")
-
-        cal_parms_df = pandas.read_csv(
-            filepath_or_buffer=file_path,
-            skiprows=2,
-            sep=r'\s+'
-        )
-
-        parameter_names = [change['name'] for change in par_change]
-
-        for parameter in parameter_names:
-            if parameter not in cal_parms_df['name'].values:
-                raise ValueError(f"The parameter '{parameter}' is not in cal_parms.cal")
 
     def _add_or_remove_calibration_cal_to_file_cio(
         self,
         add: bool
-    ):
+    ) -> None:
         '''
         Adds or removes the calibration line to 'file.cio'
         '''
         file_path = self.root_folder / "file.cio"
         if not file_path.exists():
             raise FileNotFoundError("file.cio file does not exist in the TxtInOut folder")
-        if add:
-            line_to_add = (
-                "chg               cal_parms.cal     calibration.cal   null              "
-                "null              null              null              null              "
-                "null              null              null              null"
-            )
-        else:
-            line_to_add = (
-                "chg               null              calibration.cal   null              "
-                "null              null              null              null              "
-                "null              null              null              null"
-            )
+
+        fmt = (
+            f"{'{:<18}'}"  # chg
+            f"{'{:<18}'}"  # cal_parms.cal / null
+            f"{'{:<18}'}"  # calibration.cal
+            f"{'{:<18}'}"  # null
+            f"{'{:<18}'}"  # null
+            f"{'{:<18}'}"  # null
+            f"{'{:<18}'}"  # null
+            f"{'{:<18}'}"  # null
+            f"{'{:<18}'}"  # null
+            f"{'{:<18}'}"  # null
+            f"{'{:<18}'}"  # null
+            f"{'{:<4}'}"   # null
+        )
+
+        # Prepare the values for the line
+        cal_line_values = [
+            "chg",
+            "cal_parms.cal" if add else "null",
+            "calibration.cal",
+        ] + ["null"] * 9  # Fill remaining columns with null
+
+        line_to_add = fmt.format(*cal_line_values)
 
         line_index = 21
 
@@ -526,6 +533,58 @@ class TxtinoutReader:
         # Write back
         with file_path.open("w") as f:
             f.writelines(lines)
+
+    def _apply_swat_configuration(
+        self,
+        begin_and_end_date: typing.Optional[dict[str, typing.Any]] = None,
+        warmup: typing.Optional[int] = None,
+        print_prt_control: typing.Optional[dict[str, dict[str, bool]]] = None
+    ) -> None:
+        '''
+        Sets begin and end year for the simulation, the warm-up period, and toggles the elements in print.prt file
+        '''
+        # Set simulation range time
+        if begin_and_end_date is not None:
+            if not isinstance(begin_and_end_date, dict):
+                raise TypeError('begin_and_end_date must be a dictionary')
+
+            self.set_begin_and_end_date(**begin_and_end_date)
+
+        # Set warmup period
+        if warmup is not None:
+            self.set_warmup_year(
+                warmup=warmup
+            )
+
+        # Update print.prt file to write output
+        if print_prt_control is not None:
+            if not isinstance(print_prt_control, dict):
+                raise TypeError('print_prt_control must be a dictionary')
+            if len(print_prt_control) == 0:
+                raise ValueError('print_prt_control cannot be an empty dictionary')
+            default_dict = {
+                'daily': True,
+                'monthly': True,
+                'yearly': True,
+                'avann': True
+            }
+            for key, val in print_prt_control.items():
+                if not isinstance(val, dict):
+                    raise ValueError(f'Value of key "{key}" must be a dictionary')
+                if len(val) == 0:
+                    raise ValueError(f'Value of key "{key}" cannot be an empty dictionary')
+                key_dict = default_dict.copy()
+                for sub_key, sub_val in val.items():
+                    if sub_key not in key_dict:
+                        raise ValueError(f'Sub-key "{sub_key}" for key "{key}" is not valid')
+                    key_dict[sub_key] = sub_val
+                self.enable_object_in_print_prt(
+                    obj=key,
+                    daily=key_dict['daily'],
+                    monthly=key_dict['monthly'],
+                    yearly=key_dict['yearly'],
+                    avann=key_dict['avann']
+                )
 
     def _run_swat(
         self,
@@ -568,135 +627,51 @@ class TxtinoutReader:
 
     def run_swat(
         self,
-        params: typing.Optional[ParamsType] = None,
+        target_dir: typing.Optional[str | pathlib.Path],
+        parameters: typing.Optional[ParametersType] = None,
+        begin_and_end_date: typing.Optional[dict[str, typing.Any]] = None,
+        warmup: typing.Optional[int] = None,
+        print_prt_control: typing.Optional[dict[str, dict[str, bool]]] = None,
+        skip_validation: bool = False
     ) -> pathlib.Path:
         '''
         Run the SWAT+ simulation with optional parameter changes.
 
         Args:
-            params (ParamsType, optional): Nested dictionary specifying parameter changes to apply.
 
-                The `params` dictionary should follow this structure:
+            target_dir (str or Path, optional): Path to the directory where the simulation will be done.
+                If None, the simulation runs directly in the current folder.
 
-                ```python
-                params = {
-                    "<input_file>": {
-                        "has_units": bool,              # Whether the file has units information
-                        "<parameter_name>": [           # One or more changes to apply to the parameter
-                            {
-                                "value": float,         # New value to assign
-                                "change_type": str,     # (Optional) One of: 'absval' (default), 'abschg', 'pctchg'
-                                "filter_by": str        # (Optional) pandas `.query()` filter string to select rows
-                            },
-                            # ... more changes
-                        ]
-                    },
-                    # ... more input files
-                }
-                ```
+            parameters (ParametersType, optional): Nested dictionary specifying parameter changes.
 
-        Returns:
-            Path where the SWAT+ simulation was executed.
-
-
-        Note:
-            - This function will disable the use of `calibration.cal` in `file.cio`
-
-        Example:
-            ```python
-            params = {
-                'plants.plt': {
-                    'has_units': False,
-                    'bm_e': [
-                        {'value': 100, 'change_type': 'absval', 'filter_by': 'name == "agrl"'},
-                        {'value': 110, 'change_type': 'absval', 'filter_by': 'name == "almd"'},
-                    ],
-                },
-            }
-
-            reader.run_swat(params)
-            ```
-        '''
-
-        _params = params or {}
-
-        utils._validate_params(_params)
-
-        # make sure calibration.cal is disabled.
-        # Otherwise, the params value will be changed during the execution of SWAT+
-        self._add_or_remove_calibration_cal_to_file_cio(add=False)
-
-        # Modify files for simulation
-        for filename, file_params in _params.items():
-
-            has_units = file_params['has_units']
-            assert isinstance(has_units, bool)
-
-            file = self.register_file(
-                filename,
-                has_units=has_units
-            )
-            df = file.df
-
-            for param_name, param_spec in file_params.items():
-
-                # Continue for bool varibale
-                if isinstance(param_spec, bool):
-                    continue
-
-                # Normalize to list of changes
-                changes = param_spec if isinstance(param_spec, list) else [param_spec]
-
-                # Process each parameter change
-                for change in changes:
-                    utils._apply_param_change(df, param_name, change)
-
-            # Store the modified file
-            file.overwrite_file()
-
-        # Run simulation
-        self._run_swat()
-
-        return self.root_folder
-
-    def run_swat_in_other_dir(
-        self,
-        target_dir: str | pathlib.Path,
-        params: typing.Optional[ParamsType] = None,
-        begin_and_end_year: typing.Optional[tuple[int, int]] = None,
-        warmup: typing.Optional[int] = None,
-        print_prt_control: typing.Optional[dict[str, dict[str, bool]]] = None
-    ) -> pathlib.Path:
-        '''
-        Run the SWAT+ model in a specified directory, with optional parameter modifications.
-        This method copies the necessary input files from the current project into the
-        given `target_dir`, applies any parameter changes, and executes the SWAT+ simulation there.
-
-        Args:
-            target_dir (str or Path): Path to the directory where the simulation will be done.
-
-            params (ParamsType): Nested dictionary specifying parameter changes.
-
-                The `params` dictionary should follow this structure:
+                The `parameters` dictionary should follow this structure:
 
                 ```python
-                params = {
-                    "<input_file>": {
-                        "has_units": bool,              # Whether the file has units information (default is False)
-                        "<parameter_name>": [           # One or more changes to apply to the parameter
-                            {
-                                "value": float,         # New value to assign
-                                "change_type": str,     # (Optional) One of: 'absval' (default), 'abschg', 'pctchg'
-                                "filter_by": str        # (Optional) pandas `.query()` filter string to select rows
-                            },
-                            # ... more changes
-                        ]
-                    },
-                    # ... more input files
-                }
+                parameters = [
+                    {
+                        "name": str,             # Name of the parameter to which the changes will be applied
+                        "value": float           # The value to apply to the parameter   
+                        "change_type": str,      # One of: 'absval', 'abschg', 'pctchg'
+                        "units": Iterable[int],  # (Optional) An optional list of unit IDs to constrain the parameter change.
+                            **Unit IDs should be 1-based**, i.e., the first object has ID 1.
+                        "conditions": dict[str: list[str]],  # (Optional) A dictionary of conditions to apply to the parameter change.
+                    },              
+                    ...
+                ]
                 ```
 
-            begin_and_end_year (tuple[int, int]): A tuple of begin and end years of the simulation in YYYY format. For example, (2012, 2016).
+            begin_and_end_date (dict, optional): Dictionary defining the simulation period (and optionally timestep).
+                Must contain the following keys:
+
+                - `begin_date` (date): Start date of the simulation.
+                - `end_date` (date): End date of the simulation.
+                - `step` (int, optional): Timestep of the simulation. Defaults to `0` (daily) if not provided.
+                    Allowed values:
+                    - `0` = daily
+                    - `1` = 12-hour increments
+                    - `24` = hourly
+                    - `96` = 15-minute increments
+                    - `1440` = minute
 
             warmup (int): A positive integer representing the number of warm-up years (e.g., 1).
 
@@ -712,26 +687,35 @@ class TxtinoutReader:
                 - `yearly`: Output aggregated for each year.
                 - `avann`: Average annual output over the entire simulation period.
 
-        Returns:
-            The path to the directory where the SWAT+ simulation was executed.
+            skip_validation (bool): If `True`, skip validation of units and conditions in parameter changes.
 
-        Note:
-            - This function will disable the use of `calibration.cal` in `file.cio`
+
+        Returns:
+            Path where the SWAT+ simulation was executed.
 
         Example:
             ```python
-            simulation = pySWATPlus.TxtinoutReader.run_swat_in_other_dir_new_method(
+            simulation = pySWATPlus.TxtinoutReader.run_swat(
                 target_dir="C:\\\\Users\\\\Username\\\\simulation_folder",
-                params={
-                    'plants.plt': {
-                        'has_units': False,
-                        'bm_e': [
-                            {'value': 100, 'change_type': 'absval', 'filter_by': 'name == "agrl"'},
-                            {'value': 110, 'change_type': 'absval', 'filter_by': 'name == "almd"'},
-                        ],
+                parameters = [
+                    {
+                        "name": 'perco',
+                        "change_type": "absval",
+                        "value": 0.5,
+                        "conditions": {"hsg": ["A"]}
                     },
+                    {
+                        'name': 'bf_max',
+                        "change_type": "absval",
+                        "value": 0.3,
+                        "units": range(1, 194)
+                    }
+                ]
+                begin_and_end_date={
+                    "begin_date": date(2012, 1, 1),
+                    "end_date": date(2016, 12, 31)
+                    # step defaults to 0 (daily)
                 },
-                begin_and_end_year=(2012, 2016),
                 warmup=1,
                 print_prt_control = {
                     'channel_sd': {'daily': False},
@@ -741,140 +725,36 @@ class TxtinoutReader:
             ```
         '''
 
-        # Validate target directory
-        if not isinstance(target_dir, (str, pathlib.Path)):
-            raise TypeError('target_dir must be a string or Path object')
+        if target_dir:
+            _target_dir = utils._ensure_path(target_dir)
 
-        target_dir = pathlib.Path(target_dir).resolve()
-
-        # Create the directory if it does not exist and copy necessary files
-        target_dir.mkdir(parents=True, exist_ok=True)
-        tmp_path = self.copy_required_files(target_dir=target_dir)
-
-        # Initialize new TxtinoutReader class
-        reader = TxtinoutReader(tmp_path)
-
-        # Set simulation range time
-        if begin_and_end_year is not None:
-            if not isinstance(begin_and_end_year, tuple):
-                raise TypeError('begin_and_end_year must be a tuple')
-            if len(begin_and_end_year) != 2:
-                raise ValueError('begin_and_end_year must contain exactly two elements')
-            begin, end = begin_and_end_year
-            reader.set_begin_and_end_year(
-                begin=begin,
-                end=end
-            )
-
-        # Set warmup period
-        if warmup is not None:
-            reader.set_warmup_year(
-                warmup=warmup
-            )
-
-        # Update print.prt file to write output
-        if print_prt_control is not None:
-            if not isinstance(print_prt_control, dict):
-                raise TypeError('print_prt_control must be a dictionary')
-            if len(print_prt_control) == 0:
-                raise ValueError('print_prt_control cannot be an empty dictionary')
-            default_dict = {
-                'daily': True,
-                'monthly': True,
-                'yearly': True,
-                'avann': True
-            }
-            for key, val in print_prt_control.items():
-                if not isinstance(val, dict):
-                    raise ValueError(f'Value of key "{key}" must be a dictionary')
-                if len(val) == 0:
-                    raise ValueError(f'Value of key "{key}" cannot be an empty dictionary')
-                key_dict = default_dict.copy()
-                for sub_key, sub_val in val.items():
-                    if sub_key not in key_dict:
-                        raise ValueError(f'Sub-key "{sub_key}" for key "{key}" is not valid')
-                    key_dict[sub_key] = sub_val
-                reader.enable_object_in_print_prt(
-                    obj=key,
-                    daily=key_dict['daily'],
-                    monthly=key_dict['monthly'],
-                    yearly=key_dict['yearly'],
-                    avann=key_dict['avann']
+            # Resolve to absolute paths
+            if self.root_folder.resolve() == _target_dir.resolve():
+                raise ValueError(
+                    "`target_dir` parameter must be different from the existing TxtInOut path!"
                 )
+            run_path = self.copy_required_files(target_dir=target_dir)
 
-        # Run the SWAT+ simulation
-        output = reader.run_swat(params=params)
+            # Initialize new TxtinoutReader class
+            reader = TxtinoutReader(run_path)
+        else:
+            reader = self
+            run_path = self.root_folder
 
-        return output
+        # Apply SWAT+ configuration changes
+        reader._apply_swat_configuration(begin_and_end_date, warmup, print_prt_control)
 
-    def run_swat_calibration_cal(
-        self,
-        params: typing.Optional[ParameterChanges] = None,
-        skip_units_and_conditions_validation: bool = False
-    ) -> pathlib.Path:
-        '''
-        Run the SWAT+ simulation with optional parameter changes.
+        if parameters:
+            _params = [ParameterModel(**param) for param in parameters]
 
-        Args:
-            params (ParameterChanges, optional): list of dictionaries specifying parameter changes to apply.
+            validators._validate_cal_parameters(reader.root_folder, _params)
 
-                The `params` dictionary should follow this structure:
+            if not skip_validation:
+                validators._validate_conditions_and_units(_params, reader.root_folder)
 
-                ```python
-                params = [
-                            {
-                                "name": str,            # Name of the parameter to change
-                                "value": float,         # New value to assign
-                                "change_type": str,     # (Optional) One of: 'absval' (default), 'abschg', 'pctchg'
-                                "units": Iterable[int],  # (Optional) An optional list of unit IDs to constrain the parameter change.
-                                    **Unit IDs should be 1-based**, i.e., the first object has ID 0.
-                                "conditions": dict[str: list[str]],  # (Optional) A dictionary of conditions to apply to the parameter change.
-                            },
-                            # ... more changes
-                        ]
-                ```
-            skip_units_and_conditions_validation (bool): If `True`, skip validation of units and conditions in parameter changes.
-
-
-        Returns:
-            Path where the SWAT+ simulation was executed.
-
-        Example:
-            ```python
-            params = [
-                {
-                    "name": "cn2",
-                    "change_type": "pctchg",
-                    "value": 50,
-                },
-                {
-                    "name": "perco",
-                    "change_type": "absval",
-                    "value": 0.5,
-                    "conditions": {"hsg": ["A"]}
-                },
-                {
-                    "name": "bf_max",
-                    "change_type": "absval",
-                    "value": 0.3,
-                    "units": range(1, 194)
-                }
-            ]
-
-            reader.run_swat(params)
-            ```
-        '''
-
-        _params = params or []
-
-        utils._validate_calibration_params(_params)
-        self._check_swatplus_parameters(_params)
-
-        if not skip_units_and_conditions_validation:
-            utils._validate_conditions_and_units(_params, self.root_folder)
-        self._write_calibration_file(_params)
+            reader._write_calibration_file(_params)
 
         # Run simulation
-        self._run_swat()
+        reader._run_swat()
 
-        return self.root_folder
+        return run_path

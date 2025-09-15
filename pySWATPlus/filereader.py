@@ -5,7 +5,6 @@ import warnings
 
 
 class FileReader:
-
     '''
     Provide functionality to read, filter, and write data
     from a TXT file located in the `TxtInOut` folder.
@@ -32,10 +31,7 @@ class FileReader:
             ```
         '''
 
-        if not isinstance(path, (str, pathlib.Path)):
-            raise TypeError("path must be a string or Path object")
-
-        path = pathlib.Path(path).resolve()
+        path = utils._ensure_path(path)
 
         if not path.is_file():
             raise FileNotFoundError("file does not exist")

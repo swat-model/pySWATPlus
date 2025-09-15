@@ -2,116 +2,71 @@ import pySWATPlus
 import pytest
 
 
-def test_validate_params():
+@pytest.mark.parametrize(
+    "value,expected",
+    [
+        # Zero
+        (0, "               0"),
 
-    # pass test for None input
-    output = pySWATPlus.utils._validate_params(
-        params=None
-    )
-    assert output is None
+        # Integers
+        (1, "               1"),
+        (-1, "              -1"),
 
-    # error test for input other than dictionary
+        # Positive decimals
+        (3.14159265359, "   3.14159265359"),
+        (0.00012345, "      0.00012345"),
+
+        # Positive decimals
+        (-3.14159265359, "  -3.14159265359"),
+        (-0.00012345, "     -0.00012345"),
+
+
+        # Large integers too big → scientific notation
+        (12345678901234567890, "    1.234568e+19"),
+        (-12345678901234567890, "   -1.234568e+19"),
+
+        # Edge: exactly 15 digits
+        (123456789012345, " 123456789012345"),
+        (-12345678901234, " -12345678901234"),
+    ]
+)
+def test_format_val_field_edge_cases(value, expected):
+    result = pySWATPlus.utils._format_val_field(value)
+
+    # Check total length = 16
+    assert len(result) == 16
+
+    # Check output matches expected string
+    assert result == expected
+
+
+def test_compact_units():
+    # --- empty input ---
+    assert pySWATPlus.utils._compact_units([]) == []
+
+    # --- id 0 in array ---
     with pytest.raises(Exception) as exc_info:
-        pySWATPlus.utils._validate_params(
-            params=[]
-        )
-    assert exc_info.value.args[0] == 'Input variable "params" must be a ParamsType dictionary'
+        pySWATPlus.utils._compact_units([0, 1])
+    assert exc_info.value.args[0] == 'All unit IDs must be 1-based (Fortran-style).'
 
-    # error test for dictionary input but key's value other than dictionary
-    with pytest.raises(Exception) as exc_info:
-        pySWATPlus.utils._validate_params(
-            params={
-                'plants.plt': []
-            }
-        )
-    assert exc_info.value.args[0] == 'Expected a dictionary for file "plants.plt", got list'
+    # --- single element ---
+    assert pySWATPlus.utils._compact_units([1]) == [1]
 
-    # error test for has_units key
-    with pytest.raises(Exception) as exc_info:
-        pySWATPlus.utils._validate_params(
-            params={
-                'plants.plt': {'has_units': []}
-            }
-        )
-    assert exc_info.value.args[0] == 'has_units key for file "plants.plt" must be a boolean'
+    # --- consecutive sequence ---
+    assert pySWATPlus.utils._compact_units([1, 2, 3, 4]) == [1, -4]
 
-    with pytest.raises(Exception) as exc_info:
-        pySWATPlus.utils._validate_params(
-            params={
-                'plants.plt': {
-                    'bm_e': {'value': 2}
-                }
-            }
-        )
-    assert exc_info.value.args[0] == 'has_units key is missing for file "plants.plt"'
+    # --- non-consecutive numbers ---
+    assert pySWATPlus.utils._compact_units([1, 2, 3, 5]) == [1, -3, 5]
 
-    # error test for other keys
-    with pytest.raises(Exception) as exc_info:
-        pySWATPlus.utils._validate_params(
-            params={
-                'plants.plt': {
-                    'has_units': False, 'bm_e': True}
-            }
-        )
-    assert exc_info.value.args[0] == 'Unexpected bool value for key "bm_e" in file "plants.plt"'
+    # --- unordered input ---
+    assert pySWATPlus.utils._compact_units([5, 2, 4, 1, 3]) == [1, -5]
 
-    # error test for other keys
-    with pytest.raises(Exception) as exc_info:
-        pySWATPlus.utils._validate_params(
-            params={
-                'plants.plt': {
-                    'has_units': False,
-                    'bm_e': ()
-                }
-            }
-        )
-    assert exc_info.value.args[0] == '"bm_e" for file "plants.plt" must be either a dictinary or a list of dictionaries, got tuple'
+    # --- input with duplicates ---
+    assert pySWATPlus.utils._compact_units([3, 3, 1, 1, 2]) == [1, -3]
 
-    # error test for missing 'value' key in the parameter
-    with pytest.raises(Exception) as exc_info:
-        pySWATPlus.utils._validate_params(
-            params={
-                'plants.plt': {
-                    'has_units': False,
-                    'bm_e': {'val': 2}
-                }
-            }
-        )
-    assert exc_info.value.args[0] == 'Missing "value" key for "bm_e" in file "plants.plt"'
+    # --- large range ---
+    large_range = list(range(1, 1001))
+    assert pySWATPlus.utils._compact_units(large_range) == [1, -1000]
 
-    # error test for other than integer or float type for 'value' key
-    with pytest.raises(Exception) as exc_info:
-        pySWATPlus.utils._validate_params(
-            params={
-                'plants.plt': {
-                    'has_units': False,
-                    'bm_e': {'value': 'hi'}
-                }
-            }
-        )
-    assert exc_info.value.args[0] == '"value" type for "bm_e" in file "plants.plt" must be numeric'
-
-    # error test for invalid 'change_type' key
-    valid_change_types = ['absval', 'abschg', 'pctchg']
-    with pytest.raises(Exception) as exc_info:
-        pySWATPlus.utils._validate_params(
-            params={
-                'plants.plt': {
-                    'has_units': False,
-                    'bm_e': {'value': 100, 'change_type': 'abs'}
-                }
-            }
-        )
-    assert exc_info.value.args[0] == f'Invalid change_type "abs" for "bm_e" in file "plants.plt". Expected one of: {valid_change_types}'
-
-    # error test for invalid 'filter_by' key
-    with pytest.raises(Exception) as exc_info:
-        pySWATPlus.utils._validate_params(
-            params={
-                'plants.plt': {
-                    'has_units': False,
-                    'bm_e': {'value': 100, 'change_type': 'absval', 'filter_by': 5}
-                }
-            }
-        )
-    assert exc_info.value.args[0] == 'filter_by for "bm_e" in file "plants.plt" must be a string'
+    # --- single non-consecutive elements ---
+    assert pySWATPlus.utils._compact_units([1, 2, 4, 6]) == [1, -2, 4, 6]

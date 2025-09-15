@@ -1,0 +1,53 @@
+name: dist
+
+on:
+  push:
+    tags:
+      - "v*"  # Only trigger when pushing a version tag like v1.2.3
+
+jobs:
+  build-and-publish:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: write  # Required to create a release
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Ensure full Git history for setuptools-scm
+          fetch-tags: true
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.x'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install build twine setuptools-scm
+
+      - name: Verify version from tag
+        id: get_version
+        run: |
+          TAG_VERSION=${GITHUB_REF#refs/tags/v}  # Extract version from 'vX.Y.Z'
+          echo "VERSION=$TAG_VERSION" >> $GITHUB_ENV
+          echo "Publishing version: $TAG_VERSION"
+
+      - name: Build package (pyproject.toml)
+        run: python -m build
+
+      - name: Publish to PyPI
+        env:
+          TWINE_USERNAME: ${{ secrets.PYPI_USERNAME }}
+          TWINE_PASSWORD: ${{ secrets.PYPI_PASSWORD }}
+        run: |
+          twine upload dist/*
+
+      - name: Create GitHub Release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh release create ${{ github.ref_name }} dist/* --title "Release ${{ github.ref_name }}" --notes "Automated release for version ${{ github.ref_name }}"

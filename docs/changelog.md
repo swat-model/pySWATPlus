@@ -3,12 +3,22 @@
 
 ## Version 1.1.0 (August 26, 2025)
 
-- Introduced `SensitivityAnalyzer` class for sensitivity analysis of SWAT+ model parameters.
+- Added a new class `pySWATPlus.SensitivityAnalyzer` to support sensitivity simulations with two main methods:
 
-- Added high-level method `simulation_by_sobol_sample` in `SensitivityAnalyzer` to automate the sensitivity simulation workflow using Sobol samples.
+    - `simulated_timeseries_df`: Generates a time series `DataFrame` directly from a simulation output file.  
+    - `simulation_by_sobol_sample`: Provides a high-level interface for running sensitivity simulations with parallel computing and extracting results from multiple output files.
 
-- Updated `run_swat_in_other_dir` method in `TxtinoutReader` to support additional input variables, enabling SWAT+ simulation through a single interface.  
- 
+- Changes in `pySWATPlus.TxtinoutReader` class:
+
+    - `copy_required_files`: New method to copy required files into a separate directory before running simulations. This protects the main `TxtInOut` folder and enables safer, more controlled workflows.
+    - `run_swat_in_other_dir`: Enhanced with new optional parameters, allowing users to configure all necessary inputs in a single call for improved usability.
+
+- The `has_units` input parameter, which specifies whether the third line of `SWAT+` input or output files contains column units, is now **mandatory** across the `pySWATPlus` package (previously optional) to ensure consistent file handling.
+
+- Added [Contributing Guidelines](https://swat-model.github.io/pySWATPlus/CONTRIBUTING) with clear instructions for setting up the development environment, reporting issues, and submitting contributions.
+
+- Added [Code of Conduct](https://github.com/swat-model/pySWATPlus/blob/main/CODE_OF_CONDUCT.md) to define standards for a welcoming, respectful, and inclusive community.
+
 
 ## Version 1.0.3 (July 30, 2025)
 

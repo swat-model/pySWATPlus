@@ -32,30 +32,6 @@ def test_filereader():
     df = file_reader.df
     assert df[variable].unique()[0] == value
 
-    # pass test for DataFrame parameter value change by 'absval'
-    pySWATPlus.utils._apply_param_change(
-        df=df,
-        param_name='latq_co',
-        change={'value': 0.6, 'filter_by': 'name == "hyd001"'}
-    )
-    assert df.iloc[0, -1] == 0.6
-
-    # pass test for DataFrame parameter value change by 'abschg'
-    pySWATPlus.utils._apply_param_change(
-        df=df,
-        param_name='pet_co',
-        change={'value': 0.6, 'change_type': 'abschg', 'filter_by': 'name == "hyd002"'}
-    )
-    assert df.loc[1, 'pet_co'] == 1.6
-
-    # pass test for DataFrame parameter value change by 'pctchg'
-    pySWATPlus.utils._apply_param_change(
-        df=df,
-        param_name='perco',
-        change={'value': 50, 'change_type': 'pctchg', 'filter_by': 'name == "hyd003"'}
-    )
-    assert round(df.loc[2, 'perco'], 2) == 0.08
-
     with tempfile.TemporaryDirectory() as tmp_dir:
         # pass test for rewriting empty DataFrame in a TXT file
         file_name = 'hru_soilc_stat.txt'
@@ -94,7 +70,7 @@ def test_error_filereader():
             path=1,
             has_units=False
         )
-    assert exc_info.value.args[0] == 'path must be a string or Path object'
+    assert "Argument must be a string or Path object" in exc_info.value.args[0]
 
     # error test for non-existence of file
     with pytest.raises(Exception) as exc_info:
