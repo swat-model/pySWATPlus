@@ -63,10 +63,11 @@ To keep your original `TxtInOut` folder unchanged, it is recommended to run `SWA
 
     ```python
     # Update timeline in `time.sim` file
-    target_reader.set_begin_and_end_year(
-        begin=2012,
-        end=2016
+    target_reader.set_begin_and_end_date(
+            begin_date=date(2012, 1, 1),
+            end_date=date(2016, 12, 31),
     )
+
     ```
 
 - Set warm-up years:
@@ -111,16 +112,7 @@ To keep your original `TxtInOut` folder unchanged, it is recommended to run `SWA
 - Run the SWAT+ simulation:
 
     ```python
-    # Another way to modify `esco` parameter and perform simulation
-    params = {
-        'hydrology.hyd': {
-            'has_units': False,
-            'esco': {'value': 0.6}
-        }
-    }
-    target_reader.run_swat(
-        params=params  # optional
-    )
+    target_reader.run_swat()
     ```
 
 
@@ -142,7 +134,10 @@ params = [
 txtinout_reader.run_swat(
     target_dir=r"C:\Users\Username\simulation_folder_2",  # mandatory
     params=params,  # optional
-    begin_and_end_year=(2012, 2016),  # optional
+    begin_and_end_date={
+        "begin_date": date(2012, 1, 1),
+        "end_date": date(2016, 12, 31)
+    },
     warmup=1,  # optional
     print_prt_control={'channel_sd': {'daily': False}}  # optional
 )
