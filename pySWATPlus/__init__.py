@@ -1,6 +1,6 @@
-from .txtinoutreader import TxtinoutReader
+from .txtinout_reader import TxtinoutReader
 from .filereader import FileReader
-from .calsensitivityanalyzer import SensitivityAnalyzer
+from .cal_sensitivity_analyzer import SensitivityAnalyzer
 from .performance_metrics import PerformanceMetrics
 from importlib.metadata import version, PackageNotFoundError
 

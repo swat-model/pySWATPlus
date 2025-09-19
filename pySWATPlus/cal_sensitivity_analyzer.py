@@ -8,7 +8,7 @@ from .base_sensitivity_analyser import BaseSensitivityAnalyzer
 import pathlib
 from . import utils
 from . import validators
-from .txtinoutreader import TxtinoutReader
+from .txtinout_reader import TxtinoutReader
 
 
 class SensitivityAnalyzer(BaseSensitivityAnalyzer):
