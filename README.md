@@ -18,6 +18,7 @@
 [![flake8](https://github.com/swat-model/pySWATPlus/actions/workflows/linting.yml/badge.svg)](https://github.com/swat-model/pySWATPlus/actions/workflows/linting.yml)
 [![mypy](https://github.com/swat-model/pySWATPlus/actions/workflows/typing.yml/badge.svg)](https://github.com/swat-model/pySWATPlus/actions/workflows/typing.yml)
 [![pytest](https://github.com/swat-model/pySWATPlus/actions/workflows/testing.yml/badge.svg)](https://github.com/swat-model/pySWATPlus/actions/workflows/testing.yml)
+[![pytest](https://github.com/debpal/pySWATPlus/actions/workflows/building.yml/badge.svg)](https://github.com/debpal/pySWATPlus/actions/workflows/building.yml)
 ![Codecov](https://img.shields.io/codecov/c/github/debpal/pySWATPlus)
 
 ![GitHub Repo stars](https://img.shields.io/github/stars/swat-model/pySWATPlus)
