@@ -234,7 +234,7 @@ class BaseSensitivityAnalyzer(ABC):
         var_names: list[str],
         var_bounds: list[list[float]],
         sample_number: int
-    ) -> tuple[dict[str, typing.Any], numpy.ndarray, numpy.ndarray, int]:
+    ) -> tuple[dict[str, typing.Any], numpy.typing.NDArray[numpy.float64], numpy.typing.NDArray[numpy.float64], int]:
         '''
         Prepare Sobol samples for sensitivity analysis.
         '''
@@ -261,7 +261,7 @@ class BaseSensitivityAnalyzer(ABC):
 
     @staticmethod
     def _collect_sobol_results(
-        sample_array: numpy.ndarray,
+        sample_array: numpy.typing.NDArray[numpy.float64],
         var_names: list[str],
         cpu_dict: dict[tuple[float, ...], dict[str, typing.Any]],
         problem_dict: dict[str, typing.Any],
@@ -326,7 +326,7 @@ class BaseSensitivityAnalyzer(ABC):
     def _setup_simulation_directory(
         track_sim: int,
         num_sim: int,
-        var_array: numpy.ndarray,
+        var_array: numpy.typing.NDArray[numpy.float64],
         simulation_folder: pathlib.Path
     ) -> tuple[pathlib.Path, dict[str, typing.Any]]:
         '''
