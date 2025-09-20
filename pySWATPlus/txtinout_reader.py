@@ -3,11 +3,11 @@ import shutil
 import pathlib
 import typing
 import logging
+from datetime import date
 from .filereader import FileReader
 from .types import ParametersType, ParameterModel
 from . import utils
 from . import validators
-from datetime import date
 
 logger = logging.getLogger(__name__)
 
@@ -17,12 +17,6 @@ class TxtinoutReader:
     Provide functionality for seamless reading, editing, and writing of
     SWAT+ model files located in the `TxtInOut` folder.
     '''
-
-    IGNORED_FILE_PATTERNS: typing.Final[tuple[str, ...]] = tuple(
-        f'_{suffix}.{ext}'
-        for suffix in ('day', 'mon', 'yr', 'aa')
-        for ext in ('txt', 'csv')
-    )
 
     def __init__(
         self,
@@ -34,30 +28,40 @@ class TxtinoutReader:
         Args:
             path (str or Path): Path to the `TxtInOut` folder, which must contain
                 exactly one SWAT+ executable `.exe` file.
-
-        Raises:
-            TypeError: If the path is not a valid string or Path, or if the folder contains
-                zero or multiple `.exe` files.
         '''
 
-        path = utils._ensure_path(path)
+        # Check input variables type
+        validators._variable_origin_static_type(
+            vars_types=typing.get_type_hints(
+                obj=self.__class__.__init__
+            ),
+            vars_values=locals()
+        )
 
-        # check if folder exists
-        if not path.is_dir():
-            raise FileNotFoundError('Folder does not exist')
+        # Absolute path
+        path = pathlib.Path(path).resolve()
 
-        # check .exe files in the directory
-        exe_list = [file for file in path.iterdir() if file.suffix == ".exe"]
+        # Check validity of path
+        validators._path_directory(
+            path=path
+        )
 
-        # raise error on .exe file
-        if len(exe_list) != 1:
+        # Check .exe files in the directory
+        exe_files = [
+            file for file in path.iterdir() if file.suffix == ".exe"
+        ]
+
+        # Raise error on .exe file
+        if len(exe_files) != 1:
             raise TypeError(
                 'Expected exactly one .exe file in the parent folder, but found none or multiple.'
             )
 
-        # find parent directory
+        # TxtInOut directory path
         self.root_folder = path
-        self.swat_exe_path = path / exe_list[0]
+
+        # EXE file path
+        self.swat_exe_path = path / exe_files[0]
 
     def enable_object_in_print_prt(
         self,
@@ -93,6 +97,15 @@ class TxtinoutReader:
                 a ValueError is raised. Defaults to False.
         '''
 
+        # Check input variables type
+        validators._variable_origin_static_type(
+            vars_types=typing.get_type_hints(
+                obj=self.enable_object_in_print_prt
+            ),
+            vars_values=locals()
+        )
+
+        # Dictionary of available objects
         obj_dict = {
             'model_components': ['channel_sd', 'channel_sdmorph', 'aquifer', 'reservoir', 'recall', 'ru', 'hyd', 'water_allo'],
             'basin_model_components': ['basin_sd_cha', 'basin_sd_chamorph', 'basin_aqu', 'basin_res', 'basin_psc'],
@@ -104,11 +117,10 @@ class TxtinoutReader:
             'constituents': ['basin_cs', 'hru_cs', 'ru_cs', 'aqu_cs', 'channel_cs', 'res_cs', 'wetland_cs']
         }
 
-        obj_list = [i for v in obj_dict.values() for i in v]
-
-        # Check 'obj' is either string or NoneType
-        if not (isinstance(obj, str) or obj is None):
-            raise TypeError(f'Input "obj" to be string type or None, got {type(obj).__name__}')
+        # List of objects obtained from the dictionary
+        obj_list = [
+            i for v in obj_dict.values() for i in v
+        ]
 
         # Check 'obj' is valid
         if obj and obj not in obj_list and not allow_unavailable_object:
@@ -116,27 +128,12 @@ class TxtinoutReader:
                 f'Object "{obj}" not found in print.prt file. Use allow_unavailable_object=True to proceed.'
             )
 
-        # Time frequency dictionary
-        time_dict = {
-            'daily': daily,
-            'monthly': monthly,
-            'yearly': yearly,
-            'avann': avann
-        }
-
-        for key, val in time_dict.items():
-            if not isinstance(val, bool):
-                raise TypeError(f'Variable "{key}" for "{obj}" must be a bool value')
-
-        # read all print_prt file, line by line
+        # File path of print.prt
         print_prt_path = self.root_folder / 'print.prt'
-        new_print_prt = ""
+
+        # Read and modify print.prt file strings
+        new_print_prt = ''
         found = False
-
-        # Check if file exists
-        if not print_prt_path.exists():
-            raise FileNotFoundError("print.prt file does not exist")
-
         with open(print_prt_path, 'r', newline='') as file:
             for i, line in enumerate(file, start=1):
                 if i <= 10:
@@ -155,18 +152,36 @@ class TxtinoutReader:
 
                 if obj is None:
                     # Update all objects
-                    new_print_prt += utils._build_line_to_add(line_obj, daily, monthly, yearly, avann)
+                    new_print_prt += utils._build_line_to_add(
+                        obj=line_obj,
+                        daily=daily,
+                        monthly=monthly,
+                        yearly=yearly,
+                        avann=avann
+                    )
                 elif line_obj == obj:
-                    # obj already exist, replace it in same position
-                    new_print_prt += utils._build_line_to_add(line_obj, daily, monthly, yearly, avann)
+                    # Already 'obj' exist, replace it in same position
+                    new_print_prt += utils._build_line_to_add(
+                        obj=line_obj,
+                        daily=daily,
+                        monthly=monthly,
+                        yearly=yearly,
+                        avann=avann
+                    )
                     found = True
                 else:
                     new_print_prt += line
 
         if not found and obj is not None:
-            new_print_prt += utils._build_line_to_add(obj, daily, monthly, yearly, avann)
+            new_print_prt += utils._build_line_to_add(
+                obj=obj,
+                daily=daily,
+                monthly=monthly,
+                yearly=yearly,
+                avann=avann
+            )
 
-        # store new print_prt
+        # Store modified print.prt file
         with open(print_prt_path, 'w', newline='') as file:
             file.write(new_print_prt)
 
@@ -190,6 +205,7 @@ class TxtinoutReader:
                 96 = 15 mins
                 1440 = minute
         '''
+
         if not isinstance(begin_date, date) or not isinstance(end_date, date):
             raise TypeError("begin_date and end_date must be datetime.date objects")
 
@@ -208,13 +224,11 @@ class TxtinoutReader:
         end_day = end_date.timetuple().tm_yday
         end_year = end_date.year
 
-        nth_line = 3  # line in time.sim file to modify
+        # Target line
+        nth_line = 3
 
+        # File path of time.sim
         time_sim_path = self.root_folder / 'time.sim'
-
-        # Check if file exists
-        if not time_sim_path.exists():
-            raise FileNotFoundError("time.sim file does not exist")
 
         # Open the file in read mode and read its contents
         with open(time_sim_path, 'r') as file:
@@ -246,28 +260,31 @@ class TxtinoutReader:
         Modify the warm-up years in the `print.prt` file.
 
         Args:
-            warmup (int): A positive integer representing the number of years
-                the simulation will use for warm-up (e.g., 1).
-
-        Raises:
-            ValueError: If the warmup year is less than or equal to 0.
+            warmup (int): Warm-up years for the simulation, must be ≥ 1.
         '''
 
-        if not isinstance(warmup, int):
-            raise TypeError('warmup must be an integer value')
+        # Check input variables type
+        validators._variable_origin_static_type(
+            vars_types=typing.get_type_hints(
+                obj=self.set_warmup_year
+            ),
+            vars_values=locals()
+        )
+
+        # Check warmup year is greater than 0
         if warmup <= 0:
-            raise ValueError('warmup must be a positive integer')
+            raise ValueError(
+                f"Expected warmup >= 1, but received warmup = {warmup}"
+            )
 
+        # File path of print.prt
         print_prt_path = self.root_folder / 'print.prt'
-
-        # Check if file exists
-        if not print_prt_path.exists():
-            raise FileNotFoundError("print.prt file does not exist")
 
         # Open the file in read mode and read its contents
         with open(print_prt_path, 'r') as file:
             lines = file.readlines()
 
+        # Target line
         nth_line = 3
         year_line = lines[nth_line - 1]
 
@@ -293,24 +310,23 @@ class TxtinoutReader:
         Enable or disable print in the `print.prt` file.
         '''
 
-        # read
-        nth_line = 7
-
+        # File path of print.prt
         print_prt_path = self.root_folder / 'print.prt'
 
-        # Check if file exists
-        if not print_prt_path.exists():
-            raise FileNotFoundError("print.prt file does not exist")
+        # Target line
+        nth_line = 7
 
         # Open the file in read mode and read its contents
         with open(print_prt_path, 'r') as file:
             lines = file.readlines()
 
+        # Change line string
         if enable:
             lines[nth_line - 1] = 'y' + lines[nth_line - 1][1:]
         else:
             lines[nth_line - 1] = 'n' + lines[nth_line - 1][1:]
 
+        # Modify print.prt file
         with open(print_prt_path, 'w') as file:
             file.writelines(lines)
 
@@ -361,33 +377,54 @@ class TxtinoutReader:
         `TxtinoutReader` instance to the specified directory for SWAT+ simulation.
 
         Args:
-            target_dir (str or Path): Path to the directory where the required files will be copied.
+            target_dir (str or Path): Path to the empty directory where the required files will be copied.
 
         Returns:
             The path to the target directory containing the copied files.
         '''
 
-        target_dir = utils._ensure_path(target_dir)
+        # Check input variables type
+        validators._variable_origin_static_type(
+            vars_types=typing.get_type_hints(
+                obj=self.copy_required_files
+            ),
+            vars_values=locals()
+        )
 
-        # Enforce that it's a directory, not a file path
-        if target_dir.suffix:
-            raise ValueError(f"`target_dir` must be a directory, not a file path: {target_dir}")
+        # Absolute path of target_dir
+        target_dir = pathlib.Path(target_dir).resolve()
 
-        # Create the directory if it does not exist and copy necessary files
-        target_dir.mkdir(parents=True, exist_ok=True)
+        # Check validity of target_dir
+        validators._path_directory(
+            path=target_dir
+        )
 
-        dest_path = pathlib.Path(target_dir)
+        # Check TxtInOut folder and target_dir are not same
+        if self.root_folder.resolve() == target_dir.resolve():
+            raise ValueError(
+                f'Input target_dir path must be different from TxtInOut folder: {str(self.root_folder)}'
+            )
 
-        if any(dest_path.iterdir()):
-            raise FileExistsError(f"Target directory {dest_path} is not empty.")
+        # Check targe_dir is empty
+        if any(target_dir.iterdir()):
+            raise FileExistsError(
+                f'Input target_dir {str(target_dir)} contains files; expected an empty directory'
+            )
+
+        # Ignored files
+        _ignored_files_endswith = tuple(
+            f'_{suffix}.{ext}'
+            for suffix in ('day', 'mon', 'yr', 'aa')
+            for ext in ('txt', 'csv')
+        )
 
         # Copy files from source folder
-        for file in self.root_folder.iterdir():
-            if file.is_dir() or file.name.endswith(self.IGNORED_FILE_PATTERNS):
+        for src_file in self.root_folder.iterdir():
+            if src_file.is_dir() or src_file.name.endswith(_ignored_files_endswith):
                 continue
-            shutil.copy2(file, dest_path / file.name)
+            shutil.copy2(src_file, target_dir / src_file.name)
 
-        return dest_path
+        return target_dir
 
     def _write_calibration_file(
         self,
@@ -525,7 +562,7 @@ class TxtinoutReader:
 
         # Safety check: ensure the file has enough lines
         if line_index >= len(lines):
-            raise IndexError(f"The file only has {len(lines)} lines, cannot replace line {line_index+1}.")
+            raise IndexError(f"The file only has {len(lines)} lines, cannot replace line {line_index + 1}.")
 
         # Replace the line, ensure it ends with a newline
         lines[line_index] = line_to_add.rstrip() + "\n"
@@ -620,7 +657,7 @@ class TxtinoutReader:
                     process.args,
                     stderr=stderr
                 )
-
+        # Raise error
         except Exception as e:
             logger.error(f"Failed to run SWAT: {str(e)}")
             raise
@@ -650,12 +687,12 @@ class TxtinoutReader:
                 parameters = [
                     {
                         "name": str,             # Name of the parameter to which the changes will be applied
-                        "value": float           # The value to apply to the parameter   
+                        "value": float           # The value to apply to the parameter
                         "change_type": str,      # One of: 'absval', 'abschg', 'pctchg'
                         "units": Iterable[int],  # (Optional) An optional list of unit IDs to constrain the parameter change.
                             **Unit IDs should be 1-based**, i.e., the first object has ID 1.
                         "conditions": dict[str: list[str]],  # (Optional) A dictionary of conditions to apply to the parameter change.
-                    },              
+                    },
                     ...
                 ]
                 ```
