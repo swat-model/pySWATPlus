@@ -619,7 +619,7 @@ class TxtinoutReader:
                 for sub_key, sub_val in val.items():
                     if sub_key not in key_dict:
                         raise KeyError(
-                            f'Invalids sub-key "{sub_key}" for key "{key}" in print_prt_control, expected sub-keys are [{', '.join(key_dict.keys())}]'
+                            f'Invalids sub-key "{sub_key}" for key "{key}" in print_prt_control, expected sub-keys are [{", ".join(key_dict.keys())}]'
                         )
                     key_dict[sub_key] = sub_val
                 self.enable_object_in_print_prt(
