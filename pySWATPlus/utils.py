@@ -7,6 +7,7 @@ from collections.abc import Iterable
 from pydantic import BaseModel
 import hashlib
 import json
+import datetime
 
 
 def _build_line_to_add(
@@ -33,6 +34,24 @@ def _build_line_to_add(
         arg_to_add += periodicity.ljust(14)
 
     return arg_to_add.rstrip() + '\n'
+
+
+def _date_str_to_object(
+    date_str: str
+) -> datetime.date:
+    '''
+    Converts a date string in 'YYYY-MM-DD' format to a `datetime.date` object
+    '''
+
+    date_fmt = '%d-%b-%Y'
+    try:
+        get_date = datetime.datetime.strptime(date_str, date_fmt).date()
+    except ValueError:
+        raise ValueError(
+            f'Invalid date format: "{date_str}"; expected format is DD-Mon-YYYY (e.g., 15-Mar-2010)'
+        )
+
+    return get_date
 
 
 def _clean(
@@ -85,34 +104,39 @@ def _ensure_path(p: str | pathlib.Path) -> pathlib.Path:
     '''
     Validate and convert a path-like argument to a resolved pathlib.Path object.
     '''
+
     if not isinstance(p, (str, pathlib.Path)):
         raise TypeError(f"Argument must be a string or Path object, got {type(p).__name__}")
     return pathlib.Path(p).resolve()
 
 
-def _format_val_field(value: float) -> str:
-    """
+def _format_val_field(
+    value: float
+) -> str:
+    '''
     Format a number for the VAL column:
     - 16 characters total: 1 leading space + 15-character numeric field
     - Right-aligned
     - Fixed-point if integer part fits; scientific if too large
-    """
+    '''
 
     # Convert to string without formatting
     s = str(value)
 
     if len(s) > 15:
         # Use scientific notation
-        formatted = f"{value:.6e}"
+        formatted = f'{value:.6e}'
     else:
         # If it fits, just use normal string
         formatted = s
 
     # Right-align to 16 characters
-    return f"{formatted:>16}"
+    return f'{formatted:>16}'
 
 
-def _compact_units(unit_list: Iterable[int]) -> list[int]:
+def _compact_units(
+    unit_list: Iterable[int]
+) -> list[int]:
     '''
     Compact a 1-based list of unit IDs into SWAT units syntax.
 
@@ -122,6 +146,7 @@ def _compact_units(unit_list: Iterable[int]) -> list[int]:
 
     All IDs must be 1-based (Fortran-style).
     '''
+
     if not unit_list:
         return []
 
@@ -158,6 +183,7 @@ def _parse_conditions(
     '''
     Parse the conditions that must be added to that parameter in calibration.cal file
     '''
+
     conditions = parameters.conditions
     if not conditions:
         return []
@@ -165,16 +191,20 @@ def _parse_conditions(
     conditions_parsed = []
     for parameter, condition_keys in conditions.items():
         for key in condition_keys:
-            conditions_parsed.append(f"{parameter:<19}{'=':<15} {0:<16}{key}")
+            conditions_parsed.append(f'{parameter:<19}{"=":<15} {0:<16}{key}')
 
     return conditions_parsed
 
 
-def _make_unique_param_name(param_key: str, model: BaseModel) -> str:
-    """
+def _make_unique_param_name(
+    param_key: str,
+    model: BaseModel
+) -> str:
+    '''
     Generate a unique, deterministic parameter identifier by combining the parameter key
     with a hash of the Pydantic model's serialized contents.
-    """
+    '''
+
     payload = json.dumps(model.model_dump(), sort_keys=True)
     uid = hashlib.md5(payload.encode()).hexdigest()
-    return f"{param_key}|{uid}"
+    return f'{param_key}|{uid}'

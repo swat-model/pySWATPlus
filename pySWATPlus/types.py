@@ -8,11 +8,11 @@ class ParameterBase(BaseModel):
     units: typing.Optional[list[int]] = None
     conditions: typing.Optional[dict[str, list[str]]] = None
 
-    @field_validator("units")
+    @field_validator('units')
     @classmethod
     def validate_units(cls, v: typing.Optional[typing.Iterable[int]]) -> typing.Optional[typing.Iterable[int]]:
         if v is not None and any(num <= 0 for num in v):
-            raise ValueError(f"All unit IDs must be > 0, got {list(v)}")
+            raise ValueError(f'All unit IDs must be > 0, got {list(v)}')
         return list(v) if v is not None else None
 
 
