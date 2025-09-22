@@ -88,8 +88,6 @@ class FileReader:
         it will be preserved and written back as part of the output.
         If the file is a SWAT+ Output File, launch exception.
         '''
-        if self.is_output_file:
-            raise ValueError("Overwriting SWAT+ Output Files is not allowed")
 
         # Check if units row matches the DataFrame's column count
         if self.has_units:
