@@ -232,7 +232,7 @@ class SensitivityAnalyzer(BaseSensitivityAnalyzer):
         _simulation_folder = utils._ensure_path(simulation_folder)
 
         _params = [ParameterBoundedModel(**param) for param in parameters]
-        validators._validate_cal_parameters(_txtinout_folder, _params)
+        validators._calibration_parameters(_txtinout_folder, _params)
 
         var_names = []
         var_bounds = []
