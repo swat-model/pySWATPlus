@@ -84,4 +84,4 @@ def test_error_filereader():
 def test_github():
 
     # regular GitHub trigger test function when no code is changed
-    assert str(2) == '2'
+    assert str(1) == '1'
