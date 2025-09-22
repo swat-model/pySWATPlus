@@ -3,8 +3,6 @@ import shutil
 import pathlib
 import typing
 import logging
-from datetime import date
-from .filereader import FileReader
 from .types import ParametersType, ParameterModel
 from . import utils
 from . import validators
@@ -54,7 +52,7 @@ class TxtinoutReader:
         # Raise error on .exe file
         if len(exe_files) != 1:
             raise TypeError(
-                'Expected exactly one .exe file in the parent folder, but found none or multiple.'
+                'Expected exactly one .exe file in the parent folder, but found none or multiple'
             )
 
         # TxtInOut directory path
@@ -125,7 +123,7 @@ class TxtinoutReader:
         # Check 'obj' is valid
         if obj and obj not in obj_list and not allow_unavailable_object:
             raise ValueError(
-                f'Object "{obj}" not found in print.prt file. Use allow_unavailable_object=True to proceed.'
+                f'Object "{obj}" not found in print.prt file; use "allow_unavailable_object=True" to proceed'
             )
 
         # File path of print.prt
@@ -187,8 +185,8 @@ class TxtinoutReader:
 
     def set_begin_and_end_date(
         self,
-        begin_date: date,
-        end_date: date,
+        begin_date: str,
+        end_date: str,
         step: typing.Optional[int] = 0
     ) -> None:
         '''
@@ -196,33 +194,59 @@ class TxtinoutReader:
         the begin and end dates in the `time.sim` file.
 
         Args:
-            begin_date (date): Beginning date of the simulation.
-            end_date (date): Ending date of the simulation.
-            step (int, optional): Timestep of the simulation.
-                0 = daily
-                1 = increment (12 hrs)
-                24 = hourly
-                96 = 15 mins
-                1440 = minute
+            begin_date (str): Start date of the simulation in DD-Mon-YYYY format (e.g., 01-Jan-2010).
+            end_date (str): End date of the simulation in DD-Mon-YYYY format (e.g., 31-Dec-2013).
+            step (int): Simulation timestep. Defaults to 0. Allowed values are:
+
+                - `0` = 1 day
+                - `1` = 12 hours
+                - `24` = 1 hour
+                - `96` = 15 minutes
+                - `1440` = 1 minute
         '''
 
-        if not isinstance(begin_date, date) or not isinstance(end_date, date):
-            raise TypeError("begin_date and end_date must be datetime.date objects")
+        # Check input variables type
+        validators._variable_origin_static_type(
+            vars_types=typing.get_type_hints(
+                obj=self.set_begin_and_end_date
+            ),
+            vars_values=locals()
+        )
 
-        if begin_date >= end_date:
-            raise ValueError("begin_date must be earlier than end_date")
+        # Convert date string to datetime.date object
+        begin_dt = utils._date_str_to_object(
+            date_str=begin_date
+        )
+        end_dt = utils._date_str_to_object(
+            date_str=end_date
+        )
 
-        if not isinstance(step, int):
-            raise TypeError("step must be an integer")
-        valid_steps = [0, 1, 24, 96, 1440]
+        # Check begin date is earlier than end date
+        validators._date_begin_earlier_end(
+            begin_date=begin_dt,
+            end_date=end_dt
+        )
+
+        # Valid time step dictionary
+        valid_steps = {
+            0: '1 day',
+            1: '12 hours',
+            24: '1 hour',
+            96: '15 minutes',
+            1440: '1 minute',
+        }
+
+        # Check valid steps
         if step not in valid_steps:
-            raise ValueError(f"Invalid step: {step}. Must be one of {valid_steps}")
+            raise ValueError(
+                f'Received invalid step: {step}; must be one of the keys in {valid_steps}'
+            )
 
         # Extract years and Julian days
-        begin_day = begin_date.timetuple().tm_yday
-        begin_year = begin_date.year
-        end_day = end_date.timetuple().tm_yday
-        end_year = end_date.year
+        begin_day = begin_dt.timetuple().tm_yday
+        begin_year = begin_dt.year
+        end_day = end_dt.timetuple().tm_yday
+        end_year = end_dt.year
 
         # Target line
         nth_line = 3
@@ -234,8 +258,8 @@ class TxtinoutReader:
         with open(time_sim_path, 'r') as file:
             lines = file.readlines()
 
-        # Split existing line
-        elements = lines[2].split()
+        # Split targeted line
+        elements = lines[nth_line - 1].split()
 
         # Update values
         elements[0] = str(begin_day)
@@ -246,9 +270,9 @@ class TxtinoutReader:
 
         # Reconstruct the result string while maintaining spaces
         result_string = '{: >8} {: >10} {: >10} {: >10} {: >10} \n'.format(*elements)
-
         lines[nth_line - 1] = result_string
 
+        # Modify time.sim file
         with open(time_sim_path, 'w') as file:
             file.writelines(lines)
 
@@ -274,7 +298,7 @@ class TxtinoutReader:
         # Check warmup year is greater than 0
         if warmup <= 0:
             raise ValueError(
-                f"Expected warmup >= 1, but received warmup = {warmup}"
+                f'Expected warmup >= 1, but received warmup = {warmup}'
             )
 
         # File path of print.prt
@@ -348,26 +372,6 @@ class TxtinoutReader:
 
         self._enable_disable_csv_print(enable=False)
 
-    def register_file(
-        self,
-        filename: str,
-        has_units: bool,
-    ) -> FileReader:
-        '''
-        Register a file to work with in the SWAT+ model.
-
-        Args:
-            filename (str): Path to the file to register, located in the `TxtInOut` folder.
-            has_units (bool): If True, the second row of the file contains units.
-
-        Returns:
-            A FileReader instance for the registered file.
-        '''
-
-        file_path = self.root_folder / filename
-
-        return FileReader(file_path, has_units)
-
     def copy_required_files(
         self,
         target_dir: str | pathlib.Path,
@@ -399,12 +403,6 @@ class TxtinoutReader:
             path=target_dir
         )
 
-        # Check TxtInOut folder and target_dir are not same
-        if self.root_folder.resolve() == target_dir.resolve():
-            raise ValueError(
-                f'Input target_dir path must be different from TxtInOut folder: {str(self.root_folder)}'
-            )
-
         # Check targe_dir is empty
         if any(target_dir.iterdir()):
             raise FileExistsError(
@@ -434,31 +432,33 @@ class TxtinoutReader:
         Writes `calibration.cal` file with parameter changes.
         '''
 
-        outfile = self.root_folder / "calibration.cal"
+        outfile = self.root_folder / 'calibration.cal'
 
         # If calibration.cal exists, remove it (always recreate)
         if outfile.exists():
             outfile.unlink()
 
-        # make sure calibration.cal is enabled in file.cio
-        self._add_or_remove_calibration_cal_to_file_cio(add=True)
+        # Make sure calibration.cal is enabled in file.cio
+        self._calibration_cal_in_file_cio(
+            add=True
+        )
 
         # Number of parameters (number of rows in the DataFrame)
         num_parameters = len(parameters)
 
         # Column widths for right-alignment
         col_widths = {
-            "NAME": 12,      # left-aligned
-            "CHG_TYPE": 8,
-            "VAL": 16,
-            "CONDS": 16,
-            "LYR1": 8,
-            "LYR2": 8,
-            "YEAR1": 8,
-            "YEAR2": 8,
-            "DAY1": 8,
-            "DAY2": 8,
-            "OBJ_TOT": 8
+            'NAME': 12,
+            'CHG_TYPE': 8,
+            'VAL': 16,
+            'CONDS': 16,
+            'LYR1': 8,
+            'LYR2': 8,
+            'YEAR1': 8,
+            'YEAR2': 8,
+            'DAY1': 8,
+            'DAY2': 8,
+            'OBJ_TOT': 8
         }
 
         calibration_cal_rows = []
@@ -471,104 +471,109 @@ class TxtinoutReader:
             # get conditions
             parsed_conditions = utils._parse_conditions(change)
 
-            calibration_cal_rows.append({
-                "NAME": change.name,
-                "CHG_TYPE": change.change_type,
-                "VAL": change.value,
-                "CONDS": len(parsed_conditions),
-                "LYR1": 0,
-                "LYR2": 0,
-                "YEAR1": 0,
-                "YEAR2": 0,
-                "DAY1": 0,
-                "DAY2": 0,
-                "OBJ_TOT": len(compacted_units),
-                "OBJ_LIST": compacted_units,  # Store the compacted units
-                "PARSED_CONDITIONS": parsed_conditions
-            })
-
-        with open(outfile, "w") as f:
-            # Write header
-            f.write(f"Number of parameters:\n{num_parameters}\n")
-            headers = (
-                f"{'NAME':<12}{'CHG_TYPE':<21}{'VAL':<14}{'CONDS':<9}"
-                f"{'LYR1':<8}{'LYR2':<7}{'YEAR1':<8}{'YEAR2':<9}"
-                f"{'DAY1':<8}{'DAY2':<5}{'OBJ_TOT':>7}"
+            calibration_cal_rows.append(
+                {
+                    'NAME': change.name,
+                    'CHG_TYPE': change.change_type,
+                    'VAL': change.value,
+                    'CONDS': len(parsed_conditions),
+                    'LYR1': 0,
+                    'LYR2': 0,
+                    'YEAR1': 0,
+                    'YEAR2': 0,
+                    'DAY1': 0,
+                    'DAY2': 0,
+                    'OBJ_TOT': len(compacted_units),
+                    'OBJ_LIST': compacted_units,
+                    'PARSED_CONDITIONS': parsed_conditions
+                }
             )
-            f.write(f"{headers}\n")
+
+        with open(outfile, 'w') as f:
+            # Write header
+            f.write(f'Number of parameters:\n{num_parameters}\n')
+            headers = (
+                f'{'NAME':<12}{'CHG_TYPE':<21}{'VAL':<14}{'CONDS':<9}'
+                f'{'LYR1':<8}{'LYR2':<7}{'YEAR1':<8}{'YEAR2':<9}'
+                f'{'DAY1':<8}{'DAY2':<5}{'OBJ_TOT':>7}'
+            )
+            f.write(f'{headers}\n')
 
             # Write rows
+            col_names = [c for c in col_widths]
             for row in calibration_cal_rows:
-                line = ""
-                for col in ["NAME", "CHG_TYPE", "VAL", "CONDS", "LYR1", "LYR2",
-                            "YEAR1", "YEAR2", "DAY1", "DAY2", "OBJ_TOT"]:
-                    if col == "NAME":
-                        line += f"{row[col]:<{col_widths[col]}}"   # left-align
-                    elif col == "VAL" and isinstance(row[col], float):
+                line = ''
+                for col in col_names:
+                    if col == 'NAME':
+                        line += f'{row[col]:<{col_widths[col]}}'   # left-align
+                    elif col == 'VAL' and isinstance(row[col], float):
                         line += utils._format_val_field(typing.cast(float, row[col]))  # special VAL formatting
                     else:
-                        line += f"{row[col]:>{col_widths[col]}}"  # right-align numeric columns
+                        line += f'{row[col]:>{col_widths[col]}}'  # right-align numeric columns
 
                 # Append compacted units at the end (space-separated)
-                if row["OBJ_LIST"]:
-                    line += "       " + "    ".join(str(u) for u in typing.cast(list[str], row["OBJ_LIST"]))
+                if row['OBJ_LIST']:
+                    line += '       ' + '    '.join(str(u) for u in typing.cast(list[str], row['OBJ_LIST']))
 
-                if row["PARSED_CONDITIONS"]:
-                    parsed_conditions = typing.cast(list[str], row["PARSED_CONDITIONS"])
-                    line += "\n" + "\n".join(parsed_conditions)
+                if row['PARSED_CONDITIONS']:
+                    parsed_conditions = typing.cast(list[str], row['PARSED_CONDITIONS'])
+                    line += '\n' + '\n'.join(parsed_conditions)
 
-                f.write(line + "\n")
+                f.write(line + '\n')
 
-    def _add_or_remove_calibration_cal_to_file_cio(
+    def _calibration_cal_in_file_cio(
         self,
         add: bool
     ) -> None:
         '''
         Adds or removes the calibration line to 'file.cio'
         '''
-        file_path = self.root_folder / "file.cio"
-        if not file_path.exists():
-            raise FileNotFoundError("file.cio file does not exist in the TxtInOut folder")
 
+        # Path of file.cio
+        file_path = self.root_folder / 'file.cio'
+
+        # Line format
         fmt = (
-            f"{'{:<18}'}"  # chg
-            f"{'{:<18}'}"  # cal_parms.cal / null
-            f"{'{:<18}'}"  # calibration.cal
-            f"{'{:<18}'}"  # null
-            f"{'{:<18}'}"  # null
-            f"{'{:<18}'}"  # null
-            f"{'{:<18}'}"  # null
-            f"{'{:<18}'}"  # null
-            f"{'{:<18}'}"  # null
-            f"{'{:<18}'}"  # null
-            f"{'{:<18}'}"  # null
-            f"{'{:<4}'}"   # null
+            f'{'{:<18}'}'  # chg
+            f'{'{:<18}'}'  # cal_parms.cal / null
+            f'{'{:<18}'}'  # calibration.cal
+            f'{'{:<18}'}'  # null
+            f'{'{:<18}'}'  # null
+            f'{'{:<18}'}'  # null
+            f'{'{:<18}'}'  # null
+            f'{'{:<18}'}'  # null
+            f'{'{:<18}'}'  # null
+            f'{'{:<18}'}'  # null
+            f'{'{:<18}'}'  # null
+            f'{'{:<4}'}'   # null
         )
 
         # Prepare the values for the line
         cal_line_values = [
-            "chg",
-            "cal_parms.cal" if add else "null",
-            "calibration.cal",
-        ] + ["null"] * 9  # Fill remaining columns with null
-
+            'chg',
+            'cal_parms.cal' if add else 'null',
+            'calibration.cal',
+        ] + ['null'] * 9
         line_to_add = fmt.format(*cal_line_values)
 
+        # Line index for calibration.cal
         line_index = 21
 
         # Read all lines
-        with file_path.open("r") as f:
+        with open(file_path, 'r') as f:
             lines = f.readlines()
 
         # Safety check: ensure the file has enough lines
         if line_index >= len(lines):
-            raise IndexError(f"The file only has {len(lines)} lines, cannot replace line {line_index + 1}.")
+            raise IndexError(
+                f'The file only has {len(lines)} lines, cannot replace line {line_index + 1}'
+            )
 
         # Replace the line, ensure it ends with a newline
-        lines[line_index] = line_to_add.rstrip() + "\n"
+        lines[line_index] = line_to_add.rstrip() + '\n'
 
-        # Write back
-        with file_path.open("w") as f:
+        # Modify file.cio
+        with open(file_path, 'w') as f:
             f.writelines(lines)
 
     def _apply_swat_configuration(
@@ -580,11 +585,9 @@ class TxtinoutReader:
         '''
         Sets begin and end year for the simulation, the warm-up period, and toggles the elements in print.prt file
         '''
+
         # Set simulation range time
         if begin_and_end_date is not None:
-            if not isinstance(begin_and_end_date, dict):
-                raise TypeError('begin_and_end_date must be a dictionary')
-
             self.set_begin_and_end_date(**begin_and_end_date)
 
         # Set warmup period
@@ -595,8 +598,6 @@ class TxtinoutReader:
 
         # Update print.prt file to write output
         if print_prt_control is not None:
-            if not isinstance(print_prt_control, dict):
-                raise TypeError('print_prt_control must be a dictionary')
             if len(print_prt_control) == 0:
                 raise ValueError('print_prt_control cannot be an empty dictionary')
             default_dict = {
@@ -607,38 +608,41 @@ class TxtinoutReader:
             }
             for key, val in print_prt_control.items():
                 if not isinstance(val, dict):
-                    raise ValueError(f'Value of key "{key}" must be a dictionary')
+                    raise TypeError(
+                        f'Expected a dictionary for key "{key}" in print_prt_control, but got type "{type(val).__name__}"'
+                    )
                 if len(val) == 0:
-                    raise ValueError(f'Value of key "{key}" cannot be an empty dictionary')
+                    raise ValueError(
+                        f'Expected a non-empty dictionary for key "{key}" in print_prt_control'
+                    )
                 key_dict = default_dict.copy()
                 for sub_key, sub_val in val.items():
                     if sub_key not in key_dict:
-                        raise ValueError(f'Sub-key "{sub_key}" for key "{key}" is not valid')
+                        raise KeyError(
+                            f'Invalids sub-key "{sub_key}" for key "{key}" in print_prt_control, expected sub-keys are [{', '.join(key_dict.keys())}]'
+                        )
                     key_dict[sub_key] = sub_val
                 self.enable_object_in_print_prt(
                     obj=key,
-                    daily=key_dict['daily'],
-                    monthly=key_dict['monthly'],
-                    yearly=key_dict['yearly'],
-                    avann=key_dict['avann']
+                    **key_dict
                 )
 
-    def _run_swat(
+    def _run_swat_exe(
         self,
     ) -> None:
         '''
         Run the SWAT+ simulation.
         '''
 
-        # Run simulation
         try:
+            # Run simulation
             process = subprocess.Popen(
                 [str(self.swat_exe_path.resolve())],
-                cwd=str(self.root_folder.resolve()),  # Sets working dir just for this subprocess
+                cwd=str(self.root_folder.resolve()),
                 stdout=subprocess.PIPE,
                 stderr=subprocess.PIPE,
-                bufsize=1,  # Line buffered
-                text=True   # Handles text output
+                bufsize=1,
+                text=True
             )
 
             # Real-time output handling
@@ -659,7 +663,7 @@ class TxtinoutReader:
                 )
         # Raise error
         except Exception as e:
-            logger.error(f"Failed to run SWAT: {str(e)}")
+            logger.error(f'Failed to run SWAT: {str(e)}')
             raise
 
     def run_swat(
@@ -675,13 +679,12 @@ class TxtinoutReader:
         Run the SWAT+ simulation with optional parameter changes.
 
         Args:
-
             target_dir (str or Path, optional): Path to the directory where the simulation will be done.
                 If None, the simulation runs directly in the current folder.
 
-            parameters (ParametersType, optional): Nested dictionary specifying parameter changes.
+            parameters (ParametersType): List of dictionaries specifying parameter changes.
 
-                The `parameters` dictionary should follow this structure:
+                The `parameters` list should follow this structure:
 
                 ```python
                 parameters = [
@@ -691,28 +694,26 @@ class TxtinoutReader:
                         "change_type": str,      # One of: 'absval', 'abschg', 'pctchg'
                         "units": Iterable[int],  # (Optional) An optional list of unit IDs to constrain the parameter change.
                             **Unit IDs should be 1-based**, i.e., the first object has ID 1.
-                        "conditions": dict[str: list[str]],  # (Optional) A dictionary of conditions to apply to the parameter change.
+                        "conditions": dict[str, list[str]],  # (Optional) A dictionary of conditions to apply to the parameter change.
                     },
                     ...
                 ]
                 ```
 
-            begin_and_end_date (dict, optional): Dictionary defining the simulation period (and optionally timestep).
-                Must contain the following keys:
+            begin_and_end_date (dict[str, str | int]): Dictionary defining the simulation period with the following keys:
 
-                - `begin_date` (date): Start date of the simulation.
-                - `end_date` (date): End date of the simulation.
-                - `step` (int, optional): Timestep of the simulation. Defaults to `0` (daily) if not provided.
-                    Allowed values:
-                    - `0` = daily
-                    - `1` = 12-hour increments
-                    - `24` = hourly
-                    - `96` = 15-minute increments
-                    - `1440` = minute
+                - `begin_date`: Required. Start date of the simulation in DD-Mon-YYYY format (e.g., 01-Jan-2010).
+                - `end_date`: Required. End date of the simulation in DD-Mon-YYYY format (e.g., 31-Dec-2013).
+                - `step`: Optional. Simulation timestep. Defaults to 0. Allowed values:
+                    - `0` = 1 day
+                    - `1` = 12 hours
+                    - `24` = 1 hour
+                    - `96` = 15 minutes
+                    - `1440` = 1 minute
 
             warmup (int): A positive integer representing the number of warm-up years (e.g., 1).
 
-            print_prt_control (dict[str, dict[str, bool]], optional): A dictionary to control output printing in the `print.prt` file.
+            print_prt_control (dict[str, dict[str, bool]]): A dictionary to control output printing in the `print.prt` file.
                 Each outer key is an object name from `print.prt` (e.g., 'channel_sd', 'basin_wb').
                 Each value is a dictionary with keys `daily`, `monthly`, `yearly`, or `avann`, mapped to boolean values.
                 Set to `False` to disable printing for that time step; defaults to `True` if not specified.
@@ -762,36 +763,62 @@ class TxtinoutReader:
             ```
         '''
 
-        if target_dir:
-            _target_dir = utils._ensure_path(target_dir)
+        # Check input variables type
+        validators._variable_origin_static_type(
+            vars_types=typing.get_type_hints(
+                obj=self.run_swat
+            ),
+            vars_values=locals()
+        )
 
-            # Resolve to absolute paths
-            if self.root_folder.resolve() == _target_dir.resolve():
-                raise ValueError(
-                    "`target_dir` parameter must be different from the existing TxtInOut path!"
-                )
-            run_path = self.copy_required_files(target_dir=target_dir)
-
+        # TxtinoutReader class instance
+        if target_dir is not None:
+            # Absolute path
+            target_dir = pathlib.Path(target_dir).resolve()
+            # Check validity of target_dir
+            validators._path_directory(
+                path=target_dir
+            )
+            # Copy files to the target directory
+            run_path = self.copy_required_files(
+                target_dir=target_dir
+            )
             # Initialize new TxtinoutReader class
-            reader = TxtinoutReader(run_path)
+            reader = TxtinoutReader(
+                path=run_path
+            )
         else:
+            # Select existing TxtinoutReader class instance
             reader = self
             run_path = self.root_folder
 
         # Apply SWAT+ configuration changes
-        reader._apply_swat_configuration(begin_and_end_date, warmup, print_prt_control)
+        reader._apply_swat_configuration(
+            begin_and_end_date=begin_and_end_date,
+            warmup=warmup,
+            print_prt_control=print_prt_control
+        )
 
+        # Create calibration.cal file
         if parameters:
             _params = [ParameterModel(**param) for param in parameters]
 
-            validators._validate_cal_parameters(reader.root_folder, _params)
+            validators._calibration_parameters(
+                txtinout_path=reader.root_folder,
+                parameters=_params
+            )
 
             if not skip_validation:
-                validators._validate_conditions_and_units(_params, reader.root_folder)
+                validators._calibration_conditions_and_units(
+                    txtinout_path=reader.root_folder,
+                    parameters=_params
+                )
 
-            reader._write_calibration_file(_params)
+            reader._write_calibration_file(
+                parameters=_params
+            )
 
         # Run simulation
-        reader._run_swat()
+        reader._run_swat_exe()
 
         return run_path
