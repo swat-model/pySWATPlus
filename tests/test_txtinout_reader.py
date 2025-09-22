@@ -305,21 +305,21 @@ def test_calibration_cal_in_file_cio(
         file_path = target_reader.root_folder / 'file.cio'
 
         fmt = (
-            f'{'{:<18}'}'  # chg
-            f'{'{:<18}'}'  # cal_parms.cal / null
-            f'{'{:<18}'}'  # calibration.cal
-            f'{'{:<18}'}'  # null
-            f'{'{:<18}'}'  # null
-            f'{'{:<18}'}'  # null
-            f'{'{:<18}'}'  # null
-            f'{'{:<18}'}'  # null
-            f'{'{:<18}'}'  # null
-            f'{'{:<18}'}'  # null
-            f'{'{:<18}'}'  # null
-            f'{'{:<4}'}'   # null
+            f"{'{:<18}'}"  # chg
+            f"{'{:<18}'}"  # cal_parms.cal / null
+            f"{'{:<18}'}"  # calibration.cal
+            f"{'{:<18}'}"  # null
+            f"{'{:<18}'}"  # null
+            f"{'{:<18}'}"  # null
+            f"{'{:<18}'}"  # null
+            f"{'{:<18}'}"  # null
+            f"{'{:<18}'}"  # null
+            f"{'{:<18}'}"  # null
+            f"{'{:<18}'}"  # null
+            f"{'{:<4}'}"   # null
         )
 
-        # --- Test adding calibration line ---
+        # Pass: adding calibration line
         target_reader._calibration_cal_in_file_cio(
             add=True
         )
@@ -329,7 +329,7 @@ def test_calibration_cal_in_file_cio(
         )
         assert lines[21] == expected_line
 
-        # --- Test removing calibration line ---
+        # Pass: removing calibration line
         target_reader._calibration_cal_in_file_cio(
             add=False
         )

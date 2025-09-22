@@ -493,9 +493,9 @@ class TxtinoutReader:
             # Write header
             f.write(f'Number of parameters:\n{num_parameters}\n')
             headers = (
-                f'{'NAME':<12}{'CHG_TYPE':<21}{'VAL':<14}{'CONDS':<9}'
-                f'{'LYR1':<8}{'LYR2':<7}{'YEAR1':<8}{'YEAR2':<9}'
-                f'{'DAY1':<8}{'DAY2':<5}{'OBJ_TOT':>7}'
+                f"{'NAME':<12}{'CHG_TYPE':<21}{'VAL':<14}{'CONDS':<9}"
+                f"{'LYR1':<8}{'LYR2':<7}{'YEAR1':<8}{'YEAR2':<9}"
+                f"{'DAY1':<8}{'DAY2':<5}{'OBJ_TOT':>7}"
             )
             f.write(f'{headers}\n')
 
@@ -534,18 +534,18 @@ class TxtinoutReader:
 
         # Line format
         fmt = (
-            f'{'{:<18}'}'  # chg
-            f'{'{:<18}'}'  # cal_parms.cal / null
-            f'{'{:<18}'}'  # calibration.cal
-            f'{'{:<18}'}'  # null
-            f'{'{:<18}'}'  # null
-            f'{'{:<18}'}'  # null
-            f'{'{:<18}'}'  # null
-            f'{'{:<18}'}'  # null
-            f'{'{:<18}'}'  # null
-            f'{'{:<18}'}'  # null
-            f'{'{:<18}'}'  # null
-            f'{'{:<4}'}'   # null
+            f"{'{:<18}'}"  # chg
+            f"{'{:<18}'}"  # cal_parms.cal / null
+            f"{'{:<18}'}"  # calibration.cal
+            f"{'{:<18}'}"  # null
+            f"{'{:<18}'}"  # null
+            f"{'{:<18}'}"  # null
+            f"{'{:<18}'}"  # null
+            f"{'{:<18}'}"  # null
+            f"{'{:<18}'}"  # null
+            f"{'{:<18}'}"  # null
+            f"{'{:<18}'}"  # null
+            f"{'{:<4}'}"   # null
         )
 
         # Prepare the values for the line
