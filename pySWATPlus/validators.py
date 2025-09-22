@@ -189,7 +189,7 @@ def _calibration_conditions(
         if cond_name not in supported_conditions:
             raise ValueError(
                 f'Condition "{cond_name}" for parameter "{name}" is not supported. '
-                f'Available conditions are: {', '.join(sorted(supported_conditions))}.'
+                f'Available conditions are: {", ".join(sorted(supported_conditions))}.'
             )
 
         valid_values = validators.get(cond_name, set())
