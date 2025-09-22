@@ -937,9 +937,7 @@ from a TXT file located in the <code>TxtInOut</code> folder.</p>
 <span class="normal">125</span>
 <span class="normal">126</span>
 <span class="normal">127</span>
-<span class="normal">128</span>
-<span class="normal">129</span>
-<span class="normal">130</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">FileReader</span><span class="p">:</span>
+<span class="normal">128</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">FileReader</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    Provide functionality to read, filter, and write data</span>
 <span class="sd">    from a TXT file located in the `TxtInOut` folder.</span>
@@ -1023,8 +1021,6 @@ from a TXT file located in the <code>TxtInOut</code> folder.</p>
 <span class="sd">        it will be preserved and written back as part of the output.</span>
 <span class="sd">        If the file is a SWAT+ Output File, launch exception.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_output_file</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Overwriting SWAT+ Output Files is not allowed&quot;</span><span class="p">)</span>
 
         <span class="c1"># Check if units row matches the DataFrame&#39;s column count</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">has_units</span><span class="p">:</span>
@@ -1357,9 +1353,7 @@ If the file is a SWAT+ Output File, launch exception.</p>
 <span class="normal">125</span>
 <span class="normal">126</span>
 <span class="normal">127</span>
-<span class="normal">128</span>
-<span class="normal">129</span>
-<span class="normal">130</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">overwrite_file</span><span class="p">(</span>
+<span class="normal">128</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">overwrite_file</span><span class="p">(</span>
     <span class="bp">self</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
@@ -1368,8 +1362,6 @@ If the file is a SWAT+ Output File, launch exception.</p>
 <span class="sd">    it will be preserved and written back as part of the output.</span>
 <span class="sd">    If the file is a SWAT+ Output File, launch exception.</span>
 <span class="sd">    &#39;&#39;&#39;</span>
-    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_output_file</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Overwriting SWAT+ Output Files is not allowed&quot;</span><span class="p">)</span>
 
     <span class="c1"># Check if units row matches the DataFrame&#39;s column count</span>
     <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">has_units</span><span class="p">:</span>
