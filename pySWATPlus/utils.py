@@ -191,7 +191,7 @@ def _parse_conditions(
     conditions_parsed = []
     for parameter, condition_keys in conditions.items():
         for key in condition_keys:
-            conditions_parsed.append(f'{parameter:<19}{'=':<15} {0:<16}{key}')
+            conditions_parsed.append(f'{parameter:<19}{"=":<15} {0:<16}{key}')
 
     return conditions_parsed
 

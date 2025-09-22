@@ -130,7 +130,7 @@ def _calibration_units(
     if obj_type not in obj_type_files:
         raise ValueError(
             f'Parameter "{name}" with obj_type "{obj_type}" in "cal_parms.cal" does not support "units" key. '
-            f'Supported obj_type: [{', '.join(obj_type_files.keys())}].'
+            f'Supported obj_type: [{", ".join(obj_type_files.keys())}].'
         )
 
     file = obj_type_files[obj_type]
