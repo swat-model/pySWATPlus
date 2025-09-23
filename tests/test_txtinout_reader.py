@@ -257,13 +257,13 @@ def test_error_run_swat(
         )
     assert exc_info.value.args[0] == 'Expected warmup >= 1, but received warmup = 0'
 
-    # Error: empty print_prt_control dictionary
+    # Error: 'obj' is set as None in print_prt_control
     with pytest.raises(Exception) as exc_info:
         txtinout_reader.run_swat(
             target_dir=None,
-            print_prt_control={}
+            print_prt_control={None: {}}
         )
-    assert exc_info.value.args[0] == 'print_prt_control cannot be an empty dictionary'
+    assert '"None" cannot be used as a key in print_prt_control' in exc_info.value.args[0]
 
     # Error: invalid sub key value type of print_prt_control
     with pytest.raises(Exception) as exc_info:
@@ -272,14 +272,6 @@ def test_error_run_swat(
             print_prt_control={'basin_wb': []}
         )
     assert exc_info.value.args[0] == 'Expected a dictionary for key "basin_wb" in print_prt_control, but got type "list"'
-
-    # Error: empty dictionary of sub key of print_prt_control
-    with pytest.raises(Exception) as exc_info:
-        txtinout_reader.run_swat(
-            target_dir=None,
-            print_prt_control={'basin_wb': {}}
-        )
-    assert exc_info.value.args[0] == 'Expected a non-empty dictionary for key "basin_wb" in print_prt_control'
 
     # Error: invalid postional argument in print_prt_control
     with pytest.raises(Exception) as exc_info:
