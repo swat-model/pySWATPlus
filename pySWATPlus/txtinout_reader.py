@@ -183,6 +183,8 @@ class TxtinoutReader:
         with open(print_prt_path, 'w', newline='') as file:
             file.write(new_print_prt)
 
+        return None
+
     def set_begin_and_end_date(
         self,
         begin_date: str,
@@ -276,6 +278,8 @@ class TxtinoutReader:
         with open(time_sim_path, 'w') as file:
             file.writelines(lines)
 
+        return None
+
     def set_warmup_year(
         self,
         warmup: int
@@ -326,6 +330,8 @@ class TxtinoutReader:
         with open(print_prt_path, 'w') as file:
             file.writelines(lines)
 
+        return None
+
     def _enable_disable_csv_print(
         self,
         enable: bool = True
@@ -354,6 +360,8 @@ class TxtinoutReader:
         with open(print_prt_path, 'w') as file:
             file.writelines(lines)
 
+        return None
+
     def enable_csv_print(
         self
     ) -> None:
@@ -363,6 +371,8 @@ class TxtinoutReader:
 
         self._enable_disable_csv_print(enable=True)
 
+        return None
+
     def disable_csv_print(
         self
     ) -> None:
@@ -371,6 +381,8 @@ class TxtinoutReader:
         '''
 
         self._enable_disable_csv_print(enable=False)
+
+        return None
 
     def copy_required_files(
         self,
@@ -521,6 +533,8 @@ class TxtinoutReader:
 
                 f.write(line + '\n')
 
+        return None
+
     def _calibration_cal_in_file_cio(
         self,
         add: bool
@@ -576,6 +590,8 @@ class TxtinoutReader:
         with open(file_path, 'w') as f:
             f.writelines(lines)
 
+        return None
+
     def _apply_swat_configuration(
         self,
         begin_and_end_date: typing.Optional[dict[str, typing.Any]] = None,
@@ -598,8 +614,6 @@ class TxtinoutReader:
 
         # Update print.prt file to write output
         if print_prt_control is not None:
-            if len(print_prt_control) == 0:
-                raise ValueError('print_prt_control cannot be an empty dictionary')
             default_dict = {
                 'daily': True,
                 'monthly': True,
@@ -607,25 +621,34 @@ class TxtinoutReader:
                 'avann': True
             }
             for key, val in print_prt_control.items():
-                if not isinstance(val, dict):
+                if key is None:
+                    raise ValueError(
+                        '"None" cannot be used as a key in print_prt_control; '
+                        'use the method "enable_object_in_print_prt" with "target_dir=None" for this setting'
+                    )
+                elif not isinstance(val, dict):
                     raise TypeError(
                         f'Expected a dictionary for key "{key}" in print_prt_control, but got type "{type(val).__name__}"'
                     )
-                if len(val) == 0:
-                    raise ValueError(
-                        f'Expected a non-empty dictionary for key "{key}" in print_prt_control'
+                elif len(val) == 0:
+                    self.enable_object_in_print_prt(
+                        obj=key,
+                        **default_dict
                     )
-                key_dict = default_dict.copy()
-                for sub_key, sub_val in val.items():
-                    if sub_key not in key_dict:
-                        raise KeyError(
-                            f'Invalids sub-key "{sub_key}" for key "{key}" in print_prt_control, expected sub-keys are [{", ".join(key_dict.keys())}]'
-                        )
-                    key_dict[sub_key] = sub_val
-                self.enable_object_in_print_prt(
-                    obj=key,
-                    **key_dict
-                )
+                else:
+                    key_dict = default_dict.copy()
+                    for sub_key, sub_val in val.items():
+                        if sub_key not in key_dict:
+                            raise KeyError(
+                                f'Invalids sub-key "{sub_key}" for key "{key}" in print_prt_control, expected sub-keys are [{", ".join(key_dict.keys())}]'
+                            )
+                        key_dict[sub_key] = sub_val
+                    self.enable_object_in_print_prt(
+                        obj=key,
+                        **key_dict
+                    )
+
+        return None
 
     def _run_swat_exe(
         self,
@@ -666,9 +689,11 @@ class TxtinoutReader:
             logger.error(f'Failed to run SWAT: {str(e)}')
             raise
 
+        return None
+
     def run_swat(
         self,
-        target_dir: typing.Optional[str | pathlib.Path],
+        target_dir: typing.Optional[str | pathlib.Path] = None,
         parameters: typing.Optional[ParametersType] = None,
         begin_and_end_date: typing.Optional[dict[str, typing.Any]] = None,
         warmup: typing.Optional[int] = None,
@@ -679,7 +704,7 @@ class TxtinoutReader:
         Run the SWAT+ simulation with optional parameter changes.
 
         Args:
-            target_dir (str or Path, optional): Path to the directory where the simulation will be done.
+            target_dir (str or pathlib.Path): Path to the directory where the simulation will be done.
                 If None, the simulation runs directly in the current folder.
 
             parameters (ParametersType): List of dictionaries specifying parameter changes.
@@ -714,15 +739,14 @@ class TxtinoutReader:
             warmup (int): A positive integer representing the number of warm-up years (e.g., 1).
 
             print_prt_control (dict[str, dict[str, bool]]): A dictionary to control output printing in the `print.prt` file.
-                Each outer key is an object name from `print.prt` (e.g., 'channel_sd', 'basin_wb').
+                Each outer key corresponds to an object name from `print.prt` (e.g., 'channel_sd', 'basin_wb').
                 Each value is a dictionary with keys `daily`, `monthly`, `yearly`, or `avann`, mapped to boolean values.
-                Set to `False` to disable printing for that time step; defaults to `True` if not specified.
-                An error is raised if an outer key has an empty dictionary.
+                Set to `False` to disable printing for a specific time step; defaults to `True` if an empty dictionary is provided.
                 The time step keys represent:
 
-                - `daily`: Output for each day of the simulation.
-                - `monthly`: Output aggregated for each month.
-                - `yearly`: Output aggregated for each year.
+                - `daily`: Output for each simulation day.
+                - `monthly`: Output aggregated by month.
+                - `yearly`: Output aggregated by year.
                 - `avann`: Average annual output over the entire simulation period.
 
             skip_validation (bool): If `True`, skip validation of units and conditions in parameter changes.
