@@ -81,6 +81,8 @@ def _date_begin_earlier_end(
             f'begin_date {begin_date.strftime(date_fmt)} must be earlier than end_date {end_date.strftime(date_fmt)}'
         )
 
+    return None
+
 
 def _validate_date_str(
     date_str: str
@@ -94,6 +96,8 @@ def _validate_date_str(
         datetime.datetime.strptime(date_str, '%Y-%m-%d').date()
     except ValueError:
         raise ValueError(f'Invalid date format: "{date_str}". Expected YYYY-MM-DD.')
+
+    return None
 
 
 def _calibration_units(
@@ -153,6 +157,8 @@ def _calibration_units(
             f'(requested up to {max_unit}, available {len(df)}).'
         )
 
+    return None
+
 
 def _calibration_conditions(
     txtinout_path: pathlib.Path,
@@ -200,6 +206,8 @@ def _calibration_conditions(
                     f'Expected are: {sorted(valid_values)}.'
                 )
 
+    return None
+
 
 def _calibration_conditions_and_units(
     txtinout_path: pathlib.Path,
@@ -229,6 +237,8 @@ def _calibration_conditions_and_units(
                 f'If you want to ignore the validation, set "skip_validation=True"'
             ) from e
 
+    return None
+
 
 def _calibration_parameters(
     txtinout_path: pathlib.Path,
@@ -254,3 +264,5 @@ def _calibration_parameters(
             raise ValueError(
                 f'Calibration parameter "{param.name}" not found in cal_parms.cal file'
             )
+
+    return None

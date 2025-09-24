@@ -43,6 +43,7 @@ nav:
   - API Reference:
     - TxtinoutReader: api/txtinout_reader.md
     - FileReader: api/filereader.md
+    - DataManager: api/data_manager.md
     - SensitivityAnalyzer: api/sensitivity_analyzer.md
     - PerformanceMetrics: api/performance_metrics.md
     - pySWATPlus.types: api/types.md

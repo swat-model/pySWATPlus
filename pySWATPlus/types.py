@@ -54,14 +54,13 @@ Example:
 
 Keys for each parameter change:
 
-| Key          | Type                       | Default   | Description                                                                                  |
-|--------------|----------------------------|-----------|----------------------------------------------------------------------------------------------|
-| name         | str                        | -         | Name of the parameter to which the changes will be applied.                                  |
-| change_type  | str                        | -         | Type of change: 'absval', 'abschg', or 'pctchg'.                                             |
-| value        | float                      | —         | The value to apply to the parameter.                                                         |
-| units        | Iterable[int], optional    | None      | Optional list of 1-based unit IDs to constrain the parameter change.                         |
-| conditions   | dict[str, list[str]], optional | None  | Optional dictionary of conditions to apply when changing the parameter.                      |
-
+| Key          | Type (default)                  | Description                                                    |
+|--------------|---------------------------------|----------------------------------------------------------------|
+| name         | str (required)                  | Name of the parameter to which the changes will be applied.    |
+| change_type  | str (required)                  | Type of change: 'absval', 'abschg', or 'pctchg'.               |
+| value        | float (required)                | Value of the parameter.                                        |
+| units        | Iterable[int] (optional)        | List of 1-based unit IDs to constrain the parameter change.    |
+| conditions   | dict[str, list[str]] (optional) | Dictionary of conditions to apply when changing the parameter. |
 """
 
 ParametersBoundedType: typing.TypeAlias = list[dict[str, typing.Any]]
@@ -86,13 +85,12 @@ Example:
 
 Keys for each parameter change:
 
-| Key          | Type                       | Default   | Description                                                                                  |
-|--------------|----------------------------|-----------|----------------------------------------------------------------------------------------------|
-| name         | str                        | -         | Name of the parameter to which the changes will be applied.                                  |
-| change_type  | str                        | -         | Type of change: 'absval', 'abschg', or 'pctchg'.                                             |
-| lower_bound  | float                      | —         | The lower bound for the parameter.                                                           |
-| upper_bound  | float                      | —         | The upper bound for the parameter.                                                           |
-| units        | Iterable[int], optional    | None      | Optional list of 1-based unit IDs to constrain the parameter change.                         |
-| conditions   | dict[str, list[str]], optional | None  | Optional dictionary of conditions to apply when changing the parameter.                      |
-
+| Key          | Type (default)                  | Description                                                    |
+|--------------|---------------------------------|----------------------------------------------------------------|
+| name         | str (required)                  | Name of the parameter to which the changes will be applied.    |
+| change_type  | str (required)                  | Type of change: 'absval', 'abschg', or 'pctchg'.               |
+| lower_bound  | float (required)                | Lower bound for the parameter.                                 |
+| upper_bound  | float (required)                | Upper bound for the parameter.                                 |
+| units        | Iterable[int] (optional)        | List of 1-based unit IDs to constrain the parameter change.    |
+| conditions   | dict[str, list[str]] (optional) | Dictionary of conditions to apply when changing the parameter. |
 """
