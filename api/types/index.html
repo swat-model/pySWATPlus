@@ -531,6 +531,29 @@
   
   
     <li class="md-nav__item">
+      <a href="../data_manager/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    DataManager
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../sensitivity_analyzer/" class="md-nav__link">
         
   
@@ -806,41 +829,35 @@
 <thead>
 <tr>
 <th>Key</th>
-<th>Type</th>
-<th>Default</th>
+<th>Type (default)</th>
 <th>Description</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td>name</td>
-<td>str</td>
-<td>-</td>
+<td>str (required)</td>
 <td>Name of the parameter to which the changes will be applied.</td>
 </tr>
 <tr>
 <td>change_type</td>
-<td>str</td>
-<td>-</td>
+<td>str (required)</td>
 <td>Type of change: 'absval', 'abschg', or 'pctchg'.</td>
 </tr>
 <tr>
 <td>value</td>
-<td>float</td>
-<td>—</td>
-<td>The value to apply to the parameter.</td>
+<td>float (required)</td>
+<td>Value of the parameter.</td>
 </tr>
 <tr>
 <td>units</td>
-<td>Iterable[int], optional</td>
-<td>None</td>
-<td>Optional list of 1-based unit IDs to constrain the parameter change.</td>
+<td>Iterable[int] (optional)</td>
+<td>List of 1-based unit IDs to constrain the parameter change.</td>
 </tr>
 <tr>
 <td>conditions</td>
-<td>dict[str, list[str]], optional</td>
-<td>None</td>
-<td>Optional dictionary of conditions to apply when changing the parameter.</td>
+<td>dict[str, list[str]] (optional)</td>
+<td>Dictionary of conditions to apply when changing the parameter.</td>
 </tr>
 </tbody>
 </table>
@@ -887,47 +904,40 @@ each parameter specifies <code>lower_bound</code> and <code>upper_bound</code>. 
 <thead>
 <tr>
 <th>Key</th>
-<th>Type</th>
-<th>Default</th>
+<th>Type (default)</th>
 <th>Description</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td>name</td>
-<td>str</td>
-<td>-</td>
+<td>str (required)</td>
 <td>Name of the parameter to which the changes will be applied.</td>
 </tr>
 <tr>
 <td>change_type</td>
-<td>str</td>
-<td>-</td>
+<td>str (required)</td>
 <td>Type of change: 'absval', 'abschg', or 'pctchg'.</td>
 </tr>
 <tr>
 <td>lower_bound</td>
-<td>float</td>
-<td>—</td>
-<td>The lower bound for the parameter.</td>
+<td>float (required)</td>
+<td>Lower bound for the parameter.</td>
 </tr>
 <tr>
 <td>upper_bound</td>
-<td>float</td>
-<td>—</td>
-<td>The upper bound for the parameter.</td>
+<td>float (required)</td>
+<td>Upper bound for the parameter.</td>
 </tr>
 <tr>
 <td>units</td>
-<td>Iterable[int], optional</td>
-<td>None</td>
-<td>Optional list of 1-based unit IDs to constrain the parameter change.</td>
+<td>Iterable[int] (optional)</td>
+<td>List of 1-based unit IDs to constrain the parameter change.</td>
 </tr>
 <tr>
 <td>conditions</td>
-<td>dict[str, list[str]], optional</td>
-<td>None</td>
-<td>Optional dictionary of conditions to apply when changing the parameter.</td>
+<td>dict[str, list[str]] (optional)</td>
+<td>Dictionary of conditions to apply when changing the parameter.</td>
 </tr>
 </tbody>
 </table>
