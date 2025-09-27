@@ -418,36 +418,36 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#a-trial-simulation" class="md-nav__link">
+  <a href="#trial-simulation" class="md-nav__link">
     <span class="md-ellipsis">
-      A Trial Simulation
+      Trial Simulation
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#simulations-in-a-separate-directory-recommended" class="md-nav__link">
+  <a href="#simulation-in-a-custom-directory" class="md-nav__link">
     <span class="md-ellipsis">
-      Simulations in a Separate Directory (Recommended)
+      Simulation in a Custom Directory
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#run-configurable-simulations-in-a-single-function" class="md-nav__link">
+  <a href="#step-wise-configurations-and-simulations" class="md-nav__link">
     <span class="md-ellipsis">
-      Run Configurable Simulations in a Single Function
+      Step-wise Configurations and Simulations
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#parallel-swat-simulations" class="md-nav__link">
+  <a href="#configurable-simulations-in-a-single-function" class="md-nav__link">
     <span class="md-ellipsis">
-      Parallel SWAT+ Simulations
+      Configurable Simulations in a Single Function
     </span>
   </a>
   
@@ -772,36 +772,36 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#a-trial-simulation" class="md-nav__link">
+  <a href="#trial-simulation" class="md-nav__link">
     <span class="md-ellipsis">
-      A Trial Simulation
+      Trial Simulation
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#simulations-in-a-separate-directory-recommended" class="md-nav__link">
+  <a href="#simulation-in-a-custom-directory" class="md-nav__link">
     <span class="md-ellipsis">
-      Simulations in a Separate Directory (Recommended)
+      Simulation in a Custom Directory
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#run-configurable-simulations-in-a-single-function" class="md-nav__link">
+  <a href="#step-wise-configurations-and-simulations" class="md-nav__link">
     <span class="md-ellipsis">
-      Run Configurable Simulations in a Single Function
+      Step-wise Configurations and Simulations
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#parallel-swat-simulations" class="md-nav__link">
+  <a href="#configurable-simulations-in-a-single-function" class="md-nav__link">
     <span class="md-ellipsis">
-      Parallel SWAT+ Simulations
+      Configurable Simulations in a Single Function
     </span>
   </a>
   
@@ -839,37 +839,46 @@
 </code></pre></div>
 <p><code>pySWATPlus</code> offers multiple options for executing <code>SWAT+</code> simulations, providing flexibility for diverse workflows and automation needs.</p>
 <p>The following sections demonstrate different approaches, including modifying input parameters, running a single simulation, and performing batch processing.</p>
-<h2 id="a-trial-simulation">A Trial Simulation</h2>
+<h2 id="trial-simulation">Trial Simulation</h2>
 <p>This simple example runs a <code>SWAT+</code> simulation without changing any input parameters, ensuring that the setup works correctly:</p>
 <div class="highlight"><pre><span></span><code><span class="n">txtinout_reader</span><span class="o">.</span><span class="n">run_swat</span><span class="p">()</span>
 </code></pre></div>
-<h2 id="simulations-in-a-separate-directory-recommended">Simulations in a Separate Directory (Recommended)</h2>
-<p>To keep your original <code>TxtInOut</code> folder unchanged, it is recommended to run <code>SWAT+</code> simulations in a separate directory. This approach allows you to safely modify parameters and input files without affecting your main project. The following steps demonstrate how to perform a simulation in a dedicated directory:</p>
+<h2 id="simulation-in-a-custom-directory">Simulation in a Custom Directory</h2>
+<p>To keep your original <code>TxtInOut</code> folder unchanged, it is recommended to run <code>SWAT+</code> simulations in a separate empty directory. This allows you to perform experiments without affecting your main project. The following steps demonstrate how to perform a simulation in a custom directory:</p>
 <ul>
 <li>
-<p>Copy required files to the target directory:</p>
-<div class="highlight"><pre><span></span><code><span class="c1"># Replance this with your desired simulation folder path</span>
-<span class="n">target_dir</span> <span class="o">=</span> <span class="sa">r</span><span class="s2">&quot;C:\Users\Username\simulation_folder_1&quot;</span> 
+<p>Copy required files to the custom directory:</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># Replace this with your desired empty custom directory</span>
+<span class="n">target_dir</span> <span class="o">=</span> <span class="sa">r</span><span class="s2">&quot;C:\Users\Username\custom_folder&quot;</span> 
 
-<span class="c1"># Ensure the required files are copied</span>
+<span class="c1"># Ensure the required files are copied to the custom directory</span>
 <span class="n">txtinout_reader</span><span class="o">.</span><span class="n">copy_required_files</span><span class="p">(</span>
     <span class="n">target_dir</span><span class="o">=</span><span class="n">target_dir</span>
 <span class="p">)</span>
 </code></pre></div>
 </li>
 <li>
-<p>Initialize <code>TxtinoutReader</code> for the target directory</p>
+<p>Initialize <code>TxtinoutReader</code> class for the custom directory</p>
 <div class="highlight"><pre><span></span><code><span class="n">target_reader</span> <span class="o">=</span> <span class="n">pySWATPlus</span><span class="o">.</span><span class="n">TxtinoutReader</span><span class="p">(</span>
     <span class="n">path</span><span class="o">=</span><span class="n">target_dir</span>
 <span class="p">)</span>
 </code></pre></div>
 </li>
 <li>
+<p>Run simulation</p>
+<div class="highlight"><pre><span></span><code><span class="n">target_reader</span><span class="o">.</span><span class="n">run_swat</span><span class="p">()</span>
+</code></pre></div>
+</li>
+</ul>
+<h2 id="step-wise-configurations-and-simulations">Step-wise Configurations and Simulations</h2>
+<p>The following steps demonstrate how to configure parameters in a custom directory and run a simulation step by step:</p>
+<ul>
+<li>
 <p>Modify simulation timeline:</p>
 <div class="highlight"><pre><span></span><code><span class="c1"># Update timeline in `time.sim` file</span>
 <span class="n">target_reader</span><span class="o">.</span><span class="n">set_begin_and_end_date</span><span class="p">(</span>
-        <span class="n">begin_date</span><span class="o">=</span><span class="n">date</span><span class="p">(</span><span class="mi">2012</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
-        <span class="n">end_date</span><span class="o">=</span><span class="n">date</span><span class="p">(</span><span class="mi">2016</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">31</span><span class="p">),</span>
+    <span class="n">begin_date</span><span class="o">=</span><span class="s1">&#39;01-Jan-2012&#39;</span><span class="p">,</span>
+    <span class="n">end_date</span><span class="o">=</span><span class="s1">&#39;31-Dec-2016&#39;</span><span class="p">,</span>
 <span class="p">)</span>
 </code></pre></div>
 </li>
@@ -894,93 +903,47 @@
 </code></pre></div>
 </li>
 <li>
-<p>Modify <code>esco</code> parameter:</p>
-<div class="highlight"><pre><span></span><code><span class="c1"># Register the `hydrology.hyd` file</span>
-<span class="n">hyd_register</span> <span class="o">=</span> <span class="n">target_reader</span><span class="o">.</span><span class="n">register_file</span><span class="p">(</span>
-    <span class="n">filename</span><span class="o">=</span><span class="s1">&#39;hydrology.hyd&#39;</span><span class="p">,</span>
-    <span class="n">has_units</span><span class="o">=</span><span class="kc">False</span>
+<p>Run the SWAT+ simulation with a modified <code>esco</code> parameter:</p>
+<div class="highlight"><pre><span></span><code><span class="n">parameters</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">{</span>
+        <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;esco&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;change_type&#39;</span><span class="p">:</span> <span class="s1">&#39;absval&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;value&#39;</span><span class="p">:</span> <span class="mf">0.5</span>
+    <span class="p">}</span>
+<span class="p">]</span>
+<span class="n">target_reader</span><span class="o">.</span><span class="n">run_swat</span><span class="p">(</span>
+    <span class="n">parameters</span><span class="o">=</span><span class="n">parameters</span>
 <span class="p">)</span>
-
-<span class="c1"># Get the DataFrame and modify the `esco` value</span>
-<span class="n">hyd_df</span> <span class="o">=</span> <span class="n">hyd_register</span><span class="o">.</span><span class="n">df</span>
-<span class="n">hyd_df</span><span class="p">[</span><span class="s1">&#39;esco&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.6</span>
-
-<span class="c1"># Overwrite the `hydrology.hyd` file</span>
-<span class="n">hyd_register</span><span class="o">.</span><span class="n">overwrite_file</span><span class="p">()</span>
-</code></pre></div>
-</li>
-<li>
-<p>Run the SWAT+ simulation:</p>
-<div class="highlight"><pre><span></span><code><span class="n">target_reader</span><span class="o">.</span><span class="n">run_swat</span><span class="p">()</span>
 </code></pre></div>
 </li>
 </ul>
-<h2 id="run-configurable-simulations-in-a-single-function">Run Configurable Simulations in a Single Function</h2>
-<p>Instead of performing each step separately as explained above, you can run a <code>SWAT+</code> simulation in a separate directory by configuring all options at once using a single function:</p>
-<div class="highlight"><pre><span></span><code><span class="c1"># Configure input parameters</span>
-<span class="n">params</span> <span class="o">=</span> <span class="p">[</span>
+<h2 id="configurable-simulations-in-a-single-function">Configurable Simulations in a Single Function</h2>
+<p>Instead of performing each step separately as explained above, you can run a <code>SWAT+</code> simulation in a separate empty directory by configuring all options at once using a single function:</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># Configure modified parameters</span>
+<span class="n">parameters</span> <span class="o">=</span> <span class="p">[</span>
     <span class="p">{</span>
-        <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;bf_max&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="mf">0.3</span><span class="p">,</span>
-        <span class="s2">&quot;change_type&quot;</span><span class="p">:</span> <span class="s2">&quot;absval&quot;</span><span class="p">,</span>
+        <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;esco&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;change_type&#39;</span><span class="p">:</span> <span class="s1">&#39;absval&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;value&#39;</span><span class="p">:</span> <span class="mf">0.3</span>
+    <span class="p">},</span>
+    <span class="p">{</span>
+        <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;perco&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;change_type&#39;</span><span class="p">:</span> <span class="s1">&#39;absval&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;value&#39;</span><span class="p">:</span> <span class="mf">0.6</span>
     <span class="p">}</span>
 <span class="p">]</span>
 
 <span class="c1"># Run SWAT+ simulation from the original `TxtInOut` folder</span>
 <span class="n">txtinout_reader</span><span class="o">.</span><span class="n">run_swat</span><span class="p">(</span>
-    <span class="n">target_dir</span><span class="o">=</span><span class="sa">r</span><span class="s2">&quot;C:\Users\Username\simulation_folder_2&quot;</span><span class="p">,</span>  <span class="c1"># mandatory</span>
-    <span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">,</span>  <span class="c1"># optional</span>
+    <span class="n">target_dir</span><span class="o">=</span><span class="sa">r</span><span class="s2">&quot;C:\Users\Username\custom_folder&quot;</span><span class="p">,</span>  <span class="c1"># mandatory</span>
+    <span class="n">parameters</span><span class="o">=</span><span class="n">parameters</span><span class="p">,</span>  <span class="c1"># optional</span>
     <span class="n">begin_and_end_date</span><span class="o">=</span><span class="p">{</span>
-        <span class="s2">&quot;begin_date&quot;</span><span class="p">:</span> <span class="n">date</span><span class="p">(</span><span class="mi">2012</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
-        <span class="s2">&quot;end_date&quot;</span><span class="p">:</span> <span class="n">date</span><span class="p">(</span><span class="mi">2016</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">31</span><span class="p">)</span>
-    <span class="p">},</span>
+        <span class="s1">&#39;begin_date&#39;</span><span class="p">:</span> <span class="s1">&#39;01-Jan-2012&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;end_date&#39;</span><span class="p">:</span> <span class="s1">&#39;31-Dec-2016&#39;</span>
+    <span class="p">},</span>  <span class="c1"># optional</span>
     <span class="n">warmup</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>  <span class="c1"># optional</span>
     <span class="n">print_prt_control</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;channel_sd&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;daily&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">}}</span>  <span class="c1"># optional</span>
 <span class="p">)</span>
-</code></pre></div>
-<h2 id="parallel-swat-simulations">Parallel SWAT+ Simulations</h2>
-<p>To run multiple SWAT+ simulations in parallel with modified parameters, the following example provides a quick guide to get started:</p>
-<div class="highlight"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">multiprocessing</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">tempfile</span>
-
-<span class="c1"># Define parameter changes</span>
-<span class="n">params</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="p">{</span>
-        <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s1">&#39;perco&#39;</span><span class="p">,</span>
-        <span class="s2">&quot;change_type&quot;</span><span class="p">:</span> <span class="s2">&quot;absval&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="mf">0.5</span><span class="p">,</span>
-        <span class="s2">&quot;conditions&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;hsg&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;A&quot;</span><span class="p">]}</span>
-    <span class="p">},</span>
-    <span class="p">{</span>
-        <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;bf_max&#39;</span><span class="p">,</span>
-        <span class="s2">&quot;change_type&quot;</span><span class="p">:</span> <span class="s2">&quot;absval&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="mf">0.3</span><span class="p">,</span>
-        <span class="s2">&quot;units&quot;</span><span class="p">:</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">194</span><span class="p">)</span>
-    <span class="p">}</span>
-<span class="p">]</span>
-
-<span class="c1"># Define the function</span>
-<span class="k">def</span><span class="w"> </span><span class="nf">run_simulation</span><span class="p">(</span><span class="n">params</span><span class="p">):</span>
-
-    <span class="k">with</span> <span class="n">tempfile</span><span class="o">.</span><span class="n">TemporaryDirectory</span><span class="p">()</span> <span class="k">as</span> <span class="n">tmp_dir</span><span class="p">:</span>
-        <span class="n">reader</span> <span class="o">=</span> <span class="n">pySWATPlus</span><span class="o">.</span><span class="n">TxtinoutReader</span><span class="p">(</span>
-            <span class="n">path</span><span class="o">=</span><span class="n">txtinout_path</span>
-        <span class="p">)</span>
-        <span class="n">output</span> <span class="o">=</span> <span class="n">reader</span><span class="o">.</span><span class="n">run_swat</span><span class="p">(</span>
-            <span class="n">target_dir</span><span class="o">=</span><span class="n">tmp_dir</span><span class="p">,</span>
-            <span class="n">params</span><span class="o">=</span><span class="n">params</span>
-        <span class="p">)</span>
-
-    <span class="k">return</span> <span class="n">output</span>
-
-
-<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
-    <span class="c1"># Run simulations in parallel</span>
-    <span class="k">with</span> <span class="n">multiprocessing</span><span class="o">.</span><span class="n">Pool</span><span class="p">(</span><span class="n">processes</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span> <span class="k">as</span> <span class="n">pool</span><span class="p">:</span>
-        <span class="n">results</span> <span class="o">=</span> <span class="n">pool</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">run_simulation</span><span class="p">,</span> <span class="n">params</span><span class="p">)</span>
-    <span class="c1"># Print output directories</span>
-    <span class="k">for</span> <span class="n">path</span> <span class="ow">in</span> <span class="n">results</span><span class="p">:</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Simulation directory:&quot;</span><span class="p">,</span> <span class="n">path</span><span class="p">)</span>
 </code></pre></div>
 
 

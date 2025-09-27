@@ -400,19 +400,6 @@
         
       
       
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  
-  <span class="md-ellipsis">
-    Sensitivity Analysis
-    
-  </span>
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
       <a href="./" class="md-nav__link md-nav__link--active">
         
   
@@ -424,43 +411,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#custom-workflow" class="md-nav__link">
-    <span class="md-ellipsis">
-      Custom Workflow
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#sobol-based-simulation-interface" class="md-nav__link">
-    <span class="md-ellipsis">
-      Sobol-Based Simulation Interface
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
       
     </li>
   
@@ -747,32 +697,6 @@
     
   
   
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#custom-workflow" class="md-nav__link">
-    <span class="md-ellipsis">
-      Custom Workflow
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#sobol-based-simulation-interface" class="md-nav__link">
-    <span class="md-ellipsis">
-      Sobol-Based Simulation Interface
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
 </nav>
                   </div>
                 </div>
@@ -788,209 +712,115 @@
 
 
 <h1 id="sensitivity-analysis">Sensitivity Analysis</h1>
-<p>Sensitivity analysis helps quantify how variation in input parameters affects model outputs. This tutorial demonstrates how to perform sensitivity analysis on SWAT+ model parameters. Two approaches are provided: a <strong>custom, user-defined workflow</strong> and a <strong>high-level automated interface</strong>, both using the <a href="https://github.com/SALib/SALib">SALib</a> Python package based on <a href="https://doi.org/10.1016/S0378-4754(00)00270-6">Sobol</a> sampling from a defined parameter space.</p>
-<h2 id="custom-workflow">Custom Workflow</h2>
-<p>This approach allows users to define the sampling strategy, number of simulations, and custom performance metrics. It is ideal for those seeking fine control over the sensitivity analysis process, tailored to specific research or operational goals. In this example, we focus on two parameters, <code>epco</code> and <code>esco</code>, located in the <code>hydrology.hyd</code> file.</p>
-<p>Import the necessary packages and initialize the <code>TxtinoutReader</code> class.</p>
-<div class="highlight"><pre><span></span><code><span class="c1"># Import packages</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">pySWATPlus</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">SALib.sample.sobol</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">SALib.analyze.sobol</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">concurrent.futures</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">random</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">tempfile</span>
+<p>Sensitivity analysis helps quantify how variation in input parameters affects model outputs. This tutorial demonstrates how to perform sensitivity analysis on SWAT+ model parameters.<br />
+The parameter sampling is handled by the <a href="https://github.com/SALib/SALib">SALib</a> Python package using <a href="https://doi.org/10.1016/S0378-4754(00)00270-6">Sobol</a> sampling from a defined parameter space.</p>
+<ul>
+<li>
+<p><strong>Configuration Settings</strong></p>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">pySWATPlus</span>
 
-<span class="c1"># Initialize the TxtinoutReader class</span>
+<span class="c1"># Initialize the project&#39;s TxtInOut folder</span>
 <span class="n">txtinout_reader</span> <span class="o">=</span> <span class="n">pySWATPlus</span><span class="o">.</span><span class="n">TxtinoutReader</span><span class="p">(</span>
     <span class="n">path</span><span class="o">=</span><span class="sa">r</span><span class="s2">&quot;C:\Users\Username\project\Scenarios\Default\TxtInOut&quot;</span>
 <span class="p">)</span>
+
+<span class="c1"># Copy required files to an empty custom directory</span>
+<span class="n">target_dir</span> <span class="o">=</span> <span class="sa">r</span><span class="s2">&quot;C:\Users\Username\custom_folder&quot;</span> 
+<span class="n">target_dir</span> <span class="o">=</span> <span class="n">txtinout_reader</span><span class="o">.</span><span class="n">copy_required_files</span><span class="p">(</span>
+    <span class="n">target_dir</span><span class="o">=</span><span class="n">target_dir</span>
+<span class="p">)</span>
+
+<span class="c1"># Initialize TxtinoutReader with the custom directory</span>
+<span class="n">target_reader</span> <span class="o">=</span> <span class="n">pySWATPlus</span><span class="o">.</span><span class="n">TxtinoutReader</span><span class="p">(</span>
+    <span class="n">path</span><span class="o">=</span><span class="n">target_dir</span>
+<span class="p">)</span>
+
+<span class="c1"># Disable CSV file generation to save time</span>
+<span class="n">target_reader</span><span class="o">.</span><span class="n">disable_csv_print</span><span class="p">()</span>
+
+<span class="c1"># Disable daily time series in print.prt (saves time and space)</span>
+<span class="n">target_reader</span><span class="o">.</span><span class="n">enable_object_in_print_prt</span><span class="p">(</span>
+    <span class="n">obj</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">daily</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">monthly</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">yearly</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">avann</span><span class="o">=</span><span class="kc">True</span>
+<span class="p">)</span>
+
+<span class="c1"># Run a trial simulation to verify expected time series outputs</span>
+<span class="n">begin_and_end_date</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;begin_date&#39;</span><span class="p">:</span> <span class="s1">&#39;01-Jan-2010&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;end_date&#39;</span><span class="p">:</span> <span class="s1">&#39;31-Dec-2012&#39;</span>
+<span class="p">}</span>
+<span class="n">target_reader</span><span class="o">.</span><span class="n">run_swat</span><span class="p">(</span>
+    <span class="n">begin_and_end_date</span><span class="o">=</span><span class="n">begin_and_end_date</span><span class="p">,</span>
+    <span class="n">warmup</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+    <span class="n">print_prt_control</span><span class="o">=</span><span class="p">{</span>
+        <span class="s1">&#39;channel_sd&#39;</span><span class="p">:</span> <span class="p">{}</span>
+    <span class="p">}</span>  <span class="c1"># enable daily time series for &#39;channel_sd&#39;</span>
 </code></pre></div>
-<p>Optionally specify the simulation time period, warm-up years, enable outputs via the <code>print.prt</code> file, and fix any parameter values not involved in the sensitivity analysis.</p>
-<div class="highlight"><pre><span></span><code><span class="c1"># Set simulation timeline (optional)</span>
-<span class="n">txtinout_reader</span><span class="o">.</span><span class="n">set_begin_and_end_year</span><span class="p">(</span>
-    <span class="n">begin</span><span class="o">=</span><span class="mi">2010</span><span class="p">,</span>
-    <span class="n">end</span><span class="o">=</span><span class="mi">2016</span>
-<span class="p">)</span>
-
-<span class="c1"># Set warm-up year (optional)</span>
-<span class="n">txtinout_reader</span><span class="o">.</span><span class="n">set_warmup_year</span><span class="p">(</span>
-    <span class="n">warmup</span><span class="o">=</span><span class="mi">1</span>
-<span class="p">)</span>
-
-<span class="c1"># Enable output for channel_sd_day.txt (optional)</span>
-<span class="n">txtinout_reader</span><span class="o">.</span><span class="n">enable_object_in_print_prt</span><span class="p">(</span>
-    <span class="n">obj</span><span class="o">=</span><span class="s1">&#39;channel_sd&#39;</span><span class="p">,</span>
-    <span class="n">daily</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-    <span class="n">monthly</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-    <span class="n">yearly</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-    <span class="n">avann</span><span class="o">=</span><span class="kc">False</span>
-<span class="p">)</span>
-
-<span class="c1"># Fix non-sensitive parameters (optional)</span>
-<span class="n">hyd_register</span> <span class="o">=</span> <span class="n">simulation_reader</span><span class="o">.</span><span class="n">register_file</span><span class="p">(</span>
-    <span class="n">filename</span><span class="o">=</span><span class="s1">&#39;hydrology.hyd&#39;</span><span class="p">,</span>
-    <span class="n">has_units</span><span class="o">=</span><span class="kc">False</span>
-<span class="p">)</span>
-<span class="n">hyd_df</span> <span class="o">=</span> <span class="n">hyd_register</span><span class="o">.</span><span class="n">df</span>
-<span class="n">hyd_df</span><span class="p">[</span><span class="s1">&#39;perco&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.1</span>
-<span class="n">hyd_register</span><span class="o">.</span><span class="n">overwrite_file</span><span class="p">()</span>
-</code></pre></div>
-<p>Define an evaluation function that runs the SWAT+ model with the specified parameter values and returns an evaluation metric. The current example returns a random value for demonstration purposes. Replace this with a proper objective function using simulated and observed data.</p>
-<div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">run_swat_and_evaluate_metric</span><span class="p">(</span>
-    <span class="n">epco</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
-    <span class="n">esco</span><span class="p">:</span> <span class="nb">float</span>
-<span class="p">):</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Running SWAT with epco = </span><span class="si">{</span><span class="n">epco</span><span class="si">}</span><span class="s1"> and esco = </span><span class="si">{</span><span class="n">esco</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
-
-    <span class="c1"># Construct &#39;params&#39; dictionary</span>
-    <span class="n">params</span> <span class="o">=</span>  <span class="p">{</span>
-        <span class="s1">&#39;hydrology.hyd&#39;</span><span class="p">:</span> <span class="p">{</span>
-            <span class="s1">&#39;has_units&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
-            <span class="s1">&#39;epco&#39;</span><span class="p">:</span> <span class="p">[</span>
-                <span class="p">{</span><span class="s1">&#39;value&#39;</span><span class="p">:</span> <span class="n">epco</span><span class="p">,</span> <span class="s1">&#39;change_type&#39;</span><span class="p">:</span> <span class="s1">&#39;absval&#39;</span><span class="p">},</span>
-            <span class="p">],</span>
-            <span class="s1">&#39;esco&#39;</span><span class="p">:</span> <span class="p">[</span>
-                <span class="p">{</span><span class="s1">&#39;value&#39;</span><span class="p">:</span> <span class="n">esco</span><span class="p">,</span> <span class="s1">&#39;change_type&#39;</span><span class="p">:</span> <span class="s1">&#39;absval&#39;</span><span class="p">},</span>
-            <span class="p">],</span>
-        <span class="p">}</span>
+</li>
+</ul>
+<hr />
+<ul>
+<li>
+<p><strong>Sobol-Based Interface</strong></p>
+<p>This high-level interface builds on the above configuration to run sensitivity simulations using Sobol sampling. It includes:</p>
+<ul>
+<li>Automatic generation of Sobol samples for the parameter space  </li>
+<li>Parallel computation to speed up simulations  </li>
+<li>Output extraction with filtering options (by date, column values, etc.)  </li>
+<li>Structured export of results for downstream analysis  </li>
+</ul>
+<p>The results can be used to compute performance metrics, compare with observed data, and calculate Sobol indices.</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># Sensitivity parameter space</span>
+<span class="n">parameters</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">{</span>
+        <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;esco&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;change_type&#39;</span><span class="p">:</span> <span class="s1">&#39;absval&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;lower_bound&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+        <span class="s1">&#39;upper_bound&#39;</span><span class="p">:</span> <span class="mi">1</span>
+    <span class="p">},</span>
+    <span class="p">{</span>
+        <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;perco&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;change_type&#39;</span><span class="p">:</span> <span class="s1">&#39;absval&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;lower_bound&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+        <span class="s1">&#39;upper_bound&#39;</span><span class="p">:</span> <span class="mi">1</span>
     <span class="p">}</span>
+<span class="p">]</span>
 
-    <span class="c1"># Temporary directory creation</span>
-    <span class="k">with</span> <span class="n">tempfile</span><span class="o">.</span><span class="n">TemporaryDirectory</span><span class="p">()</span> <span class="k">as</span> <span class="n">tmp_dir</span><span class="p">:</span>
-
-        <span class="c1"># Run simulation</span>
-        <span class="n">simulation_reader</span> <span class="o">=</span> <span class="n">txtinout_reader</span><span class="o">.</span><span class="n">run_swat_in_other_dir</span><span class="p">(</span>
-            <span class="n">target_dir</span><span class="o">=</span><span class="n">tmp_dir</span><span class="p">,</span>
-            <span class="n">params</span><span class="o">=</span><span class="n">params</span>
-        <span class="p">)</span>
-
-        <span class="c1"># Read results</span>
-        <span class="n">file_register</span> <span class="o">=</span> <span class="n">simulation_reader</span><span class="o">.</span><span class="n">register_file</span><span class="p">(</span>
-            <span class="n">filename</span><span class="o">=</span><span class="s1">&#39;channel_sdmorph_day.txt&#39;</span><span class="p">,</span>
-            <span class="n">has_units</span><span class="o">=</span><span class="kc">True</span>
-        <span class="p">)</span>
-
-        <span class="c1"># Get DataFrame</span>
-        <span class="n">file_df</span> <span class="o">=</span> <span class="n">file_register</span><span class="o">.</span><span class="n">df</span>
-
-        <span class="c1"># Return a random value (replace with real evaluation logic)</span>
-        <span class="k">return</span> <span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">()</span>
-
-<span class="c1"># Wrapper function for parallel execution</span>
-<span class="k">def</span><span class="w"> </span><span class="nf">evaluate</span><span class="p">(</span><span class="n">params</span><span class="p">):</span>
-
-    <span class="k">return</span> <span class="n">run_swat_and_evaluate_metric</span><span class="p">(</span><span class="o">*</span><span class="n">params</span><span class="p">)</span>
-</code></pre></div>
-<p>Define the sensitivity problem and generate samples using <code>Sobol</code> sampling.</p>
-<div class="highlight"><pre><span></span><code><span class="n">problem</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="s1">&#39;num_vars&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
-    <span class="s1">&#39;names&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;epco&#39;</span><span class="p">,</span> <span class="s1">&#39;esco&#39;</span><span class="p">],</span>
-    <span class="s1">&#39;bounds&#39;</span><span class="p">:</span> <span class="p">[[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]]</span> <span class="o">*</span> <span class="mi">2</span>
+<span class="c1"># Target data extraction from sensitivity simulation</span>
+<span class="n">simulation_data</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;channel_sdmorph_yr.txt&#39;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s1">&#39;has_units&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="s1">&#39;ref_day&#39;</span><span class="p">:</span> <span class="mi">15</span><span class="p">,</span>
+        <span class="s1">&#39;ref_month&#39;</span><span class="p">:</span> <span class="mi">6</span><span class="p">,</span>
+        <span class="s1">&#39;apply_filter&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;gis_id&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">561</span><span class="p">]},</span>
+        <span class="s1">&#39;usecols&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;gis_id&#39;</span><span class="p">,</span> <span class="s1">&#39;flo_out&#39;</span><span class="p">]</span>
+    <span class="p">},</span>
+    <span class="s1">&#39;channel_sd_mon.txt&#39;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s1">&#39;has_units&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="s1">&#39;begin_date&#39;</span><span class="p">:</span> <span class="s1">&#39;01-Jun-2011&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;ref_day&#39;</span><span class="p">:</span> <span class="mi">15</span><span class="p">,</span>
+        <span class="s1">&#39;apply_filter&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;cha561&#39;</span><span class="p">],</span> <span class="s1">&#39;yr&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">2012</span><span class="p">]},</span>
+        <span class="s1">&#39;usecols&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;gis_id&#39;</span><span class="p">,</span> <span class="s1">&#39;flo_out&#39;</span><span class="p">]</span>
+    <span class="p">}</span>
 <span class="p">}</span>
 
-<span class="c1"># Generate Sobol samples</span>
-<span class="n">param_values</span> <span class="o">=</span> <span class="n">SALib</span><span class="o">.</span><span class="n">sample</span><span class="o">.</span><span class="n">sobol</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="n">problem</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
-</code></pre></div>
-<p>Run simulations in parallel and compute Sobol indices to analyze parameter influence.</p>
-<div class="highlight"><pre><span></span><code><span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
-    <span class="k">with</span> <span class="n">concurrent</span><span class="o">.</span><span class="n">futures</span><span class="o">.</span><span class="n">ProcessPoolExecutor</span><span class="p">()</span> <span class="k">as</span> <span class="n">executor</span><span class="p">:</span>
-        <span class="n">simulation_output</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">executor</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">evaluate</span><span class="p">,</span> <span class="n">param_values</span><span class="p">)))</span>
-
-    <span class="n">sobol_indices</span> <span class="o">=</span> <span class="n">SALib</span><span class="o">.</span><span class="n">analyze</span><span class="o">.</span><span class="n">sobol</span><span class="o">.</span><span class="n">analyze</span><span class="p">(</span><span class="n">problem</span><span class="p">,</span> <span class="n">simulation_output</span><span class="p">)</span>
-
-    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;First-order Sobol indices:&#39;</span><span class="p">,</span> <span class="n">sobol_indices</span><span class="p">[</span><span class="s1">&#39;S1&#39;</span><span class="p">])</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Total-order Sobol indices:&#39;</span><span class="p">,</span> <span class="n">sobol_indices</span><span class="p">[</span><span class="s1">&#39;ST&#39;</span><span class="p">])</span>
-</code></pre></div>
-<h2 id="sobol-based-simulation-interface">Sobol-Based Simulation Interface</h2>
-<p>This high-level interface automates the sensitivity simulation workflow using Sobol samples. It includes:</p>
-<ul>
-<li>Automatic generation of Sobol samples for the defined parameter space</li>
-<li>Parallel computation to accelerate simulation runs</li>
-<li>Output extraction from target data files with filtering options (by date, column values, etc.)</li>
-<li>Structured export of results for downstream analysis</li>
-</ul>
-<p>The output data can be used to compute performance metrics, compare with observed data, and estimate Sobol indices to quantify parameter influence.</p>
-<p>This interface is ideal for users seeking a scalable, low-configuration solution.</p>
-<div class="highlight"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">pySWATPlus</span>
-
+<span class="c1"># Sensitivity simulation</span>
 <span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
-    <span class="c1"># Copy required file to a target direcotry to keep original `TxtInOut` folder unchanged</span>
-    <span class="n">target_dir</span> <span class="o">=</span> <span class="sa">r</span><span class="s2">&quot;C:\Users\Username\target_folder&quot;</span>
-    <span class="n">txtinout_reader</span><span class="o">.</span><span class="n">copy_required_files</span><span class="p">(</span>
-        <span class="n">target_dir</span><span class="o">=</span><span class="n">target_dir</span>
-    <span class="p">)</span>
-    <span class="c1"># Intialize `TxtinOutReader` class by target direcotry</span>
-    <span class="n">target_reader</span> <span class="o">=</span> <span class="n">pySWATPlus</span><span class="o">.</span><span class="n">TxtinoutReader</span><span class="p">(</span>
-        <span class="n">path</span><span class="o">=</span><span class="n">target_dir</span>
-    <span class="p">)</span>
-    <span class="c1"># Disable daily frequency simulation file from generated in print.prt (optional)</span>
-    <span class="n">target_reader</span><span class="o">.</span><span class="n">enable_object_in_print_prt</span><span class="p">(</span>
-        <span class="n">obj</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-        <span class="n">daily</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-        <span class="n">monthly</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-        <span class="n">yearly</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-        <span class="n">avann</span><span class="o">=</span><span class="kc">True</span>
-    <span class="p">)</span>
-    <span class="c1"># Set begin and end year (optional)</span>
-    <span class="n">target_reader</span><span class="o">.</span><span class="n">set_begin_and_end_year</span><span class="p">(</span>
-        <span class="n">begin</span><span class="o">=</span><span class="mi">2010</span><span class="p">,</span>
-        <span class="n">end</span><span class="o">=</span><span class="mi">2012</span>
-    <span class="p">)</span>
-    <span class="c1"># Set warmup year (optional)</span>
-    <span class="n">target_reader</span><span class="o">.</span><span class="n">set_warmup_year</span><span class="p">(</span>
-        <span class="n">warmup</span><span class="o">=</span><span class="mi">1</span>
-    <span class="p">)</span>
-    <span class="c1"># Sensitivity variable names</span>
-    <span class="n">var_names</span><span class="o">=</span><span class="p">[</span>
-        <span class="s1">&#39;esco&#39;</span><span class="p">,</span>
-        <span class="s1">&#39;|&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="s1">&#39;bm_e&#39;</span><span class="p">,</span> <span class="s1">&#39;name == &quot;agrl&quot;&#39;</span><span class="p">])</span>
-    <span class="p">]</span>
-    <span class="c1"># Sensitivity variable bounds</span>
-    <span class="n">var_bounds</span> <span class="o">=</span> <span class="p">[</span>
-        <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span>
-        <span class="p">[</span><span class="mi">30</span><span class="p">,</span> <span class="mi">40</span><span class="p">]</span>
-    <span class="p">]</span>
-    <span class="c1"># Sensitivity &#39;params&#39; dictionary to run SWAT+ model</span>
-    <span class="n">params</span><span class="o">=</span><span class="p">{</span>
-        <span class="s1">&#39;hydrology.hyd&#39;</span><span class="p">:</span> <span class="p">{</span>
-            <span class="s1">&#39;has_units&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
-            <span class="s1">&#39;esco&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;value&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">}</span>
-        <span class="p">},</span>
-        <span class="s1">&#39;plants.plt&#39;</span><span class="p">:</span> <span class="p">{</span>
-            <span class="s1">&#39;has_units&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
-            <span class="s1">&#39;bm_e&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;value&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;filter_by&#39;</span><span class="p">:</span> <span class="s1">&#39;name == &quot;agrl&quot;&#39;</span><span class="p">}</span>
-        <span class="p">}</span>
-    <span class="p">}</span>
-    <span class="c1"># Sensitivity simulation_data dictionary to extract data</span>
-    <span class="n">simulation_data</span> <span class="o">=</span> <span class="p">{</span>
-        <span class="s1">&#39;channel_sd_mon.txt&#39;</span><span class="p">:</span> <span class="p">{</span>
-            <span class="s1">&#39;has_units&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
-            <span class="s1">&#39;start_date&#39;</span><span class="p">:</span> <span class="s1">&#39;2011-06-01&#39;</span><span class="p">,</span>
-            <span class="s1">&#39;end_date&#39;</span><span class="p">:</span> <span class="s1">&#39;2012-06-01&#39;</span><span class="p">,</span>
-            <span class="s1">&#39;apply_filter&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;gis_id&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">561</span><span class="p">]},</span>
-            <span class="s1">&#39;usecols&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;gis_id&#39;</span><span class="p">,</span> <span class="s1">&#39;flo_out&#39;</span><span class="p">]</span>
-        <span class="p">},</span>
-        <span class="s1">&#39;channel_sd_yr.txt&#39;</span><span class="p">:</span> <span class="p">{</span>
-            <span class="s1">&#39;has_units&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
-            <span class="s1">&#39;apply_filter&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;cha561&#39;</span><span class="p">],</span> <span class="s1">&#39;yr&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">2012</span><span class="p">]},</span>
-            <span class="s1">&#39;usecols&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;gis_id&#39;</span><span class="p">,</span> <span class="s1">&#39;flo_out&#39;</span><span class="p">]</span>
-        <span class="p">}</span>
-    <span class="p">}</span>
-    <span class="c1"># Sensitive simulation</span>
-    <span class="n">output</span> <span class="o">=</span> <span class="n">pySWATPlus</span><span class="o">.</span><span class="n">SensitivityAnalyzer</span><span class="o">.</span><span class="n">simulation_by_sobol_sample</span><span class="p">(</span>
-        <span class="n">var_names</span><span class="o">=</span><span class="n">var_names</span><span class="p">,</span>
-        <span class="n">var_bounds</span><span class="o">=</span><span class="n">var_bounds</span><span class="p">,</span>
+    <span class="n">output</span> <span class="o">=</span> <span class="n">pySWATPlus</span><span class="o">.</span><span class="n">SensitivityAnalyzer</span><span class="p">()</span><span class="o">.</span><span class="n">simulation_by_sobol_sample</span><span class="p">(</span>
+        <span class="n">parameters</span><span class="o">=</span><span class="n">parameters</span><span class="p">,</span>
         <span class="n">sample_number</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
         <span class="n">simulation_folder</span><span class="o">=</span><span class="sa">r</span><span class="s2">&quot;C:\Users\Username\simulation_folder&quot;</span><span class="p">,</span>
         <span class="n">txtinout_folder</span><span class="o">=</span><span class="n">target_dir</span><span class="p">,</span>
-        <span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">,</span>
         <span class="n">simulation_data</span><span class="o">=</span><span class="n">simulation_data</span><span class="p">,</span>
-        <span class="n">max_workers</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>
-        <span class="n">clean_setup</span><span class="o">=</span><span class="kc">False</span>
+        <span class="n">clean_setup</span><span class="o">=</span><span class="kc">True</span>
     <span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">output</span><span class="p">)</span>
 </code></pre></div>
+</li>
+</ul>
 
 
 

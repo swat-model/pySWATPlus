@@ -790,21 +790,27 @@
 <h1 id="read-output">Read Output</h1>
 <p>This section explains how to read output data generated from <code>SWAT+</code> simulations.<br />
 It covers accessing results from both standard simulations and Sobol-based sensitivity analyses.</p>
-<hr />
 <h2 id="read-time-series-data">Read Time Series Data</h2>
-<p>A standard <code>SWAT+</code> simulation generates TXT files with time series columns: <code>day</code>, <code>mon</code>, and <code>yr</code> for day, month, and year, respectively. To create a time series <code>DataFrame</code> that includes a new <code>date</code> column with <code>datetime.date</code> objects. Additionally, the method can optionally save the resulting DataFrame to a JSON file. This is controlled by the parameters <code>save_df</code> and <code>json_file</code>: setting <code>save_df=True</code> enables the saving process, and <code>json_file</code> specifies the path where the DataFrame will be written.</p>
-<div class="highlight"><pre><span></span><code><span class="n">output</span> <span class="o">=</span> <span class="n">pySWATPlus</span><span class="o">.</span><span class="n">SensitivityAnalyzer</span><span class="o">.</span><span class="n">simulated_timeseries_df</span><span class="p">(</span>
-    <span class="n">data_file</span><span class="o">=</span><span class="sa">r</span><span class="s2">&quot;C:\Users\Username\simulation_folder_2\channel_sd_mon.txt&quot;</span><span class="p">,</span>
+<p>A standard <code>SWAT+</code> simulation generates TXT files with time series columns: <code>day</code>, <code>mon</code>, and <code>yr</code> for day, month, and year, respectively.
+The following method creates a time series <code>DataFrame</code> that includes a new <code>date</code> column with <code>datetime.date</code> objects and save the resulting DataFrame to a JSON file.</p>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">pySWATPlus</span>
+
+<span class="n">output</span> <span class="o">=</span> <span class="n">pySWATPlus</span><span class="o">.</span><span class="n">SensitivityAnalyzer</span><span class="o">.</span><span class="n">simulated_timeseries_df</span><span class="p">(</span>
+    <span class="n">data_file</span><span class="o">=</span><span class="sa">r</span><span class="s2">&quot;C:\Users\Username\custom_folder\channel_sd_mon.txt&quot;</span><span class="p">,</span>
     <span class="n">has_units</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-    <span class="n">start_date</span><span class="o">=</span><span class="s1">&#39;2014-06-01&#39;</span><span class="p">,</span>
-    <span class="n">apply_filter</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;yr&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">2014</span><span class="p">,</span> <span class="mi">2015</span><span class="p">],</span> <span class="s1">&#39;gis_id&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">561</span><span class="p">]},</span>
-    <span class="n">usecols</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;gis_id&#39;</span><span class="p">,</span> <span class="s1">&#39;flo_out&#39;</span><span class="p">],</span>
-    <span class="n">save_df</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">begin_date</span><span class="o">=</span><span class="s1">&#39;01-Jun-2011&#39;</span><span class="p">,</span>
+    <span class="n">end_date</span><span class="o">=</span><span class="s1">&#39;01-Jun-2013&#39;</span><span class="p">,</span>
+    <span class="n">ref_day</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span>
+    <span class="n">apply_filter</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;cha561&#39;</span><span class="p">]},</span>
+    <span class="n">usecols</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="s1">&#39;flo_out&#39;</span><span class="p">],</span>
     <span class="n">json_file</span><span class="o">=</span><span class="sa">r</span><span class="s2">&quot;C:\Users\Username\output_folder\tmp.json&quot;</span>
 <span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">output</span><span class="p">)</span>
 </code></pre></div>
 <h2 id="read-sensitivity-simulation-data">Read Sensitivity Simulation Data</h2>
-<p>The high-level <a href="https://swat-model.github.io/pySWATPlus/userguide/sensitivity_analysis/#sobol-based-simulation-interface">Sobol-Based Simulation Interface</a> automates the sensitivity analysis workflow using Sobol samples. By default, it generates a file named <code>sensitivity_simulation_sobol.json</code> in the simulation folder. This JSON file contains all the information needed to analyze Sobol simulations, including:</p>
+<p>The <a href="https://swat-model.github.io/pySWATPlus/userguide/sensitivity_analysis/">sensitivity analysis</a> generates a file called <code>sensitivity_simulation.json</code> within the simulation folder.
+This JSON file stores all information necessary for Sobol simulation analysis, including:</p>
 <ul>
 <li><code>problem</code>: the Sobol problem definition  </li>
 <li><code>sample</code>: the generated sample array  </li>
@@ -812,8 +818,8 @@ It covers accessing results from both standard simulations and Sobol-based sensi
 </ul>
 <p>To retrieve and process this data for further analysis:</p>
 <div class="highlight"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">io</span>
 
 <span class="c1"># Path to the JSON file generated by the Sobol interface</span>
@@ -827,25 +833,22 @@ It covers accessing results from both standard simulations and Sobol-based sensi
 <span class="n">problem_dict</span> <span class="o">=</span> <span class="n">sensitivity_dict</span><span class="p">[</span><span class="s1">&#39;problem&#39;</span><span class="p">]</span>
 
 <span class="c1"># Retrieve the Sobol sample array</span>
-<span class="n">sample_array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">sensitivity_dict</span><span class="p">[</span><span class="s1">&#39;sample&#39;</span><span class="p">])</span>
+<span class="n">sample_array</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">sensitivity_dict</span><span class="p">[</span><span class="s1">&#39;sample&#39;</span><span class="p">])</span>
 
-<span class="c1"># Retrieve targeted simulation DataFrames</span>
+<span class="c1"># Retrieve targeted DataFrames from sensitivity simulations</span>
 <span class="n">simulation_dict</span> <span class="o">=</span> <span class="n">sensitivity_dict</span><span class="p">[</span><span class="s1">&#39;simulation&#39;</span><span class="p">]</span>
-<span class="n">df_name</span> <span class="o">=</span> <span class="s1">&#39;channel_sd_yr_df&#39;</span>  <span class="c1"># Example output</span>
+<span class="n">df_name</span> <span class="o">=</span> <span class="s1">&#39;channel_sd_mon_df&#39;</span>  <span class="c1"># Example output</span>
 <span class="n">df_dict</span> <span class="o">=</span> <span class="p">{}</span>
 
 <span class="k">for</span> <span class="n">sim_key</span><span class="p">,</span> <span class="n">sim_val</span> <span class="ow">in</span> <span class="n">simulation_dict</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
     <span class="c1"># Convert JSON string to pandas DataFrame</span>
-    <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_json</span><span class="p">(</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">pandas</span><span class="o">.</span><span class="n">read_json</span><span class="p">(</span>
         <span class="n">path_or_buf</span><span class="o">=</span><span class="n">io</span><span class="o">.</span><span class="n">StringIO</span><span class="p">(</span><span class="n">sim_val</span><span class="p">[</span><span class="n">df_name</span><span class="p">])</span>
     <span class="p">)</span>
     <span class="c1"># Ensure &#39;date&#39; column is in datetime.date format</span>
     <span class="n">df</span><span class="p">[</span><span class="s1">&#39;date&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;date&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">dt</span><span class="o">.</span><span class="n">date</span>
     <span class="n">df_dict</span><span class="p">[</span><span class="n">sim_key</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span>
 </code></pre></div>
-<blockquote>
-<p><strong>Notes:</strong> <code>df_dict</code> contains a <code>DataFrame</code> for each simulation key, which can be easily analyzed or plotted. Replace <code>'channel_sd_yr_df'</code> with any other output <code>DataFrame</code> as needed.</p>
-</blockquote>
 
 
 

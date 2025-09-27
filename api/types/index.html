@@ -74,7 +74,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#pySWATPlus.types.ParametersType" class="md-skip">
+        <a href="#pySWATPlus.types.ModifyType" class="md-skip">
           Skip to content
         </a>
       
@@ -646,18 +646,18 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#pySWATPlus.types.ParametersType" class="md-nav__link">
+  <a href="#pySWATPlus.types.ModifyType" class="md-nav__link">
     <span class="md-ellipsis">
-      ParametersType
+      ModifyType
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#pySWATPlus.types.ParametersBoundedType" class="md-nav__link">
+  <a href="#pySWATPlus.types.BoundType" class="md-nav__link">
     <span class="md-ellipsis">
-      ParametersBoundedType
+      BoundType
     </span>
   </a>
   
@@ -748,18 +748,18 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#pySWATPlus.types.ParametersType" class="md-nav__link">
+  <a href="#pySWATPlus.types.ModifyType" class="md-nav__link">
     <span class="md-ellipsis">
-      ParametersType
+      ModifyType
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#pySWATPlus.types.ParametersBoundedType" class="md-nav__link">
+  <a href="#pySWATPlus.types.BoundType" class="md-nav__link">
     <span class="md-ellipsis">
-      ParametersBoundedType
+      BoundType
     </span>
   </a>
   
@@ -787,8 +787,8 @@
 
 
 
-<h2 id="pySWATPlus.types.ParametersType" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">ParametersType</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">TypeAlias</span> <span class="o">=</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">typing</span><span class="o">.</span><span class="n">Any</span><span class="p">]]</span></code>
+<h2 id="pySWATPlus.types.ModifyType" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">ModifyType</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">TypeAlias</span> <span class="o">=</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">typing</span><span class="o">.</span><span class="n">Any</span><span class="p">]]</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-module-attribute"><code>module-attribute</code></small>
@@ -799,69 +799,41 @@
 
     <div class="doc doc-contents first">
 
-        <p>Defines parameter modifications for SWAT+ model input files.</p>
+        <p>A list of dictionaries specifying parameter changes in the <code>calibration.cal</code> file.
+Each dictionary contain the following keys:</p>
+<ul>
+<li><code>name</code> (str): <strong>Required.</strong> Name of the parameter in the <code>cal_parms.cal</code> file.</li>
+<li><code>change_type</code> (str): <strong>Required.</strong> Type of change to apply. Must be one of <code>absval</code>, <code>abschg</code>, or <code>pctchg</code>.</li>
+<li><code>value</code> (float): <strong>Required.</strong> Value of the parameter.</li>
+<li><code>units</code> (Iterable[int]): Optional. List of unit IDs to which the parameter change should be constrained.</li>
+<li><code>conditions</code> (dict[str, list[str]]): Optional. Conditions to apply when changing the parameter.
+  Supported keys include <code>'hsg'</code>, <code>'texture'</code>, <code>'plant'</code>, and <code>'landuse'</code>, each mapped to a list of allowed values.</li>
+</ul>
 
 
 <details class="example" open>
   <summary>Example</summary>
   <div class="highlight"><pre><span></span><code><span class="n">parameters</span> <span class="o">=</span> <span class="p">[</span>
     <span class="p">{</span>
-        <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s1">&#39;cn2&#39;</span><span class="p">,</span>
-        <span class="s2">&quot;change_type&quot;</span><span class="p">:</span> <span class="s2">&quot;pctchg&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="mi">50</span><span class="p">,</span>
+        <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;cn2&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;change_type&#39;</span><span class="p">:</span> <span class="s1">&#39;pctchg&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;value&#39;</span><span class="p">:</span> <span class="mi">50</span><span class="p">,</span>
     <span class="p">},</span>
     <span class="p">{</span>
-        <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s1">&#39;perco&#39;</span><span class="p">,</span>
-        <span class="s2">&quot;change_type&quot;</span><span class="p">:</span> <span class="s2">&quot;absval&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="mf">0.5</span><span class="p">,</span>
-        <span class="s2">&quot;conditions&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;hsg&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;A&quot;</span><span class="p">]}</span>
+        <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;perco&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;change_type&#39;</span><span class="p">:</span> <span class="s1">&#39;absval&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;value&#39;</span><span class="p">:</span> <span class="mf">0.5</span><span class="p">,</span>
+        <span class="s1">&#39;conditions&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;hsg&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;A&#39;</span><span class="p">]}</span>
     <span class="p">},</span>
     <span class="p">{</span>
         <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;bf_max&#39;</span><span class="p">,</span>
-        <span class="s2">&quot;change_type&quot;</span><span class="p">:</span> <span class="s2">&quot;absval&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="mf">0.3</span><span class="p">,</span>
-        <span class="s2">&quot;units&quot;</span><span class="p">:</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">194</span><span class="p">)</span>
+        <span class="s1">&#39;change_type&#39;</span><span class="p">:</span> <span class="s1">&#39;absval&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;value&#39;</span><span class="p">:</span> <span class="mf">0.3</span><span class="p">,</span>
+        <span class="s1">&#39;units&#39;</span><span class="p">:</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">194</span><span class="p">)</span>
     <span class="p">}</span>
 <span class="p">]</span>
 </code></pre></div>
-</details>        <p>Keys for each parameter change:</p>
-<table>
-<thead>
-<tr>
-<th>Key</th>
-<th>Type (default)</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>name</td>
-<td>str (required)</td>
-<td>Name of the parameter to which the changes will be applied.</td>
-</tr>
-<tr>
-<td>change_type</td>
-<td>str (required)</td>
-<td>Type of change: 'absval', 'abschg', or 'pctchg'.</td>
-</tr>
-<tr>
-<td>value</td>
-<td>float (required)</td>
-<td>Value of the parameter.</td>
-</tr>
-<tr>
-<td>units</td>
-<td>Iterable[int] (optional)</td>
-<td>List of 1-based unit IDs to constrain the parameter change.</td>
-</tr>
-<tr>
-<td>conditions</td>
-<td>dict[str, list[str]] (optional)</td>
-<td>Dictionary of conditions to apply when changing the parameter.</td>
-</tr>
-</tbody>
-</table>
-
+</details>
     </div>
 
 </div>
@@ -870,8 +842,8 @@
 
 
 
-<h2 id="pySWATPlus.types.ParametersBoundedType" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">ParametersBoundedType</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">TypeAlias</span> <span class="o">=</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">typing</span><span class="o">.</span><span class="n">Any</span><span class="p">]]</span></code>
+<h2 id="pySWATPlus.types.BoundType" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">BoundType</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">TypeAlias</span> <span class="o">=</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">typing</span><span class="o">.</span><span class="n">Any</span><span class="p">]]</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-module-attribute"><code>module-attribute</code></small>
@@ -882,66 +854,45 @@
 
     <div class="doc doc-contents first">
 
-        <p>Defines bounded parameter modifications for SWAT+ model input files.</p>
-<p>This follows the same logic as <code>ParametersType</code>, but instead of a single <code>value</code>,
-each parameter specifies <code>lower_bound</code> and <code>upper_bound</code>. Used for sensitivity analysis and calibration.</p>
+        <p>A list of dictionaries defining parameter configurations for sensitivity simulations.
+Each dictionary contain the following keys:</p>
+<ul>
+<li><code>name</code> (str): <strong>Required.</strong> Name of the parameter in the <code>cal_parms.cal</code> file.</li>
+<li><code>change_type</code> (str): <strong>Required.</strong> Type of change to apply. Must be one of <code>absval</code>, <code>abschg</code>, or <code>pctchg</code>.</li>
+<li><code>lower_bound</code> (float): <strong>Required.</strong> Lower bound for the parameter.</li>
+<li><code>upper_bound</code> (float): <strong>Required.</strong> Upper bound for the parameter.</li>
+<li><code>units</code> (Iterable[int]): Optional. List of unit IDs to which the parameter change should be constrained.</li>
+<li><code>conditions</code> (dict[str, list[str]]): Optional. Conditions to apply when changing the parameter.
+  Supported keys include <code>'hsg'</code>, <code>'texture'</code>, <code>'plant'</code>, and <code>'landuse'</code>, each mapped to a list of allowed values.</li>
+</ul>
 
 
 <details class="example" open>
   <summary>Example</summary>
   <div class="highlight"><pre><span></span><code><span class="n">parameters</span> <span class="o">=</span> <span class="p">[</span>
     <span class="p">{</span>
-        <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;bf_max&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;change_type&quot;</span><span class="p">:</span> <span class="s2">&quot;absval&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;lower_bound&quot;</span><span class="p">:</span> <span class="mf">0.2</span><span class="p">,</span>
-        <span class="s2">&quot;upper_bound&quot;</span><span class="p">:</span> <span class="mf">0.3</span><span class="p">,</span>
-        <span class="s2">&quot;units&quot;</span><span class="p">:</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">194</span><span class="p">)</span>
+        <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;cn2&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;change_type&#39;</span><span class="p">:</span> <span class="s1">&#39;pctchg&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;lower_bound&#39;</span><span class="p">:</span> <span class="mi">25</span><span class="p">,</span>
+        <span class="s1">&#39;upper_bound&#39;</span><span class="p">:</span> <span class="mi">75</span><span class="p">,</span>
+    <span class="p">},</span>
+    <span class="p">{</span>
+        <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;perco&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;change_type&#39;</span><span class="p">:</span> <span class="s1">&#39;absval&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;lower_bound&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+        <span class="s1">&#39;upper_bound&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="s1">&#39;conditions&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;hsg&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;A&#39;</span><span class="p">]}</span>
+    <span class="p">},</span>
+    <span class="p">{</span>
+        <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;bf_max&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;change_type&#39;</span><span class="p">:</span> <span class="s1">&#39;absval&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;lower_bound&#39;</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">,</span>
+        <span class="s1">&#39;upper_bound&#39;</span><span class="p">:</span> <span class="mf">2.0</span><span class="p">,</span>
+        <span class="s1">&#39;units&#39;</span><span class="p">:</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">194</span><span class="p">)</span>
     <span class="p">}</span>
 <span class="p">]</span>
 </code></pre></div>
-</details>        <p>Keys for each parameter change:</p>
-<table>
-<thead>
-<tr>
-<th>Key</th>
-<th>Type (default)</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>name</td>
-<td>str (required)</td>
-<td>Name of the parameter to which the changes will be applied.</td>
-</tr>
-<tr>
-<td>change_type</td>
-<td>str (required)</td>
-<td>Type of change: 'absval', 'abschg', or 'pctchg'.</td>
-</tr>
-<tr>
-<td>lower_bound</td>
-<td>float (required)</td>
-<td>Lower bound for the parameter.</td>
-</tr>
-<tr>
-<td>upper_bound</td>
-<td>float (required)</td>
-<td>Upper bound for the parameter.</td>
-</tr>
-<tr>
-<td>units</td>
-<td>Iterable[int] (optional)</td>
-<td>List of 1-based unit IDs to constrain the parameter change.</td>
-</tr>
-<tr>
-<td>conditions</td>
-<td>dict[str, list[str]] (optional)</td>
-<td>Dictionary of conditions to apply when changing the parameter.</td>
-</tr>
-</tbody>
-</table>
-
+</details>
     </div>
 
 </div>

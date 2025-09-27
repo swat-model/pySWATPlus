@@ -1782,7 +1782,18 @@ SWAT+ model files located in the <code>TxtInOut</code> folder.</p>
 <span class="normal">845</span>
 <span class="normal">846</span>
 <span class="normal">847</span>
-<span class="normal">848</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">TxtinoutReader</span><span class="p">:</span>
+<span class="normal">848</span>
+<span class="normal">849</span>
+<span class="normal">850</span>
+<span class="normal">851</span>
+<span class="normal">852</span>
+<span class="normal">853</span>
+<span class="normal">854</span>
+<span class="normal">855</span>
+<span class="normal">856</span>
+<span class="normal">857</span>
+<span class="normal">858</span>
+<span class="normal">859</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">TxtinoutReader</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    Provide functionality for seamless reading, editing, and writing of</span>
 <span class="sd">    SWAT+ model files located in the `TxtInOut` folder.</span>
@@ -2210,7 +2221,7 @@ SWAT+ model files located in the <code>TxtInOut</code> folder.</p>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_write_calibration_file</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
-        <span class="n">parameters</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">ParameterModel</span><span class="p">]</span>
+        <span class="n">parameters</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">ModifyDict</span><span class="p">]</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">        Writes `calibration.cal` file with parameter changes.</span>
@@ -2312,7 +2323,7 @@ SWAT+ model files located in the <code>TxtInOut</code> folder.</p>
         <span class="n">add</span><span class="p">:</span> <span class="nb">bool</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">        Adds or removes the calibration line to &#39;file.cio&#39;</span>
+<span class="sd">        Add or remove the calibration line to &#39;file.cio&#39;</span>
 <span class="sd">        &#39;&#39;&#39;</span>
 
         <span class="c1"># Path of file.cio</span>
@@ -2371,7 +2382,7 @@ SWAT+ model files located in the <code>TxtInOut</code> folder.</p>
         <span class="n">print_prt_control</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">bool</span><span class="p">]]]</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">        Sets begin and end year for the simulation, the warm-up period, and toggles the elements in print.prt file</span>
+<span class="sd">        Set begin and end year for the simulation, the warm-up period, and toggles the elements in print.prt file</span>
 <span class="sd">        &#39;&#39;&#39;</span>
 
         <span class="c1"># Set simulation range time</span>
@@ -2466,7 +2477,7 @@ SWAT+ model files located in the <code>TxtInOut</code> folder.</p>
     <span class="k">def</span><span class="w"> </span><span class="nf">run_swat</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">target_dir</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span> <span class="o">|</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-        <span class="n">parameters</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">ParametersType</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">parameters</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">ModifyType</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">begin_and_end_date</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">typing</span><span class="o">.</span><span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">warmup</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">print_prt_control</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">bool</span><span class="p">]]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -2479,21 +2490,36 @@ SWAT+ model files located in the <code>TxtInOut</code> folder.</p>
 <span class="sd">            target_dir (str or pathlib.Path): Path to the directory where the simulation will be done.</span>
 <span class="sd">                If None, the simulation runs directly in the current folder.</span>
 
-<span class="sd">            parameters (ParametersType): List of dictionaries specifying parameter changes.</span>
+<span class="sd">            parameters (ModifyType): List of dictionaries specifying parameter changes in the `calibration.cal` file.</span>
+<span class="sd">                Each dictionary contain the following keys:</span>
 
-<span class="sd">                The `parameters` list should follow this structure:</span>
+<span class="sd">                - `name` (str): **Required.** Name of the parameter in the `cal_parms.cal` file.</span>
+<span class="sd">                - `change_type` (str): **Required.** Type of change to apply. Must be one of `absval`, `abschg`, or `pctchg`.</span>
+<span class="sd">                - `value` (float): **Required.** Value of the parameter.</span>
+<span class="sd">                - `units` (Iterable[int]): Optional. List of unit IDs to which the parameter change should be constrained.</span>
+<span class="sd">                - `conditions` (dict[str, list[str]]): Optional. Conditions to apply when changing the parameter.</span>
+<span class="sd">                  Supported keys include `&#39;hsg&#39;`, `&#39;texture&#39;`, `&#39;plant&#39;`, and `&#39;landuse&#39;`, each mapped to a list of allowed values.</span>
 
+<span class="sd">                Examples:</span>
 <span class="sd">                ```python</span>
 <span class="sd">                parameters = [</span>
 <span class="sd">                    {</span>
-<span class="sd">                        &quot;name&quot;: str,             # Name of the parameter to which the changes will be applied</span>
-<span class="sd">                        &quot;value&quot;: float           # The value to apply to the parameter</span>
-<span class="sd">                        &quot;change_type&quot;: str,      # One of: &#39;absval&#39;, &#39;abschg&#39;, &#39;pctchg&#39;</span>
-<span class="sd">                        &quot;units&quot;: Iterable[int],  # (Optional) An optional list of unit IDs to constrain the parameter change.</span>
-<span class="sd">                            **Unit IDs should be 1-based**, i.e., the first object has ID 1.</span>
-<span class="sd">                        &quot;conditions&quot;: dict[str, list[str]],  # (Optional) A dictionary of conditions to apply to the parameter change.</span>
+<span class="sd">                        &#39;name&#39;: &#39;cn2&#39;,</span>
+<span class="sd">                        &#39;change_type&#39;: &#39;pctchg&#39;,</span>
+<span class="sd">                        &#39;value&#39;: 50,</span>
 <span class="sd">                    },</span>
-<span class="sd">                    ...</span>
+<span class="sd">                    {</span>
+<span class="sd">                        &#39;name&#39;: &#39;perco&#39;,</span>
+<span class="sd">                        &#39;change_type&#39;: &#39;absval&#39;,</span>
+<span class="sd">                        &#39;value&#39;: 0.5,</span>
+<span class="sd">                        &#39;conditions&#39;: {&#39;hsg&#39;: [&#39;A&#39;]}</span>
+<span class="sd">                    },</span>
+<span class="sd">                    {</span>
+<span class="sd">                        &#39;name&#39;: &#39;bf_max&#39;,</span>
+<span class="sd">                        &#39;change_type&#39;: &#39;absval&#39;,</span>
+<span class="sd">                        &#39;value&#39;: 0.3,</span>
+<span class="sd">                        &#39;units&#39;: range(1, 194)</span>
+<span class="sd">                    }</span>
 <span class="sd">                ]</span>
 <span class="sd">                ```</span>
 
@@ -2508,6 +2534,15 @@ SWAT+ model files located in the <code>TxtInOut</code> folder.</p>
 <span class="sd">                    - `96` = 15 minutes</span>
 <span class="sd">                    - `1440` = 1 minute</span>
 
+<span class="sd">                Examples:</span>
+<span class="sd">                ```python</span>
+<span class="sd">                begin_and_end_date={</span>
+<span class="sd">                    &#39;begin_date&#39;: &#39;01-Jan-2012&#39;,</span>
+<span class="sd">                    &#39;end_date&#39;: &#39;31-Dec-2016&#39;,</span>
+<span class="sd">                    &#39;step&#39;: 0</span>
+<span class="sd">                }</span>
+<span class="sd">                ```</span>
+
 <span class="sd">            warmup (int): A positive integer representing the number of warm-up years (e.g., 1).</span>
 
 <span class="sd">            print_prt_control (dict[str, dict[str, bool]]): A dictionary to control output printing in the `print.prt` file.</span>
@@ -2521,42 +2556,19 @@ SWAT+ model files located in the <code>TxtInOut</code> folder.</p>
 <span class="sd">                - `yearly`: Output aggregated by year.</span>
 <span class="sd">                - `avann`: Average annual output over the entire simulation period.</span>
 
+<span class="sd">                Examples:</span>
+<span class="sd">                ```python</span>
+<span class="sd">                print_prt_control = {</span>
+<span class="sd">                    &#39;channel_sd&#39;: {},  # set True for all time frequency</span>
+<span class="sd">                    &#39;channel_sdmorph&#39;: {&#39;monthly&#39;: False}</span>
+<span class="sd">                }</span>
+<span class="sd">                ```</span>
+
 <span class="sd">            skip_validation (bool): If `True`, skip validation of units and conditions in parameter changes.</span>
 
 
 <span class="sd">        Returns:</span>
 <span class="sd">            Path where the SWAT+ simulation was executed.</span>
-
-<span class="sd">        Example:</span>
-<span class="sd">            ```python</span>
-<span class="sd">            simulation = pySWATPlus.TxtinoutReader.run_swat(</span>
-<span class="sd">                target_dir=&quot;C:\\\\Users\\\\Username\\\\simulation_folder&quot;,</span>
-<span class="sd">                parameters = [</span>
-<span class="sd">                    {</span>
-<span class="sd">                        &quot;name&quot;: &#39;perco&#39;,</span>
-<span class="sd">                        &quot;change_type&quot;: &quot;absval&quot;,</span>
-<span class="sd">                        &quot;value&quot;: 0.5,</span>
-<span class="sd">                        &quot;conditions&quot;: {&quot;hsg&quot;: [&quot;A&quot;]}</span>
-<span class="sd">                    },</span>
-<span class="sd">                    {</span>
-<span class="sd">                        &#39;name&#39;: &#39;bf_max&#39;,</span>
-<span class="sd">                        &quot;change_type&quot;: &quot;absval&quot;,</span>
-<span class="sd">                        &quot;value&quot;: 0.3,</span>
-<span class="sd">                        &quot;units&quot;: range(1, 194)</span>
-<span class="sd">                    }</span>
-<span class="sd">                ]</span>
-<span class="sd">                begin_and_end_date={</span>
-<span class="sd">                    &quot;begin_date&quot;: date(2012, 1, 1),</span>
-<span class="sd">                    &quot;end_date&quot;: date(2016, 12, 31)</span>
-<span class="sd">                    # step defaults to 0 (daily)</span>
-<span class="sd">                },</span>
-<span class="sd">                warmup=1,</span>
-<span class="sd">                print_prt_control = {</span>
-<span class="sd">                    &#39;channel_sd&#39;: {&#39;daily&#39;: False},</span>
-<span class="sd">                    &#39;channel_sdmorph&#39;: {&#39;monthly&#39;: False}</span>
-<span class="sd">                }</span>
-<span class="sd">            )</span>
-<span class="sd">            ```</span>
 <span class="sd">        &#39;&#39;&#39;</span>
 
         <span class="c1"># Check input variables type</span>
@@ -2596,22 +2608,32 @@ SWAT+ model files located in the <code>TxtInOut</code> folder.</p>
         <span class="p">)</span>
 
         <span class="c1"># Create calibration.cal file</span>
-        <span class="k">if</span> <span class="n">parameters</span><span class="p">:</span>
-            <span class="n">_params</span> <span class="o">=</span> <span class="p">[</span><span class="n">ParameterModel</span><span class="p">(</span><span class="o">**</span><span class="n">param</span><span class="p">)</span> <span class="k">for</span> <span class="n">param</span> <span class="ow">in</span> <span class="n">parameters</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">parameters</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
 
+            <span class="c1"># Validate unique dictionaries for sensitive parameters</span>
+            <span class="n">validators</span><span class="o">.</span><span class="n">_list_contain_unique_dict</span><span class="p">(</span>
+                <span class="n">parameters</span><span class="o">=</span><span class="n">parameters</span>
+            <span class="p">)</span>
+
+            <span class="c1"># Check structural validity of input calibration parameters</span>
+            <span class="n">params</span> <span class="o">=</span> <span class="p">[</span>
+                <span class="n">ModifyDict</span><span class="p">(</span><span class="o">**</span><span class="n">param</span><span class="p">)</span> <span class="k">for</span> <span class="n">param</span> <span class="ow">in</span> <span class="n">parameters</span>
+            <span class="p">]</span>
+
+            <span class="c1"># Check if input calibration parameters exists in cal_parms.cal</span>
             <span class="n">validators</span><span class="o">.</span><span class="n">_calibration_parameters</span><span class="p">(</span>
                 <span class="n">txtinout_path</span><span class="o">=</span><span class="n">reader</span><span class="o">.</span><span class="n">root_folder</span><span class="p">,</span>
-                <span class="n">parameters</span><span class="o">=</span><span class="n">_params</span>
+                <span class="n">parameters</span><span class="o">=</span><span class="n">params</span>
             <span class="p">)</span>
 
             <span class="k">if</span> <span class="ow">not</span> <span class="n">skip_validation</span><span class="p">:</span>
                 <span class="n">validators</span><span class="o">.</span><span class="n">_calibration_conditions_and_units</span><span class="p">(</span>
                     <span class="n">txtinout_path</span><span class="o">=</span><span class="n">reader</span><span class="o">.</span><span class="n">root_folder</span><span class="p">,</span>
-                    <span class="n">parameters</span><span class="o">=</span><span class="n">_params</span>
+                    <span class="n">parameters</span><span class="o">=</span><span class="n">params</span>
                 <span class="p">)</span>
 
             <span class="n">reader</span><span class="o">.</span><span class="n">_write_calibration_file</span><span class="p">(</span>
-                <span class="n">parameters</span><span class="o">=</span><span class="n">_params</span>
+                <span class="n">parameters</span><span class="o">=</span><span class="n">params</span>
             <span class="p">)</span>
 
         <span class="c1"># Run simulation</span>
@@ -3431,7 +3453,7 @@ a ValueError is raised. Defaults to False.</p>
 
 
 <h3 id="pySWATPlus.TxtinoutReader.run_swat" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">run_swat</span><span class="p">(</span><span class="n">target_dir</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span> <span class="o">|</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">parameters</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">ParametersType</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">begin_and_end_date</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">typing</span><span class="o">.</span><span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">warmup</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">print_prt_control</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">bool</span><span class="p">]]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">skip_validation</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span></code>
+            <code class="highlight language-python"><span class="n">run_swat</span><span class="p">(</span><span class="n">target_dir</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span> <span class="o">|</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">parameters</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">ModifyType</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">begin_and_end_date</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">typing</span><span class="o">.</span><span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">warmup</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">print_prt_control</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">bool</span><span class="p">]]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">skip_validation</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span></code>
 
 </h3>
 
@@ -3474,28 +3496,45 @@ If None, the simulation runs directly in the current folder.</p>
                 <code>parameters</code>
             </td>
             <td>
-                  <code><a class="autorefs autorefs-internal" title="ParametersType: typing.TypeAlias = list[dict[str, typing.Any]]
+                  <code><a class="autorefs autorefs-internal" title="ModifyType: typing.TypeAlias = list[dict[str, typing.Any]]
 
   
       module-attribute
-   (pySWATPlus.types.ParametersType)" href="../types/#pySWATPlus.types.ParametersType">ParametersType</a></code>
+   (pySWATPlus.types.ModifyType)" href="../types/#pySWATPlus.types.ModifyType">ModifyType</a></code>
             </td>
             <td>
               <div class="doc-md-description">
-                <p>List of dictionaries specifying parameter changes.</p>
-<p>The <code>parameters</code> list should follow this structure:</p>
+                <p>List of dictionaries specifying parameter changes in the <code>calibration.cal</code> file.
+Each dictionary contain the following keys:</p>
+<ul>
+<li><code>name</code> (str): <strong>Required.</strong> Name of the parameter in the <code>cal_parms.cal</code> file.</li>
+<li><code>change_type</code> (str): <strong>Required.</strong> Type of change to apply. Must be one of <code>absval</code>, <code>abschg</code>, or <code>pctchg</code>.</li>
+<li><code>value</code> (float): <strong>Required.</strong> Value of the parameter.</li>
+<li><code>units</code> (Iterable[int]): Optional. List of unit IDs to which the parameter change should be constrained.</li>
+<li><code>conditions</code> (dict[str, list[str]]): Optional. Conditions to apply when changing the parameter.
+  Supported keys include <code>'hsg'</code>, <code>'texture'</code>, <code>'plant'</code>, and <code>'landuse'</code>, each mapped to a list of allowed values.</li>
+</ul>
+<p>Examples:
 <div class="highlight"><pre><span></span><code><span class="n">parameters</span> <span class="o">=</span> <span class="p">[</span>
     <span class="p">{</span>
-        <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>             <span class="c1"># Name of the parameter to which the changes will be applied</span>
-        <span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="nb">float</span>           <span class="c1"># The value to apply to the parameter</span>
-        <span class="s2">&quot;change_type&quot;</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>      <span class="c1"># One of: &#39;absval&#39;, &#39;abschg&#39;, &#39;pctchg&#39;</span>
-        <span class="s2">&quot;units&quot;</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span>  <span class="c1"># (Optional) An optional list of unit IDs to constrain the parameter change.</span>
-            <span class="o">**</span><span class="n">Unit</span> <span class="n">IDs</span> <span class="n">should</span> <span class="n">be</span> <span class="mi">1</span><span class="o">-</span><span class="n">based</span><span class="o">**</span><span class="p">,</span> <span class="n">i</span><span class="o">.</span><span class="n">e</span><span class="o">.</span><span class="p">,</span> <span class="n">the</span> <span class="n">first</span> <span class="nb">object</span> <span class="n">has</span> <span class="n">ID</span> <span class="mf">1.</span>
-        <span class="s2">&quot;conditions&quot;</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]],</span>  <span class="c1"># (Optional) A dictionary of conditions to apply to the parameter change.</span>
+        <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;cn2&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;change_type&#39;</span><span class="p">:</span> <span class="s1">&#39;pctchg&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;value&#39;</span><span class="p">:</span> <span class="mi">50</span><span class="p">,</span>
     <span class="p">},</span>
-    <span class="o">...</span>
+    <span class="p">{</span>
+        <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;perco&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;change_type&#39;</span><span class="p">:</span> <span class="s1">&#39;absval&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;value&#39;</span><span class="p">:</span> <span class="mf">0.5</span><span class="p">,</span>
+        <span class="s1">&#39;conditions&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;hsg&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;A&#39;</span><span class="p">]}</span>
+    <span class="p">},</span>
+    <span class="p">{</span>
+        <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;bf_max&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;change_type&#39;</span><span class="p">:</span> <span class="s1">&#39;absval&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;value&#39;</span><span class="p">:</span> <span class="mf">0.3</span><span class="p">,</span>
+        <span class="s1">&#39;units&#39;</span><span class="p">:</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">194</span><span class="p">)</span>
+    <span class="p">}</span>
 <span class="p">]</span>
-</code></pre></div>
+</code></pre></div></p>
               </div>
             </td>
             <td>
@@ -3524,6 +3563,13 @@ If None, the simulation runs directly in the current folder.</p>
 </ul>
 </li>
 </ul>
+<p>Examples:
+<div class="highlight"><pre><span></span><code><span class="n">begin_and_end_date</span><span class="o">=</span><span class="p">{</span>
+    <span class="s1">&#39;begin_date&#39;</span><span class="p">:</span> <span class="s1">&#39;01-Jan-2012&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;end_date&#39;</span><span class="p">:</span> <span class="s1">&#39;31-Dec-2016&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;step&#39;</span><span class="p">:</span> <span class="mi">0</span>
+<span class="p">}</span>
+</code></pre></div></p>
               </div>
             </td>
             <td>
@@ -3566,6 +3612,12 @@ The time step keys represent:</p>
 <li><code>yearly</code>: Output aggregated by year.</li>
 <li><code>avann</code>: Average annual output over the entire simulation period.</li>
 </ul>
+<p>Examples:
+<div class="highlight"><pre><span></span><code><span class="n">print_prt_control</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;channel_sd&#39;</span><span class="p">:</span> <span class="p">{},</span>  <span class="c1"># set True for all time frequency</span>
+    <span class="s1">&#39;channel_sdmorph&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;monthly&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></p>
               </div>
             </td>
             <td>
@@ -3614,38 +3666,6 @@ The time step keys represent:</p>
       </tbody>
     </table>
 
-
-<details class="example" open>
-  <summary>Example</summary>
-  <div class="highlight"><pre><span></span><code><span class="n">simulation</span> <span class="o">=</span> <span class="n">pySWATPlus</span><span class="o">.</span><span class="n">TxtinoutReader</span><span class="o">.</span><span class="n">run_swat</span><span class="p">(</span>
-    <span class="n">target_dir</span><span class="o">=</span><span class="s2">&quot;C:</span><span class="se">\\</span><span class="s2">Users</span><span class="se">\\</span><span class="s2">Username</span><span class="se">\\</span><span class="s2">simulation_folder&quot;</span><span class="p">,</span>
-    <span class="n">parameters</span> <span class="o">=</span> <span class="p">[</span>
-        <span class="p">{</span>
-            <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s1">&#39;perco&#39;</span><span class="p">,</span>
-            <span class="s2">&quot;change_type&quot;</span><span class="p">:</span> <span class="s2">&quot;absval&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="mf">0.5</span><span class="p">,</span>
-            <span class="s2">&quot;conditions&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;hsg&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;A&quot;</span><span class="p">]}</span>
-        <span class="p">},</span>
-        <span class="p">{</span>
-            <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;bf_max&#39;</span><span class="p">,</span>
-            <span class="s2">&quot;change_type&quot;</span><span class="p">:</span> <span class="s2">&quot;absval&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="mf">0.3</span><span class="p">,</span>
-            <span class="s2">&quot;units&quot;</span><span class="p">:</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">194</span><span class="p">)</span>
-        <span class="p">}</span>
-    <span class="p">]</span>
-    <span class="n">begin_and_end_date</span><span class="o">=</span><span class="p">{</span>
-        <span class="s2">&quot;begin_date&quot;</span><span class="p">:</span> <span class="n">date</span><span class="p">(</span><span class="mi">2012</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
-        <span class="s2">&quot;end_date&quot;</span><span class="p">:</span> <span class="n">date</span><span class="p">(</span><span class="mi">2016</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">31</span><span class="p">)</span>
-        <span class="c1"># step defaults to 0 (daily)</span>
-    <span class="p">},</span>
-    <span class="n">warmup</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
-    <span class="n">print_prt_control</span> <span class="o">=</span> <span class="p">{</span>
-        <span class="s1">&#39;channel_sd&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;daily&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">},</span>
-        <span class="s1">&#39;channel_sdmorph&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;monthly&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">}</span>
-    <span class="p">}</span>
-<span class="p">)</span>
-</code></pre></div>
-</details>
 
             <details class="quote">
               <summary>Source code in <code>pySWATPlus/txtinout_reader.py</code></summary>
@@ -3803,10 +3823,21 @@ The time step keys represent:</p>
 <span class="normal">845</span>
 <span class="normal">846</span>
 <span class="normal">847</span>
-<span class="normal">848</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">run_swat</span><span class="p">(</span>
+<span class="normal">848</span>
+<span class="normal">849</span>
+<span class="normal">850</span>
+<span class="normal">851</span>
+<span class="normal">852</span>
+<span class="normal">853</span>
+<span class="normal">854</span>
+<span class="normal">855</span>
+<span class="normal">856</span>
+<span class="normal">857</span>
+<span class="normal">858</span>
+<span class="normal">859</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">run_swat</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">target_dir</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span> <span class="o">|</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">parameters</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">ParametersType</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">parameters</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">ModifyType</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">begin_and_end_date</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">typing</span><span class="o">.</span><span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">warmup</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">print_prt_control</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">bool</span><span class="p">]]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -3819,21 +3850,36 @@ The time step keys represent:</p>
 <span class="sd">        target_dir (str or pathlib.Path): Path to the directory where the simulation will be done.</span>
 <span class="sd">            If None, the simulation runs directly in the current folder.</span>
 
-<span class="sd">        parameters (ParametersType): List of dictionaries specifying parameter changes.</span>
+<span class="sd">        parameters (ModifyType): List of dictionaries specifying parameter changes in the `calibration.cal` file.</span>
+<span class="sd">            Each dictionary contain the following keys:</span>
 
-<span class="sd">            The `parameters` list should follow this structure:</span>
+<span class="sd">            - `name` (str): **Required.** Name of the parameter in the `cal_parms.cal` file.</span>
+<span class="sd">            - `change_type` (str): **Required.** Type of change to apply. Must be one of `absval`, `abschg`, or `pctchg`.</span>
+<span class="sd">            - `value` (float): **Required.** Value of the parameter.</span>
+<span class="sd">            - `units` (Iterable[int]): Optional. List of unit IDs to which the parameter change should be constrained.</span>
+<span class="sd">            - `conditions` (dict[str, list[str]]): Optional. Conditions to apply when changing the parameter.</span>
+<span class="sd">              Supported keys include `&#39;hsg&#39;`, `&#39;texture&#39;`, `&#39;plant&#39;`, and `&#39;landuse&#39;`, each mapped to a list of allowed values.</span>
 
+<span class="sd">            Examples:</span>
 <span class="sd">            ```python</span>
 <span class="sd">            parameters = [</span>
 <span class="sd">                {</span>
-<span class="sd">                    &quot;name&quot;: str,             # Name of the parameter to which the changes will be applied</span>
-<span class="sd">                    &quot;value&quot;: float           # The value to apply to the parameter</span>
-<span class="sd">                    &quot;change_type&quot;: str,      # One of: &#39;absval&#39;, &#39;abschg&#39;, &#39;pctchg&#39;</span>
-<span class="sd">                    &quot;units&quot;: Iterable[int],  # (Optional) An optional list of unit IDs to constrain the parameter change.</span>
-<span class="sd">                        **Unit IDs should be 1-based**, i.e., the first object has ID 1.</span>
-<span class="sd">                    &quot;conditions&quot;: dict[str, list[str]],  # (Optional) A dictionary of conditions to apply to the parameter change.</span>
+<span class="sd">                    &#39;name&#39;: &#39;cn2&#39;,</span>
+<span class="sd">                    &#39;change_type&#39;: &#39;pctchg&#39;,</span>
+<span class="sd">                    &#39;value&#39;: 50,</span>
 <span class="sd">                },</span>
-<span class="sd">                ...</span>
+<span class="sd">                {</span>
+<span class="sd">                    &#39;name&#39;: &#39;perco&#39;,</span>
+<span class="sd">                    &#39;change_type&#39;: &#39;absval&#39;,</span>
+<span class="sd">                    &#39;value&#39;: 0.5,</span>
+<span class="sd">                    &#39;conditions&#39;: {&#39;hsg&#39;: [&#39;A&#39;]}</span>
+<span class="sd">                },</span>
+<span class="sd">                {</span>
+<span class="sd">                    &#39;name&#39;: &#39;bf_max&#39;,</span>
+<span class="sd">                    &#39;change_type&#39;: &#39;absval&#39;,</span>
+<span class="sd">                    &#39;value&#39;: 0.3,</span>
+<span class="sd">                    &#39;units&#39;: range(1, 194)</span>
+<span class="sd">                }</span>
 <span class="sd">            ]</span>
 <span class="sd">            ```</span>
 
@@ -3848,6 +3894,15 @@ The time step keys represent:</p>
 <span class="sd">                - `96` = 15 minutes</span>
 <span class="sd">                - `1440` = 1 minute</span>
 
+<span class="sd">            Examples:</span>
+<span class="sd">            ```python</span>
+<span class="sd">            begin_and_end_date={</span>
+<span class="sd">                &#39;begin_date&#39;: &#39;01-Jan-2012&#39;,</span>
+<span class="sd">                &#39;end_date&#39;: &#39;31-Dec-2016&#39;,</span>
+<span class="sd">                &#39;step&#39;: 0</span>
+<span class="sd">            }</span>
+<span class="sd">            ```</span>
+
 <span class="sd">        warmup (int): A positive integer representing the number of warm-up years (e.g., 1).</span>
 
 <span class="sd">        print_prt_control (dict[str, dict[str, bool]]): A dictionary to control output printing in the `print.prt` file.</span>
@@ -3861,42 +3916,19 @@ The time step keys represent:</p>
 <span class="sd">            - `yearly`: Output aggregated by year.</span>
 <span class="sd">            - `avann`: Average annual output over the entire simulation period.</span>
 
+<span class="sd">            Examples:</span>
+<span class="sd">            ```python</span>
+<span class="sd">            print_prt_control = {</span>
+<span class="sd">                &#39;channel_sd&#39;: {},  # set True for all time frequency</span>
+<span class="sd">                &#39;channel_sdmorph&#39;: {&#39;monthly&#39;: False}</span>
+<span class="sd">            }</span>
+<span class="sd">            ```</span>
+
 <span class="sd">        skip_validation (bool): If `True`, skip validation of units and conditions in parameter changes.</span>
 
 
 <span class="sd">    Returns:</span>
 <span class="sd">        Path where the SWAT+ simulation was executed.</span>
-
-<span class="sd">    Example:</span>
-<span class="sd">        ```python</span>
-<span class="sd">        simulation = pySWATPlus.TxtinoutReader.run_swat(</span>
-<span class="sd">            target_dir=&quot;C:\\\\Users\\\\Username\\\\simulation_folder&quot;,</span>
-<span class="sd">            parameters = [</span>
-<span class="sd">                {</span>
-<span class="sd">                    &quot;name&quot;: &#39;perco&#39;,</span>
-<span class="sd">                    &quot;change_type&quot;: &quot;absval&quot;,</span>
-<span class="sd">                    &quot;value&quot;: 0.5,</span>
-<span class="sd">                    &quot;conditions&quot;: {&quot;hsg&quot;: [&quot;A&quot;]}</span>
-<span class="sd">                },</span>
-<span class="sd">                {</span>
-<span class="sd">                    &#39;name&#39;: &#39;bf_max&#39;,</span>
-<span class="sd">                    &quot;change_type&quot;: &quot;absval&quot;,</span>
-<span class="sd">                    &quot;value&quot;: 0.3,</span>
-<span class="sd">                    &quot;units&quot;: range(1, 194)</span>
-<span class="sd">                }</span>
-<span class="sd">            ]</span>
-<span class="sd">            begin_and_end_date={</span>
-<span class="sd">                &quot;begin_date&quot;: date(2012, 1, 1),</span>
-<span class="sd">                &quot;end_date&quot;: date(2016, 12, 31)</span>
-<span class="sd">                # step defaults to 0 (daily)</span>
-<span class="sd">            },</span>
-<span class="sd">            warmup=1,</span>
-<span class="sd">            print_prt_control = {</span>
-<span class="sd">                &#39;channel_sd&#39;: {&#39;daily&#39;: False},</span>
-<span class="sd">                &#39;channel_sdmorph&#39;: {&#39;monthly&#39;: False}</span>
-<span class="sd">            }</span>
-<span class="sd">        )</span>
-<span class="sd">        ```</span>
 <span class="sd">    &#39;&#39;&#39;</span>
 
     <span class="c1"># Check input variables type</span>
@@ -3936,22 +3968,32 @@ The time step keys represent:</p>
     <span class="p">)</span>
 
     <span class="c1"># Create calibration.cal file</span>
-    <span class="k">if</span> <span class="n">parameters</span><span class="p">:</span>
-        <span class="n">_params</span> <span class="o">=</span> <span class="p">[</span><span class="n">ParameterModel</span><span class="p">(</span><span class="o">**</span><span class="n">param</span><span class="p">)</span> <span class="k">for</span> <span class="n">param</span> <span class="ow">in</span> <span class="n">parameters</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">parameters</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
 
+        <span class="c1"># Validate unique dictionaries for sensitive parameters</span>
+        <span class="n">validators</span><span class="o">.</span><span class="n">_list_contain_unique_dict</span><span class="p">(</span>
+            <span class="n">parameters</span><span class="o">=</span><span class="n">parameters</span>
+        <span class="p">)</span>
+
+        <span class="c1"># Check structural validity of input calibration parameters</span>
+        <span class="n">params</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="n">ModifyDict</span><span class="p">(</span><span class="o">**</span><span class="n">param</span><span class="p">)</span> <span class="k">for</span> <span class="n">param</span> <span class="ow">in</span> <span class="n">parameters</span>
+        <span class="p">]</span>
+
+        <span class="c1"># Check if input calibration parameters exists in cal_parms.cal</span>
         <span class="n">validators</span><span class="o">.</span><span class="n">_calibration_parameters</span><span class="p">(</span>
             <span class="n">txtinout_path</span><span class="o">=</span><span class="n">reader</span><span class="o">.</span><span class="n">root_folder</span><span class="p">,</span>
-            <span class="n">parameters</span><span class="o">=</span><span class="n">_params</span>
+            <span class="n">parameters</span><span class="o">=</span><span class="n">params</span>
         <span class="p">)</span>
 
         <span class="k">if</span> <span class="ow">not</span> <span class="n">skip_validation</span><span class="p">:</span>
             <span class="n">validators</span><span class="o">.</span><span class="n">_calibration_conditions_and_units</span><span class="p">(</span>
                 <span class="n">txtinout_path</span><span class="o">=</span><span class="n">reader</span><span class="o">.</span><span class="n">root_folder</span><span class="p">,</span>
-                <span class="n">parameters</span><span class="o">=</span><span class="n">_params</span>
+                <span class="n">parameters</span><span class="o">=</span><span class="n">params</span>
             <span class="p">)</span>
 
         <span class="n">reader</span><span class="o">.</span><span class="n">_write_calibration_file</span><span class="p">(</span>
-            <span class="n">parameters</span><span class="o">=</span><span class="n">_params</span>
+            <span class="n">parameters</span><span class="o">=</span><span class="n">params</span>
         <span class="p">)</span>
 
     <span class="c1"># Run simulation</span>

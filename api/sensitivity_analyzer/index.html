@@ -807,17 +807,10 @@
 
 
     <div class="doc doc-contents first">
-            <p class="doc doc-class-bases">
-              Bases: <code><span title="pySWATPlus.base_sensitivity_analyser.BaseSensitivityAnalyzer">BaseSensitivityAnalyzer</span></code></p>
 
 
-        <p>Provides functionality for running scenario simulations and analyzing simulated data.</p>
+        <p>Provide functionality for sensitivity analyzis.</p>
 
-
-<details class="warning" open>
-  <summary>Warning</summary>
-  <p>This class is currently under development and not recommended for use.</p>
-</details>
 
 
 
@@ -826,12 +819,8 @@
 
 
               <details class="quote">
-                <summary>Source code in <code>pySWATPlus/cal_sensitivity_analyzer.py</code></summary>
-                <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 14</span>
-<span class="normal"> 15</span>
-<span class="normal"> 16</span>
-<span class="normal"> 17</span>
-<span class="normal"> 18</span>
+                <summary>Source code in <code>pySWATPlus/sensitivity_analyzer.py</code></summary>
+                <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 18</span>
 <span class="normal"> 19</span>
 <span class="normal"> 20</span>
 <span class="normal"> 21</span>
@@ -1109,85 +1098,425 @@
 <span class="normal">293</span>
 <span class="normal">294</span>
 <span class="normal">295</span>
-<span class="normal">296</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">SensitivityAnalyzer</span><span class="p">(</span><span class="n">BaseSensitivityAnalyzer</span><span class="p">):</span>
+<span class="normal">296</span>
+<span class="normal">297</span>
+<span class="normal">298</span>
+<span class="normal">299</span>
+<span class="normal">300</span>
+<span class="normal">301</span>
+<span class="normal">302</span>
+<span class="normal">303</span>
+<span class="normal">304</span>
+<span class="normal">305</span>
+<span class="normal">306</span>
+<span class="normal">307</span>
+<span class="normal">308</span>
+<span class="normal">309</span>
+<span class="normal">310</span>
+<span class="normal">311</span>
+<span class="normal">312</span>
+<span class="normal">313</span>
+<span class="normal">314</span>
+<span class="normal">315</span>
+<span class="normal">316</span>
+<span class="normal">317</span>
+<span class="normal">318</span>
+<span class="normal">319</span>
+<span class="normal">320</span>
+<span class="normal">321</span>
+<span class="normal">322</span>
+<span class="normal">323</span>
+<span class="normal">324</span>
+<span class="normal">325</span>
+<span class="normal">326</span>
+<span class="normal">327</span>
+<span class="normal">328</span>
+<span class="normal">329</span>
+<span class="normal">330</span>
+<span class="normal">331</span>
+<span class="normal">332</span>
+<span class="normal">333</span>
+<span class="normal">334</span>
+<span class="normal">335</span>
+<span class="normal">336</span>
+<span class="normal">337</span>
+<span class="normal">338</span>
+<span class="normal">339</span>
+<span class="normal">340</span>
+<span class="normal">341</span>
+<span class="normal">342</span>
+<span class="normal">343</span>
+<span class="normal">344</span>
+<span class="normal">345</span>
+<span class="normal">346</span>
+<span class="normal">347</span>
+<span class="normal">348</span>
+<span class="normal">349</span>
+<span class="normal">350</span>
+<span class="normal">351</span>
+<span class="normal">352</span>
+<span class="normal">353</span>
+<span class="normal">354</span>
+<span class="normal">355</span>
+<span class="normal">356</span>
+<span class="normal">357</span>
+<span class="normal">358</span>
+<span class="normal">359</span>
+<span class="normal">360</span>
+<span class="normal">361</span>
+<span class="normal">362</span>
+<span class="normal">363</span>
+<span class="normal">364</span>
+<span class="normal">365</span>
+<span class="normal">366</span>
+<span class="normal">367</span>
+<span class="normal">368</span>
+<span class="normal">369</span>
+<span class="normal">370</span>
+<span class="normal">371</span>
+<span class="normal">372</span>
+<span class="normal">373</span>
+<span class="normal">374</span>
+<span class="normal">375</span>
+<span class="normal">376</span>
+<span class="normal">377</span>
+<span class="normal">378</span>
+<span class="normal">379</span>
+<span class="normal">380</span>
+<span class="normal">381</span>
+<span class="normal">382</span>
+<span class="normal">383</span>
+<span class="normal">384</span>
+<span class="normal">385</span>
+<span class="normal">386</span>
+<span class="normal">387</span>
+<span class="normal">388</span>
+<span class="normal">389</span>
+<span class="normal">390</span>
+<span class="normal">391</span>
+<span class="normal">392</span>
+<span class="normal">393</span>
+<span class="normal">394</span>
+<span class="normal">395</span>
+<span class="normal">396</span>
+<span class="normal">397</span>
+<span class="normal">398</span>
+<span class="normal">399</span>
+<span class="normal">400</span>
+<span class="normal">401</span>
+<span class="normal">402</span>
+<span class="normal">403</span>
+<span class="normal">404</span>
+<span class="normal">405</span>
+<span class="normal">406</span>
+<span class="normal">407</span>
+<span class="normal">408</span>
+<span class="normal">409</span>
+<span class="normal">410</span>
+<span class="normal">411</span>
+<span class="normal">412</span>
+<span class="normal">413</span>
+<span class="normal">414</span>
+<span class="normal">415</span>
+<span class="normal">416</span>
+<span class="normal">417</span>
+<span class="normal">418</span>
+<span class="normal">419</span>
+<span class="normal">420</span>
+<span class="normal">421</span>
+<span class="normal">422</span>
+<span class="normal">423</span>
+<span class="normal">424</span>
+<span class="normal">425</span>
+<span class="normal">426</span>
+<span class="normal">427</span>
+<span class="normal">428</span>
+<span class="normal">429</span>
+<span class="normal">430</span>
+<span class="normal">431</span>
+<span class="normal">432</span>
+<span class="normal">433</span>
+<span class="normal">434</span>
+<span class="normal">435</span>
+<span class="normal">436</span>
+<span class="normal">437</span>
+<span class="normal">438</span>
+<span class="normal">439</span>
+<span class="normal">440</span>
+<span class="normal">441</span>
+<span class="normal">442</span>
+<span class="normal">443</span>
+<span class="normal">444</span>
+<span class="normal">445</span>
+<span class="normal">446</span>
+<span class="normal">447</span>
+<span class="normal">448</span>
+<span class="normal">449</span>
+<span class="normal">450</span>
+<span class="normal">451</span>
+<span class="normal">452</span>
+<span class="normal">453</span>
+<span class="normal">454</span>
+<span class="normal">455</span>
+<span class="normal">456</span>
+<span class="normal">457</span>
+<span class="normal">458</span>
+<span class="normal">459</span>
+<span class="normal">460</span>
+<span class="normal">461</span>
+<span class="normal">462</span>
+<span class="normal">463</span>
+<span class="normal">464</span>
+<span class="normal">465</span>
+<span class="normal">466</span>
+<span class="normal">467</span>
+<span class="normal">468</span>
+<span class="normal">469</span>
+<span class="normal">470</span>
+<span class="normal">471</span>
+<span class="normal">472</span>
+<span class="normal">473</span>
+<span class="normal">474</span>
+<span class="normal">475</span>
+<span class="normal">476</span>
+<span class="normal">477</span>
+<span class="normal">478</span>
+<span class="normal">479</span>
+<span class="normal">480</span>
+<span class="normal">481</span>
+<span class="normal">482</span>
+<span class="normal">483</span>
+<span class="normal">484</span>
+<span class="normal">485</span>
+<span class="normal">486</span>
+<span class="normal">487</span>
+<span class="normal">488</span>
+<span class="normal">489</span>
+<span class="normal">490</span>
+<span class="normal">491</span>
+<span class="normal">492</span>
+<span class="normal">493</span>
+<span class="normal">494</span>
+<span class="normal">495</span>
+<span class="normal">496</span>
+<span class="normal">497</span>
+<span class="normal">498</span>
+<span class="normal">499</span>
+<span class="normal">500</span>
+<span class="normal">501</span>
+<span class="normal">502</span>
+<span class="normal">503</span>
+<span class="normal">504</span>
+<span class="normal">505</span>
+<span class="normal">506</span>
+<span class="normal">507</span>
+<span class="normal">508</span>
+<span class="normal">509</span>
+<span class="normal">510</span>
+<span class="normal">511</span>
+<span class="normal">512</span>
+<span class="normal">513</span>
+<span class="normal">514</span>
+<span class="normal">515</span>
+<span class="normal">516</span>
+<span class="normal">517</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">SensitivityAnalyzer</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">    Provides functionality for running scenario simulations and analyzing simulated data.</span>
-
-<span class="sd">    Warning:</span>
-<span class="sd">        This class is currently under development and not recommended for use.</span>
-
+<span class="sd">    Provide functionality for sensitivity analyzis.</span>
 <span class="sd">    &#39;&#39;&#39;</span>
-    <span class="nd">@classmethod</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">_simulation_in_cpu</span><span class="p">(</span>
-        <span class="bp">cls</span><span class="p">,</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_validate_simulation_data_config</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">simulation_data</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">typing</span><span class="o">.</span><span class="n">Any</span><span class="p">]],</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Validate `simulation_data` configuration.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+
+        <span class="n">valid_subkeys</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="s1">&#39;has_units&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;begin_date&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;end_date&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;ref_day&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;ref_month&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;apply_filter&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;usecols&#39;</span>
+        <span class="p">]</span>
+        <span class="k">for</span> <span class="n">sim_fname</span><span class="p">,</span> <span class="n">sim_fdict</span> <span class="ow">in</span> <span class="n">simulation_data</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">sim_fdict</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s1">&#39;Expected &quot;</span><span class="si">{</span><span class="n">sim_fname</span><span class="si">}</span><span class="s1">&quot; in simulation_date must be a dictionary, but got type &quot;</span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">sim_fdict</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s1">&quot;&#39;</span>
+                <span class="p">)</span>
+            <span class="k">if</span> <span class="s1">&#39;has_units&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">sim_fdict</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s1">&#39;Key has_units is missing for &quot;</span><span class="si">{</span><span class="n">sim_fname</span><span class="si">}</span><span class="s1">&quot; in simulation_data&#39;</span>
+                <span class="p">)</span>
+            <span class="k">for</span> <span class="n">sim_fkey</span> <span class="ow">in</span> <span class="n">sim_fdict</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">sim_fkey</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">valid_subkeys</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                        <span class="sa">f</span><span class="s1">&#39;Invalid key &quot;</span><span class="si">{</span><span class="n">sim_fkey</span><span class="si">}</span><span class="s1">&quot; for &quot;</span><span class="si">{</span><span class="n">sim_fname</span><span class="si">}</span><span class="s1">&quot; in simulation_data; expected subkeys are </span><span class="si">{</span><span class="n">valid_subkeys</span><span class="si">}</span><span class="s1">&#39;</span>
+                    <span class="p">)</span>
+
+        <span class="k">return</span> <span class="kc">None</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_create_sobol_problem</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">params_bounds</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">BoundDict</span><span class="p">]</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">typing</span><span class="o">.</span><span class="n">Any</span><span class="p">]:</span>
+
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Prepare Sobol problem dictionary for sensitivity analysis.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+
+        <span class="c1"># Count variables</span>
+        <span class="n">count_vars</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">Counter</span><span class="p">(</span>
+            <span class="n">p</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">params_bounds</span>
+        <span class="p">)</span>
+
+        <span class="c1"># Intialize dictionary to keeps track the count of variables</span>
+        <span class="n">current_count</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="n">v</span><span class="p">:</span> <span class="mi">0</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">count_vars</span><span class="p">)</span>
+        <span class="p">}</span>
+
+        <span class="c1"># List of unique names and bounds of paramters</span>
+        <span class="n">var_names</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">var_bounds</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">param</span> <span class="ow">in</span> <span class="n">params_bounds</span><span class="p">:</span>
+            <span class="n">p_name</span> <span class="o">=</span> <span class="n">param</span><span class="o">.</span><span class="n">name</span>
+            <span class="k">if</span> <span class="n">count_vars</span><span class="p">[</span><span class="n">p_name</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="c1"># Keep same name if occur only once in the list</span>
+                <span class="n">var_names</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">p_name</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="c1"># Add counter suffix if occur multiple times</span>
+                <span class="n">current_count</span><span class="p">[</span><span class="n">p_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">current_count</span><span class="p">[</span><span class="n">p_name</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span>
+                <span class="n">var_names</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">p_name</span><span class="si">}</span><span class="s1">|</span><span class="si">{</span><span class="n">current_count</span><span class="p">[</span><span class="n">p_name</span><span class="p">]</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+            <span class="n">var_bounds</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">param</span><span class="o">.</span><span class="n">lower_bound</span><span class="p">,</span> <span class="n">param</span><span class="o">.</span><span class="n">upper_bound</span><span class="p">])</span>
+
+        <span class="c1"># Sobol problem</span>
+        <span class="n">problem</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;num_vars&#39;</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">var_names</span><span class="p">),</span>
+            <span class="s1">&#39;names&#39;</span><span class="p">:</span> <span class="n">var_names</span><span class="p">,</span>
+            <span class="s1">&#39;bounds&#39;</span><span class="p">:</span> <span class="n">var_bounds</span>
+        <span class="p">}</span>
+
+        <span class="k">return</span> <span class="n">problem</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_cpu_simulation</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
         <span class="n">track_sim</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
         <span class="n">var_array</span><span class="p">:</span> <span class="n">numpy</span><span class="o">.</span><span class="n">typing</span><span class="o">.</span><span class="n">NDArray</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">float64</span><span class="p">],</span>
         <span class="n">num_sim</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
         <span class="n">var_names</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
         <span class="n">simulation_folder</span><span class="p">:</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">,</span>
         <span class="n">txtinout_folder</span><span class="p">:</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">,</span>
-        <span class="n">params</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">ParameterBoundedModel</span><span class="p">],</span>
+        <span class="n">params_bounds</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">BoundDict</span><span class="p">],</span>
         <span class="n">simulation_data</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">typing</span><span class="o">.</span><span class="n">Any</span><span class="p">]],</span>
         <span class="n">clean_setup</span><span class="p">:</span> <span class="nb">bool</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">typing</span><span class="o">.</span><span class="n">Any</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">        Private function that runs a SWAT+ simulation asynchronously on a dedicated logical CPU.</span>
+<span class="sd">        Execute the simulation on a dedicated logical CPU.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
-        <span class="c1"># variable dictionary</span>
+
+        <span class="c1"># Dictionary mapping for sensitivity simulation name and variable</span>
         <span class="n">var_dict</span> <span class="o">=</span> <span class="p">{</span>
             <span class="n">var_names</span><span class="p">[</span><span class="n">i</span><span class="p">]:</span> <span class="nb">float</span><span class="p">(</span><span class="n">var_array</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">var_names</span><span class="p">))</span>
         <span class="p">}</span>
 
-        <span class="c1"># create &#39;params&#39; dictionary with assigned value</span>
-        <span class="n">params_sim</span><span class="p">:</span> <span class="n">ParametersType</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="c1"># Create ParameterType dictionary to write calibration.cal file</span>
+        <span class="n">params_sim</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">param</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">params_bounds</span><span class="p">):</span>
+            <span class="n">params_sim</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                <span class="p">{</span>
+                    <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="n">param</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+                    <span class="s1">&#39;change_type&#39;</span><span class="p">:</span> <span class="n">param</span><span class="o">.</span><span class="n">change_type</span><span class="p">,</span>
+                    <span class="s1">&#39;value&#39;</span><span class="p">:</span> <span class="n">var_dict</span><span class="p">[</span><span class="n">var_names</span><span class="p">[</span><span class="n">i</span><span class="p">]],</span>
+                    <span class="s1">&#39;units&#39;</span><span class="p">:</span> <span class="n">param</span><span class="o">.</span><span class="n">units</span><span class="p">,</span>
+                    <span class="s1">&#39;conditions&#39;</span><span class="p">:</span> <span class="n">param</span><span class="o">.</span><span class="n">conditions</span>
+                <span class="p">}</span>
+            <span class="p">)</span>
 
-        <span class="k">for</span> <span class="n">param</span> <span class="ow">in</span> <span class="n">params</span><span class="p">:</span>
-            <span class="n">name</span> <span class="o">=</span> <span class="n">param</span><span class="o">.</span><span class="n">name</span>
-            <span class="n">change_type</span> <span class="o">=</span> <span class="n">param</span><span class="o">.</span><span class="n">change_type</span>
-            <span class="n">units</span> <span class="o">=</span> <span class="n">param</span><span class="o">.</span><span class="n">units</span>
-            <span class="n">unique_name</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">_make_unique_param_name</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">param</span><span class="p">)</span>
-            <span class="n">value</span> <span class="o">=</span> <span class="n">var_dict</span><span class="p">[</span><span class="n">unique_name</span><span class="p">]</span>
-            <span class="n">conditions</span> <span class="o">=</span> <span class="n">param</span><span class="o">.</span><span class="n">conditions</span>
-            <span class="n">params_sim</span><span class="o">.</span><span class="n">append</span><span class="p">({</span>
-                <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="n">name</span><span class="p">,</span>
-                <span class="s1">&#39;value&#39;</span><span class="p">:</span> <span class="n">value</span><span class="p">,</span>
-                <span class="s1">&#39;change_type&#39;</span><span class="p">:</span> <span class="n">change_type</span><span class="p">,</span>
-                <span class="s1">&#39;units&#39;</span><span class="p">:</span> <span class="n">units</span><span class="p">,</span>
-                <span class="s1">&#39;conditions&#39;</span><span class="p">:</span> <span class="n">conditions</span>
-            <span class="p">})</span>
-
-        <span class="n">dir_path</span><span class="p">,</span> <span class="n">simulation_output</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_setup_simulation_directory</span><span class="p">(</span>
-            <span class="n">track_sim</span><span class="o">=</span><span class="n">track_sim</span><span class="p">,</span>
-            <span class="n">num_sim</span><span class="o">=</span><span class="n">num_sim</span><span class="p">,</span>
-            <span class="n">var_array</span><span class="o">=</span><span class="n">var_array</span><span class="p">,</span>
-            <span class="n">simulation_folder</span><span class="o">=</span><span class="n">simulation_folder</span><span class="p">,</span>
+        <span class="c1"># Tracking simulation</span>
+        <span class="nb">print</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s1">&#39;Started simulation: </span><span class="si">{</span><span class="n">track_sim</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="n">num_sim</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span>
+            <span class="n">flush</span><span class="o">=</span><span class="kc">True</span>
         <span class="p">)</span>
+
+        <span class="c1"># Create simulation directory</span>
+        <span class="n">cpu_dir</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;sim_</span><span class="si">{</span><span class="n">track_sim</span><span class="si">}</span><span class="s1">&#39;</span>
+        <span class="n">cpu_path</span> <span class="o">=</span> <span class="n">simulation_folder</span> <span class="o">/</span> <span class="n">cpu_dir</span>
+        <span class="n">cpu_path</span><span class="o">.</span><span class="n">mkdir</span><span class="p">()</span>
+
+        <span class="c1"># Output simulation dictionary</span>
+        <span class="n">cpu_output</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;dir&#39;</span><span class="p">:</span> <span class="n">cpu_dir</span><span class="p">,</span>
+            <span class="s1">&#39;array&#39;</span><span class="p">:</span> <span class="n">var_array</span>
+        <span class="p">}</span>
 
         <span class="c1"># Initialize TxtinoutReader class</span>
         <span class="n">txtinout_reader</span> <span class="o">=</span> <span class="n">TxtinoutReader</span><span class="p">(</span>
             <span class="n">path</span><span class="o">=</span><span class="n">txtinout_folder</span>
         <span class="p">)</span>
 
-        <span class="c1"># Run SWAT+ model in other directory</span>
+        <span class="c1"># Run SWAT+ model in CPU directory</span>
         <span class="n">txtinout_reader</span><span class="o">.</span><span class="n">run_swat</span><span class="p">(</span>
-            <span class="n">target_dir</span><span class="o">=</span><span class="n">dir_path</span><span class="p">,</span>
+            <span class="n">target_dir</span><span class="o">=</span><span class="n">cpu_path</span><span class="p">,</span>
             <span class="n">parameters</span><span class="o">=</span><span class="n">params_sim</span>
         <span class="p">)</span>
 
         <span class="c1"># Extract simulated data</span>
-        <span class="n">simulation_output</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_extract_simulation_data</span><span class="p">(</span>
-            <span class="n">dir_path</span><span class="o">=</span><span class="n">dir_path</span><span class="p">,</span>
-            <span class="n">simulation_data</span><span class="o">=</span><span class="n">simulation_data</span><span class="p">,</span>
-            <span class="n">simulation_output</span><span class="o">=</span><span class="n">simulation_output</span><span class="p">,</span>
-            <span class="n">clean_setup</span><span class="o">=</span><span class="n">clean_setup</span><span class="p">,</span>
+        <span class="k">for</span> <span class="n">sim_fname</span><span class="p">,</span> <span class="n">sim_fdict</span> <span class="ow">in</span> <span class="n">simulation_data</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="n">target_file</span> <span class="o">=</span> <span class="n">cpu_path</span> <span class="o">/</span> <span class="n">sim_fname</span>
+            <span class="n">df</span> <span class="o">=</span> <span class="n">DataManager</span><span class="p">()</span><span class="o">.</span><span class="n">simulated_timeseries_df</span><span class="p">(</span>
+                <span class="n">target_file</span><span class="o">=</span><span class="n">target_file</span><span class="p">,</span>
+                <span class="o">**</span><span class="n">sim_fdict</span>
+            <span class="p">)</span>
+            <span class="n">cpu_output</span><span class="p">[</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">target_file</span><span class="o">.</span><span class="n">stem</span><span class="si">}</span><span class="s1">_df&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span>
+
+        <span class="c1"># Remove simulation directory</span>
+        <span class="k">if</span> <span class="n">clean_setup</span><span class="p">:</span>
+            <span class="n">shutil</span><span class="o">.</span><span class="n">rmtree</span><span class="p">(</span><span class="n">cpu_path</span><span class="p">,</span> <span class="n">ignore_errors</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">cpu_output</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_save_output_in_json</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">simulation_folder</span><span class="p">:</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">,</span>
+        <span class="n">simulation_output</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">typing</span><span class="o">.</span><span class="n">Any</span><span class="p">]</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Write sensitivity simulation outputs to the file `sensitivity_simulation.json`</span>
+<span class="sd">        within the `simulation_folder`.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+
+        <span class="c1"># copy the simulation_output dictionary</span>
+        <span class="n">copy_simulation</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span>
+            <span class="n">x</span><span class="o">=</span><span class="n">simulation_output</span>
         <span class="p">)</span>
 
-        <span class="k">return</span> <span class="n">simulation_output</span>
+        <span class="c1"># Modify the copied dictionary</span>
+        <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">copy_simulation</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="c1"># Convert &#39;sample&#39; array to list</span>
+            <span class="k">if</span> <span class="n">key</span> <span class="o">==</span> <span class="s1">&#39;sample&#39;</span><span class="p">:</span>
+                <span class="n">copy_simulation</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+            <span class="c1"># Convert datetime.date objects to string in &#39;simulation&#39; dictionary</span>
+            <span class="k">if</span> <span class="n">key</span> <span class="o">==</span> <span class="s1">&#39;simulation&#39;</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">sub_key</span><span class="p">,</span> <span class="n">sub_value</span> <span class="ow">in</span> <span class="n">value</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                    <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">sub_value</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                        <span class="k">if</span> <span class="n">k</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;_df&#39;</span><span class="p">):</span>
+                            <span class="n">v</span><span class="p">[</span><span class="s1">&#39;date&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">v</span><span class="p">[</span><span class="s1">&#39;date&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%d</span><span class="s1">-%b-%Y&#39;</span><span class="p">))</span>
+                            <span class="n">copy_simulation</span><span class="p">[</span><span class="n">key</span><span class="p">][</span><span class="n">sub_key</span><span class="p">][</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">v</span><span class="o">.</span><span class="n">to_json</span><span class="p">()</span>
 
-    <span class="nd">@classmethod</span>
+        <span class="c1"># Path to the JOSN file</span>
+        <span class="n">json_file</span> <span class="o">=</span> <span class="n">simulation_folder</span> <span class="o">/</span> <span class="s1">&#39;sensitivity_simulation.json&#39;</span>
+
+        <span class="c1"># Write output to the JSON file</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">json_file</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">output_write</span><span class="p">:</span>
+            <span class="n">json</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">copy_simulation</span><span class="p">,</span> <span class="n">output_write</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="kc">None</span>
+
     <span class="k">def</span><span class="w"> </span><span class="nf">simulation_by_sobol_sample</span><span class="p">(</span>
-        <span class="bp">cls</span><span class="p">,</span>
-        <span class="n">parameters</span><span class="p">:</span> <span class="n">ParametersBoundedType</span><span class="p">,</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">parameters</span><span class="p">:</span> <span class="n">BoundType</span><span class="p">,</span>
         <span class="n">sample_number</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
         <span class="n">simulation_folder</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">,</span>
         <span class="n">txtinout_folder</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">,</span>
@@ -1197,7 +1526,7 @@
         <span class="n">clean_setup</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">typing</span><span class="o">.</span><span class="n">Any</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">        Provides a high-level interface for performing sensitivity simulations through parallel computing.</span>
+<span class="sd">        Provide a high-level interface for performing sensitivity simulations through parallel computing.</span>
 
 <span class="sd">        It uses the method [`SALib.sample.sobol.sample`](https://salib.readthedocs.io/en/latest/api/SALib.sample.html#SALib.sample.sobol.sample),</span>
 <span class="sd">        based on [`Sobol sequences`](https://doi.org/10.1016/S0378-4754(00)00270-6), to generate samples from the defined parameter space.</span>
@@ -1214,21 +1543,42 @@
 <span class="sd">        the sample array, and the simulation results for further analysis.</span>
 
 <span class="sd">        Args:</span>
+<span class="sd">            parameters (BoundType): List of dictionaries defining parameter configurations for sensitivity simulations.</span>
+<span class="sd">                Each dictionary contain the following keys:</span>
 
-<span class="sd">            parameters (ParametersBoundedType):  Nested dictionary defining the parameter modifications to apply during the simulations.</span>
-<span class="sd">                Each parameter should include a the lower and upper bounds, and the parameter value</span>
-<span class="sd">                is dynamically assigned with the corresponding sampled value during execution.</span>
-<span class="sd">                ```python</span>
-<span class="sd">                parameters = {</span>
-<span class="sd">                    &quot;bf_max&quot;: [{</span>
-<span class="sd">                        &quot;change_type&quot;: &quot;absval&quot;,</span>
-<span class="sd">                        &quot;lower_bound&quot;: 0.2,</span>
-<span class="sd">                        &quot;upper_bound&quot;: 0.3,</span>
-<span class="sd">                        &quot;units&quot;: range(1, 194)</span>
-<span class="sd">                    }]</span>
-<span class="sd">                }</span>
-<span class="sd">                ```</span>
+<span class="sd">                - `name` (str): **Required.** Name of the parameter in the `cal_parms.cal` file.</span>
+<span class="sd">                - `change_type` (str): **Required.** Type of change to apply. Must be one of &#39;absval&#39;, &#39;abschg&#39;, or &#39;pctchg&#39;.</span>
+<span class="sd">                - `lower_bound` (float): **Required.** Lower bound for the parameter.</span>
+<span class="sd">                - `upper_bound` (float): **Required.** Upper bound for the parameter.</span>
+<span class="sd">                - `units` (Iterable[int]): Optional. List of unit IDs to which the parameter change should be constrained.</span>
+<span class="sd">                - `conditions` (dict[str, list[str]]): Optional. Conditions to apply when changing the parameter,</span>
+<span class="sd">                  specified as a dictionary mapping condition types to lists of values.</span>
 
+<span class="sd">                Example:</span>
+<span class="sd">                    ```python</span>
+<span class="sd">                    parameters = [</span>
+<span class="sd">                        {</span>
+<span class="sd">                            &#39;name&#39;: &#39;cn2&#39;,</span>
+<span class="sd">                            &#39;change_type&#39;: &#39;pctchg&#39;,</span>
+<span class="sd">                            &#39;lower_bound&#39;: 25,</span>
+<span class="sd">                            &#39;upper_bound&#39;: 75,</span>
+<span class="sd">                        },</span>
+<span class="sd">                        {</span>
+<span class="sd">                            &#39;name&#39;: &#39;perco&#39;,</span>
+<span class="sd">                            &#39;change_type&#39;: &#39;absval&#39;,</span>
+<span class="sd">                            &#39;lower_bound&#39;: 0,</span>
+<span class="sd">                            &#39;upper_bound&#39;: 1,</span>
+<span class="sd">                            &#39;conditions&#39;: {&#39;hsg&#39;: [&#39;A&#39;]}</span>
+<span class="sd">                        },</span>
+<span class="sd">                        {</span>
+<span class="sd">                            &#39;name&#39;: &#39;bf_max&#39;,</span>
+<span class="sd">                            &#39;change_type&#39;: &#39;absval&#39;,</span>
+<span class="sd">                            &#39;lower_bound&#39;: 0.1,</span>
+<span class="sd">                            &#39;upper_bound&#39;: 2.0,</span>
+<span class="sd">                            &#39;units&#39;: range(1, 194)</span>
+<span class="sd">                        }</span>
+<span class="sd">                    ]</span>
+<span class="sd">                    ```</span>
 
 <span class="sd">            sample_number (int): sample_number (int): Determines the number of samples.</span>
 <span class="sd">                Generates an array of length `2^N * (D + 1)`, where `D` is the number of parameter changes</span>
@@ -1240,24 +1590,28 @@
 
 <span class="sd">            txtinout_folder (str | pathlib.Path): Path to the `TxtInOut` folder. Raises an error if the folder does not contain exactly one SWAT+ executable `.exe` file.</span>
 
-<span class="sd">            simulation_data (dict[str, dict[str, typing.Any]]):  Nested dictionary that specifies how to extract data</span>
-<span class="sd">                from SWAT+ simulation-generated files. The keys are filenames (without paths) of the output files.</span>
-<span class="sd">                Each key must map to a non-empty dictionary with the following subkeys:</span>
+<span class="sd">            simulation_data (dict[str, dict[str, typing.Any]]): A nested dictionary specifying how to extract data from SWAT+ simulation output files.</span>
+<span class="sd">                The top-level keys are filenames of the output files, without paths (e.g., `channel_sd_day.txt`). Each key must map to a non-empty dictionary</span>
+<span class="sd">                containing the following subkeys, as defined in [`simulated_timeseries_df`](https://swat-model.github.io/pySWATPlus/api/data_manager/#pySWATPlus.DataManager.simulated_timeseries_df):</span>
 
-<span class="sd">                - `has_units (bool)`: Mandatory subkey. If `True`, the third line of the simulated file contains units for the columns.</span>
-<span class="sd">                - `start_date (str)`: Optional subkey in `YYYY-MM-DD` format. Defaults to the earliest date in the simulated file.</span>
-<span class="sd">                - `end_date (str)`: Optional subkey in `YYYY-MM-DD` format. Defaults to the latest date in the simulated file.</span>
-<span class="sd">                - `apply_filter (dict[str, list[typing.Any]])`: Optional subkey. Each key is a column name and the corresponding value</span>
+<span class="sd">                - `has_units` (bool): **Required.** If `True`, the third line of the simulated file contains units for the columns.</span>
+<span class="sd">                - `begin_date` (str): Optional. Start date in `DD-Mon-YYYY` format (e.g., 01-Jan-2010). Defaults to the earliest date in the simulated file.</span>
+<span class="sd">                - `end_date` (str): Optional. End date in `DD-Mon-YYYY` format (e.g., 31-Dec-2013). Defaults to the latest date in the simulated file.</span>
+<span class="sd">                - `ref_day` (int): Optional. Reference day for monthly and yearly time series.</span>
+<span class="sd">                   If `None` (default), the last day of the month or year is used, obtained from simulation. Not applicable to daily time series files (ending with `_day`).</span>
+<span class="sd">                - `ref_month` (int): Optional. Reference month for yearly time series. If `None` (default), the last month of the year is used, obtained from simulation.</span>
+<span class="sd">                  Not applicable to monthly time series files (ending with `_mon`).</span>
+<span class="sd">                - `apply_filter` (dict[str, list[typing.Any]]): Optional. Each key is a column name and the corresponding value</span>
 <span class="sd">                  is a list of allowed values for filtering rows in the DataFrame. By default, no filtering is applied.</span>
 <span class="sd">                  An error is raised if filtering produces an empty DataFrame.</span>
-<span class="sd">                - `usecols (list[str])`: Optional subkey. List of columns to extract from the simulated file. By default, all available columns are used.</span>
+<span class="sd">                - `usecols` (list[str]): Optional. List of columns to extract from the simulated file. By default, all available columns are used.</span>
 
 <span class="sd">                ```python</span>
 <span class="sd">                simulation_data = {</span>
 <span class="sd">                    &#39;channel_sd_mon.txt&#39;: {</span>
 <span class="sd">                        &#39;has_units&#39;: True,</span>
-<span class="sd">                        &#39;start_date&#39;: &#39;2014-06-01&#39;,</span>
-<span class="sd">                        &#39;end_date&#39;: &#39;2016-10-01&#39;,</span>
+<span class="sd">                        &#39;start_date&#39;: &#39;01-Jun-2014&#39;,</span>
+<span class="sd">                        &#39;end_date&#39;: &#39;01-Oct-2016&#39;,</span>
 <span class="sd">                        &#39;apply_filter&#39;: {&#39;gis_id&#39;: [561], &#39;yr&#39;: [2015, 2016]},</span>
 <span class="sd">                        &#39;usecols&#39;: [&#39;gis_id&#39;, &#39;flo_out&#39;]</span>
 <span class="sd">                    },</span>
@@ -1269,10 +1623,9 @@
 <span class="sd">                }</span>
 <span class="sd">                ```</span>
 
-<span class="sd">            max_workers (int): Number of logical CPUs to use for parallel processing.</span>
-<span class="sd">                By default, all available logical CPUs are used.</span>
+<span class="sd">            max_workers (int): Number of logical CPUs to use for parallel processing. If `None` (default), all available logical CPUs are used.</span>
 
-<span class="sd">            save_output (bool): If `True` (default), saves the output dictionary to `simulation_folder` as `sensitivity_simulation_sobol.json`.</span>
+<span class="sd">            save_output (bool): If `True` (default), saves the output dictionary to `simulation_folder` as `sensitivity_simulation.json`.</span>
 
 <span class="sd">            clean_setup (bool): If `True` (default), each folder created during the parallel simulation and its contents</span>
 <span class="sd">                will be deleted dynamically after collecting the required data.</span>
@@ -1280,7 +1633,7 @@
 <span class="sd">        Returns:</span>
 <span class="sd">            A dictionary with the follwoing keys:</span>
 
-<span class="sd">                - `time`: A dictionary A dictionary containing time-related statistics:</span>
+<span class="sd">                - `time`: A dictionary containing time-related statistics:</span>
 
 <span class="sd">                    - `sample_length`: Total number of samples, including duplicates.</span>
 <span class="sd">                    - `total_time_sec`: Total time in seconds for the simulation.</span>
@@ -1288,9 +1641,10 @@
 
 <span class="sd">                - `problem`: The problem definition dictionary passed to `Sobol` sampling, containing:</span>
 
-<span class="sd">                    - `num_vars`: Number of variables.</span>
-<span class="sd">                    - `names`: Names of the variables.</span>
-<span class="sd">                    - `bounds`: Lower and upper bounds for each variable.</span>
+<span class="sd">                    - `num_vars`: Total number of variables in `parameters`.</span>
+<span class="sd">                    - `names`: Variable names derived from the `name` field of each dictionary in `parameters`. If a parameter appears multiple times</span>
+<span class="sd">                      due to different `units` or `conditions`, occurrences are suffixed with a counter (e.g., `perco|1`, `perco|2`).</span>
+<span class="sd">                    - `bounds`:  A list of [`lower_bound`, `upper_bound`] pairs corresponding to each dictionary in `parameters`.</span>
 
 <span class="sd">                - `sample`: The sampled array of parameter sets used in the simulations.</span>
 
@@ -1303,7 +1657,6 @@
 <span class="sd">                    - `&lt;simulation_data_filename&gt;_df`: Filtered `DataFrame` generated for each file specified in the `simulation_data` dictionary</span>
 <span class="sd">                      (e.g., `channel_sd_mon_df`, `channel_sd_yr_df`). Each DataFrame includes a `date` column with `datetime.date` objects.</span>
 
-
 <span class="sd">        Note:</span>
 <span class="sd">            - The `problem` dictionary and `sample` array are used later to calculate Sobol indices</span>
 <span class="sd">              when comparing performance metrics against observed data.</span>
@@ -1311,6 +1664,10 @@
 <span class="sd">            - The integer keys in the `simulation` dictionary may not correspond directly to the</span>
 <span class="sd">              simulation directory indices (given by the `dir` key as `sim_&lt;i&gt;`) due to deduplication</span>
 <span class="sd">              and asynchronous execution.</span>
+
+<span class="sd">            - The output dictionary contains `datetime.date` objects in the `date` column for each `DataFrame` in the `simulation` dictionary.</span>
+<span class="sd">              These `datetime.date` objects are converted to `DD-Mon-YYYY` strings when saving the output dictionary to</span>
+<span class="sd">              `sensitivity_simulation.json` within the `simulation_folder`.</span>
 
 <span class="sd">            - The computation progress can be tracked through the following `console` messages, where</span>
 <span class="sd">              the simulation index ranges from 1 to the total number of unique simulations:</span>
@@ -1326,45 +1683,87 @@
         <span class="c1"># start time</span>
         <span class="n">start_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
 
-        <span class="n">_txtinout_folder</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">_ensure_path</span><span class="p">(</span><span class="n">txtinout_folder</span><span class="p">)</span>
-        <span class="n">_simulation_folder</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">_ensure_path</span><span class="p">(</span><span class="n">simulation_folder</span><span class="p">)</span>
-
-        <span class="n">_params</span> <span class="o">=</span> <span class="p">[</span><span class="n">ParameterBoundedModel</span><span class="p">(</span><span class="o">**</span><span class="n">param</span><span class="p">)</span> <span class="k">for</span> <span class="n">param</span> <span class="ow">in</span> <span class="n">parameters</span><span class="p">]</span>
-        <span class="n">validators</span><span class="o">.</span><span class="n">_calibration_parameters</span><span class="p">(</span><span class="n">_txtinout_folder</span><span class="p">,</span> <span class="n">_params</span><span class="p">)</span>
-
-        <span class="n">var_names</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="n">var_bounds</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="k">for</span> <span class="n">param</span> <span class="ow">in</span> <span class="n">_params</span><span class="p">:</span>
-            <span class="n">unique_name</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">_make_unique_param_name</span><span class="p">(</span><span class="n">param</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">param</span><span class="p">)</span>
-            <span class="n">var_names</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">unique_name</span><span class="p">)</span>
-            <span class="n">var_bounds</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">param</span><span class="o">.</span><span class="n">lower_bound</span><span class="p">,</span> <span class="n">param</span><span class="o">.</span><span class="n">upper_bound</span><span class="p">])</span>
-
-        <span class="bp">cls</span><span class="o">.</span><span class="n">_validate_simulation_by_sobol_sample_params</span><span class="p">(</span>
-            <span class="n">simulation_folder</span><span class="o">=</span><span class="n">_simulation_folder</span><span class="p">,</span>
-            <span class="n">simulation_data</span><span class="o">=</span><span class="n">simulation_data</span><span class="p">,</span>
-            <span class="n">var_names</span><span class="o">=</span><span class="n">var_names</span><span class="p">,</span>
-            <span class="n">var_bounds</span><span class="o">=</span><span class="n">var_bounds</span>
+        <span class="c1"># Check input variables type</span>
+        <span class="n">validators</span><span class="o">.</span><span class="n">_variable_origin_static_type</span><span class="p">(</span>
+            <span class="n">vars_types</span><span class="o">=</span><span class="n">typing</span><span class="o">.</span><span class="n">get_type_hints</span><span class="p">(</span>
+                <span class="n">obj</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">simulation_by_sobol_sample</span>
+            <span class="p">),</span>
+            <span class="n">vars_values</span><span class="o">=</span><span class="nb">locals</span><span class="p">()</span>
         <span class="p">)</span>
 
-        <span class="n">problem</span><span class="p">,</span> <span class="n">sample_array</span><span class="p">,</span> <span class="n">unique_array</span><span class="p">,</span> <span class="n">num_sim</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_prepare_sobol_samples</span><span class="p">(</span>
-            <span class="n">var_names</span><span class="o">=</span><span class="n">var_names</span><span class="p">,</span>
-            <span class="n">var_bounds</span><span class="o">=</span><span class="n">var_bounds</span><span class="p">,</span>
-            <span class="n">sample_number</span><span class="o">=</span><span class="n">sample_number</span>
+        <span class="c1"># Absolute path</span>
+        <span class="n">txtinout_folder</span> <span class="o">=</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="n">txtinout_folder</span><span class="p">)</span><span class="o">.</span><span class="n">resolve</span><span class="p">()</span>
+        <span class="n">simulation_folder</span> <span class="o">=</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="n">simulation_folder</span><span class="p">)</span><span class="o">.</span><span class="n">resolve</span><span class="p">()</span>
+
+        <span class="c1"># Check validity of path</span>
+        <span class="n">validators</span><span class="o">.</span><span class="n">_path_directory</span><span class="p">(</span>
+            <span class="n">path</span><span class="o">=</span><span class="n">txtinout_folder</span>
+        <span class="p">)</span>
+        <span class="n">validators</span><span class="o">.</span><span class="n">_path_directory</span><span class="p">(</span>
+            <span class="n">path</span><span class="o">=</span><span class="n">simulation_folder</span>
         <span class="p">)</span>
 
-        <span class="c1"># Function for individual CPU simulation</span>
+        <span class="c1"># Check simulation_folder must be empty</span>
+        <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="n">simulation_folder</span><span class="o">.</span><span class="n">iterdir</span><span class="p">()):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s1">&#39;Provided simulation_folder must be an empty directory&#39;</span>
+            <span class="p">)</span>
+
+        <span class="c1"># Validate simulation_data configuration</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_validate_simulation_data_config</span><span class="p">(</span>
+            <span class="n">simulation_data</span><span class="o">=</span><span class="n">simulation_data</span>
+        <span class="p">)</span>
+
+        <span class="c1"># Validate unique dictionaries for sensitive parameters</span>
+        <span class="n">validators</span><span class="o">.</span><span class="n">_list_contain_unique_dict</span><span class="p">(</span>
+            <span class="n">parameters</span><span class="o">=</span><span class="n">parameters</span>
+        <span class="p">)</span>
+
+        <span class="c1"># Validate input keys in dictionaries for sensitive parameters</span>
+        <span class="n">params_bounds</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="n">BoundDict</span><span class="p">(</span><span class="o">**</span><span class="n">param</span><span class="p">)</span> <span class="k">for</span> <span class="n">param</span> <span class="ow">in</span> <span class="n">parameters</span>
+        <span class="p">]</span>
+        <span class="n">validators</span><span class="o">.</span><span class="n">_calibration_parameters</span><span class="p">(</span>
+            <span class="n">txtinout_path</span><span class="o">=</span><span class="n">txtinout_folder</span><span class="p">,</span>
+            <span class="n">parameters</span><span class="o">=</span><span class="n">params_bounds</span>
+        <span class="p">)</span>
+
+        <span class="c1"># Sobol problem dictionary</span>
+        <span class="n">problem</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_create_sobol_problem</span><span class="p">(</span>
+            <span class="n">params_bounds</span><span class="o">=</span><span class="n">params_bounds</span>
+        <span class="p">)</span>
+        <span class="n">copy_problem</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span>
+            <span class="n">x</span><span class="o">=</span><span class="n">problem</span>
+        <span class="p">)</span>
+
+        <span class="c1"># Generate sample array</span>
+        <span class="n">sample_array</span> <span class="o">=</span> <span class="n">SALib</span><span class="o">.</span><span class="n">sample</span><span class="o">.</span><span class="n">sobol</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span>
+            <span class="n">problem</span><span class="o">=</span><span class="n">copy_problem</span><span class="p">,</span>
+            <span class="n">N</span><span class="o">=</span><span class="nb">pow</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">sample_number</span><span class="p">)</span>
+        <span class="p">)</span>
+
+        <span class="c1"># Unique array to avoid duplicate computations</span>
+        <span class="n">unique_array</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span>
+            <span class="n">ar</span><span class="o">=</span><span class="n">sample_array</span><span class="p">,</span>
+            <span class="n">axis</span><span class="o">=</span><span class="mi">0</span>
+        <span class="p">)</span>
+
+        <span class="c1"># Number of unique simulations</span>
+        <span class="n">num_sim</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">unique_array</span><span class="p">)</span>
+
+        <span class="c1"># Sensitivity simulation in separate CPU</span>
         <span class="n">cpu_sim</span> <span class="o">=</span> <span class="n">functools</span><span class="o">.</span><span class="n">partial</span><span class="p">(</span>
-            <span class="bp">cls</span><span class="o">.</span><span class="n">_simulation_in_cpu</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_cpu_simulation</span><span class="p">,</span>
             <span class="n">num_sim</span><span class="o">=</span><span class="n">num_sim</span><span class="p">,</span>
-            <span class="n">var_names</span><span class="o">=</span><span class="n">var_names</span><span class="p">,</span>
-            <span class="n">simulation_folder</span><span class="o">=</span><span class="n">_simulation_folder</span><span class="p">,</span>
-            <span class="n">txtinout_folder</span><span class="o">=</span><span class="n">_txtinout_folder</span><span class="p">,</span>
-            <span class="n">params</span><span class="o">=</span><span class="n">_params</span><span class="p">,</span>
+            <span class="n">var_names</span><span class="o">=</span><span class="n">copy_problem</span><span class="p">[</span><span class="s1">&#39;names&#39;</span><span class="p">],</span>
+            <span class="n">simulation_folder</span><span class="o">=</span><span class="n">simulation_folder</span><span class="p">,</span>
+            <span class="n">txtinout_folder</span><span class="o">=</span><span class="n">txtinout_folder</span><span class="p">,</span>
+            <span class="n">params_bounds</span><span class="o">=</span><span class="n">params_bounds</span><span class="p">,</span>
             <span class="n">simulation_data</span><span class="o">=</span><span class="n">simulation_data</span><span class="p">,</span>
             <span class="n">clean_setup</span><span class="o">=</span><span class="n">clean_setup</span>
         <span class="p">)</span>
 
-        <span class="c1"># Assigning model simulation in individual computer CPU and collect results</span>
+        <span class="c1"># Assign model simulation in individual computer CPU and collect results</span>
         <span class="n">cpu_dict</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="k">with</span> <span class="n">concurrent</span><span class="o">.</span><span class="n">futures</span><span class="o">.</span><span class="n">ProcessPoolExecutor</span><span class="p">(</span><span class="n">max_workers</span><span class="o">=</span><span class="n">max_workers</span><span class="p">)</span> <span class="k">as</span> <span class="n">executor</span><span class="p">:</span>
             <span class="c1"># Multicore simulation</span>
@@ -1374,24 +1773,52 @@
             <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">future</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">concurrent</span><span class="o">.</span><span class="n">futures</span><span class="o">.</span><span class="n">as_completed</span><span class="p">(</span><span class="n">futures</span><span class="p">),</span> <span class="n">start</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
                 <span class="c1"># Message for completion of individual simulation for better tracking</span>
                 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Completed simulation: </span><span class="si">{</span><span class="n">idx</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="n">num_sim</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">flush</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-                <span class="c1"># collect simulation results</span>
+                <span class="c1"># Collect simulation results</span>
                 <span class="n">idx_r</span> <span class="o">=</span> <span class="n">future</span><span class="o">.</span><span class="n">result</span><span class="p">()</span>
                 <span class="n">cpu_dict</span><span class="p">[</span><span class="nb">tuple</span><span class="p">(</span><span class="n">idx_r</span><span class="p">[</span><span class="s1">&#39;array&#39;</span><span class="p">])]</span> <span class="o">=</span> <span class="p">{</span>
                     <span class="n">k</span><span class="p">:</span> <span class="n">v</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">idx_r</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="n">k</span> <span class="o">!=</span> <span class="s1">&#39;array&#39;</span>
                 <span class="p">}</span>
 
         <span class="c1"># Generate sensitivity simulation output for all sample_array from unique_array outputs</span>
-        <span class="n">output_dict</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_collect_sobol_results</span><span class="p">(</span>
-            <span class="n">sample_array</span><span class="o">=</span><span class="n">sample_array</span><span class="p">,</span>
-            <span class="n">var_names</span><span class="o">=</span><span class="n">var_names</span><span class="p">,</span>
-            <span class="n">cpu_dict</span><span class="o">=</span><span class="n">cpu_dict</span><span class="p">,</span>
-            <span class="n">problem_dict</span><span class="o">=</span><span class="n">problem</span><span class="p">,</span>
-            <span class="n">start_time</span><span class="o">=</span><span class="n">start_time</span><span class="p">,</span>
-            <span class="n">simulation_folder</span><span class="o">=</span><span class="n">_simulation_folder</span><span class="p">,</span>
-            <span class="n">save_output</span><span class="o">=</span><span class="n">save_output</span>
-        <span class="p">)</span>
+        <span class="n">sim_dict</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">arr</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">sample_array</span><span class="p">,</span> <span class="n">start</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+            <span class="n">arr_dict</span> <span class="o">=</span> <span class="p">{</span>
+                <span class="n">k</span><span class="p">:</span> <span class="nb">float</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">copy_problem</span><span class="p">[</span><span class="s1">&#39;names&#39;</span><span class="p">],</span> <span class="n">arr</span><span class="p">)</span>
+            <span class="p">}</span>
+            <span class="n">sim_dict</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+                <span class="s1">&#39;var&#39;</span><span class="p">:</span> <span class="n">arr_dict</span>
+            <span class="p">}</span>
+            <span class="c1"># Create a deep copy of the dictionary so changes do not affect other copies</span>
+            <span class="n">idx_dict</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span>
+                <span class="n">x</span><span class="o">=</span><span class="n">cpu_dict</span><span class="p">[</span><span class="nb">tuple</span><span class="p">(</span><span class="n">arr</span><span class="p">)]</span>
+            <span class="p">)</span>
+            <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">idx_dict</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="n">sim_dict</span><span class="p">[</span><span class="n">idx</span><span class="p">][</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">v</span>
 
-        <span class="k">return</span> <span class="n">output_dict</span>
+        <span class="c1"># Time statistics</span>
+        <span class="n">required_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">start_time</span>
+        <span class="n">time_stats</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;sample_length&#39;</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">sample_array</span><span class="p">),</span>
+            <span class="s1">&#39;total_time_sec&#39;</span><span class="p">:</span> <span class="nb">round</span><span class="p">(</span><span class="n">required_time</span><span class="p">),</span>
+            <span class="s1">&#39;time_per_sample_sec&#39;</span><span class="p">:</span> <span class="nb">round</span><span class="p">(</span><span class="n">required_time</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">sample_array</span><span class="p">),</span> <span class="mi">1</span><span class="p">),</span>
+        <span class="p">}</span>
+
+        <span class="c1"># Sensitivity simulaton output</span>
+        <span class="n">simulation_output</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;time&#39;</span><span class="p">:</span> <span class="n">time_stats</span><span class="p">,</span>
+            <span class="s1">&#39;problem&#39;</span><span class="p">:</span> <span class="n">problem</span><span class="p">,</span>
+            <span class="s1">&#39;sample&#39;</span><span class="p">:</span> <span class="n">sample_array</span><span class="p">,</span>
+            <span class="s1">&#39;simulation&#39;</span><span class="p">:</span> <span class="n">sim_dict</span>
+        <span class="p">}</span>
+
+        <span class="c1"># Write output to the file &#39;sensitivity_simulation_sobol.json&#39; in simulation folder</span>
+        <span class="k">if</span> <span class="n">save_output</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_save_output_in_json</span><span class="p">(</span>
+                <span class="n">simulation_folder</span><span class="o">=</span><span class="n">simulation_folder</span><span class="p">,</span>
+                <span class="n">simulation_output</span><span class="o">=</span><span class="n">simulation_output</span>
+            <span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">simulation_output</span>
 </code></pre></div></td></tr></table></div>
               </details>
 
@@ -1412,18 +1839,14 @@
 
 
 <h3 id="pySWATPlus.SensitivityAnalyzer.simulation_by_sobol_sample" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">simulation_by_sobol_sample</span><span class="p">(</span><span class="n">parameters</span><span class="p">:</span> <span class="n">ParametersBoundedType</span><span class="p">,</span> <span class="n">sample_number</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">simulation_folder</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">,</span> <span class="n">txtinout_folder</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">,</span> <span class="n">simulation_data</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">typing</span><span class="o">.</span><span class="n">Any</span><span class="p">]],</span> <span class="n">max_workers</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">save_output</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">clean_setup</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">typing</span><span class="o">.</span><span class="n">Any</span><span class="p">]</span></code>
-
-  <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-classmethod"><code>classmethod</code></small>
-  </span>
+            <code class="highlight language-python"><span class="n">simulation_by_sobol_sample</span><span class="p">(</span><span class="n">parameters</span><span class="p">:</span> <span class="n">BoundType</span><span class="p">,</span> <span class="n">sample_number</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">simulation_folder</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">,</span> <span class="n">txtinout_folder</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">,</span> <span class="n">simulation_data</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">typing</span><span class="o">.</span><span class="n">Any</span><span class="p">]],</span> <span class="n">max_workers</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">save_output</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">clean_setup</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">typing</span><span class="o">.</span><span class="n">Any</span><span class="p">]</span></code>
 
 </h3>
 
 
     <div class="doc doc-contents ">
 
-        <p>Provides a high-level interface for performing sensitivity simulations through parallel computing.</p>
+        <p>Provide a high-level interface for performing sensitivity simulations through parallel computing.</p>
 <p>It uses the method <a href="https://salib.readthedocs.io/en/latest/api/SALib.sample.html#SALib.sample.sobol.sample"><code>SALib.sample.sobol.sample</code></a>,
 based on <a href="https://doi.org/10.1016/S0378-4754(00)00270-6"><code>Sobol sequences</code></a>, to generate samples from the defined parameter space.</p>
 <p>For each sample, a dedicated directory is created, and a simulation is executed as a separate process using
@@ -1434,69 +1857,222 @@ Simulation results are collected by mapping input samples to their corresponding
 This mapping is then used to reorder the simulation outputs to match the original input samples.</p>
 <p>The method returns a detailed dictionary containing time statistics, the problem definition,
 the sample array, and the simulation results for further analysis.</p>
-<p>Args:</p>
-<div class="highlight"><pre><span></span><code>parameters (ParametersBoundedType):  Nested dictionary defining the parameter modifications to apply during the simulations.
-    Each parameter should include a the lower and upper bounds, and the parameter value
-    is dynamically assigned with the corresponding sampled value during execution.
-    ```python
-    parameters = {
-        &quot;bf_max&quot;: [{
-            &quot;change_type&quot;: &quot;absval&quot;,
-            &quot;lower_bound&quot;: 0.2,
-            &quot;upper_bound&quot;: 0.3,
-            &quot;units&quot;: range(1, 194)
-        }]
-    }
-    ```
 
 
-sample_number (int): sample_number (int): Determines the number of samples.
-    Generates an array of length `2^N * (D + 1)`, where `D` is the number of parameter changes
-    and `N = sample_number + 1`. For example, when `sample_number` is 1, 12 samples will be generated.
+<p><span class="doc-section-title">Parameters:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+          <th>Default</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                <code>parameters</code>
+            </td>
+            <td>
+                  <code><a class="autorefs autorefs-internal" title="BoundType: typing.TypeAlias = list[dict[str, typing.Any]]
 
-simulation_folder (str | pathlib.Path): Path to the folder where individual simulations for each parameter set will be performed.
-    Raises an error if the folder is not empty. This precaution helps prevent data deletion, overwriting directories,
-    and issues with reading required data files not generated by the simulation.
-
-txtinout_folder (str | pathlib.Path): Path to the `TxtInOut` folder. Raises an error if the folder does not contain exactly one SWAT+ executable `.exe` file.
-
-simulation_data (dict[str, dict[str, typing.Any]]):  Nested dictionary that specifies how to extract data
-    from SWAT+ simulation-generated files. The keys are filenames (without paths) of the output files.
-    Each key must map to a non-empty dictionary with the following subkeys:
-
-    - `has_units (bool)`: Mandatory subkey. If `True`, the third line of the simulated file contains units for the columns.
-    - `start_date (str)`: Optional subkey in `YYYY-MM-DD` format. Defaults to the earliest date in the simulated file.
-    - `end_date (str)`: Optional subkey in `YYYY-MM-DD` format. Defaults to the latest date in the simulated file.
-    - `apply_filter (dict[str, list[typing.Any]])`: Optional subkey. Each key is a column name and the corresponding value
-      is a list of allowed values for filtering rows in the DataFrame. By default, no filtering is applied.
-      An error is raised if filtering produces an empty DataFrame.
-    - `usecols (list[str])`: Optional subkey. List of columns to extract from the simulated file. By default, all available columns are used.
-
-    ```python
-    simulation_data = {
-        &#39;channel_sd_mon.txt&#39;: {
-            &#39;has_units&#39;: True,
-            &#39;start_date&#39;: &#39;2014-06-01&#39;,
-            &#39;end_date&#39;: &#39;2016-10-01&#39;,
-            &#39;apply_filter&#39;: {&#39;gis_id&#39;: [561], &#39;yr&#39;: [2015, 2016]},
-            &#39;usecols&#39;: [&#39;gis_id&#39;, &#39;flo_out&#39;]
-        },
-        &#39;channel_sd_yr.txt&#39;: {
-            &#39;has_units&#39;: True,
-            &#39;apply_filter&#39;: {&#39;name&#39;: [&#39;cha561&#39;], &#39;yr&#39;: [2015, 2016]},
-            &#39;usecols&#39;: [&#39;gis_id&#39;, &#39;flo_out&#39;]
-        }
-    }
-    ```
-
-max_workers (int): Number of logical CPUs to use for parallel processing.
-    By default, all available logical CPUs are used.
-
-save_output (bool): If `True` (default), saves the output dictionary to `simulation_folder` as `sensitivity_simulation_sobol.json`.
-
-clean_setup (bool): If `True` (default), each folder created during the parallel simulation and its contents
-    will be deleted dynamically after collecting the required data.
+  
+      module-attribute
+   (pySWATPlus.types.BoundType)" href="../types/#pySWATPlus.types.BoundType">BoundType</a></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>List of dictionaries defining parameter configurations for sensitivity simulations.
+Each dictionary contain the following keys:</p>
+<ul>
+<li><code>name</code> (str): <strong>Required.</strong> Name of the parameter in the <code>cal_parms.cal</code> file.</li>
+<li><code>change_type</code> (str): <strong>Required.</strong> Type of change to apply. Must be one of 'absval', 'abschg', or 'pctchg'.</li>
+<li><code>lower_bound</code> (float): <strong>Required.</strong> Lower bound for the parameter.</li>
+<li><code>upper_bound</code> (float): <strong>Required.</strong> Upper bound for the parameter.</li>
+<li><code>units</code> (Iterable[int]): Optional. List of unit IDs to which the parameter change should be constrained.</li>
+<li><code>conditions</code> (dict[str, list[str]]): Optional. Conditions to apply when changing the parameter,
+  specified as a dictionary mapping condition types to lists of values.</li>
+</ul>
+<p>Example:
+    <div class="highlight"><pre><span></span><code><span class="n">parameters</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">{</span>
+        <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;cn2&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;change_type&#39;</span><span class="p">:</span> <span class="s1">&#39;pctchg&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;lower_bound&#39;</span><span class="p">:</span> <span class="mi">25</span><span class="p">,</span>
+        <span class="s1">&#39;upper_bound&#39;</span><span class="p">:</span> <span class="mi">75</span><span class="p">,</span>
+    <span class="p">},</span>
+    <span class="p">{</span>
+        <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;perco&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;change_type&#39;</span><span class="p">:</span> <span class="s1">&#39;absval&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;lower_bound&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+        <span class="s1">&#39;upper_bound&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="s1">&#39;conditions&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;hsg&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;A&#39;</span><span class="p">]}</span>
+    <span class="p">},</span>
+    <span class="p">{</span>
+        <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;bf_max&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;change_type&#39;</span><span class="p">:</span> <span class="s1">&#39;absval&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;lower_bound&#39;</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">,</span>
+        <span class="s1">&#39;upper_bound&#39;</span><span class="p">:</span> <span class="mf">2.0</span><span class="p">,</span>
+        <span class="s1">&#39;units&#39;</span><span class="p">:</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">194</span><span class="p">)</span>
+    <span class="p">}</span>
+<span class="p">]</span>
+</code></pre></div></p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>sample_number</code>
+            </td>
+            <td>
+                  <code><span title="int">int</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>sample_number (int): Determines the number of samples.
+Generates an array of length <code>2^N * (D + 1)</code>, where <code>D</code> is the number of parameter changes
+and <code>N = sample_number + 1</code>. For example, when <code>sample_number</code> is 1, 12 samples will be generated.</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>simulation_folder</code>
+            </td>
+            <td>
+                  <code><span title="str">str</span> | <span title="pathlib.Path">Path</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Path to the folder where individual simulations for each parameter set will be performed.
+Raises an error if the folder is not empty. This precaution helps prevent data deletion, overwriting directories,
+and issues with reading required data files not generated by the simulation.</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>txtinout_folder</code>
+            </td>
+            <td>
+                  <code><span title="str">str</span> | <span title="pathlib.Path">Path</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Path to the <code>TxtInOut</code> folder. Raises an error if the folder does not contain exactly one SWAT+ executable <code>.exe</code> file.</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>simulation_data</code>
+            </td>
+            <td>
+                  <code><span title="dict">dict</span>[<span title="str">str</span>, <span title="dict">dict</span>[<span title="str">str</span>, <span title="typing.Any">Any</span>]]</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>A nested dictionary specifying how to extract data from SWAT+ simulation output files.
+The top-level keys are filenames of the output files, without paths (e.g., <code>channel_sd_day.txt</code>). Each key must map to a non-empty dictionary
+containing the following subkeys, as defined in <a href="https://swat-model.github.io/pySWATPlus/api/data_manager/#pySWATPlus.DataManager.simulated_timeseries_df"><code>simulated_timeseries_df</code></a>:</p>
+<ul>
+<li><code>has_units</code> (bool): <strong>Required.</strong> If <code>True</code>, the third line of the simulated file contains units for the columns.</li>
+<li><code>begin_date</code> (str): Optional. Start date in <code>DD-Mon-YYYY</code> format (e.g., 01-Jan-2010). Defaults to the earliest date in the simulated file.</li>
+<li><code>end_date</code> (str): Optional. End date in <code>DD-Mon-YYYY</code> format (e.g., 31-Dec-2013). Defaults to the latest date in the simulated file.</li>
+<li><code>ref_day</code> (int): Optional. Reference day for monthly and yearly time series.
+   If <code>None</code> (default), the last day of the month or year is used, obtained from simulation. Not applicable to daily time series files (ending with <code>_day</code>).</li>
+<li><code>ref_month</code> (int): Optional. Reference month for yearly time series. If <code>None</code> (default), the last month of the year is used, obtained from simulation.
+  Not applicable to monthly time series files (ending with <code>_mon</code>).</li>
+<li><code>apply_filter</code> (dict[str, list[typing.Any]]): Optional. Each key is a column name and the corresponding value
+  is a list of allowed values for filtering rows in the DataFrame. By default, no filtering is applied.
+  An error is raised if filtering produces an empty DataFrame.</li>
+<li><code>usecols</code> (list[str]): Optional. List of columns to extract from the simulated file. By default, all available columns are used.</li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="n">simulation_data</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;channel_sd_mon.txt&#39;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s1">&#39;has_units&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="s1">&#39;start_date&#39;</span><span class="p">:</span> <span class="s1">&#39;01-Jun-2014&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;end_date&#39;</span><span class="p">:</span> <span class="s1">&#39;01-Oct-2016&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;apply_filter&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;gis_id&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">561</span><span class="p">],</span> <span class="s1">&#39;yr&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">2015</span><span class="p">,</span> <span class="mi">2016</span><span class="p">]},</span>
+        <span class="s1">&#39;usecols&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;gis_id&#39;</span><span class="p">,</span> <span class="s1">&#39;flo_out&#39;</span><span class="p">]</span>
+    <span class="p">},</span>
+    <span class="s1">&#39;channel_sd_yr.txt&#39;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s1">&#39;has_units&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="s1">&#39;apply_filter&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;cha561&#39;</span><span class="p">],</span> <span class="s1">&#39;yr&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">2015</span><span class="p">,</span> <span class="mi">2016</span><span class="p">]},</span>
+        <span class="s1">&#39;usecols&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;gis_id&#39;</span><span class="p">,</span> <span class="s1">&#39;flo_out&#39;</span><span class="p">]</span>
+    <span class="p">}</span>
+<span class="p">}</span>
 </code></pre></div>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>max_workers</code>
+            </td>
+            <td>
+                  <code><span title="int">int</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Number of logical CPUs to use for parallel processing. If <code>None</code> (default), all available logical CPUs are used.</p>
+              </div>
+            </td>
+            <td>
+                  <code>None</code>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>save_output</code>
+            </td>
+            <td>
+                  <code><span title="bool">bool</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>If <code>True</code> (default), saves the output dictionary to <code>simulation_folder</code> as <code>sensitivity_simulation.json</code>.</p>
+              </div>
+            </td>
+            <td>
+                  <code>True</code>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>clean_setup</code>
+            </td>
+            <td>
+                  <code><span title="bool">bool</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>If <code>True</code> (default), each folder created during the parallel simulation and its contents
+will be deleted dynamically after collecting the required data.</p>
+              </div>
+            </td>
+            <td>
+                  <code>True</code>
+            </td>
+          </tr>
+      </tbody>
+    </table>
 
 
     <p><span class="doc-section-title">Returns:</span></p>
@@ -1517,7 +2093,7 @@ clean_setup (bool): If `True` (default), each folder created during the parallel
                 <p>A dictionary with the follwoing keys:</p>
 <ul>
 <li>
-<p><code>time</code>: A dictionary A dictionary containing time-related statistics:</p>
+<p><code>time</code>: A dictionary containing time-related statistics:</p>
 <ul>
 <li><code>sample_length</code>: Total number of samples, including duplicates.</li>
 <li><code>total_time_sec</code>: Total time in seconds for the simulation.</li>
@@ -1527,9 +2103,10 @@ clean_setup (bool): If `True` (default), each folder created during the parallel
 <li>
 <p><code>problem</code>: The problem definition dictionary passed to <code>Sobol</code> sampling, containing:</p>
 <ul>
-<li><code>num_vars</code>: Number of variables.</li>
-<li><code>names</code>: Names of the variables.</li>
-<li><code>bounds</code>: Lower and upper bounds for each variable.</li>
+<li><code>num_vars</code>: Total number of variables in <code>parameters</code>.</li>
+<li><code>names</code>: Variable names derived from the <code>name</code> field of each dictionary in <code>parameters</code>. If a parameter appears multiple times
+  due to different <code>units</code> or <code>conditions</code>, occurrences are suffixed with a counter (e.g., <code>perco|1</code>, <code>perco|2</code>).</li>
+<li><code>bounds</code>:  A list of [<code>lower_bound</code>, <code>upper_bound</code>] pairs corresponding to each dictionary in <code>parameters</code>.</li>
 </ul>
 </li>
 <li>
@@ -1567,6 +2144,11 @@ clean_setup (bool): If `True` (default), each folder created during the parallel
   and asynchronous execution.</p>
 </li>
 <li>
+<p>The output dictionary contains <code>datetime.date</code> objects in the <code>date</code> column for each <code>DataFrame</code> in the <code>simulation</code> dictionary.
+  These <code>datetime.date</code> objects are converted to <code>DD-Mon-YYYY</code> strings when saving the output dictionary to
+  <code>sensitivity_simulation.json</code> within the <code>simulation_folder</code>.</p>
+</li>
+<li>
 <p>The computation progress can be tracked through the following <code>console</code> messages, where
   the simulation index ranges from 1 to the total number of unique simulations:</p>
 <ul>
@@ -1583,132 +2165,8 @@ clean_setup (bool): If `True` (default), each folder created during the parallel
 </details>
 
             <details class="quote">
-              <summary>Source code in <code>pySWATPlus/cal_sensitivity_analyzer.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 89</span>
-<span class="normal"> 90</span>
-<span class="normal"> 91</span>
-<span class="normal"> 92</span>
-<span class="normal"> 93</span>
-<span class="normal"> 94</span>
-<span class="normal"> 95</span>
-<span class="normal"> 96</span>
-<span class="normal"> 97</span>
-<span class="normal"> 98</span>
-<span class="normal"> 99</span>
-<span class="normal">100</span>
-<span class="normal">101</span>
-<span class="normal">102</span>
-<span class="normal">103</span>
-<span class="normal">104</span>
-<span class="normal">105</span>
-<span class="normal">106</span>
-<span class="normal">107</span>
-<span class="normal">108</span>
-<span class="normal">109</span>
-<span class="normal">110</span>
-<span class="normal">111</span>
-<span class="normal">112</span>
-<span class="normal">113</span>
-<span class="normal">114</span>
-<span class="normal">115</span>
-<span class="normal">116</span>
-<span class="normal">117</span>
-<span class="normal">118</span>
-<span class="normal">119</span>
-<span class="normal">120</span>
-<span class="normal">121</span>
-<span class="normal">122</span>
-<span class="normal">123</span>
-<span class="normal">124</span>
-<span class="normal">125</span>
-<span class="normal">126</span>
-<span class="normal">127</span>
-<span class="normal">128</span>
-<span class="normal">129</span>
-<span class="normal">130</span>
-<span class="normal">131</span>
-<span class="normal">132</span>
-<span class="normal">133</span>
-<span class="normal">134</span>
-<span class="normal">135</span>
-<span class="normal">136</span>
-<span class="normal">137</span>
-<span class="normal">138</span>
-<span class="normal">139</span>
-<span class="normal">140</span>
-<span class="normal">141</span>
-<span class="normal">142</span>
-<span class="normal">143</span>
-<span class="normal">144</span>
-<span class="normal">145</span>
-<span class="normal">146</span>
-<span class="normal">147</span>
-<span class="normal">148</span>
-<span class="normal">149</span>
-<span class="normal">150</span>
-<span class="normal">151</span>
-<span class="normal">152</span>
-<span class="normal">153</span>
-<span class="normal">154</span>
-<span class="normal">155</span>
-<span class="normal">156</span>
-<span class="normal">157</span>
-<span class="normal">158</span>
-<span class="normal">159</span>
-<span class="normal">160</span>
-<span class="normal">161</span>
-<span class="normal">162</span>
-<span class="normal">163</span>
-<span class="normal">164</span>
-<span class="normal">165</span>
-<span class="normal">166</span>
-<span class="normal">167</span>
-<span class="normal">168</span>
-<span class="normal">169</span>
-<span class="normal">170</span>
-<span class="normal">171</span>
-<span class="normal">172</span>
-<span class="normal">173</span>
-<span class="normal">174</span>
-<span class="normal">175</span>
-<span class="normal">176</span>
-<span class="normal">177</span>
-<span class="normal">178</span>
-<span class="normal">179</span>
-<span class="normal">180</span>
-<span class="normal">181</span>
-<span class="normal">182</span>
-<span class="normal">183</span>
-<span class="normal">184</span>
-<span class="normal">185</span>
-<span class="normal">186</span>
-<span class="normal">187</span>
-<span class="normal">188</span>
-<span class="normal">189</span>
-<span class="normal">190</span>
-<span class="normal">191</span>
-<span class="normal">192</span>
-<span class="normal">193</span>
-<span class="normal">194</span>
-<span class="normal">195</span>
-<span class="normal">196</span>
-<span class="normal">197</span>
-<span class="normal">198</span>
-<span class="normal">199</span>
-<span class="normal">200</span>
-<span class="normal">201</span>
-<span class="normal">202</span>
-<span class="normal">203</span>
-<span class="normal">204</span>
-<span class="normal">205</span>
-<span class="normal">206</span>
-<span class="normal">207</span>
-<span class="normal">208</span>
-<span class="normal">209</span>
-<span class="normal">210</span>
-<span class="normal">211</span>
-<span class="normal">212</span>
-<span class="normal">213</span>
+              <summary>Source code in <code>pySWATPlus/sensitivity_analyzer.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">213</span>
 <span class="normal">214</span>
 <span class="normal">215</span>
 <span class="normal">216</span>
@@ -1791,10 +2249,230 @@ clean_setup (bool): If `True` (default), each folder created during the parallel
 <span class="normal">293</span>
 <span class="normal">294</span>
 <span class="normal">295</span>
-<span class="normal">296</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@classmethod</span>
-<span class="k">def</span><span class="w"> </span><span class="nf">simulation_by_sobol_sample</span><span class="p">(</span>
-    <span class="bp">cls</span><span class="p">,</span>
-    <span class="n">parameters</span><span class="p">:</span> <span class="n">ParametersBoundedType</span><span class="p">,</span>
+<span class="normal">296</span>
+<span class="normal">297</span>
+<span class="normal">298</span>
+<span class="normal">299</span>
+<span class="normal">300</span>
+<span class="normal">301</span>
+<span class="normal">302</span>
+<span class="normal">303</span>
+<span class="normal">304</span>
+<span class="normal">305</span>
+<span class="normal">306</span>
+<span class="normal">307</span>
+<span class="normal">308</span>
+<span class="normal">309</span>
+<span class="normal">310</span>
+<span class="normal">311</span>
+<span class="normal">312</span>
+<span class="normal">313</span>
+<span class="normal">314</span>
+<span class="normal">315</span>
+<span class="normal">316</span>
+<span class="normal">317</span>
+<span class="normal">318</span>
+<span class="normal">319</span>
+<span class="normal">320</span>
+<span class="normal">321</span>
+<span class="normal">322</span>
+<span class="normal">323</span>
+<span class="normal">324</span>
+<span class="normal">325</span>
+<span class="normal">326</span>
+<span class="normal">327</span>
+<span class="normal">328</span>
+<span class="normal">329</span>
+<span class="normal">330</span>
+<span class="normal">331</span>
+<span class="normal">332</span>
+<span class="normal">333</span>
+<span class="normal">334</span>
+<span class="normal">335</span>
+<span class="normal">336</span>
+<span class="normal">337</span>
+<span class="normal">338</span>
+<span class="normal">339</span>
+<span class="normal">340</span>
+<span class="normal">341</span>
+<span class="normal">342</span>
+<span class="normal">343</span>
+<span class="normal">344</span>
+<span class="normal">345</span>
+<span class="normal">346</span>
+<span class="normal">347</span>
+<span class="normal">348</span>
+<span class="normal">349</span>
+<span class="normal">350</span>
+<span class="normal">351</span>
+<span class="normal">352</span>
+<span class="normal">353</span>
+<span class="normal">354</span>
+<span class="normal">355</span>
+<span class="normal">356</span>
+<span class="normal">357</span>
+<span class="normal">358</span>
+<span class="normal">359</span>
+<span class="normal">360</span>
+<span class="normal">361</span>
+<span class="normal">362</span>
+<span class="normal">363</span>
+<span class="normal">364</span>
+<span class="normal">365</span>
+<span class="normal">366</span>
+<span class="normal">367</span>
+<span class="normal">368</span>
+<span class="normal">369</span>
+<span class="normal">370</span>
+<span class="normal">371</span>
+<span class="normal">372</span>
+<span class="normal">373</span>
+<span class="normal">374</span>
+<span class="normal">375</span>
+<span class="normal">376</span>
+<span class="normal">377</span>
+<span class="normal">378</span>
+<span class="normal">379</span>
+<span class="normal">380</span>
+<span class="normal">381</span>
+<span class="normal">382</span>
+<span class="normal">383</span>
+<span class="normal">384</span>
+<span class="normal">385</span>
+<span class="normal">386</span>
+<span class="normal">387</span>
+<span class="normal">388</span>
+<span class="normal">389</span>
+<span class="normal">390</span>
+<span class="normal">391</span>
+<span class="normal">392</span>
+<span class="normal">393</span>
+<span class="normal">394</span>
+<span class="normal">395</span>
+<span class="normal">396</span>
+<span class="normal">397</span>
+<span class="normal">398</span>
+<span class="normal">399</span>
+<span class="normal">400</span>
+<span class="normal">401</span>
+<span class="normal">402</span>
+<span class="normal">403</span>
+<span class="normal">404</span>
+<span class="normal">405</span>
+<span class="normal">406</span>
+<span class="normal">407</span>
+<span class="normal">408</span>
+<span class="normal">409</span>
+<span class="normal">410</span>
+<span class="normal">411</span>
+<span class="normal">412</span>
+<span class="normal">413</span>
+<span class="normal">414</span>
+<span class="normal">415</span>
+<span class="normal">416</span>
+<span class="normal">417</span>
+<span class="normal">418</span>
+<span class="normal">419</span>
+<span class="normal">420</span>
+<span class="normal">421</span>
+<span class="normal">422</span>
+<span class="normal">423</span>
+<span class="normal">424</span>
+<span class="normal">425</span>
+<span class="normal">426</span>
+<span class="normal">427</span>
+<span class="normal">428</span>
+<span class="normal">429</span>
+<span class="normal">430</span>
+<span class="normal">431</span>
+<span class="normal">432</span>
+<span class="normal">433</span>
+<span class="normal">434</span>
+<span class="normal">435</span>
+<span class="normal">436</span>
+<span class="normal">437</span>
+<span class="normal">438</span>
+<span class="normal">439</span>
+<span class="normal">440</span>
+<span class="normal">441</span>
+<span class="normal">442</span>
+<span class="normal">443</span>
+<span class="normal">444</span>
+<span class="normal">445</span>
+<span class="normal">446</span>
+<span class="normal">447</span>
+<span class="normal">448</span>
+<span class="normal">449</span>
+<span class="normal">450</span>
+<span class="normal">451</span>
+<span class="normal">452</span>
+<span class="normal">453</span>
+<span class="normal">454</span>
+<span class="normal">455</span>
+<span class="normal">456</span>
+<span class="normal">457</span>
+<span class="normal">458</span>
+<span class="normal">459</span>
+<span class="normal">460</span>
+<span class="normal">461</span>
+<span class="normal">462</span>
+<span class="normal">463</span>
+<span class="normal">464</span>
+<span class="normal">465</span>
+<span class="normal">466</span>
+<span class="normal">467</span>
+<span class="normal">468</span>
+<span class="normal">469</span>
+<span class="normal">470</span>
+<span class="normal">471</span>
+<span class="normal">472</span>
+<span class="normal">473</span>
+<span class="normal">474</span>
+<span class="normal">475</span>
+<span class="normal">476</span>
+<span class="normal">477</span>
+<span class="normal">478</span>
+<span class="normal">479</span>
+<span class="normal">480</span>
+<span class="normal">481</span>
+<span class="normal">482</span>
+<span class="normal">483</span>
+<span class="normal">484</span>
+<span class="normal">485</span>
+<span class="normal">486</span>
+<span class="normal">487</span>
+<span class="normal">488</span>
+<span class="normal">489</span>
+<span class="normal">490</span>
+<span class="normal">491</span>
+<span class="normal">492</span>
+<span class="normal">493</span>
+<span class="normal">494</span>
+<span class="normal">495</span>
+<span class="normal">496</span>
+<span class="normal">497</span>
+<span class="normal">498</span>
+<span class="normal">499</span>
+<span class="normal">500</span>
+<span class="normal">501</span>
+<span class="normal">502</span>
+<span class="normal">503</span>
+<span class="normal">504</span>
+<span class="normal">505</span>
+<span class="normal">506</span>
+<span class="normal">507</span>
+<span class="normal">508</span>
+<span class="normal">509</span>
+<span class="normal">510</span>
+<span class="normal">511</span>
+<span class="normal">512</span>
+<span class="normal">513</span>
+<span class="normal">514</span>
+<span class="normal">515</span>
+<span class="normal">516</span>
+<span class="normal">517</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">simulation_by_sobol_sample</span><span class="p">(</span>
+    <span class="bp">self</span><span class="p">,</span>
+    <span class="n">parameters</span><span class="p">:</span> <span class="n">BoundType</span><span class="p">,</span>
     <span class="n">sample_number</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
     <span class="n">simulation_folder</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">,</span>
     <span class="n">txtinout_folder</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">,</span>
@@ -1804,7 +2482,7 @@ clean_setup (bool): If `True` (default), each folder created during the parallel
     <span class="n">clean_setup</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">typing</span><span class="o">.</span><span class="n">Any</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">    Provides a high-level interface for performing sensitivity simulations through parallel computing.</span>
+<span class="sd">    Provide a high-level interface for performing sensitivity simulations through parallel computing.</span>
 
 <span class="sd">    It uses the method [`SALib.sample.sobol.sample`](https://salib.readthedocs.io/en/latest/api/SALib.sample.html#SALib.sample.sobol.sample),</span>
 <span class="sd">    based on [`Sobol sequences`](https://doi.org/10.1016/S0378-4754(00)00270-6), to generate samples from the defined parameter space.</span>
@@ -1821,21 +2499,42 @@ clean_setup (bool): If `True` (default), each folder created during the parallel
 <span class="sd">    the sample array, and the simulation results for further analysis.</span>
 
 <span class="sd">    Args:</span>
+<span class="sd">        parameters (BoundType): List of dictionaries defining parameter configurations for sensitivity simulations.</span>
+<span class="sd">            Each dictionary contain the following keys:</span>
 
-<span class="sd">        parameters (ParametersBoundedType):  Nested dictionary defining the parameter modifications to apply during the simulations.</span>
-<span class="sd">            Each parameter should include a the lower and upper bounds, and the parameter value</span>
-<span class="sd">            is dynamically assigned with the corresponding sampled value during execution.</span>
-<span class="sd">            ```python</span>
-<span class="sd">            parameters = {</span>
-<span class="sd">                &quot;bf_max&quot;: [{</span>
-<span class="sd">                    &quot;change_type&quot;: &quot;absval&quot;,</span>
-<span class="sd">                    &quot;lower_bound&quot;: 0.2,</span>
-<span class="sd">                    &quot;upper_bound&quot;: 0.3,</span>
-<span class="sd">                    &quot;units&quot;: range(1, 194)</span>
-<span class="sd">                }]</span>
-<span class="sd">            }</span>
-<span class="sd">            ```</span>
+<span class="sd">            - `name` (str): **Required.** Name of the parameter in the `cal_parms.cal` file.</span>
+<span class="sd">            - `change_type` (str): **Required.** Type of change to apply. Must be one of &#39;absval&#39;, &#39;abschg&#39;, or &#39;pctchg&#39;.</span>
+<span class="sd">            - `lower_bound` (float): **Required.** Lower bound for the parameter.</span>
+<span class="sd">            - `upper_bound` (float): **Required.** Upper bound for the parameter.</span>
+<span class="sd">            - `units` (Iterable[int]): Optional. List of unit IDs to which the parameter change should be constrained.</span>
+<span class="sd">            - `conditions` (dict[str, list[str]]): Optional. Conditions to apply when changing the parameter,</span>
+<span class="sd">              specified as a dictionary mapping condition types to lists of values.</span>
 
+<span class="sd">            Example:</span>
+<span class="sd">                ```python</span>
+<span class="sd">                parameters = [</span>
+<span class="sd">                    {</span>
+<span class="sd">                        &#39;name&#39;: &#39;cn2&#39;,</span>
+<span class="sd">                        &#39;change_type&#39;: &#39;pctchg&#39;,</span>
+<span class="sd">                        &#39;lower_bound&#39;: 25,</span>
+<span class="sd">                        &#39;upper_bound&#39;: 75,</span>
+<span class="sd">                    },</span>
+<span class="sd">                    {</span>
+<span class="sd">                        &#39;name&#39;: &#39;perco&#39;,</span>
+<span class="sd">                        &#39;change_type&#39;: &#39;absval&#39;,</span>
+<span class="sd">                        &#39;lower_bound&#39;: 0,</span>
+<span class="sd">                        &#39;upper_bound&#39;: 1,</span>
+<span class="sd">                        &#39;conditions&#39;: {&#39;hsg&#39;: [&#39;A&#39;]}</span>
+<span class="sd">                    },</span>
+<span class="sd">                    {</span>
+<span class="sd">                        &#39;name&#39;: &#39;bf_max&#39;,</span>
+<span class="sd">                        &#39;change_type&#39;: &#39;absval&#39;,</span>
+<span class="sd">                        &#39;lower_bound&#39;: 0.1,</span>
+<span class="sd">                        &#39;upper_bound&#39;: 2.0,</span>
+<span class="sd">                        &#39;units&#39;: range(1, 194)</span>
+<span class="sd">                    }</span>
+<span class="sd">                ]</span>
+<span class="sd">                ```</span>
 
 <span class="sd">        sample_number (int): sample_number (int): Determines the number of samples.</span>
 <span class="sd">            Generates an array of length `2^N * (D + 1)`, where `D` is the number of parameter changes</span>
@@ -1847,24 +2546,28 @@ clean_setup (bool): If `True` (default), each folder created during the parallel
 
 <span class="sd">        txtinout_folder (str | pathlib.Path): Path to the `TxtInOut` folder. Raises an error if the folder does not contain exactly one SWAT+ executable `.exe` file.</span>
 
-<span class="sd">        simulation_data (dict[str, dict[str, typing.Any]]):  Nested dictionary that specifies how to extract data</span>
-<span class="sd">            from SWAT+ simulation-generated files. The keys are filenames (without paths) of the output files.</span>
-<span class="sd">            Each key must map to a non-empty dictionary with the following subkeys:</span>
+<span class="sd">        simulation_data (dict[str, dict[str, typing.Any]]): A nested dictionary specifying how to extract data from SWAT+ simulation output files.</span>
+<span class="sd">            The top-level keys are filenames of the output files, without paths (e.g., `channel_sd_day.txt`). Each key must map to a non-empty dictionary</span>
+<span class="sd">            containing the following subkeys, as defined in [`simulated_timeseries_df`](https://swat-model.github.io/pySWATPlus/api/data_manager/#pySWATPlus.DataManager.simulated_timeseries_df):</span>
 
-<span class="sd">            - `has_units (bool)`: Mandatory subkey. If `True`, the third line of the simulated file contains units for the columns.</span>
-<span class="sd">            - `start_date (str)`: Optional subkey in `YYYY-MM-DD` format. Defaults to the earliest date in the simulated file.</span>
-<span class="sd">            - `end_date (str)`: Optional subkey in `YYYY-MM-DD` format. Defaults to the latest date in the simulated file.</span>
-<span class="sd">            - `apply_filter (dict[str, list[typing.Any]])`: Optional subkey. Each key is a column name and the corresponding value</span>
+<span class="sd">            - `has_units` (bool): **Required.** If `True`, the third line of the simulated file contains units for the columns.</span>
+<span class="sd">            - `begin_date` (str): Optional. Start date in `DD-Mon-YYYY` format (e.g., 01-Jan-2010). Defaults to the earliest date in the simulated file.</span>
+<span class="sd">            - `end_date` (str): Optional. End date in `DD-Mon-YYYY` format (e.g., 31-Dec-2013). Defaults to the latest date in the simulated file.</span>
+<span class="sd">            - `ref_day` (int): Optional. Reference day for monthly and yearly time series.</span>
+<span class="sd">               If `None` (default), the last day of the month or year is used, obtained from simulation. Not applicable to daily time series files (ending with `_day`).</span>
+<span class="sd">            - `ref_month` (int): Optional. Reference month for yearly time series. If `None` (default), the last month of the year is used, obtained from simulation.</span>
+<span class="sd">              Not applicable to monthly time series files (ending with `_mon`).</span>
+<span class="sd">            - `apply_filter` (dict[str, list[typing.Any]]): Optional. Each key is a column name and the corresponding value</span>
 <span class="sd">              is a list of allowed values for filtering rows in the DataFrame. By default, no filtering is applied.</span>
 <span class="sd">              An error is raised if filtering produces an empty DataFrame.</span>
-<span class="sd">            - `usecols (list[str])`: Optional subkey. List of columns to extract from the simulated file. By default, all available columns are used.</span>
+<span class="sd">            - `usecols` (list[str]): Optional. List of columns to extract from the simulated file. By default, all available columns are used.</span>
 
 <span class="sd">            ```python</span>
 <span class="sd">            simulation_data = {</span>
 <span class="sd">                &#39;channel_sd_mon.txt&#39;: {</span>
 <span class="sd">                    &#39;has_units&#39;: True,</span>
-<span class="sd">                    &#39;start_date&#39;: &#39;2014-06-01&#39;,</span>
-<span class="sd">                    &#39;end_date&#39;: &#39;2016-10-01&#39;,</span>
+<span class="sd">                    &#39;start_date&#39;: &#39;01-Jun-2014&#39;,</span>
+<span class="sd">                    &#39;end_date&#39;: &#39;01-Oct-2016&#39;,</span>
 <span class="sd">                    &#39;apply_filter&#39;: {&#39;gis_id&#39;: [561], &#39;yr&#39;: [2015, 2016]},</span>
 <span class="sd">                    &#39;usecols&#39;: [&#39;gis_id&#39;, &#39;flo_out&#39;]</span>
 <span class="sd">                },</span>
@@ -1876,10 +2579,9 @@ clean_setup (bool): If `True` (default), each folder created during the parallel
 <span class="sd">            }</span>
 <span class="sd">            ```</span>
 
-<span class="sd">        max_workers (int): Number of logical CPUs to use for parallel processing.</span>
-<span class="sd">            By default, all available logical CPUs are used.</span>
+<span class="sd">        max_workers (int): Number of logical CPUs to use for parallel processing. If `None` (default), all available logical CPUs are used.</span>
 
-<span class="sd">        save_output (bool): If `True` (default), saves the output dictionary to `simulation_folder` as `sensitivity_simulation_sobol.json`.</span>
+<span class="sd">        save_output (bool): If `True` (default), saves the output dictionary to `simulation_folder` as `sensitivity_simulation.json`.</span>
 
 <span class="sd">        clean_setup (bool): If `True` (default), each folder created during the parallel simulation and its contents</span>
 <span class="sd">            will be deleted dynamically after collecting the required data.</span>
@@ -1887,7 +2589,7 @@ clean_setup (bool): If `True` (default), each folder created during the parallel
 <span class="sd">    Returns:</span>
 <span class="sd">        A dictionary with the follwoing keys:</span>
 
-<span class="sd">            - `time`: A dictionary A dictionary containing time-related statistics:</span>
+<span class="sd">            - `time`: A dictionary containing time-related statistics:</span>
 
 <span class="sd">                - `sample_length`: Total number of samples, including duplicates.</span>
 <span class="sd">                - `total_time_sec`: Total time in seconds for the simulation.</span>
@@ -1895,9 +2597,10 @@ clean_setup (bool): If `True` (default), each folder created during the parallel
 
 <span class="sd">            - `problem`: The problem definition dictionary passed to `Sobol` sampling, containing:</span>
 
-<span class="sd">                - `num_vars`: Number of variables.</span>
-<span class="sd">                - `names`: Names of the variables.</span>
-<span class="sd">                - `bounds`: Lower and upper bounds for each variable.</span>
+<span class="sd">                - `num_vars`: Total number of variables in `parameters`.</span>
+<span class="sd">                - `names`: Variable names derived from the `name` field of each dictionary in `parameters`. If a parameter appears multiple times</span>
+<span class="sd">                  due to different `units` or `conditions`, occurrences are suffixed with a counter (e.g., `perco|1`, `perco|2`).</span>
+<span class="sd">                - `bounds`:  A list of [`lower_bound`, `upper_bound`] pairs corresponding to each dictionary in `parameters`.</span>
 
 <span class="sd">            - `sample`: The sampled array of parameter sets used in the simulations.</span>
 
@@ -1910,7 +2613,6 @@ clean_setup (bool): If `True` (default), each folder created during the parallel
 <span class="sd">                - `&lt;simulation_data_filename&gt;_df`: Filtered `DataFrame` generated for each file specified in the `simulation_data` dictionary</span>
 <span class="sd">                  (e.g., `channel_sd_mon_df`, `channel_sd_yr_df`). Each DataFrame includes a `date` column with `datetime.date` objects.</span>
 
-
 <span class="sd">    Note:</span>
 <span class="sd">        - The `problem` dictionary and `sample` array are used later to calculate Sobol indices</span>
 <span class="sd">          when comparing performance metrics against observed data.</span>
@@ -1918,6 +2620,10 @@ clean_setup (bool): If `True` (default), each folder created during the parallel
 <span class="sd">        - The integer keys in the `simulation` dictionary may not correspond directly to the</span>
 <span class="sd">          simulation directory indices (given by the `dir` key as `sim_&lt;i&gt;`) due to deduplication</span>
 <span class="sd">          and asynchronous execution.</span>
+
+<span class="sd">        - The output dictionary contains `datetime.date` objects in the `date` column for each `DataFrame` in the `simulation` dictionary.</span>
+<span class="sd">          These `datetime.date` objects are converted to `DD-Mon-YYYY` strings when saving the output dictionary to</span>
+<span class="sd">          `sensitivity_simulation.json` within the `simulation_folder`.</span>
 
 <span class="sd">        - The computation progress can be tracked through the following `console` messages, where</span>
 <span class="sd">          the simulation index ranges from 1 to the total number of unique simulations:</span>
@@ -1933,45 +2639,87 @@ clean_setup (bool): If `True` (default), each folder created during the parallel
     <span class="c1"># start time</span>
     <span class="n">start_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
 
-    <span class="n">_txtinout_folder</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">_ensure_path</span><span class="p">(</span><span class="n">txtinout_folder</span><span class="p">)</span>
-    <span class="n">_simulation_folder</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">_ensure_path</span><span class="p">(</span><span class="n">simulation_folder</span><span class="p">)</span>
-
-    <span class="n">_params</span> <span class="o">=</span> <span class="p">[</span><span class="n">ParameterBoundedModel</span><span class="p">(</span><span class="o">**</span><span class="n">param</span><span class="p">)</span> <span class="k">for</span> <span class="n">param</span> <span class="ow">in</span> <span class="n">parameters</span><span class="p">]</span>
-    <span class="n">validators</span><span class="o">.</span><span class="n">_calibration_parameters</span><span class="p">(</span><span class="n">_txtinout_folder</span><span class="p">,</span> <span class="n">_params</span><span class="p">)</span>
-
-    <span class="n">var_names</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="n">var_bounds</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="k">for</span> <span class="n">param</span> <span class="ow">in</span> <span class="n">_params</span><span class="p">:</span>
-        <span class="n">unique_name</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">_make_unique_param_name</span><span class="p">(</span><span class="n">param</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">param</span><span class="p">)</span>
-        <span class="n">var_names</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">unique_name</span><span class="p">)</span>
-        <span class="n">var_bounds</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">param</span><span class="o">.</span><span class="n">lower_bound</span><span class="p">,</span> <span class="n">param</span><span class="o">.</span><span class="n">upper_bound</span><span class="p">])</span>
-
-    <span class="bp">cls</span><span class="o">.</span><span class="n">_validate_simulation_by_sobol_sample_params</span><span class="p">(</span>
-        <span class="n">simulation_folder</span><span class="o">=</span><span class="n">_simulation_folder</span><span class="p">,</span>
-        <span class="n">simulation_data</span><span class="o">=</span><span class="n">simulation_data</span><span class="p">,</span>
-        <span class="n">var_names</span><span class="o">=</span><span class="n">var_names</span><span class="p">,</span>
-        <span class="n">var_bounds</span><span class="o">=</span><span class="n">var_bounds</span>
+    <span class="c1"># Check input variables type</span>
+    <span class="n">validators</span><span class="o">.</span><span class="n">_variable_origin_static_type</span><span class="p">(</span>
+        <span class="n">vars_types</span><span class="o">=</span><span class="n">typing</span><span class="o">.</span><span class="n">get_type_hints</span><span class="p">(</span>
+            <span class="n">obj</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">simulation_by_sobol_sample</span>
+        <span class="p">),</span>
+        <span class="n">vars_values</span><span class="o">=</span><span class="nb">locals</span><span class="p">()</span>
     <span class="p">)</span>
 
-    <span class="n">problem</span><span class="p">,</span> <span class="n">sample_array</span><span class="p">,</span> <span class="n">unique_array</span><span class="p">,</span> <span class="n">num_sim</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_prepare_sobol_samples</span><span class="p">(</span>
-        <span class="n">var_names</span><span class="o">=</span><span class="n">var_names</span><span class="p">,</span>
-        <span class="n">var_bounds</span><span class="o">=</span><span class="n">var_bounds</span><span class="p">,</span>
-        <span class="n">sample_number</span><span class="o">=</span><span class="n">sample_number</span>
+    <span class="c1"># Absolute path</span>
+    <span class="n">txtinout_folder</span> <span class="o">=</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="n">txtinout_folder</span><span class="p">)</span><span class="o">.</span><span class="n">resolve</span><span class="p">()</span>
+    <span class="n">simulation_folder</span> <span class="o">=</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="n">simulation_folder</span><span class="p">)</span><span class="o">.</span><span class="n">resolve</span><span class="p">()</span>
+
+    <span class="c1"># Check validity of path</span>
+    <span class="n">validators</span><span class="o">.</span><span class="n">_path_directory</span><span class="p">(</span>
+        <span class="n">path</span><span class="o">=</span><span class="n">txtinout_folder</span>
+    <span class="p">)</span>
+    <span class="n">validators</span><span class="o">.</span><span class="n">_path_directory</span><span class="p">(</span>
+        <span class="n">path</span><span class="o">=</span><span class="n">simulation_folder</span>
     <span class="p">)</span>
 
-    <span class="c1"># Function for individual CPU simulation</span>
+    <span class="c1"># Check simulation_folder must be empty</span>
+    <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="n">simulation_folder</span><span class="o">.</span><span class="n">iterdir</span><span class="p">()):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+            <span class="s1">&#39;Provided simulation_folder must be an empty directory&#39;</span>
+        <span class="p">)</span>
+
+    <span class="c1"># Validate simulation_data configuration</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_validate_simulation_data_config</span><span class="p">(</span>
+        <span class="n">simulation_data</span><span class="o">=</span><span class="n">simulation_data</span>
+    <span class="p">)</span>
+
+    <span class="c1"># Validate unique dictionaries for sensitive parameters</span>
+    <span class="n">validators</span><span class="o">.</span><span class="n">_list_contain_unique_dict</span><span class="p">(</span>
+        <span class="n">parameters</span><span class="o">=</span><span class="n">parameters</span>
+    <span class="p">)</span>
+
+    <span class="c1"># Validate input keys in dictionaries for sensitive parameters</span>
+    <span class="n">params_bounds</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="n">BoundDict</span><span class="p">(</span><span class="o">**</span><span class="n">param</span><span class="p">)</span> <span class="k">for</span> <span class="n">param</span> <span class="ow">in</span> <span class="n">parameters</span>
+    <span class="p">]</span>
+    <span class="n">validators</span><span class="o">.</span><span class="n">_calibration_parameters</span><span class="p">(</span>
+        <span class="n">txtinout_path</span><span class="o">=</span><span class="n">txtinout_folder</span><span class="p">,</span>
+        <span class="n">parameters</span><span class="o">=</span><span class="n">params_bounds</span>
+    <span class="p">)</span>
+
+    <span class="c1"># Sobol problem dictionary</span>
+    <span class="n">problem</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_create_sobol_problem</span><span class="p">(</span>
+        <span class="n">params_bounds</span><span class="o">=</span><span class="n">params_bounds</span>
+    <span class="p">)</span>
+    <span class="n">copy_problem</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span>
+        <span class="n">x</span><span class="o">=</span><span class="n">problem</span>
+    <span class="p">)</span>
+
+    <span class="c1"># Generate sample array</span>
+    <span class="n">sample_array</span> <span class="o">=</span> <span class="n">SALib</span><span class="o">.</span><span class="n">sample</span><span class="o">.</span><span class="n">sobol</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span>
+        <span class="n">problem</span><span class="o">=</span><span class="n">copy_problem</span><span class="p">,</span>
+        <span class="n">N</span><span class="o">=</span><span class="nb">pow</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">sample_number</span><span class="p">)</span>
+    <span class="p">)</span>
+
+    <span class="c1"># Unique array to avoid duplicate computations</span>
+    <span class="n">unique_array</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span>
+        <span class="n">ar</span><span class="o">=</span><span class="n">sample_array</span><span class="p">,</span>
+        <span class="n">axis</span><span class="o">=</span><span class="mi">0</span>
+    <span class="p">)</span>
+
+    <span class="c1"># Number of unique simulations</span>
+    <span class="n">num_sim</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">unique_array</span><span class="p">)</span>
+
+    <span class="c1"># Sensitivity simulation in separate CPU</span>
     <span class="n">cpu_sim</span> <span class="o">=</span> <span class="n">functools</span><span class="o">.</span><span class="n">partial</span><span class="p">(</span>
-        <span class="bp">cls</span><span class="o">.</span><span class="n">_simulation_in_cpu</span><span class="p">,</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_cpu_simulation</span><span class="p">,</span>
         <span class="n">num_sim</span><span class="o">=</span><span class="n">num_sim</span><span class="p">,</span>
-        <span class="n">var_names</span><span class="o">=</span><span class="n">var_names</span><span class="p">,</span>
-        <span class="n">simulation_folder</span><span class="o">=</span><span class="n">_simulation_folder</span><span class="p">,</span>
-        <span class="n">txtinout_folder</span><span class="o">=</span><span class="n">_txtinout_folder</span><span class="p">,</span>
-        <span class="n">params</span><span class="o">=</span><span class="n">_params</span><span class="p">,</span>
+        <span class="n">var_names</span><span class="o">=</span><span class="n">copy_problem</span><span class="p">[</span><span class="s1">&#39;names&#39;</span><span class="p">],</span>
+        <span class="n">simulation_folder</span><span class="o">=</span><span class="n">simulation_folder</span><span class="p">,</span>
+        <span class="n">txtinout_folder</span><span class="o">=</span><span class="n">txtinout_folder</span><span class="p">,</span>
+        <span class="n">params_bounds</span><span class="o">=</span><span class="n">params_bounds</span><span class="p">,</span>
         <span class="n">simulation_data</span><span class="o">=</span><span class="n">simulation_data</span><span class="p">,</span>
         <span class="n">clean_setup</span><span class="o">=</span><span class="n">clean_setup</span>
     <span class="p">)</span>
 
-    <span class="c1"># Assigning model simulation in individual computer CPU and collect results</span>
+    <span class="c1"># Assign model simulation in individual computer CPU and collect results</span>
     <span class="n">cpu_dict</span> <span class="o">=</span> <span class="p">{}</span>
     <span class="k">with</span> <span class="n">concurrent</span><span class="o">.</span><span class="n">futures</span><span class="o">.</span><span class="n">ProcessPoolExecutor</span><span class="p">(</span><span class="n">max_workers</span><span class="o">=</span><span class="n">max_workers</span><span class="p">)</span> <span class="k">as</span> <span class="n">executor</span><span class="p">:</span>
         <span class="c1"># Multicore simulation</span>
@@ -1981,24 +2729,52 @@ clean_setup (bool): If `True` (default), each folder created during the parallel
         <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">future</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">concurrent</span><span class="o">.</span><span class="n">futures</span><span class="o">.</span><span class="n">as_completed</span><span class="p">(</span><span class="n">futures</span><span class="p">),</span> <span class="n">start</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
             <span class="c1"># Message for completion of individual simulation for better tracking</span>
             <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Completed simulation: </span><span class="si">{</span><span class="n">idx</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="n">num_sim</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">flush</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-            <span class="c1"># collect simulation results</span>
+            <span class="c1"># Collect simulation results</span>
             <span class="n">idx_r</span> <span class="o">=</span> <span class="n">future</span><span class="o">.</span><span class="n">result</span><span class="p">()</span>
             <span class="n">cpu_dict</span><span class="p">[</span><span class="nb">tuple</span><span class="p">(</span><span class="n">idx_r</span><span class="p">[</span><span class="s1">&#39;array&#39;</span><span class="p">])]</span> <span class="o">=</span> <span class="p">{</span>
                 <span class="n">k</span><span class="p">:</span> <span class="n">v</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">idx_r</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="n">k</span> <span class="o">!=</span> <span class="s1">&#39;array&#39;</span>
             <span class="p">}</span>
 
     <span class="c1"># Generate sensitivity simulation output for all sample_array from unique_array outputs</span>
-    <span class="n">output_dict</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_collect_sobol_results</span><span class="p">(</span>
-        <span class="n">sample_array</span><span class="o">=</span><span class="n">sample_array</span><span class="p">,</span>
-        <span class="n">var_names</span><span class="o">=</span><span class="n">var_names</span><span class="p">,</span>
-        <span class="n">cpu_dict</span><span class="o">=</span><span class="n">cpu_dict</span><span class="p">,</span>
-        <span class="n">problem_dict</span><span class="o">=</span><span class="n">problem</span><span class="p">,</span>
-        <span class="n">start_time</span><span class="o">=</span><span class="n">start_time</span><span class="p">,</span>
-        <span class="n">simulation_folder</span><span class="o">=</span><span class="n">_simulation_folder</span><span class="p">,</span>
-        <span class="n">save_output</span><span class="o">=</span><span class="n">save_output</span>
-    <span class="p">)</span>
+    <span class="n">sim_dict</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">arr</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">sample_array</span><span class="p">,</span> <span class="n">start</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+        <span class="n">arr_dict</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="n">k</span><span class="p">:</span> <span class="nb">float</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">copy_problem</span><span class="p">[</span><span class="s1">&#39;names&#39;</span><span class="p">],</span> <span class="n">arr</span><span class="p">)</span>
+        <span class="p">}</span>
+        <span class="n">sim_dict</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;var&#39;</span><span class="p">:</span> <span class="n">arr_dict</span>
+        <span class="p">}</span>
+        <span class="c1"># Create a deep copy of the dictionary so changes do not affect other copies</span>
+        <span class="n">idx_dict</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span>
+            <span class="n">x</span><span class="o">=</span><span class="n">cpu_dict</span><span class="p">[</span><span class="nb">tuple</span><span class="p">(</span><span class="n">arr</span><span class="p">)]</span>
+        <span class="p">)</span>
+        <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">idx_dict</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="n">sim_dict</span><span class="p">[</span><span class="n">idx</span><span class="p">][</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">v</span>
 
-    <span class="k">return</span> <span class="n">output_dict</span>
+    <span class="c1"># Time statistics</span>
+    <span class="n">required_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">start_time</span>
+    <span class="n">time_stats</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;sample_length&#39;</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">sample_array</span><span class="p">),</span>
+        <span class="s1">&#39;total_time_sec&#39;</span><span class="p">:</span> <span class="nb">round</span><span class="p">(</span><span class="n">required_time</span><span class="p">),</span>
+        <span class="s1">&#39;time_per_sample_sec&#39;</span><span class="p">:</span> <span class="nb">round</span><span class="p">(</span><span class="n">required_time</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">sample_array</span><span class="p">),</span> <span class="mi">1</span><span class="p">),</span>
+    <span class="p">}</span>
+
+    <span class="c1"># Sensitivity simulaton output</span>
+    <span class="n">simulation_output</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;time&#39;</span><span class="p">:</span> <span class="n">time_stats</span><span class="p">,</span>
+        <span class="s1">&#39;problem&#39;</span><span class="p">:</span> <span class="n">problem</span><span class="p">,</span>
+        <span class="s1">&#39;sample&#39;</span><span class="p">:</span> <span class="n">sample_array</span><span class="p">,</span>
+        <span class="s1">&#39;simulation&#39;</span><span class="p">:</span> <span class="n">sim_dict</span>
+    <span class="p">}</span>
+
+    <span class="c1"># Write output to the file &#39;sensitivity_simulation_sobol.json&#39; in simulation folder</span>
+    <span class="k">if</span> <span class="n">save_output</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_save_output_in_json</span><span class="p">(</span>
+            <span class="n">simulation_folder</span><span class="o">=</span><span class="n">simulation_folder</span><span class="p">,</span>
+            <span class="n">simulation_output</span><span class="o">=</span><span class="n">simulation_output</span>
+        <span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">simulation_output</span>
 </code></pre></div></td></tr></table></div>
             </details>
     </div>
