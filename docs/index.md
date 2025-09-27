@@ -4,14 +4,12 @@
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.14889319.svg)](https://doi.org/10.5281/zenodo.14889319)
 
 
-`pySWATPlus` is an open-source Python package that provides a programmatic interface to the [SWAT+](https://swat.tamu.edu/software/plus/) model, allowing users to run simulations, modify input files, and streamline custom experimentation through the model’s `TxtInOut` folder.
-
+`pySWATPlus` is an open-source Python package that provides a programmatic interface to the [SWAT+](https://swat.tamu.edu/software/plus/) model, allowing users to run simulations and conduct custom experiments.
 
 ## ✨ Key Features
 
-- Navigate and read files in the SWAT+ `TxtInOut` folder.
-- Modify input parameters and save the updated files.
-- Run SWAT+ simulations either in the main `TxtInOut` folder or in a user-specified directory.
+- Modify parameters via the `calibration.cal` file.
+- Run SWAT+ simulations.
 - Perform sensitivity analysis on model parameters using the [SALib](https://github.com/SALib/SALib) Python package, with support for parallel computation.
 
 
