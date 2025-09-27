@@ -12,7 +12,7 @@ The following method creates a time series `DataFrame` that includes a new `date
 ```python
 import pySWATPlus
 
-output = pySWATPlus.SensitivityAnalyzer.simulated_timeseries_df(
+output = pySWATPlus.DataManager().simulated_timeseries_df(
     data_file=r"C:\Users\Username\custom_folder\channel_sd_mon.txt",
     has_units=True,
     begin_date='01-Jun-2011',
