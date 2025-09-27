@@ -1,4 +1,5 @@
 import typing
+import typing_extensions
 import pydantic
 
 
@@ -11,7 +12,7 @@ class BaseDict(pydantic.BaseModel):
     @pydantic.model_validator(mode='after')
     def validate_units(
         self
-    ) -> typing.Self:
+    ) -> typing_extensions.Self:
 
         # Check that all units are greater than 0
         if self.units is not None and any(num <= 0 for num in self.units):
@@ -33,7 +34,7 @@ class BoundDict(BaseDict):
     @pydantic.model_validator(mode='after')
     def check_bounds(
         self
-    ) -> typing.Self:
+    ) -> typing_extensions.Self:
 
         if self.upper_bound <= self.lower_bound:
             raise ValueError(
