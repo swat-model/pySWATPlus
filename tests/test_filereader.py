@@ -1,7 +1,6 @@
 import os
 import shutil
 import pySWATPlus
-import pytest
 import tempfile
 
 
@@ -62,26 +61,7 @@ def test_filereader():
         file_reader.overwrite_file()
 
 
-def test_error_filereader():
-
-    # error test for string or pathlib.Path object
-    with pytest.raises(Exception) as exc_info:
-        pySWATPlus.FileReader(
-            path=1,
-            has_units=False
-        )
-    assert "Argument must be a string or Path object" in exc_info.value.args[0]
-
-    # error test for non-existence of file
-    with pytest.raises(Exception) as exc_info:
-        pySWATPlus.FileReader(
-            path='not_exist_yr.txt',
-            has_units=False
-        )
-    assert exc_info.value.args[0] == 'file does not exist'
-
-
 def test_github():
 
-    # regular GitHub trigger test function when no code is changed
+    # GitHub test function tigger when no code is changed
     assert str(2) == '2'

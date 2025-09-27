@@ -1,3 +1,4 @@
-::: pySWATPlus.types.ParametersType
+::: pySWATPlus.types.ModifyType
 
-::: pySWATPlus.types.ParametersBoundedType
+::: pySWATPlus.types.BoundType
+

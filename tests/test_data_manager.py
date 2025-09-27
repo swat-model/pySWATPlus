@@ -66,7 +66,7 @@ def test_simulated_timeseries_df(
             has_units=True,
             ref_day=6
         )
-    assert 'Parameter "ref_day" is not applicable for daily time series in file "zrecall_day.txt"' in exc_info.value.args[0]
+    assert 'Parameter "ref_day" is not applicable for daily or sub-daily time series in file "zrecall_day.txt"' in exc_info.value.args[0]
 
     # Error: invalid file for reference month
     with pytest.raises(Exception) as exc_info:

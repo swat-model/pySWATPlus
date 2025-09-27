@@ -24,7 +24,7 @@ def test_calibration_parameters(
 
     # Pass: parameter exists
     parameters = [
-        pySWATPlus.types.ParameterModel(**{'name': 'cn2', 'value': 0.5, 'change_type': 'absval'})
+        pySWATPlus.types.ModifyDict(**{'name': 'cn2', 'value': 0.5, 'change_type': 'absval'})
     ]
     pySWATPlus.validators._calibration_parameters(
         txtinout_path=txtinout_reader.root_folder,
@@ -33,7 +33,7 @@ def test_calibration_parameters(
 
     # Error: parameter does not exist
     parameters = [
-        pySWATPlus.types.ParameterModel(**{'name': 'obj_that_doesnt_exist', 'value': 0.5, 'change_type': 'absval'})
+        pySWATPlus.types.ModifyDict(**{'name': 'obj_that_doesnt_exist', 'value': 0.5, 'change_type': 'absval'})
     ]
     with pytest.raises(ValueError, match='obj_that_doesnt_exist'):
         pySWATPlus.validators._calibration_parameters(
@@ -47,28 +47,28 @@ def test_calibration_units(
 ):
 
     # Pass: parameter that supports units
-    param_change = pySWATPlus.types.ParameterModel(name='cn2', change_type='pctchg', value=-50, units=[1, 2, 3])
+    param_change = pySWATPlus.types.ModifyDict(name='cn2', change_type='pctchg', value=-50, units=[1, 2, 3])
     pySWATPlus.validators._calibration_units(
         txtinout_path=txtinout_reader.root_folder,
         param_change=param_change
     )
 
     # Pass: parameter that supports units with range
-    param_change = pySWATPlus.types.ParameterModel(name='cn2', change_type='pctchg', value=-50, units=range(1, 4))
+    param_change = pySWATPlus.types.ModifyDict(name='cn2', change_type='pctchg', value=-50, units=range(1, 4))
     pySWATPlus.validators._calibration_units(
         txtinout_path=txtinout_reader.root_folder,
         param_change=param_change
     )
 
     # Pass: parameter that supports units with set
-    param_change = pySWATPlus.types.ParameterModel(name='cn2', change_type='pctchg', value=-50, units={1, 2, 3})
+    param_change = pySWATPlus.types.ModifyDict(name='cn2', change_type='pctchg', value=-50, units={1, 2, 3})
     pySWATPlus.validators._calibration_units(
         txtinout_path=txtinout_reader.root_folder,
         param_change=param_change
     )
 
     # Error: Parameter that does not support units
-    param_change = pySWATPlus.types.ParameterModel(name='organicn', change_type='pctchg', value=-50, units=[1, 2, 3])
+    param_change = pySWATPlus.types.ModifyDict(name='organicn', change_type='pctchg', value=-50, units=[1, 2, 3])
     with pytest.raises(Exception) as exc_info:
         pySWATPlus.validators._calibration_units(
             txtinout_path=txtinout_reader.root_folder,
@@ -83,7 +83,7 @@ def test_calibration_units(
         sep=r'\s+',
         usecols=['id']
     )
-    param_change = pySWATPlus.types.ParameterModel(name='cn2', change_type='pctchg', value=-50, units=[len(df) + 1])
+    param_change = pySWATPlus.types.ModifyDict(name='cn2', change_type='pctchg', value=-50, units=[len(df) + 1])
     with pytest.raises(Exception) as exc_info:
         pySWATPlus.validators._calibration_units(
             txtinout_path=txtinout_reader.root_folder,
@@ -97,7 +97,7 @@ def test_calibration_conditions(
 ):
 
     # Pass: No conditions
-    param_change = pySWATPlus.types.ParameterModel(name="cn2", change_type="pctchg", value=-50)
+    param_change = pySWATPlus.types.ModifyDict(name="cn2", change_type="pctchg", value=-50)
     pySWATPlus.validators._calibration_conditions(
         txtinout_path=txtinout_reader.root_folder,
         param_change=param_change
@@ -120,7 +120,7 @@ def test_calibration_conditions(
         'landuse': [valid_landuse[0]]
     }
 
-    param_change = pySWATPlus.types.ParameterModel(name='cn2', change_type='pctchg', value=-50, conditions=conditions)
+    param_change = pySWATPlus.types.ModifyDict(name='cn2', change_type='pctchg', value=-50, conditions=conditions)
     pySWATPlus.validators._calibration_conditions(
         txtinout_path=txtinout_reader.root_folder,
         param_change=param_change
@@ -131,7 +131,7 @@ def test_calibration_conditions(
         'invalid_cond': ['A', 'B'],
     }
 
-    param_change = pySWATPlus.types.ParameterModel(name='cn2', change_type='pctchg', value=-50, conditions=conditions)
+    param_change = pySWATPlus.types.ModifyDict(name='cn2', change_type='pctchg', value=-50, conditions=conditions)
     with pytest.raises(Exception) as exc_info:
         pySWATPlus.validators._calibration_conditions(
             txtinout_path=txtinout_reader.root_folder,
@@ -144,7 +144,7 @@ def test_calibration_conditions(
     conditions = {
         'hsg': ['invalid'],
     }
-    param_change = pySWATPlus.types.ParameterModel(name='cn2', change_type='pctchg', value=-50, conditions=conditions)
+    param_change = pySWATPlus.types.ModifyDict(name='cn2', change_type='pctchg', value=-50, conditions=conditions)
     with pytest.raises(Exception) as exc_info:
         pySWATPlus.validators._calibration_conditions(
             txtinout_path=txtinout_reader.root_folder,
@@ -155,7 +155,7 @@ def test_calibration_conditions(
     conditions = {
         'texture': ['invalid'],
     }
-    param_change = pySWATPlus.types.ParameterModel(name='cn2', change_type='pctchg', value=-50, conditions=conditions)
+    param_change = pySWATPlus.types.ModifyDict(name='cn2', change_type='pctchg', value=-50, conditions=conditions)
     with pytest.raises(Exception) as exc_info:
         pySWATPlus.validators._calibration_conditions(
             txtinout_path=txtinout_reader.root_folder,
@@ -166,7 +166,7 @@ def test_calibration_conditions(
     conditions = {
         'plant': ['invalid'],
     }
-    param_change = pySWATPlus.types.ParameterModel(name='cn2', change_type='pctchg', value=-50, conditions=conditions)
+    param_change = pySWATPlus.types.ModifyDict(name='cn2', change_type='pctchg', value=-50, conditions=conditions)
     with pytest.raises(Exception) as exc_info:
         pySWATPlus.validators._calibration_conditions(
             txtinout_path=txtinout_reader.root_folder,
@@ -177,7 +177,7 @@ def test_calibration_conditions(
     conditions = {
         'landuse': ['invalid'],
     }
-    param_change = pySWATPlus.types.ParameterModel(name='cn2', change_type='pctchg', value=-50, conditions=conditions)
+    param_change = pySWATPlus.types.ModifyDict(name='cn2', change_type='pctchg', value=-50, conditions=conditions)
     with pytest.raises(Exception) as exc_info:
         pySWATPlus.validators._calibration_conditions(
             txtinout_path=txtinout_reader.root_folder,
