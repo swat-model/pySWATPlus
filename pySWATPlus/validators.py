@@ -3,7 +3,8 @@ import pathlib
 import typing
 import types
 import datetime
-from .types import ParameterModel, ParameterBoundedModel
+import json
+from .types import ModifyDict, BoundDict
 
 
 def _variable_origin_static_type(
@@ -11,7 +12,7 @@ def _variable_origin_static_type(
     vars_values: dict[str, typing.Any]
 ) -> None:
     '''
-    Checks that input variables match their expected origin types.
+    Check that input variables match their expected origin types.
     '''
 
     # iterate name and type of method variables
@@ -55,7 +56,7 @@ def _path_directory(
     path: pathlib.Path
 ) -> None:
     '''
-    Ensures the input path refers to a valid directory.
+    Ensure the input path refers to a valid directory.
     '''
 
     if not path.is_dir():
@@ -71,7 +72,7 @@ def _date_begin_earlier_end(
     end_date: datetime.date
 ) -> None:
     '''
-    Checks that begin date is earlier than end date.
+    Check that begin date is earlier than end date.
     '''
 
     date_fmt = '%d-%b-%Y'
@@ -84,25 +85,30 @@ def _date_begin_earlier_end(
     return None
 
 
-def _validate_date_str(
-    date_str: str
+def _list_contain_unique_dict(
+    parameters: list[dict[str, typing.Any]]
 ) -> None:
     '''
-    Validates a date string in 'YYYY-MM-DD' format.
-    Raises ValueError if invalid.
+    Check whether the input list contains only unique dictionaries.
     '''
 
-    try:
-        datetime.datetime.strptime(date_str, '%Y-%m-%d').date()
-    except ValueError:
-        raise ValueError(f'Invalid date format: "{date_str}". Expected YYYY-MM-DD.')
+    # Get unique dictionaries
+    unique_dicts = {
+        json.dumps(d, sort_keys=True): d for d in parameters
+    }
+
+    # Check equal length of unique dictionaries and parameters
+    if len(unique_dicts) != len(parameters):
+        raise ValueError(
+            'Duplicate dictionary found in "parameters" list'
+        )
 
     return None
 
 
 def _calibration_units(
     txtinout_path: pathlib.Path,
-    param_change: ParameterModel
+    param_change: ModifyDict
 ) -> None:
     '''
     Validate units for a given parameter change against calibration parameters.
@@ -162,7 +168,7 @@ def _calibration_units(
 
 def _calibration_conditions(
     txtinout_path: pathlib.Path,
-    param_change: ParameterModel
+    param_change: ModifyDict
 ) -> None:
     '''
     Validate conditions for a given parameter change against calibration parameters.
@@ -211,10 +217,10 @@ def _calibration_conditions(
 
 def _calibration_conditions_and_units(
     txtinout_path: pathlib.Path,
-    parameters: list[ParameterModel]
+    parameters: list[ModifyDict]
 ) -> None:
     '''
-    This function checks:
+    Check the following:
     - That the parameter exists in the calibration parameters.
     - That the parameter supports units/conditions (based on 'obj_typ').
     - That specified units correspond to valid IDs in the relevant SWAT+ input files.
@@ -242,10 +248,10 @@ def _calibration_conditions_and_units(
 
 def _calibration_parameters(
     txtinout_path: pathlib.Path,
-    parameters: list[ParameterBoundedModel] | list[ParameterModel]
+    parameters: list[BoundDict] | list[ModifyDict]
 ) -> None:
     '''
-    Check if parameters exists in cal_parms.cal
+    Validate existence of input calibration parameters in `cal_parms.cal`.
     '''
 
     # Path of cal_parms.cal
