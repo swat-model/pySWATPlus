@@ -3,7 +3,7 @@ import shutil
 import pathlib
 import typing
 import logging
-from .types import ParametersType, ParameterModel
+from .types import ModifyType, ModifyDict
 from . import utils
 from . import validators
 
@@ -438,7 +438,7 @@ class TxtinoutReader:
 
     def _write_calibration_file(
         self,
-        parameters: list[ParameterModel]
+        parameters: list[ModifyDict]
     ) -> None:
         '''
         Writes `calibration.cal` file with parameter changes.
@@ -540,7 +540,7 @@ class TxtinoutReader:
         add: bool
     ) -> None:
         '''
-        Adds or removes the calibration line to 'file.cio'
+        Add or remove the calibration line to 'file.cio'
         '''
 
         # Path of file.cio
@@ -599,7 +599,7 @@ class TxtinoutReader:
         print_prt_control: typing.Optional[dict[str, dict[str, bool]]] = None
     ) -> None:
         '''
-        Sets begin and end year for the simulation, the warm-up period, and toggles the elements in print.prt file
+        Set begin and end year for the simulation, the warm-up period, and toggles the elements in print.prt file
         '''
 
         # Set simulation range time
@@ -694,7 +694,7 @@ class TxtinoutReader:
     def run_swat(
         self,
         target_dir: typing.Optional[str | pathlib.Path] = None,
-        parameters: typing.Optional[ParametersType] = None,
+        parameters: typing.Optional[ModifyType] = None,
         begin_and_end_date: typing.Optional[dict[str, typing.Any]] = None,
         warmup: typing.Optional[int] = None,
         print_prt_control: typing.Optional[dict[str, dict[str, bool]]] = None,
@@ -707,21 +707,36 @@ class TxtinoutReader:
             target_dir (str or pathlib.Path): Path to the directory where the simulation will be done.
                 If None, the simulation runs directly in the current folder.
 
-            parameters (ParametersType): List of dictionaries specifying parameter changes.
+            parameters (ModifyType): List of dictionaries specifying parameter changes in the `calibration.cal` file.
+                Each dictionary contain the following keys:
 
-                The `parameters` list should follow this structure:
+                - `name` (str): **Required.** Name of the parameter in the `cal_parms.cal` file.
+                - `change_type` (str): **Required.** Type of change to apply. Must be one of `absval`, `abschg`, or `pctchg`.
+                - `value` (float): **Required.** Value of the parameter.
+                - `units` (Iterable[int]): Optional. List of unit IDs to which the parameter change should be constrained.
+                - `conditions` (dict[str, list[str]]): Optional. Conditions to apply when changing the parameter.
+                  Supported keys include `'hsg'`, `'texture'`, `'plant'`, and `'landuse'`, each mapped to a list of allowed values.
 
+                Examples:
                 ```python
                 parameters = [
                     {
-                        "name": str,             # Name of the parameter to which the changes will be applied
-                        "value": float           # The value to apply to the parameter
-                        "change_type": str,      # One of: 'absval', 'abschg', 'pctchg'
-                        "units": Iterable[int],  # (Optional) An optional list of unit IDs to constrain the parameter change.
-                            **Unit IDs should be 1-based**, i.e., the first object has ID 1.
-                        "conditions": dict[str, list[str]],  # (Optional) A dictionary of conditions to apply to the parameter change.
+                        'name': 'cn2',
+                        'change_type': 'pctchg',
+                        'value': 50,
                     },
-                    ...
+                    {
+                        'name': 'perco',
+                        'change_type': 'absval',
+                        'value': 0.5,
+                        'conditions': {'hsg': ['A']}
+                    },
+                    {
+                        'name': 'bf_max',
+                        'change_type': 'absval',
+                        'value': 0.3,
+                        'units': range(1, 194)
+                    }
                 ]
                 ```
 
@@ -736,6 +751,15 @@ class TxtinoutReader:
                     - `96` = 15 minutes
                     - `1440` = 1 minute
 
+                Examples:
+                ```python
+                begin_and_end_date={
+                    'begin_date': '01-Jan-2012',
+                    'end_date': '31-Dec-2016',
+                    'step': 0
+                }
+                ```
+
             warmup (int): A positive integer representing the number of warm-up years (e.g., 1).
 
             print_prt_control (dict[str, dict[str, bool]]): A dictionary to control output printing in the `print.prt` file.
@@ -749,42 +773,19 @@ class TxtinoutReader:
                 - `yearly`: Output aggregated by year.
                 - `avann`: Average annual output over the entire simulation period.
 
+                Examples:
+                ```python
+                print_prt_control = {
+                    'channel_sd': {},  # set True for all time frequency
+                    'channel_sdmorph': {'monthly': False}
+                }
+                ```
+
             skip_validation (bool): If `True`, skip validation of units and conditions in parameter changes.
 
 
         Returns:
             Path where the SWAT+ simulation was executed.
-
-        Example:
-            ```python
-            simulation = pySWATPlus.TxtinoutReader.run_swat(
-                target_dir="C:\\\\Users\\\\Username\\\\simulation_folder",
-                parameters = [
-                    {
-                        "name": 'perco',
-                        "change_type": "absval",
-                        "value": 0.5,
-                        "conditions": {"hsg": ["A"]}
-                    },
-                    {
-                        'name': 'bf_max',
-                        "change_type": "absval",
-                        "value": 0.3,
-                        "units": range(1, 194)
-                    }
-                ]
-                begin_and_end_date={
-                    "begin_date": date(2012, 1, 1),
-                    "end_date": date(2016, 12, 31)
-                    # step defaults to 0 (daily)
-                },
-                warmup=1,
-                print_prt_control = {
-                    'channel_sd': {'daily': False},
-                    'channel_sdmorph': {'monthly': False}
-                }
-            )
-            ```
         '''
 
         # Check input variables type
@@ -824,22 +825,32 @@ class TxtinoutReader:
         )
 
         # Create calibration.cal file
-        if parameters:
-            _params = [ParameterModel(**param) for param in parameters]
+        if parameters is not None:
 
+            # Validate unique dictionaries for sensitive parameters
+            validators._list_contain_unique_dict(
+                parameters=parameters
+            )
+
+            # Check structural validity of input calibration parameters
+            params = [
+                ModifyDict(**param) for param in parameters
+            ]
+
+            # Check if input calibration parameters exists in cal_parms.cal
             validators._calibration_parameters(
                 txtinout_path=reader.root_folder,
-                parameters=_params
+                parameters=params
             )
 
             if not skip_validation:
                 validators._calibration_conditions_and_units(
                     txtinout_path=reader.root_folder,
-                    parameters=_params
+                    parameters=params
                 )
 
             reader._write_calibration_file(
-                parameters=_params
+                parameters=params
             )
 
         # Run simulation
