@@ -24,7 +24,7 @@ txtinout_reader = pySWATPlus.TxtinoutReader(
 The following sections demonstrate different approaches, including modifying input parameters, running a single simulation, and performing batch processing.
 
 
-## A Trial Simulation
+## Trial Simulation
 
 This simple example runs a `SWAT+` simulation without changing any input parameters, ensuring that the setup works correctly:
 
@@ -33,41 +33,51 @@ This simple example runs a `SWAT+` simulation without changing any input paramet
 txtinout_reader.run_swat()
 ```
 
-## Simulations in a Separate Directory (Recommended)
+## Simulation in a Custom Directory
+
+To keep your original `TxtInOut` folder unchanged, it is recommended to run `SWAT+` simulations in a separate empty directory. This allows you to perform experiments without affecting your main project. The following steps demonstrate how to perform a simulation in a custom directory:
 
 
-To keep your original `TxtInOut` folder unchanged, it is recommended to run `SWAT+` simulations in a separate directory. This approach allows you to safely modify parameters and input files without affecting your main project. The following steps demonstrate how to perform a simulation in a dedicated directory:
-
-
-- Copy required files to the target directory:
+- Copy required files to the custom directory:
 
     ```python
-    # Replance this with your desired simulation folder path
-    target_dir = r"C:\Users\Username\simulation_folder_1" 
+    # Replace this with your desired empty custom directory
+    target_dir = r"C:\Users\Username\custom_folder" 
 
-    # Ensure the required files are copied
+    # Ensure the required files are copied to the custom directory
     txtinout_reader.copy_required_files(
         target_dir=target_dir
     )
     ```
 
-- Initialize `TxtinoutReader` for the target directory
+- Initialize `TxtinoutReader` class for the custom directory
 
     ```python
     target_reader = pySWATPlus.TxtinoutReader(
         path=target_dir
     )
     ```
+    
+- Run simulation
+
+    ```python
+    target_reader.run_swat()
+    ```
+
+## Step-wise Configurations and Simulations
+
+
+The following steps demonstrate how to configure parameters in a custom directory and run a simulation step by step:
+
 
 - Modify simulation timeline:
 
     ```python
     # Update timeline in `time.sim` file
     target_reader.set_begin_and_end_date(
-            begin_date=date(2012, 1, 1),
-            end_date=date(2016, 12, 31),
+        begin_date='01-Jan-2012',
+        end_date='31-Dec-2016',
     )
-
     ```
 
 - Set warm-up years:
@@ -92,110 +102,51 @@ To keep your original `TxtInOut` folder unchanged, it is recommended to run `SWA
     )
     ```
     
-- Modify `esco` parameter:
+- Run the SWAT+ simulation with a modified `esco` parameter:
 
     ```python
-    # Register the `hydrology.hyd` file
-    hyd_register = target_reader.register_file(
-        filename='hydrology.hyd',
-        has_units=False
+    parameters = [
+        {
+            'name': 'esco',
+            'change_type': 'absval',
+            'value': 0.5
+        }
+    ]
+    target_reader.run_swat(
+        parameters=parameters
     )
-
-    # Get the DataFrame and modify the `esco` value
-    hyd_df = hyd_register.df
-    hyd_df['esco'] = 0.6
-
-    # Overwrite the `hydrology.hyd` file
-    hyd_register.overwrite_file()
-    ```
-    
-- Run the SWAT+ simulation:
-
-    ```python
-    target_reader.run_swat()
     ```
 
 
-## Run Configurable Simulations in a Single Function
+## Configurable Simulations in a Single Function
 
-Instead of performing each step separately as explained above, you can run a `SWAT+` simulation in a separate directory by configuring all options at once using a single function:
+Instead of performing each step separately as explained above, you can run a `SWAT+` simulation in a separate empty directory by configuring all options at once using a single function:
 
 ```python
-# Configure input parameters
-params = [
+# Configure modified parameters
+parameters = [
     {
-        "name": "bf_max",
-        "value": 0.3,
-        "change_type": "absval",
+        'name': 'esco',
+        'change_type': 'absval',
+        'value': 0.3
+    },
+    {
+        'name': 'perco',
+        'change_type': 'absval',
+        'value': 0.6
     }
 ]
 
 # Run SWAT+ simulation from the original `TxtInOut` folder
 txtinout_reader.run_swat(
-    target_dir=r"C:\Users\Username\simulation_folder_2",  # mandatory
-    params=params,  # optional
+    target_dir=r"C:\Users\Username\custom_folder",  # mandatory
+    parameters=parameters,  # optional
     begin_and_end_date={
-        "begin_date": date(2012, 1, 1),
-        "end_date": date(2016, 12, 31)
-    },
+        'begin_date': '01-Jan-2012',
+        'end_date': '31-Dec-2016'
+    },  # optional
     warmup=1,  # optional
     print_prt_control={'channel_sd': {'daily': False}}  # optional
 )
 ```
-
-
-## Parallel SWAT+ Simulations
-
-To run multiple SWAT+ simulations in parallel with modified parameters, the following example provides a quick guide to get started:
-
-
-```python
-import multiprocessing
-import tempfile
-
-# Define parameter changes
-params = [
-    {
-        "name": 'perco',
-        "change_type": "absval",
-        "value": 0.5,
-        "conditions": {"hsg": ["A"]}
-    },
-    {
-        'name': 'bf_max',
-        "change_type": "absval",
-        "value": 0.3,
-        "units": range(1, 194)
-    }
-]
-
-# Define the function
-def run_simulation(params):
-    
-    with tempfile.TemporaryDirectory() as tmp_dir:
-        reader = pySWATPlus.TxtinoutReader(
-            path=txtinout_path
-        )
-        output = reader.run_swat(
-            target_dir=tmp_dir,
-            params=params
-        )
-    
-    return output
-
-
-if __name__ == '__main__':
-    # Run simulations in parallel
-    with multiprocessing.Pool(processes=2) as pool:
-        results = pool.map(run_simulation, params)
-    # Print output directories
-    for path in results:
-        print("Simulation directory:", path)
-```
-
-
-
-
-
-
 
