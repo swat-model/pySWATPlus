@@ -1,13 +1,10 @@
-from .types import ParameterModel
 import pandas
-from collections.abc import Callable
 import pathlib
 import typing
-from collections.abc import Iterable
-from pydantic import BaseModel
-import hashlib
-import json
 import datetime
+from collections.abc import Iterable
+from collections.abc import Callable
+from .types import ModifyDict
 
 
 def _build_line_to_add(
@@ -18,7 +15,7 @@ def _build_line_to_add(
     avann: bool
 ) -> str:
     '''
-    Helper function to format lines for `print.prt` file
+    Format lines for `print.prt` file
     '''
 
     print_periodicity = {
@@ -40,7 +37,7 @@ def _date_str_to_object(
     date_str: str
 ) -> datetime.date:
     '''
-    Converts a date string in 'YYYY-MM-DD' format to a `datetime.date` object
+    Convert a date string in 'YYYY-MM-DD' format to a `datetime.date` object
     '''
 
     date_fmt = '%d-%b-%Y'
@@ -58,7 +55,7 @@ def _clean(
     df: pandas.DataFrame
 ) -> pandas.DataFrame:
     '''
-    Cleans a DataFrame by stripping whitespace from column names and string values.
+    Clean a DataFrame by stripping whitespace from column names and string values.
     '''
 
     # Strip spaces from column names
@@ -74,21 +71,24 @@ def _clean(
 
 def _load_file(
     path: pathlib.Path,
-    skip_rows: typing.Optional[list[int]] = None,
-    usecols: typing.Optional[list[str]] = None
+    skip_rows: typing.Optional[list[int]] = None
 ) -> pandas.DataFrame:
     '''
     Attempt to load a dataframe from `path` using multiple parsing strategies.
     '''
 
     if path.suffix.lower() == '.csv':
-        df_from_csv = pandas.read_csv(path, skiprows=skip_rows, usecols=usecols, skipinitialspace=True)
+        df_from_csv = pandas.read_csv(
+            filepath_or_buffer=path,
+            skiprows=skip_rows,
+            skipinitialspace=True
+        )
         return _clean(df_from_csv)
 
     strategies: list[Callable[[], pandas.DataFrame]] = [
-        lambda: pandas.read_csv(path, sep=r'\s+', skiprows=skip_rows, usecols=usecols),
-        lambda: pandas.read_csv(path, sep=r'[ ]{2,}', skiprows=skip_rows, usecols=usecols),
-        lambda: pandas.read_fwf(path, skiprows=skip_rows, usecols=usecols),
+        lambda: pandas.read_csv(path, sep=r'\s+', skiprows=skip_rows),
+        lambda: pandas.read_csv(path, sep=r'[ ]{2,}', skiprows=skip_rows),
+        lambda: pandas.read_fwf(path, skiprows=skip_rows)
     ]
     for attempt in strategies:
         try:
@@ -98,16 +98,6 @@ def _load_file(
             pass
 
     raise ValueError(f'Error reading the file: {path}')
-
-
-def _ensure_path(p: str | pathlib.Path) -> pathlib.Path:
-    '''
-    Validate and convert a path-like argument to a resolved pathlib.Path object.
-    '''
-
-    if not isinstance(p, (str, pathlib.Path)):
-        raise TypeError(f"Argument must be a string or Path object, got {type(p).__name__}")
-    return pathlib.Path(p).resolve()
 
 
 def _format_val_field(
@@ -178,7 +168,7 @@ def _compact_units(
 
 
 def _parse_conditions(
-    parameters: ParameterModel
+    parameters: ModifyDict
 ) -> list[str]:
     '''
     Parse the conditions that must be added to that parameter in calibration.cal file
@@ -194,18 +184,3 @@ def _parse_conditions(
             conditions_parsed.append(f'{parameter:<19}{"=":<15} {0:<16}{key}')
 
     return conditions_parsed
-
-
-def _make_unique_param_name(
-    param_key: str,
-    model: BaseModel
-) -> str:
-    '''
-    Generate a unique, deterministic parameter identifier by combining the parameter key
-    with a hash of the Pydantic model's serialized contents.
-    '''
-
-    payload = json.dumps(model.model_dump(), sort_keys=True)
-    uid = hashlib.md5(payload.encode()).hexdigest()
-
-    return f'{param_key}|{uid}'
