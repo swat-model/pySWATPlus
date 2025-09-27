@@ -1,96 +1,120 @@
 import typing
-from pydantic import BaseModel, field_validator
+import pydantic
 
 
-class ParameterBase(BaseModel):
+class BaseDict(pydantic.BaseModel):
     name: str
     change_type: typing.Literal['absval', 'abschg', 'pctchg']
     units: typing.Optional[list[int]] = None
     conditions: typing.Optional[dict[str, list[str]]] = None
 
-    @field_validator('units')
-    @classmethod
-    def validate_units(cls, v: typing.Optional[typing.Iterable[int]]) -> typing.Optional[typing.Iterable[int]]:
-        if v is not None and any(num <= 0 for num in v):
-            raise ValueError(f'All unit IDs must be > 0, got {list(v)}')
-        return list(v) if v is not None else None
+    @pydantic.model_validator(mode='after')
+    def validate_units(
+        self
+    ) -> typing.Self:
+
+        # Check that all units are greater than 0
+        if self.units is not None and any(num <= 0 for num in self.units):
+            raise ValueError(
+                f'For parameter "{self.name}": all values for "units" must be > 0, got {list(self.units)}'
+            )
+
+        return self
 
 
-class ParameterModel(ParameterBase):
+class ModifyDict(BaseDict):
     value: float
 
 
-class ParameterBoundedModel(ParameterBase):
+class BoundDict(BaseDict):
     upper_bound: float
     lower_bound: float
 
+    @pydantic.model_validator(mode='after')
+    def check_bounds(
+        self
+    ) -> typing.Self:
 
-ParametersType: typing.TypeAlias = list[dict[str, typing.Any]]
-"""
-Defines parameter modifications for SWAT+ model input files.
+        if self.upper_bound <= self.lower_bound:
+            raise ValueError(
+                f'For parameter "{self.name}": upper_bound={self.upper_bound} must be greater than lower_bound={self.lower_bound}'
+            )
+
+        return self
+
+
+ModifyType: typing.TypeAlias = list[dict[str, typing.Any]]
+'''
+A list of dictionaries specifying parameter changes in the `calibration.cal` file.
+Each dictionary contain the following keys:
+
+- `name` (str): **Required.** Name of the parameter in the `cal_parms.cal` file.
+- `change_type` (str): **Required.** Type of change to apply. Must be one of `absval`, `abschg`, or `pctchg`.
+- `value` (float): **Required.** Value of the parameter.
+- `units` (Iterable[int]): Optional. List of unit IDs to which the parameter change should be constrained.
+- `conditions` (dict[str, list[str]]): Optional. Conditions to apply when changing the parameter.
+  Supported keys include `'hsg'`, `'texture'`, `'plant'`, and `'landuse'`, each mapped to a list of allowed values.
 
 Example:
     ```python
     parameters = [
         {
-            "name": 'cn2',
-            "change_type": "pctchg",
-            "value": 50,
+            'name': 'cn2',
+            'change_type': 'pctchg',
+            'value': 50,
         },
         {
-            "name": 'perco',
-            "change_type": "absval",
-            "value": 0.5,
-            "conditions": {"hsg": ["A"]}
+            'name': 'perco',
+            'change_type': 'absval',
+            'value': 0.5,
+            'conditions': {'hsg': ['A']}
         },
         {
             'name': 'bf_max',
-            "change_type": "absval",
-            "value": 0.3,
-            "units": range(1, 194)
+            'change_type': 'absval',
+            'value': 0.3,
+            'units': range(1, 194)
         }
     ]
     ```
+'''
 
-Keys for each parameter change:
+BoundType: typing.TypeAlias = list[dict[str, typing.Any]]
+'''
+A list of dictionaries defining parameter configurations for sensitivity simulations.
+Each dictionary contain the following keys:
 
-| Key          | Type (default)                  | Description                                                    |
-|--------------|---------------------------------|----------------------------------------------------------------|
-| name         | str (required)                  | Name of the parameter to which the changes will be applied.    |
-| change_type  | str (required)                  | Type of change: 'absval', 'abschg', or 'pctchg'.               |
-| value        | float (required)                | Value of the parameter.                                        |
-| units        | Iterable[int] (optional)        | List of 1-based unit IDs to constrain the parameter change.    |
-| conditions   | dict[str, list[str]] (optional) | Dictionary of conditions to apply when changing the parameter. |
-"""
-
-ParametersBoundedType: typing.TypeAlias = list[dict[str, typing.Any]]
-"""
-Defines bounded parameter modifications for SWAT+ model input files.
-
-This follows the same logic as `ParametersType`, but instead of a single `value`,
-each parameter specifies `lower_bound` and `upper_bound`. Used for sensitivity analysis and calibration.
+- `name` (str): **Required.** Name of the parameter in the `cal_parms.cal` file.
+- `change_type` (str): **Required.** Type of change to apply. Must be one of `absval`, `abschg`, or `pctchg`.
+- `lower_bound` (float): **Required.** Lower bound for the parameter.
+- `upper_bound` (float): **Required.** Upper bound for the parameter.
+- `units` (Iterable[int]): Optional. List of unit IDs to which the parameter change should be constrained.
+- `conditions` (dict[str, list[str]]): Optional. Conditions to apply when changing the parameter.
+  Supported keys include `'hsg'`, `'texture'`, `'plant'`, and `'landuse'`, each mapped to a list of allowed values.
 
 Example:
     ```python
     parameters = [
         {
-            "name": "bf_max",
-            "change_type": "absval",
-            "lower_bound": 0.2,
-            "upper_bound": 0.3,
-            "units": range(1, 194)
+            'name': 'cn2',
+            'change_type': 'pctchg',
+            'lower_bound': 25,
+            'upper_bound': 75,
+        },
+        {
+            'name': 'perco',
+            'change_type': 'absval',
+            'lower_bound': 0,
+            'upper_bound': 1,
+            'conditions': {'hsg': ['A']}
+        },
+        {
+            'name': 'bf_max',
+            'change_type': 'absval',
+            'lower_bound': 0.1,
+            'upper_bound': 2.0,
+            'units': range(1, 194)
         }
     ]
     ```
-
-Keys for each parameter change:
-
-| Key          | Type (default)                  | Description                                                    |
-|--------------|---------------------------------|----------------------------------------------------------------|
-| name         | str (required)                  | Name of the parameter to which the changes will be applied.    |
-| change_type  | str (required)                  | Type of change: 'absval', 'abschg', or 'pctchg'.               |
-| lower_bound  | float (required)                | Lower bound for the parameter.                                 |
-| upper_bound  | float (required)                | Upper bound for the parameter.                                 |
-| units        | Iterable[int] (optional)        | List of 1-based unit IDs to constrain the parameter change.    |
-| conditions   | dict[str, list[str]] (optional) | Dictionary of conditions to apply when changing the parameter. |
-"""
+'''
