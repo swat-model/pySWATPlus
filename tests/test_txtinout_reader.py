@@ -76,7 +76,10 @@ def test_run_swat(
                     'end_date': '01-Jan-2012'
                 },
                 warmup=1,
-                print_prt_control={'channel_sd': {'daily': False}}
+                print_prt_control={
+                    'channel_sd': {'daily': False},
+                    'basin_wb': {}
+                }
             )
             assert os.path.samefile(target_dir, tmp2_dir)
 
@@ -236,7 +239,6 @@ def test_error_run_swat(
     valid_type = ['dict', 'NoneType']
     with pytest.raises(Exception) as exc_info:
         txtinout_reader.run_swat(
-            target_dir=None,
             begin_and_end_date=[]
         )
     assert exc_info.value.args[0] == f'Expected "begin_and_end_date" to be one of {valid_type}, but got type "list"'
@@ -244,7 +246,6 @@ def test_error_run_swat(
     # Error: missing positional argument end_date
     with pytest.raises(Exception) as exc_info:
         txtinout_reader.run_swat(
-            target_dir=None,
             begin_and_end_date={'begin_date': '01-Jan-2010'}
         )
     assert "missing 1 required positional argument" in exc_info.value.args[0]
@@ -252,7 +253,6 @@ def test_error_run_swat(
     # Error: invalid warm-up years
     with pytest.raises(Exception) as exc_info:
         txtinout_reader.run_swat(
-            target_dir=None,
             warmup=0
         )
     assert exc_info.value.args[0] == 'Expected warmup >= 1, but received warmup = 0'
@@ -260,7 +260,6 @@ def test_error_run_swat(
     # Error: 'obj' is set as None in print_prt_control
     with pytest.raises(Exception) as exc_info:
         txtinout_reader.run_swat(
-            target_dir=None,
             print_prt_control={None: {}}
         )
     assert '"None" cannot be used as a key in print_prt_control' in exc_info.value.args[0]
@@ -276,10 +275,27 @@ def test_error_run_swat(
     # Error: invalid postional argument in print_prt_control
     with pytest.raises(Exception) as exc_info:
         txtinout_reader.run_swat(
-            target_dir=None,
             print_prt_control={'basin_wb': {'dailyy': False}}
         )
     assert 'Invalids sub-key "dailyy" for key "basin_wb" in print_prt_control' in exc_info.value.args[0]
+
+    # Error: duplicate dictionary in list of parameters to be modified
+    with pytest.raises(Exception) as exc_info:
+        txtinout_reader.run_swat(
+            parameters=[
+                {
+                    'name': 'epco',
+                    'change_type': 'absval',
+                    'value': 0.5
+                },
+                {
+                    'name': 'epco',
+                    'change_type': 'absval',
+                    'value': 0.5
+                }
+            ]
+        )
+    assert exc_info.value.args[0] == 'Duplicate dictionary found in "parameters" list'
 
 
 def test_calibration_cal_in_file_cio(
@@ -346,41 +362,41 @@ def test_write_calibration_file(
         )
 
         par_change = [
-            pySWATPlus.types.ParameterModel(name='cn2', change_type='pctchg', value=50),
-            pySWATPlus.types.ParameterModel(name='cn3_swf', change_type='absval', value=0.5),
-            pySWATPlus.types.ParameterModel(name='ovn', change_type='pctchg', value=50),
-            pySWATPlus.types.ParameterModel(name='lat_ttime', change_type='absval', value=100),
-            pySWATPlus.types.ParameterModel(name='latq_co', change_type='absval', value=0.5),
-            pySWATPlus.types.ParameterModel(name='lat_len', change_type='pctchg', value=50),
-            pySWATPlus.types.ParameterModel(name='canmx', change_type='absval', value=50),
-            pySWATPlus.types.ParameterModel(name='esco', change_type='absval', value=0.5),
-            pySWATPlus.types.ParameterModel(name='epco', change_type='absval', value=0.5),
+            pySWATPlus.types.ModifyDict(name='cn2', change_type='pctchg', value=50),
+            pySWATPlus.types.ModifyDict(name='cn3_swf', change_type='absval', value=0.5),
+            pySWATPlus.types.ModifyDict(name='ovn', change_type='pctchg', value=50),
+            pySWATPlus.types.ModifyDict(name='lat_ttime', change_type='absval', value=100),
+            pySWATPlus.types.ModifyDict(name='latq_co', change_type='absval', value=0.5),
+            pySWATPlus.types.ModifyDict(name='lat_len', change_type='pctchg', value=50),
+            pySWATPlus.types.ModifyDict(name='canmx', change_type='absval', value=50),
+            pySWATPlus.types.ModifyDict(name='esco', change_type='absval', value=0.5),
+            pySWATPlus.types.ModifyDict(name='epco', change_type='absval', value=0.5),
 
-            pySWATPlus.types.ParameterModel(name='perco', change_type='absval', value=0.5, conditions={'hsg': ['A']}),
-            pySWATPlus.types.ParameterModel(name='perco', change_type='absval', value=0.5, conditions={'hsg': ['B']}),
-            pySWATPlus.types.ParameterModel(name='perco', change_type='absval', value=0.5, conditions={'hsg': ['C']}),
-            pySWATPlus.types.ParameterModel(name='perco', change_type='absval', value=0.5, conditions={'hsg': ['D']}),
+            pySWATPlus.types.ModifyDict(name='perco', change_type='absval', value=0.5, conditions={'hsg': ['A']}),
+            pySWATPlus.types.ModifyDict(name='perco', change_type='absval', value=0.5, conditions={'hsg': ['B']}),
+            pySWATPlus.types.ModifyDict(name='perco', change_type='absval', value=0.5, conditions={'hsg': ['C']}),
+            pySWATPlus.types.ModifyDict(name='perco', change_type='absval', value=0.5, conditions={'hsg': ['D']}),
 
-            pySWATPlus.types.ParameterModel(name='z', change_type='pctchg', value=20),
-            pySWATPlus.types.ParameterModel(name='bd', change_type='pctchg', value=50),
-            pySWATPlus.types.ParameterModel(name='awc', change_type='pctchg', value=100),
-            pySWATPlus.types.ParameterModel(name='k', change_type='pctchg', value=100),
+            pySWATPlus.types.ModifyDict(name='z', change_type='pctchg', value=20),
+            pySWATPlus.types.ModifyDict(name='bd', change_type='pctchg', value=50),
+            pySWATPlus.types.ModifyDict(name='awc', change_type='pctchg', value=100),
+            pySWATPlus.types.ModifyDict(name='k', change_type='pctchg', value=100),
 
-            pySWATPlus.types.ParameterModel(name='surlag', change_type='absval', value=10),
-            pySWATPlus.types.ParameterModel(name='evrch', change_type='absval', value=0.8),
-            pySWATPlus.types.ParameterModel(name='evlai', change_type='absval', value=5),
-            pySWATPlus.types.ParameterModel(name='ffcb', change_type='absval', value=0.5),
+            pySWATPlus.types.ModifyDict(name='surlag', change_type='absval', value=10),
+            pySWATPlus.types.ModifyDict(name='evrch', change_type='absval', value=0.8),
+            pySWATPlus.types.ModifyDict(name='evlai', change_type='absval', value=5),
+            pySWATPlus.types.ModifyDict(name='ffcb', change_type='absval', value=0.5),
 
-            pySWATPlus.types.ParameterModel(name='chn', change_type='absval', value=0.05),
-            pySWATPlus.types.ParameterModel(name='chk', change_type='absval', value=100),
+            pySWATPlus.types.ModifyDict(name='chn', change_type='absval', value=0.05),
+            pySWATPlus.types.ModifyDict(name='chk', change_type='absval', value=100),
 
-            pySWATPlus.types.ParameterModel(name='alpha', change_type='absval', value=0.3, units=list(range(1, 143))),
-            pySWATPlus.types.ParameterModel(name='bf_max', change_type='absval', value=0.3, units=list(range(1, 143))),
-            pySWATPlus.types.ParameterModel(name='deep_seep', change_type='absval', value=0.1, units=list(range(1, 143))),
-            pySWATPlus.types.ParameterModel(name='sp_yld', change_type='absval', value=0.2, units=list(range(1, 143))),
-            pySWATPlus.types.ParameterModel(name='flo_min', change_type='absval', value=10, units=list(range(1, 143))),
-            pySWATPlus.types.ParameterModel(name='revap_co', change_type='absval', value=0.1, units=list(range(1, 143))),
-            pySWATPlus.types.ParameterModel(name='revap_min', change_type='absval', value=5, units=list(range(1, 143))),
+            pySWATPlus.types.ModifyDict(name='alpha', change_type='absval', value=0.3, units=list(range(1, 143))),
+            pySWATPlus.types.ModifyDict(name='bf_max', change_type='absval', value=0.3, units=list(range(1, 143))),
+            pySWATPlus.types.ModifyDict(name='deep_seep', change_type='absval', value=0.1, units=list(range(1, 143))),
+            pySWATPlus.types.ModifyDict(name='sp_yld', change_type='absval', value=0.2, units=list(range(1, 143))),
+            pySWATPlus.types.ModifyDict(name='flo_min', change_type='absval', value=10, units=list(range(1, 143))),
+            pySWATPlus.types.ModifyDict(name='revap_co', change_type='absval', value=0.1, units=list(range(1, 143))),
+            pySWATPlus.types.ModifyDict(name='revap_min', change_type='absval', value=5, units=list(range(1, 143))),
         ]
 
         # Run the method
