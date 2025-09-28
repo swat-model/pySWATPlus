@@ -1,6 +1,5 @@
 import pathlib
 import pandas
-import warnings
 import typing
 from . import utils
 from . import validators
@@ -86,51 +85,3 @@ class FileReader:
             self.units_row = None
 
         self.path = path
-
-    def overwrite_file(
-        self
-    ) -> None:
-        '''
-        Overwrite the original TXT file with the modified DataFrame content.
-        If the file originally contained a unit row (below the header),
-        it will be preserved and written back as part of the output.
-        If the file is a SWAT+ Output File, launch exception.
-        '''
-
-        # Check if units row matches the DataFrame's column count
-        if self.has_units:
-            if len(self.units_row) != self.df.shape[1]:
-                warnings.warn(
-                    "Units row could not be parsed correctly. The file will still be written "
-                    "and remain compatible with SWAT+, but formatting may not be preserved "
-                    "due to a malformed units row.",
-                    UserWarning
-                )
-
-        if self.units_row is not None:
-            _df = pandas.concat([pandas.DataFrame([self.units_row]), self.df], ignore_index=True)
-        else:
-            _df = self.df
-
-        # Replace NaN with empty strings to avoid printing 'NaN'
-        _df = _df.fillna('')
-
-        with open(self.path, 'w') as file:
-            # Write the header file first
-            file.write(self.header_file)
-
-            if _df.empty:
-                # Calculate max width for each column name
-                col_widths = [max(len(col), 1) + 3 for col in _df.columns]
-
-                # Create format string with fixed widths, right-aligned
-                fmt = ''.join([f'{{:>{w}}}' for w in col_widths])
-
-                # Format and write the header line
-                file.write(fmt.format(*_df.columns) + '\n')
-                return
-
-            max_lengths = _df.apply(lambda x: x.astype(str).str.len()).max()
-            column_widths = {column: max_length + 3 for column, max_length in max_lengths.items()}
-            data_str = _df.to_string(index=False, justify='right', col_space=column_widths)
-            file.write(data_str)
