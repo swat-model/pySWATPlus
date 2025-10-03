@@ -1,5 +1,4 @@
 from .txtinout_reader import TxtinoutReader
-from .filereader import FileReader
 from .data_manager import DataManager
 from .sensitivity_analyzer import SensitivityAnalyzer
 from .performance_metrics import PerformanceMetrics
@@ -14,7 +13,6 @@ except PackageNotFoundError:
 
 __all__ = [
     'TxtinoutReader',
-    'FileReader',
     'DataManager',
     'SensitivityAnalyzer',
     'PerformanceMetrics',

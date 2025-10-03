@@ -84,25 +84,23 @@ def test_run_swat(
             assert os.path.samefile(target_dir, tmp2_dir)
 
             # Pass: data types are parsed correctly (for example jday must be int)
-            file_reader = pySWATPlus.FileReader(
-                path=os.path.join(str(target_dir), 'channel_sd_yr.txt'),
-                has_units=True
+            df = pySWATPlus.utils._load_file(
+                path=target_dir / 'channel_sd_yr.txt',
+                skip_rows=[0, 2],
             )
-            df = file_reader.df
+
             assert pandas.api.types.is_integer_dtype(df['jday'])
 
             # Pass: read CSV file
-            csv_file_reader = pySWATPlus.FileReader(
-                path=os.path.join(str(target_dir), 'channel_sd_yr.csv'),
-                has_units=True
+            csv_df = pySWATPlus.utils._load_file(
+                path=target_dir / 'channel_sd_yr.csv',
+                skip_rows=[0, 2],
             )
-            csv_df = csv_file_reader.df
 
-            # Pass: TXT and CSV file DataFrames
+            # Pass: TXT and CSV file DataFrames. They cannot be compared directly due to rounding differences.
             assert df.shape == csv_df.shape
             assert list(df.columns) == list(csv_df.columns)
             assert all(df.dtypes == csv_df.dtypes)
-            assert file_reader.units_row.equals(csv_file_reader.units_row)
 
             # Pass: adding invalid object with flag
             target_reader = pySWATPlus.TxtinoutReader(
