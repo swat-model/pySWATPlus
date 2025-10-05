@@ -85,6 +85,26 @@ def _date_begin_earlier_end(
     return None
 
 
+def _date_within_range(
+    date_to_check: datetime.date,
+    begin_date: datetime.date,
+    end_date: datetime.date
+) -> None:
+    '''
+    Check that a given date is within the specified begin and end date range (inclusive).
+    '''
+
+    date_fmt = '%d-%b-%Y'
+
+    if not (begin_date <= date_to_check <= end_date):
+        raise ValueError(
+            f'date {date_to_check.strftime(date_fmt)} must be between '
+            f'{begin_date.strftime(date_fmt)} and {end_date.strftime(date_fmt)}'
+        )
+
+    return None
+
+
 def _list_contain_unique_dict(
     parameters: list[dict[str, typing.Any]]
 ) -> None:

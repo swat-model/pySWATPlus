@@ -71,10 +71,8 @@ def test_run_swat(
             # Pass: run SWAT+ in other directory
             target_dir = target_reader.run_swat(
                 target_dir=tmp2_dir,
-                begin_and_end_date={
-                    'begin_date': '01-Jan-2010',
-                    'end_date': '01-Jan-2012'
-                },
+                begin_date='01-Jan-2010',
+                end_date='01-Jan-2012',
                 warmup=1,
                 print_prt_control={
                     'channel_sd': {'daily': False},
@@ -136,7 +134,7 @@ def test_error_txtinoutreader_class():
     valid_type = ['str', 'Path']
     assert exc_info.value.args[0] == f'Expected "path" to be one of {valid_type}, but got type "int"'
 
-    # Error: invalid TxtInOut direcotry
+    # Error: invalid TxtInOut directory
     invalid_dir = 'nonexist_folder'
     with pytest.raises(Exception) as exc_info:
         pySWATPlus.TxtinoutReader(
@@ -185,21 +183,31 @@ def test_set_begin_and_end_date(
     txtinout_reader
 ):
 
-    # Pass: modify begin and end date in time
+    # Pass: modify begin and end date in time.sim
     with tempfile.TemporaryDirectory() as tmp_dir:
 
-        # Modify time.sim file
         target_dir = txtinout_reader.copy_required_files(tmp_dir)
+
+        # Read original time.sim
+        with open(target_dir / 'time.sim', 'r') as f:
+            original_lines = f.readlines()
+
+        # Replace begin and end date in read line
+        parts = original_lines[2].split()
+        parts[0] = str(74)
+        parts[1] = str(2010)
+        parts[2] = str(294)
+        parts[3] = str(2012)
+        expected_line = '{: >8} {: >10} {: >10} {: >10} {: >10} \n'.format(*parts)
+
         target_reader = pySWATPlus.TxtinoutReader(target_dir)
+
         target_reader.set_begin_and_end_date(
             begin_date='15-Mar-2010',
-            end_date='20-Oct-2012',
-            step=0
+            end_date='20-Oct-2012'
         )
 
         # Read the line in time.sim again
-        expected_elements = [str(74), str(2010), str(294), str(2012), str(0)]
-        expected_line = '{: >8} {: >10} {: >10} {: >10} {: >10} \n'.format(*expected_elements)
         with open(target_dir / 'time.sim', 'r') as f:
             lines = f.readlines()
         assert lines[2] == expected_line, f'Expected:\n{expected_line}\nGot:\n{lines[2]}'
@@ -212,6 +220,38 @@ def test_set_begin_and_end_date(
         )
     assert exc_info.value.args[0] == 'begin_date 01-Jan-2016 must be earlier than end_date 01-Jan-2012'
 
+
+def set_simulation_timestep(
+    txtinout_reader
+):
+
+    # Pass: modify step in time.sim
+    with tempfile.TemporaryDirectory() as tmp_dir:
+
+        target_dir = txtinout_reader.copy_required_files(tmp_dir)
+        simulation_timestep = 1
+
+        # Read original time.sim
+        with open(target_dir / 'time.sim', 'r') as f:
+            original_lines = f.readlines()
+
+        # Replace simulation timestep in read line
+        parts = original_lines[2].split()
+        parts[4] = str(simulation_timestep)  # new timestep value
+        expected_line = '{: >8} {: >10} {: >10} {: >10} {: >10} \n'.format(*parts)
+
+        target_reader = pySWATPlus.TxtinoutReader(target_dir)
+        target_reader.set_simulation_timestep(
+            step=simulation_timestep
+        )
+
+        # Read the line in time.sim again
+        with open(target_dir / 'time.sim', 'r') as f:
+            lines = f.readlines()
+
+        # Now just compare
+        assert lines[2] == expected_line, f"Expected:\n{expected_line}\nGot:\n{lines[2]}"
+
     # Error: step is invalid
     valid_steps = {
         0: '1 day',
@@ -221,32 +261,107 @@ def test_set_begin_and_end_date(
         1440: '1 minute',
     }
     with pytest.raises(ValueError) as exc_info:
-        txtinout_reader.set_begin_and_end_date(
-            begin_date='15-Mar-2010',
-            end_date='20-Oct-2012',
+        txtinout_reader.set_simulation_timestep(
             step=7
         )
     assert exc_info.value.args[0] == f'Received invalid step: 7; must be one of the keys in {valid_steps}'
+
+
+def test_set_start_date_print(
+    txtinout_reader
+):
+
+    # Pass: modify begin date in print.prt
+    with tempfile.TemporaryDirectory() as tmp_dir:
+
+        target_dir = txtinout_reader.copy_required_files(tmp_dir)
+
+        # Read original print.prt
+        with open(target_dir / 'print.prt', 'r') as f:
+            original_lines = f.readlines()
+
+        # Replace start date in read line
+        parts = original_lines[2].split()
+        parts[1] = str(74)
+        parts[2] = str(2010)
+        expected_line = f"{parts[0]:<12}{parts[1]:<11}{parts[2]:<11}{parts[3]:<10}{parts[4]:<10}{parts[5]}\n"
+
+        target_reader = pySWATPlus.TxtinoutReader(target_dir)
+
+        target_reader.set_start_date_print(
+            start_date='15-Mar-2010'
+        )
+
+        # Read the line in print.prt again
+        with open(target_dir / 'print.prt', 'r') as f:
+            lines = f.readlines()
+        assert lines[2] == expected_line, f'Expected:\n{expected_line}\nGot:\n{lines[2]}'
+
+
+def test_set_print_interval(
+    txtinout_reader
+):
+
+    # Pass: modify interval in print.prt
+    with tempfile.TemporaryDirectory() as tmp_dir:
+
+        target_dir = txtinout_reader.copy_required_files(tmp_dir)
+        print_interval = 2
+
+        # Read original print.prt
+        with open(target_dir / 'print.prt', 'r') as f:
+            original_lines = f.readlines()
+
+        # Replace start date in read line
+        parts = original_lines[2].split()
+        parts[5] = str(print_interval)
+        expected_line = f"{parts[0]:<12}{parts[1]:<11}{parts[2]:<11}{parts[3]:<10}{parts[4]:<10}{parts[5]}\n"
+
+        target_reader = pySWATPlus.TxtinoutReader(target_dir)
+
+        target_reader.set_print_interval(
+            interval=print_interval
+        )
+
+        # Read the line in print.prt again
+        with open(target_dir / 'print.prt', 'r') as f:
+            lines = f.readlines()
+        assert lines[2] == expected_line, f'Expected:\n{expected_line}\nGot:\n{lines[2]}'
 
 
 def test_error_run_swat(
     txtinout_reader
 ):
 
-    # Error: invalid begin and end year values type
-    valid_type = ['dict', 'NoneType']
-    with pytest.raises(Exception) as exc_info:
+    # Error: begin_date set but no end_date
+    with pytest.raises(ValueError) as exc_info:
         txtinout_reader.run_swat(
-            begin_and_end_date=[]
+            begin_date='01-Jan-2010'
         )
-    assert exc_info.value.args[0] == f'Expected "begin_and_end_date" to be one of {valid_type}, but got type "list"'
+    assert "Both 'begin_date' and 'end_date' must be provided together" in exc_info.value.args[0]
 
-    # Error: missing positional argument end_date
-    with pytest.raises(Exception) as exc_info:
+    # Error: end_date set but no begin_date
+    with pytest.raises(ValueError) as exc_info:
         txtinout_reader.run_swat(
-            begin_and_end_date={'begin_date': '01-Jan-2010'}
+            end_date='31-Dec-2013'
         )
-    assert "missing 1 required positional argument" in exc_info.value.args[0]
+    assert "Both 'begin_date' and 'end_date' must be provided together" in exc_info.value.args[0]
+
+    # Error: start_date_print set without begin_date and end_date
+    with pytest.raises(ValueError) as exc_info:
+        txtinout_reader.run_swat(
+            start_date_print='01-Jan-2010'
+        )
+    assert "'start_date_print' cannot be set unless both 'begin_date' and 'end_date'" in exc_info.value.args[0]
+
+    # Error: start_date_print out of range
+    with pytest.raises(ValueError) as exc_info:
+        txtinout_reader.run_swat(
+            begin_date='01-Jan-2010',
+            end_date='31-Dec-2010',
+            start_date_print='31-Dec-2011'
+        )
+    assert "must be between" in exc_info.value.args[0]
 
     # Error: invalid warm-up years
     with pytest.raises(Exception) as exc_info:

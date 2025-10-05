@@ -189,7 +189,6 @@ class TxtinoutReader:
         self,
         begin_date: str,
         end_date: str,
-        step: typing.Optional[int] = 0
     ) -> None:
         '''
         Modify the simulation period by updating
@@ -198,13 +197,6 @@ class TxtinoutReader:
         Args:
             begin_date (str): Start date of the simulation in DD-Mon-YYYY format (e.g., 01-Jan-2010).
             end_date (str): End date of the simulation in DD-Mon-YYYY format (e.g., 31-Dec-2013).
-            step (int): Simulation timestep. Defaults to 0. Allowed values are:
-
-                - `0` = 1 day
-                - `1` = 12 hours
-                - `24` = 1 hour
-                - `96` = 15 minutes
-                - `1440` = 1 minute
         '''
 
         # Check input variables type
@@ -228,21 +220,6 @@ class TxtinoutReader:
             begin_date=begin_dt,
             end_date=end_dt
         )
-
-        # Valid time step dictionary
-        valid_steps = {
-            0: '1 day',
-            1: '12 hours',
-            24: '1 hour',
-            96: '15 minutes',
-            1440: '1 minute',
-        }
-
-        # Check valid steps
-        if step not in valid_steps:
-            raise ValueError(
-                f'Received invalid step: {step}; must be one of the keys in {valid_steps}'
-            )
 
         # Extract years and Julian days
         begin_day = begin_dt.timetuple().tm_yday
@@ -268,6 +245,71 @@ class TxtinoutReader:
         elements[1] = str(begin_year)
         elements[2] = str(end_day)
         elements[3] = str(end_year)
+
+        # Reconstruct the result string while maintaining spaces
+        result_string = '{: >8} {: >10} {: >10} {: >10} {: >10} \n'.format(*elements)
+        lines[nth_line - 1] = result_string
+
+        # Modify time.sim file
+        with open(time_sim_path, 'w') as file:
+            file.writelines(lines)
+
+        return None
+
+    def set_simulation_timestep(
+        self,
+        step: int
+    ) -> None:
+        '''
+        Modify the simulation timestep.
+
+        Args:
+            step (int): Simulation timestep. Allowed values are:
+
+                - `0` = 1 day
+                - `1` = 12 hours
+                - `24` = 1 hour
+                - `96` = 15 minutes
+                - `1440` = 1 minute
+        '''
+
+        # Check input variables type
+        validators._variable_origin_static_type(
+            vars_types=typing.get_type_hints(
+                obj=self.set_simulation_timestep
+            ),
+            vars_values=locals()
+        )
+
+        # Valid time step dictionary
+        valid_steps = {
+            0: '1 day',
+            1: '12 hours',
+            24: '1 hour',
+            96: '15 minutes',
+            1440: '1 minute',
+        }
+
+        # Check valid steps
+        if step not in valid_steps:
+            raise ValueError(
+                f'Received invalid step: {step}; must be one of the keys in {valid_steps}'
+            )
+
+        # Target line
+        nth_line = 3
+
+        # File path of time.sim
+        time_sim_path = self.root_folder / 'time.sim'
+
+        # Open the file in read mode and read its contents
+        with open(time_sim_path, 'r') as file:
+            lines = file.readlines()
+
+        # Split targeted line
+        elements = lines[nth_line - 1].split()
+
+        # Update values
         elements[4] = str(step)
 
         # Reconstruct the result string while maintaining spaces
@@ -381,6 +423,81 @@ class TxtinoutReader:
         '''
 
         self._enable_disable_csv_print(enable=False)
+
+        return None
+
+    def set_print_interval(
+        self,
+        interval: int,
+    ) -> None:
+        '''
+        Set interval in print.prt file
+        '''
+
+        # Check input variables type
+        validators._variable_origin_static_type(
+            vars_types=typing.get_type_hints(
+                obj=self.set_print_interval
+            ),
+            vars_values=locals()
+        )
+
+        # File path of print.prt
+        print_prt_path = self.root_folder / 'print.prt'
+
+        # Open the file in read mode and read its contents
+        with open(print_prt_path, 'r') as file:
+            lines = file.readlines()
+
+            nth_line = 3
+            columns = lines[nth_line - 1].split()
+            lines[nth_line - 1] = f"{columns[0]:<12}{columns[1]:<11}{columns[2]:<11}{columns[3]:<10}{columns[4]:<10}{interval}\n"
+
+        # Modify print.prt file
+        with open(print_prt_path, 'w') as file:
+            file.writelines(lines)
+
+        return None
+
+    def set_start_date_print(
+        self,
+        start_date: str,
+    ) -> None:
+        '''
+        Set day_start in print.prt file
+        '''
+
+        # Check input variables type
+        validators._variable_origin_static_type(
+            vars_types=typing.get_type_hints(
+                obj=self.set_start_date_print
+            ),
+            vars_values=locals()
+        )
+
+        # Convert date string to datetime.date object
+        start_dt = utils._date_str_to_object(
+            date_str=start_date
+        )
+
+        # Extract years and Julian days
+        start_day = start_dt.timetuple().tm_yday
+        year_year = start_dt.year
+
+        # File path of print.prt
+        print_prt_path = self.root_folder / 'print.prt'
+
+        # Open the file in read mode and read its contents
+        with open(print_prt_path, 'r') as file:
+            lines = file.readlines()
+
+            nth_line = 3
+            columns = lines[nth_line - 1].split()
+            lines[nth_line - 1] = f"{columns[0]:<12}{start_day:<11}{year_year:<11}{columns[3]:<10}{columns[4]:<10}{columns[5]}\n"
+
+        # Modify print.prt file
+        with open(print_prt_path, 'w') as file:
+            file.writelines(lines)
 
         return None
 
@@ -594,17 +711,56 @@ class TxtinoutReader:
 
     def _apply_swat_configuration(
         self,
-        begin_and_end_date: typing.Optional[dict[str, typing.Any]] = None,
+        begin_date: typing.Optional[str] = None,
+        end_date: typing.Optional[str] = None,
+        simulation_timestep: typing.Optional[int] = None,
         warmup: typing.Optional[int] = None,
-        print_prt_control: typing.Optional[dict[str, dict[str, bool]]] = None
+        print_prt_control: typing.Optional[dict[str, dict[str, bool]]] = None,
+        start_date_print: typing.Optional[str] = None,
+        print_interval: int = 1,
+
     ) -> None:
         '''
         Set begin and end year for the simulation, the warm-up period, and toggles the elements in print.prt file
         '''
 
+        # Ensure both begin and end dates are provided together
+        if (begin_date is None) != (end_date is None):
+            raise ValueError(
+                "Both 'begin_date' and 'end_date' must be provided together, "
+                f"got begin_date={begin_date}, end_date={end_date}"
+            )
+
+        if start_date_print is not None and (begin_date is None or end_date is None):
+            raise ValueError(
+                "'start_date_print' cannot be set unless both 'begin_date' and 'end_date' are also provided. "
+                f"got start_date_print={start_date_print}, begin_date={begin_date}, end_date={end_date}"
+            )
+
+        # Validate date relationships
+        if start_date_print is not None and begin_date is not None and end_date is not None:
+            begin_dt = utils._date_str_to_object(begin_date)
+            end_dt = utils._date_str_to_object(end_date)
+            start_print_dt = utils._date_str_to_object(start_date_print)
+
+            validators._date_within_range(
+                date_to_check=start_print_dt,
+                begin_date=begin_dt,
+                end_date=end_dt
+            )
+
         # Set simulation range time
-        if begin_and_end_date is not None:
-            self.set_begin_and_end_date(**begin_and_end_date)
+        if begin_date is not None and end_date is not None:
+            self.set_begin_and_end_date(
+                begin_date=begin_date,
+                end_date=end_date
+            )
+
+        # Set simulation timestep
+        if simulation_timestep is not None:
+            self.set_simulation_timestep(
+                step=simulation_timestep
+            )
 
         # Set warmup period
         if warmup is not None:
@@ -647,6 +803,16 @@ class TxtinoutReader:
                         obj=key,
                         **key_dict
                     )
+
+        if start_date_print is not None:
+            self.set_start_date_print(
+                start_date=start_date_print
+            )
+
+        if print_interval is not None:
+            self.set_print_interval(
+                interval=print_interval
+            )
 
         return None
 
@@ -695,9 +861,13 @@ class TxtinoutReader:
         self,
         target_dir: typing.Optional[str | pathlib.Path] = None,
         parameters: typing.Optional[ModifyType] = None,
-        begin_and_end_date: typing.Optional[dict[str, typing.Any]] = None,
+        begin_date: typing.Optional[str] = None,
+        end_date: typing.Optional[str] = None,
+        simulation_timestep: typing.Optional[int] = None,
         warmup: typing.Optional[int] = None,
         print_prt_control: typing.Optional[dict[str, dict[str, bool]]] = None,
+        start_date_print: typing.Optional[str] = None,
+        print_interval: int = 1,
         skip_validation: bool = False
     ) -> pathlib.Path:
         '''
@@ -740,25 +910,16 @@ class TxtinoutReader:
                 ]
                 ```
 
-            begin_and_end_date (dict[str, str | int]): Dictionary defining the simulation period with the following keys:
+            begin_date (str): Start date of the simulation in DD-Mon-YYYY format (e.g., 01-Jan-2010).
 
-                - `begin_date`: Required. Start date of the simulation in DD-Mon-YYYY format (e.g., 01-Jan-2010).
-                - `end_date`: Required. End date of the simulation in DD-Mon-YYYY format (e.g., 31-Dec-2013).
-                - `step`: Optional. Simulation timestep. Defaults to 0. Allowed values:
-                    - `0` = 1 day
-                    - `1` = 12 hours
-                    - `24` = 1 hour
-                    - `96` = 15 minutes
-                    - `1440` = 1 minute
+            end_date (str): End date of the simulation in DD-Mon-YYYY format (e.g., 31-Dec-2013).
 
-                Examples:
-                ```python
-                begin_and_end_date={
-                    'begin_date': '01-Jan-2012',
-                    'end_date': '31-Dec-2016',
-                    'step': 0
-                }
-                ```
+            simulation_timestep (int): Simulation timestep. Defaults to 0. Allowed values:
+                - `0` = 1 day
+                - `1` = 12 hours
+                - `24` = 1 hour
+                - `96` = 15 minutes
+                - `1440` = 1 minute
 
             warmup (int): A positive integer representing the number of warm-up years (e.g., 1).
 
@@ -781,8 +942,12 @@ class TxtinoutReader:
                 }
                 ```
 
-            skip_validation (bool): If `True`, skip validation of units and conditions in parameter changes.
+            start_date_print (str): Number of years at the beginning of the simulation to not print output
 
+            print_interval (int): Print interval within the period.
+                Example: If interval = 2, output will be printed for every other day.
+
+            skip_validation (bool): If `True`, skip validation of units and conditions in parameter changes.
 
         Returns:
             Path where the SWAT+ simulation was executed.
@@ -819,9 +984,13 @@ class TxtinoutReader:
 
         # Apply SWAT+ configuration changes
         reader._apply_swat_configuration(
-            begin_and_end_date=begin_and_end_date,
+            begin_date=begin_date,
+            end_date=end_date,
+            simulation_timestep=simulation_timestep,
             warmup=warmup,
-            print_prt_control=print_prt_control
+            print_prt_control=print_prt_control,
+            start_date_print=start_date_print,
+            print_interval=print_interval,
         )
 
         # Create calibration.cal file
