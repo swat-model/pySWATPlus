@@ -37,12 +37,9 @@ The parameter sampling is handled by the [SALib](https://github.com/SALib/SALib)
     )
     
     # Run a trial simulation to verify expected time series outputs
-    begin_and_end_date = {
-        'begin_date': '01-Jan-2010',
-        'end_date': '31-Dec-2012'
-    }
     target_reader.run_swat(
-        begin_and_end_date=begin_and_end_date,
+        begin_date='01-Jan-2010',
+        end_date='31-Dec-2012',
         warmup=1,
         print_prt_control={
             'channel_sd': {}

@@ -141,10 +141,8 @@ parameters = [
 txtinout_reader.run_swat(
     target_dir=r"C:\Users\Username\custom_folder",  # mandatory
     parameters=parameters,  # optional
-    begin_and_end_date={
-        'begin_date': '01-Jan-2012',
-        'end_date': '31-Dec-2016'
-    },  # optional
+    begin_date='01-Jan-2012', # optional
+    end_date= '31-Dec-2016', # optional
     warmup=1,  # optional
     print_prt_control={'channel_sd': {'daily': False}}  # optional
 )
