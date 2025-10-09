@@ -30,7 +30,11 @@ import pytest
         (-12345678901234, ' -12345678901234'),
     ]
 )
-def test_format_val_field_edge_cases(value, expected):
+def test_format_val_field_edge_cases(
+    value,
+    expected
+):
+
     result = pySWATPlus.utils._format_val_field(value)
 
     # Check total length = 16
@@ -41,6 +45,7 @@ def test_format_val_field_edge_cases(value, expected):
 
 
 def test_compact_units():
+
     # --- empty input ---
     assert pySWATPlus.utils._compact_units([]) == []
 
