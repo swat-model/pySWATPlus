@@ -67,6 +67,21 @@ def _path_directory(
     return None
 
 
+def _empty_directory(
+    path: pathlib.Path
+) -> None:
+    '''
+    Ensure the input directory is empty.
+    '''
+
+    if any(path.iterdir()):
+        raise FileExistsError(
+            f'Input directory {str(path)} contains files; expected an empty directory'
+        )
+
+    return None
+
+
 def _date_begin_earlier_end(
     begin_date: datetime.date,
     end_date: datetime.date
@@ -290,5 +305,20 @@ def _calibration_parameters(
             raise ValueError(
                 f'Calibration parameter "{param.name}" not found in cal_parms.cal file'
             )
+
+    return None
+
+
+def _json_extension(
+    json_file: pathlib.Path
+) -> None:
+    '''
+    Validate that the file has a JSON extension.
+    '''
+
+    if json_file.suffix.lower() != '.json':
+        raise ValueError(
+            f'Expected ".json" extension for "json_file", but got "{json_file.suffix}"'
+        )
 
     return None
