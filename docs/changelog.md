@@ -23,6 +23,8 @@
     - `set_simulation_timestep`: Modifies the simulation timestep in the `time.sim` file.  
     - `set_print_interval`: Modifies the print interval in the `print.prt` file.
 
+- All SWAT+ simulations with modified parameters are now configured through the `calibration.cal` file, eliminating the need to read and modify individual input files.
+
 
 ## Version 1.1.0 (August 26, 2025)
 
