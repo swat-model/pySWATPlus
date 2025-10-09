@@ -12,7 +12,7 @@
         <link rel="prev" href="../swatplus_simulation/">
       
       
-        <link rel="next" href="../read_output/">
+        <link rel="next" href="../data_analysis/">
       
       
       <link rel="icon" href="../../assets/images/favicon.png">
@@ -20,7 +20,7 @@
     
     
       
-        <title>Sensitivity Analysis - pySWATPlus</title>
+        <title>Sensitivity Interface - pySWATPlus</title>
       
     
     
@@ -108,7 +108,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Sensitivity Analysis
+              Sensitivity Interface
             
           </span>
         </div>
@@ -400,17 +400,67 @@
         
       
       
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    Sensitivity Interface
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
       <a href="./" class="md-nav__link md-nav__link--active">
         
   
   
   <span class="md-ellipsis">
-    Sensitivity Analysis
+    Sensitivity Interface
     
   </span>
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#configuration-settings" class="md-nav__link">
+    <span class="md-ellipsis">
+      Configuration Settings
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sobol-based-interface" class="md-nav__link">
+    <span class="md-ellipsis">
+      Sobol-Based Interface
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
       
     </li>
   
@@ -424,12 +474,12 @@
   
   
     <li class="md-nav__item">
-      <a href="../read_output/" class="md-nav__link">
+      <a href="../data_analysis/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
-    Read Output
+    Data Analysis
     
   </span>
   
@@ -674,6 +724,32 @@
     
   
   
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#configuration-settings" class="md-nav__link">
+    <span class="md-ellipsis">
+      Configuration Settings
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sobol-based-interface" class="md-nav__link">
+    <span class="md-ellipsis">
+      Sobol-Based Interface
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
 </nav>
                   </div>
                 </div>
@@ -691,9 +767,9 @@
 <h1 id="sensitivity-analysis">Sensitivity Analysis</h1>
 <p>Sensitivity analysis helps quantify how variation in input parameters affects model outputs. This tutorial demonstrates how to perform sensitivity analysis on SWAT+ model parameters.<br />
 The parameter sampling is handled by the <a href="https://github.com/SALib/SALib">SALib</a> Python package using <a href="https://doi.org/10.1016/S0378-4754(00)00270-6">Sobol</a> sampling from a defined parameter space.</p>
-<ul>
-<li>
-<p><strong>Configuration Settings</strong></p>
+<h2 id="configuration-settings">Configuration Settings</h2>
+<p>Before running a sensitivity simulation, you must define the necessary configuration settings.<br />
+These settings specify key parameters such as the simulation timeline, output print options, and other essential model controls.</p>
 <div class="highlight"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">pySWATPlus</span>
 
 <span class="c1"># Initialize the project&#39;s TxtInOut folder</span>
@@ -733,20 +809,14 @@ The parameter sampling is handled by the <a href="https://github.com/SALib/SALib
         <span class="s1">&#39;channel_sd&#39;</span><span class="p">:</span> <span class="p">{}</span>
     <span class="p">}</span>  <span class="c1"># enable daily time series for &#39;channel_sd&#39;</span>
 </code></pre></div>
-</li>
-</ul>
-<hr />
-<ul>
-<li>
-<p><strong>Sobol-Based Interface</strong></p>
+<h2 id="sobol-based-interface">Sobol-Based Interface</h2>
 <p>This high-level interface builds on the above configuration to run sensitivity simulations using Sobol sampling. It includes:</p>
 <ul>
 <li>Automatic generation of Sobol samples for the parameter space  </li>
 <li>Parallel computation to speed up simulations  </li>
-<li>Output extraction with filtering options (by date, column values, etc.)  </li>
+<li>Output extraction with filtering options</li>
 <li>Structured export of results for downstream analysis  </li>
 </ul>
-<p>The results can be used to compute performance metrics, compare with observed data, and calculate Sobol indices.</p>
 <div class="highlight"><pre><span></span><code><span class="c1"># Sensitivity parameter space</span>
 <span class="n">parameters</span> <span class="o">=</span> <span class="p">[</span>
     <span class="p">{</span>
@@ -793,8 +863,6 @@ The parameter sampling is handled by the <a href="https://github.com/SALib/SALib
     <span class="p">)</span>
     <span class="nb">print</span><span class="p">(</span><span class="n">output</span><span class="p">)</span>
 </code></pre></div>
-</li>
-</ul>
 
 
 

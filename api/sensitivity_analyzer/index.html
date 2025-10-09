@@ -386,12 +386,12 @@
   
   
     <li class="md-nav__item">
-      <a href="../../userguide/sensitivity_analysis/" class="md-nav__link">
+      <a href="../../userguide/sensitivity_interface/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
-    Sensitivity Analysis
+    Sensitivity Interface
     
   </span>
   
@@ -409,12 +409,12 @@
   
   
     <li class="md-nav__item">
-      <a href="../../userguide/read_output/" class="md-nav__link">
+      <a href="../../userguide/data_analysis/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
-    Read Output
+    Data Analysis
     
   </span>
   
@@ -595,6 +595,15 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#pySWATPlus.SensitivityAnalyzer.sobol_indices" class="md-nav__link">
+    <span class="md-ellipsis">
+      sobol_indices
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -749,6 +758,15 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#pySWATPlus.SensitivityAnalyzer.sobol_indices" class="md-nav__link">
+    <span class="md-ellipsis">
+      sobol_indices
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -797,9 +815,7 @@
 
               <details class="quote">
                 <summary>Source code in <code>pySWATPlus/sensitivity_analyzer.py</code></summary>
-                <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 18</span>
-<span class="normal"> 19</span>
-<span class="normal"> 20</span>
+                <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 20</span>
 <span class="normal"> 21</span>
 <span class="normal"> 22</span>
 <span class="normal"> 23</span>
@@ -1296,7 +1312,115 @@
 <span class="normal">514</span>
 <span class="normal">515</span>
 <span class="normal">516</span>
-<span class="normal">517</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">SensitivityAnalyzer</span><span class="p">:</span>
+<span class="normal">517</span>
+<span class="normal">518</span>
+<span class="normal">519</span>
+<span class="normal">520</span>
+<span class="normal">521</span>
+<span class="normal">522</span>
+<span class="normal">523</span>
+<span class="normal">524</span>
+<span class="normal">525</span>
+<span class="normal">526</span>
+<span class="normal">527</span>
+<span class="normal">528</span>
+<span class="normal">529</span>
+<span class="normal">530</span>
+<span class="normal">531</span>
+<span class="normal">532</span>
+<span class="normal">533</span>
+<span class="normal">534</span>
+<span class="normal">535</span>
+<span class="normal">536</span>
+<span class="normal">537</span>
+<span class="normal">538</span>
+<span class="normal">539</span>
+<span class="normal">540</span>
+<span class="normal">541</span>
+<span class="normal">542</span>
+<span class="normal">543</span>
+<span class="normal">544</span>
+<span class="normal">545</span>
+<span class="normal">546</span>
+<span class="normal">547</span>
+<span class="normal">548</span>
+<span class="normal">549</span>
+<span class="normal">550</span>
+<span class="normal">551</span>
+<span class="normal">552</span>
+<span class="normal">553</span>
+<span class="normal">554</span>
+<span class="normal">555</span>
+<span class="normal">556</span>
+<span class="normal">557</span>
+<span class="normal">558</span>
+<span class="normal">559</span>
+<span class="normal">560</span>
+<span class="normal">561</span>
+<span class="normal">562</span>
+<span class="normal">563</span>
+<span class="normal">564</span>
+<span class="normal">565</span>
+<span class="normal">566</span>
+<span class="normal">567</span>
+<span class="normal">568</span>
+<span class="normal">569</span>
+<span class="normal">570</span>
+<span class="normal">571</span>
+<span class="normal">572</span>
+<span class="normal">573</span>
+<span class="normal">574</span>
+<span class="normal">575</span>
+<span class="normal">576</span>
+<span class="normal">577</span>
+<span class="normal">578</span>
+<span class="normal">579</span>
+<span class="normal">580</span>
+<span class="normal">581</span>
+<span class="normal">582</span>
+<span class="normal">583</span>
+<span class="normal">584</span>
+<span class="normal">585</span>
+<span class="normal">586</span>
+<span class="normal">587</span>
+<span class="normal">588</span>
+<span class="normal">589</span>
+<span class="normal">590</span>
+<span class="normal">591</span>
+<span class="normal">592</span>
+<span class="normal">593</span>
+<span class="normal">594</span>
+<span class="normal">595</span>
+<span class="normal">596</span>
+<span class="normal">597</span>
+<span class="normal">598</span>
+<span class="normal">599</span>
+<span class="normal">600</span>
+<span class="normal">601</span>
+<span class="normal">602</span>
+<span class="normal">603</span>
+<span class="normal">604</span>
+<span class="normal">605</span>
+<span class="normal">606</span>
+<span class="normal">607</span>
+<span class="normal">608</span>
+<span class="normal">609</span>
+<span class="normal">610</span>
+<span class="normal">611</span>
+<span class="normal">612</span>
+<span class="normal">613</span>
+<span class="normal">614</span>
+<span class="normal">615</span>
+<span class="normal">616</span>
+<span class="normal">617</span>
+<span class="normal">618</span>
+<span class="normal">619</span>
+<span class="normal">620</span>
+<span class="normal">621</span>
+<span class="normal">622</span>
+<span class="normal">623</span>
+<span class="normal">624</span>
+<span class="normal">625</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">SensitivityAnalyzer</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    Provide functionality for sensitivity analyzis.</span>
 <span class="sd">    &#39;&#39;&#39;</span>
@@ -1680,11 +1804,10 @@
             <span class="n">path</span><span class="o">=</span><span class="n">simulation_folder</span>
         <span class="p">)</span>
 
-        <span class="c1"># Check simulation_folder must be empty</span>
-        <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="n">simulation_folder</span><span class="o">.</span><span class="n">iterdir</span><span class="p">()):</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-                <span class="s1">&#39;Provided simulation_folder must be an empty directory&#39;</span>
-            <span class="p">)</span>
+        <span class="c1"># Check simulation_folder is empty</span>
+        <span class="n">validators</span><span class="o">.</span><span class="n">_empty_directory</span><span class="p">(</span>
+            <span class="n">path</span><span class="o">=</span><span class="n">simulation_folder</span>
+        <span class="p">)</span>
 
         <span class="c1"># Validate simulation_data configuration</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_validate_simulation_data_config</span><span class="p">(</span>
@@ -1796,6 +1919,113 @@
             <span class="p">)</span>
 
         <span class="k">return</span> <span class="n">simulation_output</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">sobol_indices</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">sim_file</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">,</span>
+        <span class="n">df_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">sim_col</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">obs_file</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">,</span>
+        <span class="n">date_format</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">obs_col</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">indicators</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
+        <span class="n">json_file</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span> <span class="o">|</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">typing</span><span class="o">.</span><span class="n">Any</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Compute Sobol sensitivy indices for sample scenarios obtained using</span>
+<span class="sd">        the [`simulation_by_sobol_sample`](https://swat-model.github.io/pySWATPlus/api/sensitivity_analyzer/#pySWATPlus.SensitivityAnalyzer.simulation_by_sobol_sample) method.</span>
+
+<span class="sd">        The method returns a dictionary with two keys:</span>
+
+<span class="sd">        - `problem`: The definition dictionary passed to Sobol sampling.</span>
+<span class="sd">        - `sobol_indices`: A dictionary where each key is an indicator name and the corresponding value is the computed Sobol sensitivity indices.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            sim_file (str | pathlib.Path): Path to the `sensitivity_simulation.json` file produced by `simulation_by_sobol_sample`.</span>
+
+<span class="sd">            df_name (str): Name of the `DataFrame` within `sensitivity_simulation.json` from which to compute scenario indicators.</span>
+
+<span class="sd">            sim_col (str): Name of the column in `df_name` containing simulated values.</span>
+
+<span class="sd">            obs_file (str | pathlib.Path): Path to the CSV file containing observed data. The file must include a</span>
+<span class="sd">                `date` column (used to merge simulated and observed data) and use a comma as the separator.</span>
+
+<span class="sd">            date_format (str): Date format of the `date` column in `obs_file`, used to parse `datetime.date` objects from date strings.</span>
+
+<span class="sd">            obs_col (str): Name of the column in `obs_file` containing observed data. All negative and `None` observed values are removed before analysis.</span>
+
+<span class="sd">            indicators (list[str]): List of indicators to compute Sobol indices. Available options:</span>
+
+<span class="sd">                - `NSE`: Nash–Sutcliffe Efficiency</span>
+<span class="sd">                - `KGE`: Kling–Gupta Efficiency</span>
+<span class="sd">                - `MSE`: Mean Squared Error</span>
+<span class="sd">                - `RMSE`: Root Mean Squared Error</span>
+<span class="sd">                - `PBIAS`: Percent Bias</span>
+<span class="sd">                - `MARE`: Mean Absolute Relative Error</span>
+
+<span class="sd">            json_file (str | pathlib.Path, optional): Path to a JSON file for saving the output dictionary where each key is an indicator name</span>
+<span class="sd">                and the corresponding value is the computed Sobol sensitivity indices. If `None` (default), the dictionary is not saved.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Dictionary with two keys, `problem` and `sobol_indices`, and their corresponding values.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+
+        <span class="c1"># Check input variables type</span>
+        <span class="n">validators</span><span class="o">.</span><span class="n">_variable_origin_static_type</span><span class="p">(</span>
+            <span class="n">vars_types</span><span class="o">=</span><span class="n">typing</span><span class="o">.</span><span class="n">get_type_hints</span><span class="p">(</span>
+                <span class="n">obj</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">sobol_indices</span>
+            <span class="p">),</span>
+            <span class="n">vars_values</span><span class="o">=</span><span class="nb">locals</span><span class="p">()</span>
+        <span class="p">)</span>
+
+        <span class="c1"># Problem and indicators</span>
+        <span class="n">prob_inct</span> <span class="o">=</span> <span class="n">PerformanceMetrics</span><span class="p">()</span><span class="o">.</span><span class="n">scenario_indicators</span><span class="p">(</span>
+            <span class="n">sim_file</span><span class="o">=</span><span class="n">sim_file</span><span class="p">,</span>
+            <span class="n">df_name</span><span class="o">=</span><span class="n">df_name</span><span class="p">,</span>
+            <span class="n">sim_col</span><span class="o">=</span><span class="n">sim_col</span><span class="p">,</span>
+            <span class="n">obs_file</span><span class="o">=</span><span class="n">obs_file</span><span class="p">,</span>
+            <span class="n">date_format</span><span class="o">=</span><span class="n">date_format</span><span class="p">,</span>
+            <span class="n">obs_col</span><span class="o">=</span><span class="n">obs_col</span><span class="p">,</span>
+            <span class="n">indicators</span><span class="o">=</span><span class="n">indicators</span>
+        <span class="p">)</span>
+        <span class="n">problem</span> <span class="o">=</span> <span class="n">prob_inct</span><span class="p">[</span><span class="s1">&#39;problem&#39;</span><span class="p">]</span>
+        <span class="n">indicator_df</span> <span class="o">=</span> <span class="n">prob_inct</span><span class="p">[</span><span class="s1">&#39;indicator&#39;</span><span class="p">]</span>
+
+        <span class="c1"># Sobol sensitivity indices</span>
+        <span class="n">sobol_indices</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">indicator</span> <span class="ow">in</span> <span class="n">indicators</span><span class="p">:</span>
+            <span class="c1"># Indicator sensitivity indices</span>
+            <span class="n">indicator_sensitivity</span> <span class="o">=</span> <span class="n">SALib</span><span class="o">.</span><span class="n">analyze</span><span class="o">.</span><span class="n">sobol</span><span class="o">.</span><span class="n">analyze</span><span class="p">(</span>
+                <span class="n">problem</span><span class="o">=</span><span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">problem</span><span class="p">),</span>
+                <span class="n">Y</span><span class="o">=</span><span class="n">indicator_df</span><span class="p">[</span><span class="n">indicator</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
+            <span class="p">)</span>
+            <span class="n">sobol_indices</span><span class="p">[</span><span class="n">indicator</span><span class="p">]</span> <span class="o">=</span> <span class="n">indicator_sensitivity</span>
+
+        <span class="c1"># Save the Sobol indices</span>
+        <span class="k">if</span> <span class="n">json_file</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="c1"># Raise error for invalid JSON file extension</span>
+            <span class="n">json_file</span> <span class="o">=</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="n">json_file</span><span class="p">)</span><span class="o">.</span><span class="n">resolve</span><span class="p">()</span>
+            <span class="n">validators</span><span class="o">.</span><span class="n">_json_extension</span><span class="p">(</span>
+                <span class="n">json_file</span><span class="o">=</span><span class="n">json_file</span>
+            <span class="p">)</span>
+            <span class="c1"># Modify sensitivity index to write in the JSON file</span>
+            <span class="n">copy_indices</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">sobol_indices</span><span class="p">)</span>
+            <span class="n">write_indices</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="k">for</span> <span class="n">indicator</span> <span class="ow">in</span> <span class="n">indicators</span><span class="p">:</span>
+                <span class="n">write_indices</span><span class="p">[</span><span class="n">indicator</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+                    <span class="n">k</span><span class="p">:</span> <span class="n">v</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">copy_indices</span><span class="p">[</span><span class="n">indicator</span><span class="p">]</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+                <span class="p">}</span>
+            <span class="c1"># saving output data</span>
+            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">json_file</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">output_json</span><span class="p">:</span>
+                <span class="n">json</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">write_indices</span><span class="p">,</span> <span class="n">output_json</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+
+        <span class="c1"># Output dictionary</span>
+        <span class="n">output</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;problem&#39;</span><span class="p">:</span> <span class="n">problem</span><span class="p">,</span>
+            <span class="s1">&#39;sobol_indices&#39;</span><span class="p">:</span> <span class="n">sobol_indices</span>
+        <span class="p">}</span>
+
+        <span class="k">return</span> <span class="n">output</span>
 </code></pre></div></td></tr></table></div>
               </details>
 
@@ -2143,9 +2373,7 @@ will be deleted dynamically after collecting the required data.</p>
 
             <details class="quote">
               <summary>Source code in <code>pySWATPlus/sensitivity_analyzer.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">213</span>
-<span class="normal">214</span>
-<span class="normal">215</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">215</span>
 <span class="normal">216</span>
 <span class="normal">217</span>
 <span class="normal">218</span>
@@ -2447,7 +2675,8 @@ will be deleted dynamically after collecting the required data.</p>
 <span class="normal">514</span>
 <span class="normal">515</span>
 <span class="normal">516</span>
-<span class="normal">517</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">simulation_by_sobol_sample</span><span class="p">(</span>
+<span class="normal">517</span>
+<span class="normal">518</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">simulation_by_sobol_sample</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">parameters</span><span class="p">:</span> <span class="n">BoundType</span><span class="p">,</span>
     <span class="n">sample_number</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
@@ -2636,11 +2865,10 @@ will be deleted dynamically after collecting the required data.</p>
         <span class="n">path</span><span class="o">=</span><span class="n">simulation_folder</span>
     <span class="p">)</span>
 
-    <span class="c1"># Check simulation_folder must be empty</span>
-    <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="n">simulation_folder</span><span class="o">.</span><span class="n">iterdir</span><span class="p">()):</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-            <span class="s1">&#39;Provided simulation_folder must be an empty directory&#39;</span>
-        <span class="p">)</span>
+    <span class="c1"># Check simulation_folder is empty</span>
+    <span class="n">validators</span><span class="o">.</span><span class="n">_empty_directory</span><span class="p">(</span>
+        <span class="n">path</span><span class="o">=</span><span class="n">simulation_folder</span>
+    <span class="p">)</span>
 
     <span class="c1"># Validate simulation_data configuration</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">_validate_simulation_data_config</span><span class="p">(</span>
@@ -2752,6 +2980,421 @@ will be deleted dynamically after collecting the required data.</p>
         <span class="p">)</span>
 
     <span class="k">return</span> <span class="n">simulation_output</span>
+</code></pre></div></td></tr></table></div>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="pySWATPlus.SensitivityAnalyzer.sobol_indices" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">sobol_indices</span><span class="p">(</span><span class="n">sim_file</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">,</span> <span class="n">df_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">sim_col</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">obs_file</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">,</span> <span class="n">date_format</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">obs_col</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">indicators</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">json_file</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span> <span class="o">|</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">typing</span><span class="o">.</span><span class="n">Any</span><span class="p">]</span></code>
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Compute Sobol sensitivy indices for sample scenarios obtained using
+the <a href="https://swat-model.github.io/pySWATPlus/api/sensitivity_analyzer/#pySWATPlus.SensitivityAnalyzer.simulation_by_sobol_sample"><code>simulation_by_sobol_sample</code></a> method.</p>
+<p>The method returns a dictionary with two keys:</p>
+<ul>
+<li><code>problem</code>: The definition dictionary passed to Sobol sampling.</li>
+<li><code>sobol_indices</code>: A dictionary where each key is an indicator name and the corresponding value is the computed Sobol sensitivity indices.</li>
+</ul>
+
+
+<p><span class="doc-section-title">Parameters:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+          <th>Default</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                <code>sim_file</code>
+            </td>
+            <td>
+                  <code><span title="str">str</span> | <span title="pathlib.Path">Path</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Path to the <code>sensitivity_simulation.json</code> file produced by <code>simulation_by_sobol_sample</code>.</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>df_name</code>
+            </td>
+            <td>
+                  <code><span title="str">str</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Name of the <code>DataFrame</code> within <code>sensitivity_simulation.json</code> from which to compute scenario indicators.</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>sim_col</code>
+            </td>
+            <td>
+                  <code><span title="str">str</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Name of the column in <code>df_name</code> containing simulated values.</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>obs_file</code>
+            </td>
+            <td>
+                  <code><span title="str">str</span> | <span title="pathlib.Path">Path</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Path to the CSV file containing observed data. The file must include a
+<code>date</code> column (used to merge simulated and observed data) and use a comma as the separator.</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>date_format</code>
+            </td>
+            <td>
+                  <code><span title="str">str</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Date format of the <code>date</code> column in <code>obs_file</code>, used to parse <code>datetime.date</code> objects from date strings.</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>obs_col</code>
+            </td>
+            <td>
+                  <code><span title="str">str</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Name of the column in <code>obs_file</code> containing observed data. All negative and <code>None</code> observed values are removed before analysis.</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>indicators</code>
+            </td>
+            <td>
+                  <code><span title="list">list</span>[<span title="str">str</span>]</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>List of indicators to compute Sobol indices. Available options:</p>
+<ul>
+<li><code>NSE</code>: Nash–Sutcliffe Efficiency</li>
+<li><code>KGE</code>: Kling–Gupta Efficiency</li>
+<li><code>MSE</code>: Mean Squared Error</li>
+<li><code>RMSE</code>: Root Mean Squared Error</li>
+<li><code>PBIAS</code>: Percent Bias</li>
+<li><code>MARE</code>: Mean Absolute Relative Error</li>
+</ul>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>json_file</code>
+            </td>
+            <td>
+                  <code><span title="str">str</span> | <span title="pathlib.Path">Path</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Path to a JSON file for saving the output dictionary where each key is an indicator name
+and the corresponding value is the computed Sobol sensitivity indices. If <code>None</code> (default), the dictionary is not saved.</p>
+              </div>
+            </td>
+            <td>
+                  <code>None</code>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+    <p><span class="doc-section-title">Returns:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                  <code><span title="dict">dict</span>[<span title="str">str</span>, <span title="typing.Any">Any</span>]</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Dictionary with two keys, <code>problem</code> and <code>sobol_indices</code>, and their corresponding values.</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+            <details class="quote">
+              <summary>Source code in <code>pySWATPlus/sensitivity_analyzer.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">520</span>
+<span class="normal">521</span>
+<span class="normal">522</span>
+<span class="normal">523</span>
+<span class="normal">524</span>
+<span class="normal">525</span>
+<span class="normal">526</span>
+<span class="normal">527</span>
+<span class="normal">528</span>
+<span class="normal">529</span>
+<span class="normal">530</span>
+<span class="normal">531</span>
+<span class="normal">532</span>
+<span class="normal">533</span>
+<span class="normal">534</span>
+<span class="normal">535</span>
+<span class="normal">536</span>
+<span class="normal">537</span>
+<span class="normal">538</span>
+<span class="normal">539</span>
+<span class="normal">540</span>
+<span class="normal">541</span>
+<span class="normal">542</span>
+<span class="normal">543</span>
+<span class="normal">544</span>
+<span class="normal">545</span>
+<span class="normal">546</span>
+<span class="normal">547</span>
+<span class="normal">548</span>
+<span class="normal">549</span>
+<span class="normal">550</span>
+<span class="normal">551</span>
+<span class="normal">552</span>
+<span class="normal">553</span>
+<span class="normal">554</span>
+<span class="normal">555</span>
+<span class="normal">556</span>
+<span class="normal">557</span>
+<span class="normal">558</span>
+<span class="normal">559</span>
+<span class="normal">560</span>
+<span class="normal">561</span>
+<span class="normal">562</span>
+<span class="normal">563</span>
+<span class="normal">564</span>
+<span class="normal">565</span>
+<span class="normal">566</span>
+<span class="normal">567</span>
+<span class="normal">568</span>
+<span class="normal">569</span>
+<span class="normal">570</span>
+<span class="normal">571</span>
+<span class="normal">572</span>
+<span class="normal">573</span>
+<span class="normal">574</span>
+<span class="normal">575</span>
+<span class="normal">576</span>
+<span class="normal">577</span>
+<span class="normal">578</span>
+<span class="normal">579</span>
+<span class="normal">580</span>
+<span class="normal">581</span>
+<span class="normal">582</span>
+<span class="normal">583</span>
+<span class="normal">584</span>
+<span class="normal">585</span>
+<span class="normal">586</span>
+<span class="normal">587</span>
+<span class="normal">588</span>
+<span class="normal">589</span>
+<span class="normal">590</span>
+<span class="normal">591</span>
+<span class="normal">592</span>
+<span class="normal">593</span>
+<span class="normal">594</span>
+<span class="normal">595</span>
+<span class="normal">596</span>
+<span class="normal">597</span>
+<span class="normal">598</span>
+<span class="normal">599</span>
+<span class="normal">600</span>
+<span class="normal">601</span>
+<span class="normal">602</span>
+<span class="normal">603</span>
+<span class="normal">604</span>
+<span class="normal">605</span>
+<span class="normal">606</span>
+<span class="normal">607</span>
+<span class="normal">608</span>
+<span class="normal">609</span>
+<span class="normal">610</span>
+<span class="normal">611</span>
+<span class="normal">612</span>
+<span class="normal">613</span>
+<span class="normal">614</span>
+<span class="normal">615</span>
+<span class="normal">616</span>
+<span class="normal">617</span>
+<span class="normal">618</span>
+<span class="normal">619</span>
+<span class="normal">620</span>
+<span class="normal">621</span>
+<span class="normal">622</span>
+<span class="normal">623</span>
+<span class="normal">624</span>
+<span class="normal">625</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">sobol_indices</span><span class="p">(</span>
+    <span class="bp">self</span><span class="p">,</span>
+    <span class="n">sim_file</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">,</span>
+    <span class="n">df_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">sim_col</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">obs_file</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">,</span>
+    <span class="n">date_format</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">obs_col</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">indicators</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
+    <span class="n">json_file</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span> <span class="o">|</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">typing</span><span class="o">.</span><span class="n">Any</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Compute Sobol sensitivy indices for sample scenarios obtained using</span>
+<span class="sd">    the [`simulation_by_sobol_sample`](https://swat-model.github.io/pySWATPlus/api/sensitivity_analyzer/#pySWATPlus.SensitivityAnalyzer.simulation_by_sobol_sample) method.</span>
+
+<span class="sd">    The method returns a dictionary with two keys:</span>
+
+<span class="sd">    - `problem`: The definition dictionary passed to Sobol sampling.</span>
+<span class="sd">    - `sobol_indices`: A dictionary where each key is an indicator name and the corresponding value is the computed Sobol sensitivity indices.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        sim_file (str | pathlib.Path): Path to the `sensitivity_simulation.json` file produced by `simulation_by_sobol_sample`.</span>
+
+<span class="sd">        df_name (str): Name of the `DataFrame` within `sensitivity_simulation.json` from which to compute scenario indicators.</span>
+
+<span class="sd">        sim_col (str): Name of the column in `df_name` containing simulated values.</span>
+
+<span class="sd">        obs_file (str | pathlib.Path): Path to the CSV file containing observed data. The file must include a</span>
+<span class="sd">            `date` column (used to merge simulated and observed data) and use a comma as the separator.</span>
+
+<span class="sd">        date_format (str): Date format of the `date` column in `obs_file`, used to parse `datetime.date` objects from date strings.</span>
+
+<span class="sd">        obs_col (str): Name of the column in `obs_file` containing observed data. All negative and `None` observed values are removed before analysis.</span>
+
+<span class="sd">        indicators (list[str]): List of indicators to compute Sobol indices. Available options:</span>
+
+<span class="sd">            - `NSE`: Nash–Sutcliffe Efficiency</span>
+<span class="sd">            - `KGE`: Kling–Gupta Efficiency</span>
+<span class="sd">            - `MSE`: Mean Squared Error</span>
+<span class="sd">            - `RMSE`: Root Mean Squared Error</span>
+<span class="sd">            - `PBIAS`: Percent Bias</span>
+<span class="sd">            - `MARE`: Mean Absolute Relative Error</span>
+
+<span class="sd">        json_file (str | pathlib.Path, optional): Path to a JSON file for saving the output dictionary where each key is an indicator name</span>
+<span class="sd">            and the corresponding value is the computed Sobol sensitivity indices. If `None` (default), the dictionary is not saved.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        Dictionary with two keys, `problem` and `sobol_indices`, and their corresponding values.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+
+    <span class="c1"># Check input variables type</span>
+    <span class="n">validators</span><span class="o">.</span><span class="n">_variable_origin_static_type</span><span class="p">(</span>
+        <span class="n">vars_types</span><span class="o">=</span><span class="n">typing</span><span class="o">.</span><span class="n">get_type_hints</span><span class="p">(</span>
+            <span class="n">obj</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">sobol_indices</span>
+        <span class="p">),</span>
+        <span class="n">vars_values</span><span class="o">=</span><span class="nb">locals</span><span class="p">()</span>
+    <span class="p">)</span>
+
+    <span class="c1"># Problem and indicators</span>
+    <span class="n">prob_inct</span> <span class="o">=</span> <span class="n">PerformanceMetrics</span><span class="p">()</span><span class="o">.</span><span class="n">scenario_indicators</span><span class="p">(</span>
+        <span class="n">sim_file</span><span class="o">=</span><span class="n">sim_file</span><span class="p">,</span>
+        <span class="n">df_name</span><span class="o">=</span><span class="n">df_name</span><span class="p">,</span>
+        <span class="n">sim_col</span><span class="o">=</span><span class="n">sim_col</span><span class="p">,</span>
+        <span class="n">obs_file</span><span class="o">=</span><span class="n">obs_file</span><span class="p">,</span>
+        <span class="n">date_format</span><span class="o">=</span><span class="n">date_format</span><span class="p">,</span>
+        <span class="n">obs_col</span><span class="o">=</span><span class="n">obs_col</span><span class="p">,</span>
+        <span class="n">indicators</span><span class="o">=</span><span class="n">indicators</span>
+    <span class="p">)</span>
+    <span class="n">problem</span> <span class="o">=</span> <span class="n">prob_inct</span><span class="p">[</span><span class="s1">&#39;problem&#39;</span><span class="p">]</span>
+    <span class="n">indicator_df</span> <span class="o">=</span> <span class="n">prob_inct</span><span class="p">[</span><span class="s1">&#39;indicator&#39;</span><span class="p">]</span>
+
+    <span class="c1"># Sobol sensitivity indices</span>
+    <span class="n">sobol_indices</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">for</span> <span class="n">indicator</span> <span class="ow">in</span> <span class="n">indicators</span><span class="p">:</span>
+        <span class="c1"># Indicator sensitivity indices</span>
+        <span class="n">indicator_sensitivity</span> <span class="o">=</span> <span class="n">SALib</span><span class="o">.</span><span class="n">analyze</span><span class="o">.</span><span class="n">sobol</span><span class="o">.</span><span class="n">analyze</span><span class="p">(</span>
+            <span class="n">problem</span><span class="o">=</span><span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">problem</span><span class="p">),</span>
+            <span class="n">Y</span><span class="o">=</span><span class="n">indicator_df</span><span class="p">[</span><span class="n">indicator</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
+        <span class="p">)</span>
+        <span class="n">sobol_indices</span><span class="p">[</span><span class="n">indicator</span><span class="p">]</span> <span class="o">=</span> <span class="n">indicator_sensitivity</span>
+
+    <span class="c1"># Save the Sobol indices</span>
+    <span class="k">if</span> <span class="n">json_file</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="c1"># Raise error for invalid JSON file extension</span>
+        <span class="n">json_file</span> <span class="o">=</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="n">json_file</span><span class="p">)</span><span class="o">.</span><span class="n">resolve</span><span class="p">()</span>
+        <span class="n">validators</span><span class="o">.</span><span class="n">_json_extension</span><span class="p">(</span>
+            <span class="n">json_file</span><span class="o">=</span><span class="n">json_file</span>
+        <span class="p">)</span>
+        <span class="c1"># Modify sensitivity index to write in the JSON file</span>
+        <span class="n">copy_indices</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">sobol_indices</span><span class="p">)</span>
+        <span class="n">write_indices</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">indicator</span> <span class="ow">in</span> <span class="n">indicators</span><span class="p">:</span>
+            <span class="n">write_indices</span><span class="p">[</span><span class="n">indicator</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+                <span class="n">k</span><span class="p">:</span> <span class="n">v</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">copy_indices</span><span class="p">[</span><span class="n">indicator</span><span class="p">]</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+            <span class="p">}</span>
+        <span class="c1"># saving output data</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">json_file</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">output_json</span><span class="p">:</span>
+            <span class="n">json</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">write_indices</span><span class="p">,</span> <span class="n">output_json</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+
+    <span class="c1"># Output dictionary</span>
+    <span class="n">output</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;problem&#39;</span><span class="p">:</span> <span class="n">problem</span><span class="p">,</span>
+        <span class="s1">&#39;sobol_indices&#39;</span><span class="p">:</span> <span class="n">sobol_indices</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="n">output</span>
 </code></pre></div></td></tr></table></div>
             </details>
     </div>
