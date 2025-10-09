@@ -37,8 +37,8 @@ nav:
 
   - User Guide:
     - SWAT+ Simulation: userguide/swatplus_simulation.md
-    - Sensitivity Analysis: userguide/sensitivity_analysis.md
-    - Read Output: userguide/read_output.md
+    - Sensitivity Interface: userguide/sensitivity_interface.md
+    - Data Analysis: userguide/data_analysis.md
 
   - API Reference:
     - TxtinoutReader: api/txtinout_reader.md
