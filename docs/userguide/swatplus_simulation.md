@@ -102,6 +102,15 @@ The following steps demonstrate how to configure parameters in a custom director
     )
     ```
     
+- Set output print interval within the simulation period:
+
+    ```python
+    # Set ouput print every other day  
+    target_reader.set_print_interval(
+        interval=2
+    )
+    ```
+    
 - Run the SWAT+ simulation with a modified `esco` parameter:
 
     ```python
@@ -144,7 +153,8 @@ txtinout_reader.run_swat(
     begin_date='01-Jan-2012', # optional
     end_date= '31-Dec-2016', # optional
     warmup=1,  # optional
-    print_prt_control={'channel_sd': {'daily': False}}  # optional
+    print_prt_control={'channel_sd': {'daily': False}},  # optional
+    print_interval=1  # optional
 )
 ```
 

@@ -1,5 +1,5 @@
 import typing
-import typing_extensions
+import typing_extensions  # only for Python 3.10 and will be removed in future
 import pydantic
 
 

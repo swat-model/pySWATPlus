@@ -38,6 +38,7 @@
 - Modify parameters via the `calibration.cal` file.
 - Run SWAT+ simulations.
 - Perform sensitivity analysis on model parameters using the [SALib](https://github.com/SALib/SALib) Python package, with support for parallel computation.
+- Compute performance metrics using widely adopted indicators and derive Sobol sensitivity indices.
 
 
 ## 📥 Install pySWATPlus

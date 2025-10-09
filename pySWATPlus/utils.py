@@ -1,7 +1,9 @@
 import pandas
+import datetime
+import json
+import io
 import pathlib
 import typing
-import datetime
 from collections.abc import Iterable
 from collections.abc import Callable
 from .types import ModifyDict
@@ -37,7 +39,7 @@ def _date_str_to_object(
     date_str: str
 ) -> datetime.date:
     '''
-    Convert a date string in 'YYYY-MM-DD' format to a `datetime.date` object
+    Convert a date string in 'DD-Mon-YYYY' format to a `datetime.date` object
     '''
 
     date_fmt = '%d-%b-%Y'
@@ -131,8 +133,9 @@ def _compact_units(
     Compact a 1-based list of unit IDs into SWAT units syntax.
 
     Consecutive unit IDs are represented as a range using negative numbers:
-        - Single units are listed as positive numbers.
-        - Consecutive ranges are represented as [start, -end].
+
+    - Single units are listed as positive numbers.
+    - Consecutive ranges are represented as [start, -end].
 
     All IDs must be 1-based (Fortran-style).
     '''
@@ -184,3 +187,93 @@ def _parse_conditions(
             conditions_parsed.append(f'{parameter:<19}{"=":<15} {0:<16}{key}')
 
     return conditions_parsed
+
+
+def _df_observed(
+    obs_file: pathlib.Path,
+    date_format: str,
+    obs_col: str
+) -> pandas.DataFrame:
+    '''
+    Read the CSV file specified by `obs_file`, parses the date column using the provided
+    `date_format`, and returns a `DataFrame` with two columns: `date` (as `datetime.date`)
+    and `obs_col` (the observed values).
+    '''
+
+    # DataFrame
+    obs_df = pandas.read_csv(
+        filepath_or_buffer=obs_file,
+        parse_dates=['date'],
+        date_format=date_format
+    )
+
+    # Date string to datetime.date objects
+    obs_df = obs_df[['date', obs_col]]
+    obs_df['date'] = obs_df['date'].dt.date
+
+    # Remove any negative observed data
+    obs_df = obs_df[obs_df[obs_col] >= 0].reset_index(drop=True)
+
+    return obs_df
+
+
+def _df_normalize(
+    df: pandas.DataFrame
+) -> pandas.DataFrame:
+    '''
+    Normalize the values in the input `DataFrame` using the formula `(df - min) / (max - min)`,
+    where `min` and `max` represent the minimum and maximum values of the `DataFrame`
+    prior to normalization.
+    '''
+
+    # Minimum and maximum values
+    df_min = df.min().min()
+    df_max = df.max().max()
+
+    # Normalized DataFrame
+    norm_df = (df - df_min) / (df_max - df_min)
+
+    return norm_df
+
+
+def _retrieve_sensitivity_output(
+    sim_file: pathlib.Path,
+    df_name: str,
+    add_problem: bool,
+    add_sample: bool
+) -> dict[str, typing.Any]:
+    '''
+    Retrieve sensitivity simulation data and generate a dictionary containing the following keys:
+
+    - `scenario` (default): A mapping between each scenario integer and its corresponding DataFrame.
+    - `problem` (optional): The problem definition.
+    - `sample` (optional): The sample list used in the sensitivity simulation.
+    '''
+
+    # Load sensitivity simulation dictionary from JSON file
+    with open(sim_file, 'r') as input_sim:
+        sensitivity_sim = json.load(input_sim)
+
+    # Dictionary of sample DataFrames
+    sample_dfs = {}
+    for key, val in sensitivity_sim['simulation'].items():
+        key_df = pandas.read_json(
+            path_or_buf=io.StringIO(val[df_name])
+        )
+        key_df['date'] = key_df['date'].dt.date
+        sample_dfs[int(key)] = key_df
+
+    # Default output dictionary
+    output = {
+        'scenario': sample_dfs
+    }
+
+    # Add problem definition in output
+    if add_problem:
+        output['problem'] = sensitivity_sim['problem']
+
+    # Add numpy sample array in output
+    if add_sample:
+        output['sample'] = sensitivity_sim['sample']
+
+    return output
