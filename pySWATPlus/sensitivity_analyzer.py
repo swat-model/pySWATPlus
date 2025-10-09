@@ -1,5 +1,6 @@
 import numpy
 import SALib.sample.sobol
+import SALib.analyze.sobol
 import functools
 import concurrent.futures
 import pathlib
@@ -12,6 +13,7 @@ import collections
 from .txtinout_reader import TxtinoutReader
 from .data_manager import DataManager
 from .types import BoundType, BoundDict
+from .performance_metrics import PerformanceMetrics
 from . import validators
 
 
@@ -399,11 +401,10 @@ class SensitivityAnalyzer:
             path=simulation_folder
         )
 
-        # Check simulation_folder must be empty
-        if any(simulation_folder.iterdir()):
-            raise ValueError(
-                'Provided simulation_folder must be an empty directory'
-            )
+        # Check simulation_folder is empty
+        validators._empty_directory(
+            path=simulation_folder
+        )
 
         # Validate simulation_data configuration
         self._validate_simulation_data_config(
@@ -515,3 +516,110 @@ class SensitivityAnalyzer:
             )
 
         return simulation_output
+
+    def sobol_indices(
+        self,
+        sim_file: str | pathlib.Path,
+        df_name: str,
+        sim_col: str,
+        obs_file: str | pathlib.Path,
+        date_format: str,
+        obs_col: str,
+        indicators: list[str],
+        json_file: typing.Optional[str | pathlib.Path] = None
+    ) -> dict[str, typing.Any]:
+        '''
+        Compute Sobol sensitivy indices for sample scenarios obtained using
+        the [`simulation_by_sobol_sample`](https://swat-model.github.io/pySWATPlus/api/sensitivity_analyzer/#pySWATPlus.SensitivityAnalyzer.simulation_by_sobol_sample) method.
+
+        The method returns a dictionary with two keys:
+
+        - `problem`: The definition dictionary passed to Sobol sampling.
+        - `sobol_indices`: A dictionary where each key is an indicator name and the corresponding value is the computed Sobol sensitivity indices.
+
+        Args:
+            sim_file (str | pathlib.Path): Path to the `sensitivity_simulation.json` file produced by `simulation_by_sobol_sample`.
+
+            df_name (str): Name of the `DataFrame` within `sensitivity_simulation.json` from which to compute scenario indicators.
+
+            sim_col (str): Name of the column in `df_name` containing simulated values.
+
+            obs_file (str | pathlib.Path): Path to the CSV file containing observed data. The file must include a
+                `date` column (used to merge simulated and observed data) and use a comma as the separator.
+
+            date_format (str): Date format of the `date` column in `obs_file`, used to parse `datetime.date` objects from date strings.
+
+            obs_col (str): Name of the column in `obs_file` containing observed data. All negative and `None` observed values are removed before analysis.
+
+            indicators (list[str]): List of indicators to compute Sobol indices. Available options:
+
+                - `NSE`: Nash–Sutcliffe Efficiency
+                - `KGE`: Kling–Gupta Efficiency
+                - `MSE`: Mean Squared Error
+                - `RMSE`: Root Mean Squared Error
+                - `PBIAS`: Percent Bias
+                - `MARE`: Mean Absolute Relative Error
+
+            json_file (str | pathlib.Path, optional): Path to a JSON file for saving the output dictionary where each key is an indicator name
+                and the corresponding value is the computed Sobol sensitivity indices. If `None` (default), the dictionary is not saved.
+
+        Returns:
+            Dictionary with two keys, `problem` and `sobol_indices`, and their corresponding values.
+        '''
+
+        # Check input variables type
+        validators._variable_origin_static_type(
+            vars_types=typing.get_type_hints(
+                obj=self.sobol_indices
+            ),
+            vars_values=locals()
+        )
+
+        # Problem and indicators
+        prob_inct = PerformanceMetrics().scenario_indicators(
+            sim_file=sim_file,
+            df_name=df_name,
+            sim_col=sim_col,
+            obs_file=obs_file,
+            date_format=date_format,
+            obs_col=obs_col,
+            indicators=indicators
+        )
+        problem = prob_inct['problem']
+        indicator_df = prob_inct['indicator']
+
+        # Sobol sensitivity indices
+        sobol_indices = {}
+        for indicator in indicators:
+            # Indicator sensitivity indices
+            indicator_sensitivity = SALib.analyze.sobol.analyze(
+                problem=copy.deepcopy(problem),
+                Y=indicator_df[indicator].values
+            )
+            sobol_indices[indicator] = indicator_sensitivity
+
+        # Save the Sobol indices
+        if json_file is not None:
+            # Raise error for invalid JSON file extension
+            json_file = pathlib.Path(json_file).resolve()
+            validators._json_extension(
+                json_file=json_file
+            )
+            # Modify sensitivity index to write in the JSON file
+            copy_indices = copy.deepcopy(sobol_indices)
+            write_indices = {}
+            for indicator in indicators:
+                write_indices[indicator] = {
+                    k: v.tolist() for k, v in copy_indices[indicator].items()
+                }
+            # saving output data
+            with open(json_file, 'w') as output_json:
+                json.dump(write_indices, output_json, indent=4)
+
+        # Output dictionary
+        output = {
+            'problem': problem,
+            'sobol_indices': sobol_indices
+        }
+
+        return output
