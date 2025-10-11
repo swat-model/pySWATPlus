@@ -74,7 +74,7 @@ The following steps demonstrate how to configure parameters in a custom director
 
     ```python
     # Update timeline in `time.sim` file
-    target_reader.set_begin_and_end_date(
+    target_reader.set_simulation_period(
         begin_date='01-Jan-2012',
         end_date='31-Dec-2016',
     )

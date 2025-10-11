@@ -185,7 +185,7 @@ class TxtinoutReader:
 
         return None
 
-    def set_begin_and_end_date(
+    def set_simulation_period(
         self,
         begin_date: str,
         end_date: str,
@@ -202,7 +202,7 @@ class TxtinoutReader:
         # Check input variables type
         validators._variable_origin_static_type(
             vars_types=typing.get_type_hints(
-                obj=self.set_begin_and_end_date
+                obj=self.set_simulation_period
             ),
             vars_values=locals()
         )
@@ -751,7 +751,7 @@ class TxtinoutReader:
 
         # Set simulation range time
         if begin_date is not None and end_date is not None:
-            self.set_begin_and_end_date(
+            self.set_simulation_period(
                 begin_date=begin_date,
                 end_date=end_date
             )

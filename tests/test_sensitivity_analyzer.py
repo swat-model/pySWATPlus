@@ -46,7 +46,7 @@ def test_simulation_by_sobol_sample(
             avann=True
         )
         # Set begin and end year
-        target_reader.set_begin_and_end_date(
+        target_reader.set_simulation_period(
             begin_date='01-Jan-2010',
             end_date='31-Dec-2012'
         )

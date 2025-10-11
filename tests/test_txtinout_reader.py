@@ -179,7 +179,7 @@ def test_error_enable_object_in_print_prt(
     assert exc_info.value.args[0] == 'Object "invalid_obj" not found in print.prt file; use "allow_unavailable_object=True" to proceed'
 
 
-def test_set_begin_and_end_date(
+def test_set_simulation_period(
     txtinout_reader
 ):
 
@@ -202,7 +202,7 @@ def test_set_begin_and_end_date(
 
         target_reader = pySWATPlus.TxtinoutReader(target_dir)
 
-        target_reader.set_begin_and_end_date(
+        target_reader.set_simulation_period(
             begin_date='15-Mar-2010',
             end_date='20-Oct-2012'
         )
@@ -214,7 +214,7 @@ def test_set_begin_and_end_date(
 
     # Error: begin date earlier than end date
     with pytest.raises(ValueError) as exc_info:
-        txtinout_reader.set_begin_and_end_date(
+        txtinout_reader.set_simulation_period(
             begin_date='01-Jan-2016',
             end_date='01-Jan-2012'
         )
