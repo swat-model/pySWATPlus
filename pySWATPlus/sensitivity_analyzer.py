@@ -308,7 +308,7 @@ class SensitivityAnalyzer:
                 simulation_data = {
                     'channel_sd_mon.txt': {
                         'has_units': True,
-                        'start_date': '01-Jun-2014',
+                        'begin_date': '01-Jun-2014',
                         'end_date': '01-Oct-2016',
                         'apply_filter': {'gis_id': [561], 'yr': [2015, 2016]},
                         'usecols': ['gis_id', 'flo_out']

@@ -463,33 +463,46 @@ class TxtinoutReader:
 
         return None
 
-    def set_start_date_print(
+    def set_print_period(
         self,
-        start_date: str,
+        begin_date: str,
+        end_date: str,
     ) -> None:
         '''
-        Set the start date in the `print.prt` file to define when output files begin recording simulation results.
+        Set the start and end date in the `print.prt` file to define when output files begin recording simulation results.
 
         Args:
-            start_date (str): Start date in `DD-Mon-YYYY` format (e.g., 01-Jun-2010).
+            begin_date (str): Start date in `DD-Mon-YYYY` format (e.g., 01-Jun-2010).
+            end_date (str): End date in `DD-Mon-YYYY` format (e.g., 31-Dec-2020).
         '''
 
         # Check input variables type
         validators._variable_origin_static_type(
             vars_types=typing.get_type_hints(
-                obj=self.set_start_date_print
+                obj=self.set_print_period
             ),
             vars_values=locals()
         )
 
         # Convert date string to datetime.date object
-        start_dt = utils._date_str_to_object(
-            date_str=start_date
+        begin_dt = utils._date_str_to_object(
+            date_str=begin_date
+        )
+        end_dt = utils._date_str_to_object(
+            date_str=end_date
+        )
+
+        # Check begin date is earlier than end date
+        validators._date_begin_earlier_end(
+            begin_date=begin_dt,
+            end_date=end_dt
         )
 
         # Extract years and Julian days
-        start_day = start_dt.timetuple().tm_yday
-        year_year = start_dt.year
+        start_day = begin_dt.timetuple().tm_yday
+        start_year = begin_dt.year
+        end_day = end_dt.timetuple().tm_yday
+        end_year = end_dt.year
 
         # File path of print.prt
         print_prt_path = self.root_folder / 'print.prt'
@@ -500,7 +513,7 @@ class TxtinoutReader:
 
             nth_line = 3
             columns = lines[nth_line - 1].split()
-            lines[nth_line - 1] = f"{columns[0]:<12}{start_day:<11}{year_year:<11}{columns[3]:<10}{columns[4]:<10}{columns[5]}\n"
+            lines[nth_line - 1] = f"{columns[0]:<12}{start_day:<11}{start_year:<11}{end_day:<10}{end_year:<10}{columns[5]}\n"
 
         # Modify print.prt file
         with open(print_prt_path, 'w') as file:
@@ -722,40 +735,44 @@ class TxtinoutReader:
         simulation_timestep: typing.Optional[int] = None,
         warmup: typing.Optional[int] = None,
         print_prt_control: typing.Optional[dict[str, dict[str, bool]]] = None,
-        start_date_print: typing.Optional[str] = None,
+        begin_date_print: typing.Optional[str] = None,
+        end_date_print: typing.Optional[str] = None,
         print_interval: typing.Optional[int] = None
     ) -> None:
         '''
         Set begin and end year for the simulation, the warm-up period, and toggles the elements in print.prt file
         '''
 
-        # Ensure both begin and end dates are provided together
-        if (begin_date is None) != (end_date is None):
-            raise ValueError(
-                "Both 'begin_date' and 'end_date' must be provided together, "
-                f"got begin_date={begin_date}, end_date={end_date}"
-            )
+        validators._ensure_together(begin_date=begin_date, end_date=end_date)
+        validators._ensure_together(begin_date_print=begin_date_print, end_date_print=end_date_print)
 
-        if start_date_print is not None and (begin_date is None or end_date is None):
+        # Validate dependencies between simulation and print periods
+        if (begin_date_print or end_date_print) and not (begin_date and end_date):
             raise ValueError(
-                "'start_date_print' cannot be set unless both 'begin_date' and 'end_date' are also provided. "
-                f"got start_date_print={start_date_print}, begin_date={begin_date}, end_date={end_date}"
+                "'begin_date_print'/'end_date_print' cannot be set unless "
+                "'begin_date' and 'end_date' are also provided."
             )
 
         # Validate date relationships
-        if start_date_print is not None and begin_date is not None and end_date is not None:
+        if begin_date_print and end_date_print and begin_date and end_date:
             begin_dt = utils._date_str_to_object(begin_date)
             end_dt = utils._date_str_to_object(end_date)
-            start_print_dt = utils._date_str_to_object(start_date_print)
+            start_print_dt = utils._date_str_to_object(begin_date_print)
+            end_print_dt = utils._date_str_to_object(end_date_print)
 
             validators._date_within_range(
                 date_to_check=start_print_dt,
                 begin_date=begin_dt,
                 end_date=end_dt
             )
+            validators._date_within_range(
+                date_to_check=end_print_dt,
+                begin_date=begin_dt,
+                end_date=end_dt
+            )
 
         # Set simulation range time
-        if begin_date is not None and end_date is not None:
+        if begin_date and end_date:
             self.set_simulation_period(
                 begin_date=begin_date,
                 end_date=end_date
@@ -809,9 +826,10 @@ class TxtinoutReader:
                         **key_dict
                     )
 
-        if start_date_print is not None:
-            self.set_start_date_print(
-                start_date=start_date_print
+        if begin_date_print and end_date_print:
+            self.set_print_period(
+                begin_date=begin_date_print,
+                end_date=end_date_print
             )
 
         if print_interval is not None:
@@ -871,7 +889,8 @@ class TxtinoutReader:
         simulation_timestep: typing.Optional[int] = None,
         warmup: typing.Optional[int] = None,
         print_prt_control: typing.Optional[dict[str, dict[str, bool]]] = None,
-        start_date_print: typing.Optional[str] = None,
+        begin_date_print: typing.Optional[str] = None,
+        end_date_print: typing.Optional[str] = None,
         print_interval: typing.Optional[int] = None,
         skip_validation: bool = False
     ) -> pathlib.Path:
@@ -947,7 +966,9 @@ class TxtinoutReader:
                 }
                 ```
 
-            start_date_print (str): Number of years at the beginning of the simulation to not print output
+            begin_date_print (str): The start date for printing the output
+
+            end_date_print (str): The end date for printing the output
 
             print_interval (int): Print interval within the period. For example, if interval = 2, output will be printed for every other day.
 
@@ -993,7 +1014,8 @@ class TxtinoutReader:
             simulation_timestep=simulation_timestep,
             warmup=warmup,
             print_prt_control=print_prt_control,
-            start_date_print=start_date_print,
+            begin_date_print=begin_date_print,
+            end_date_print=end_date_print,
             print_interval=print_interval
         )
 

@@ -322,3 +322,23 @@ def _json_extension(
         )
 
     return None
+
+
+def _ensure_together(**kwargs: typing.Any) -> None:
+    """
+    Ensure that either all or none of the given arguments are provided (not None).
+
+    Example:
+        _ensure_together(begin_date=begin, end_date=end)
+    """
+    total = len(kwargs)
+    provided = [name for name, value in kwargs.items() if value is not None]
+
+    # If some (but not all) values are provided → inconsistent input
+    if 0 < len(provided) < total:
+        missing = [name for name in kwargs if name not in provided]
+        all_args = ", ".join(kwargs.keys())
+        raise ValueError(
+            f"Arguments [{all_args}] must be provided together. "
+            f"Missing: {missing}, Provided: {provided}"
+        )

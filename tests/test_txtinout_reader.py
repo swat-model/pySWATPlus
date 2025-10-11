@@ -79,7 +79,8 @@ def test_run_swat(
                     'channel_sd': {'daily': False},
                     'basin_wb': {}
                 },
-                start_date_print='01-Feb-2010',
+                begin_date_print='01-Feb-2010',
+                end_date_print='31-Dec-2011',
                 print_interval=1
             )
             assert os.path.samefile(target_dir, tmp2_dir)
@@ -263,7 +264,7 @@ def test_set_simulation_timestep(
     assert 'Received invalid step: 7' in exc_info.value.args[0]
 
 
-def test_set_start_date_print(
+def test_set_print_period(
     txtinout_reader
 ):
 
@@ -280,18 +281,30 @@ def test_set_start_date_print(
         parts = original_lines[2].split()
         parts[1] = str(74)
         parts[2] = str(2010)
+        parts[3] = str(365)
+        parts[4] = str(2021)
+
         expected_line = f"{parts[0]:<12}{parts[1]:<11}{parts[2]:<11}{parts[3]:<10}{parts[4]:<10}{parts[5]}\n"
 
         target_reader = pySWATPlus.TxtinoutReader(target_dir)
 
-        target_reader.set_start_date_print(
-            start_date='15-Mar-2010'
+        target_reader.set_print_period(
+            begin_date='15-Mar-2010',
+            end_date='31-Dec-2021'
         )
 
         # Read the line in print.prt again
         with open(target_dir / 'print.prt', 'r') as f:
             lines = f.readlines()
         assert lines[2] == expected_line, f'Expected:\n{expected_line}\nGot:\n{lines[2]}'
+
+        # Error: begin date earlier than end date
+        with pytest.raises(ValueError) as exc_info:
+            target_reader.set_print_period(
+                begin_date='01-Jan-2016',
+                end_date='01-Jan-2012'
+            )
+        assert exc_info.value.args[0] == 'begin_date 01-Jan-2016 must be earlier than end_date 01-Jan-2012'
 
 
 def test_set_print_interval(
@@ -334,28 +347,54 @@ def test_error_run_swat(
         txtinout_reader.run_swat(
             begin_date='01-Jan-2010'
         )
-    assert "Both 'begin_date' and 'end_date' must be provided together" in exc_info.value.args[0]
+    assert "must be provided together" in exc_info.value.args[0]
 
     # Error: end_date set but no begin_date
     with pytest.raises(ValueError) as exc_info:
         txtinout_reader.run_swat(
             end_date='31-Dec-2013'
         )
-    assert "Both 'begin_date' and 'end_date' must be provided together" in exc_info.value.args[0]
+    assert "must be provided together" in exc_info.value.args[0]
 
-    # Error: start_date_print set without begin_date and end_date
+    # Error: begin_date_print set but no end_date_print
     with pytest.raises(ValueError) as exc_info:
         txtinout_reader.run_swat(
-            start_date_print='01-Jan-2010'
+            begin_date_print='01-Jan-2010'
         )
-    assert "'start_date_print' cannot be set unless both 'begin_date' and 'end_date'" in exc_info.value.args[0]
+    assert "must be provided together" in exc_info.value.args[0]
 
-    # Error: start_date_print out of range
+    # Error: end_date_print set but no begin_date_print
+    with pytest.raises(ValueError) as exc_info:
+        txtinout_reader.run_swat(
+            end_date_print='31-Dec-2013'
+        )
+    assert "must be provided together" in exc_info.value.args[0]
+
+    # Error: begin_date_print and end_date_print set without begin_date and end_date
+    with pytest.raises(ValueError) as exc_info:
+        txtinout_reader.run_swat(
+            begin_date_print='01-Jan-2010',
+            end_date_print='01-Jan-2011'
+        )
+    assert "'begin_date_print'/'end_date_print' cannot be set unless 'begin_date' and 'end_date' are also provided." == exc_info.value.args[0]
+
+    # Error: begin_date_print out of range
     with pytest.raises(ValueError) as exc_info:
         txtinout_reader.run_swat(
             begin_date='01-Jan-2010',
             end_date='31-Dec-2010',
-            start_date_print='31-Dec-2011'
+            begin_date_print='31-Dec-2011',
+            end_date_print='31-Dec-2012'
+        )
+    assert "must be between" in exc_info.value.args[0]
+
+    # Error: end_date_print out of range
+    with pytest.raises(ValueError) as exc_info:
+        txtinout_reader.run_swat(
+            begin_date='01-Jan-2010',
+            end_date='31-Dec-2010',
+            begin_date_print='15-Jan-2010',
+            end_date_print='31-Dec-2012'
         )
     assert "must be between" in exc_info.value.args[0]
 
