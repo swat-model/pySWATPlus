@@ -595,18 +595,18 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#pySWATPlus.TxtinoutReader.set_begin_and_end_date" class="md-nav__link">
+  <a href="#pySWATPlus.TxtinoutReader.set_print_interval" class="md-nav__link">
     <span class="md-ellipsis">
-      set_begin_and_end_date
+      set_print_interval
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#pySWATPlus.TxtinoutReader.set_print_interval" class="md-nav__link">
+  <a href="#pySWATPlus.TxtinoutReader.set_simulation_period" class="md-nav__link">
     <span class="md-ellipsis">
-      set_print_interval
+      set_simulation_period
     </span>
   </a>
   
@@ -885,18 +885,18 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#pySWATPlus.TxtinoutReader.set_begin_and_end_date" class="md-nav__link">
+  <a href="#pySWATPlus.TxtinoutReader.set_print_interval" class="md-nav__link">
     <span class="md-ellipsis">
-      set_begin_and_end_date
+      set_print_interval
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#pySWATPlus.TxtinoutReader.set_print_interval" class="md-nav__link">
+  <a href="#pySWATPlus.TxtinoutReader.set_simulation_period" class="md-nav__link">
     <span class="md-ellipsis">
-      set_print_interval
+      set_simulation_period
     </span>
   </a>
   
@@ -2172,7 +2172,7 @@ SWAT+ model files located in the <code>TxtInOut</code> folder.</p>
 
         <span class="k">return</span> <span class="kc">None</span>
 
-    <span class="k">def</span><span class="w"> </span><span class="nf">set_begin_and_end_date</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">set_simulation_period</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">begin_date</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
         <span class="n">end_date</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
@@ -2189,7 +2189,7 @@ SWAT+ model files located in the <code>TxtInOut</code> folder.</p>
         <span class="c1"># Check input variables type</span>
         <span class="n">validators</span><span class="o">.</span><span class="n">_variable_origin_static_type</span><span class="p">(</span>
             <span class="n">vars_types</span><span class="o">=</span><span class="n">typing</span><span class="o">.</span><span class="n">get_type_hints</span><span class="p">(</span>
-                <span class="n">obj</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">set_begin_and_end_date</span>
+                <span class="n">obj</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">set_simulation_period</span>
             <span class="p">),</span>
             <span class="n">vars_values</span><span class="o">=</span><span class="nb">locals</span><span class="p">()</span>
         <span class="p">)</span>
@@ -2743,7 +2743,7 @@ SWAT+ model files located in the <code>TxtInOut</code> folder.</p>
 
         <span class="c1"># Set simulation range time</span>
         <span class="k">if</span> <span class="n">begin_date</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">end_date</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">set_begin_and_end_date</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">set_simulation_period</span><span class="p">(</span>
                 <span class="n">begin_date</span><span class="o">=</span><span class="n">begin_date</span><span class="p">,</span>
                 <span class="n">end_date</span><span class="o">=</span><span class="n">end_date</span>
             <span class="p">)</span>
@@ -4438,8 +4438,133 @@ The time step keys represent:</p>
 <div class="doc doc-object doc-function">
 
 
-<h3 id="pySWATPlus.TxtinoutReader.set_begin_and_end_date" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">set_begin_and_end_date</span><span class="p">(</span><span class="n">begin_date</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">end_date</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span></code>
+<h3 id="pySWATPlus.TxtinoutReader.set_print_interval" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">set_print_interval</span><span class="p">(</span><span class="n">interval</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span></code>
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Set the print interval in the <code>print.prt</code> file.</p>
+
+
+<p><span class="doc-section-title">Parameters:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+          <th>Default</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                <code>interval</code>
+            </td>
+            <td>
+                  <code><span title="int">int</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The output print interval within the simulation period.
+For example, if <code>interval = 2</code>, output will be printed every other day.</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+            <details class="quote">
+              <summary>Source code in <code>pySWATPlus/txtinout_reader.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">429</span>
+<span class="normal">430</span>
+<span class="normal">431</span>
+<span class="normal">432</span>
+<span class="normal">433</span>
+<span class="normal">434</span>
+<span class="normal">435</span>
+<span class="normal">436</span>
+<span class="normal">437</span>
+<span class="normal">438</span>
+<span class="normal">439</span>
+<span class="normal">440</span>
+<span class="normal">441</span>
+<span class="normal">442</span>
+<span class="normal">443</span>
+<span class="normal">444</span>
+<span class="normal">445</span>
+<span class="normal">446</span>
+<span class="normal">447</span>
+<span class="normal">448</span>
+<span class="normal">449</span>
+<span class="normal">450</span>
+<span class="normal">451</span>
+<span class="normal">452</span>
+<span class="normal">453</span>
+<span class="normal">454</span>
+<span class="normal">455</span>
+<span class="normal">456</span>
+<span class="normal">457</span>
+<span class="normal">458</span>
+<span class="normal">459</span>
+<span class="normal">460</span>
+<span class="normal">461</span>
+<span class="normal">462</span>
+<span class="normal">463</span>
+<span class="normal">464</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">set_print_interval</span><span class="p">(</span>
+    <span class="bp">self</span><span class="p">,</span>
+    <span class="n">interval</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Set the print interval in the `print.prt` file.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        interval (int): The output print interval within the simulation period.</span>
+<span class="sd">            For example, if `interval = 2`, output will be printed every other day.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+
+    <span class="c1"># Check input variables type</span>
+    <span class="n">validators</span><span class="o">.</span><span class="n">_variable_origin_static_type</span><span class="p">(</span>
+        <span class="n">vars_types</span><span class="o">=</span><span class="n">typing</span><span class="o">.</span><span class="n">get_type_hints</span><span class="p">(</span>
+            <span class="n">obj</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">set_print_interval</span>
+        <span class="p">),</span>
+        <span class="n">vars_values</span><span class="o">=</span><span class="nb">locals</span><span class="p">()</span>
+    <span class="p">)</span>
+
+    <span class="c1"># File path of print.prt</span>
+    <span class="n">print_prt_path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">root_folder</span> <span class="o">/</span> <span class="s1">&#39;print.prt&#39;</span>
+
+    <span class="c1"># Open the file in read mode and read its contents</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">print_prt_path</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
+        <span class="n">lines</span> <span class="o">=</span> <span class="n">file</span><span class="o">.</span><span class="n">readlines</span><span class="p">()</span>
+
+        <span class="n">nth_line</span> <span class="o">=</span> <span class="mi">3</span>
+        <span class="n">columns</span> <span class="o">=</span> <span class="n">lines</span><span class="p">[</span><span class="n">nth_line</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+        <span class="n">lines</span><span class="p">[</span><span class="n">nth_line</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">columns</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">:</span><span class="s2">&lt;12</span><span class="si">}{</span><span class="n">columns</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">:</span><span class="s2">&lt;11</span><span class="si">}{</span><span class="n">columns</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="si">:</span><span class="s2">&lt;11</span><span class="si">}{</span><span class="n">columns</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="si">:</span><span class="s2">&lt;10</span><span class="si">}{</span><span class="n">columns</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span><span class="si">:</span><span class="s2">&lt;10</span><span class="si">}{</span><span class="n">interval</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
+
+    <span class="c1"># Modify print.prt file</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">print_prt_path</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
+        <span class="n">file</span><span class="o">.</span><span class="n">writelines</span><span class="p">(</span><span class="n">lines</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="kc">None</span>
+</code></pre></div></td></tr></table></div>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="pySWATPlus.TxtinoutReader.set_simulation_period" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">set_simulation_period</span><span class="p">(</span><span class="n">begin_date</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">end_date</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span></code>
 
 </h3>
 
@@ -4568,7 +4693,7 @@ the begin and end dates in the <code>time.sim</code> file.</p>
 <span class="normal">254</span>
 <span class="normal">255</span>
 <span class="normal">256</span>
-<span class="normal">257</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">set_begin_and_end_date</span><span class="p">(</span>
+<span class="normal">257</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">set_simulation_period</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">begin_date</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
     <span class="n">end_date</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
@@ -4585,7 +4710,7 @@ the begin and end dates in the <code>time.sim</code> file.</p>
     <span class="c1"># Check input variables type</span>
     <span class="n">validators</span><span class="o">.</span><span class="n">_variable_origin_static_type</span><span class="p">(</span>
         <span class="n">vars_types</span><span class="o">=</span><span class="n">typing</span><span class="o">.</span><span class="n">get_type_hints</span><span class="p">(</span>
-            <span class="n">obj</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">set_begin_and_end_date</span>
+            <span class="n">obj</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">set_simulation_period</span>
         <span class="p">),</span>
         <span class="n">vars_values</span><span class="o">=</span><span class="nb">locals</span><span class="p">()</span>
     <span class="p">)</span>
@@ -4635,131 +4760,6 @@ the begin and end dates in the <code>time.sim</code> file.</p>
 
     <span class="c1"># Modify time.sim file</span>
     <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">time_sim_path</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
-        <span class="n">file</span><span class="o">.</span><span class="n">writelines</span><span class="p">(</span><span class="n">lines</span><span class="p">)</span>
-
-    <span class="k">return</span> <span class="kc">None</span>
-</code></pre></div></td></tr></table></div>
-            </details>
-    </div>
-
-</div>
-
-<div class="doc doc-object doc-function">
-
-
-<h3 id="pySWATPlus.TxtinoutReader.set_print_interval" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">set_print_interval</span><span class="p">(</span><span class="n">interval</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span></code>
-
-</h3>
-
-
-    <div class="doc doc-contents ">
-
-        <p>Set the print interval in the <code>print.prt</code> file.</p>
-
-
-<p><span class="doc-section-title">Parameters:</span></p>
-    <table>
-      <thead>
-        <tr>
-          <th>Name</th>
-          <th>Type</th>
-          <th>Description</th>
-          <th>Default</th>
-        </tr>
-      </thead>
-      <tbody>
-          <tr class="doc-section-item">
-            <td>
-                <code>interval</code>
-            </td>
-            <td>
-                  <code><span title="int">int</span></code>
-            </td>
-            <td>
-              <div class="doc-md-description">
-                <p>The output print interval within the simulation period.
-For example, if <code>interval = 2</code>, output will be printed every other day.</p>
-              </div>
-            </td>
-            <td>
-                <em>required</em>
-            </td>
-          </tr>
-      </tbody>
-    </table>
-
-
-            <details class="quote">
-              <summary>Source code in <code>pySWATPlus/txtinout_reader.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">429</span>
-<span class="normal">430</span>
-<span class="normal">431</span>
-<span class="normal">432</span>
-<span class="normal">433</span>
-<span class="normal">434</span>
-<span class="normal">435</span>
-<span class="normal">436</span>
-<span class="normal">437</span>
-<span class="normal">438</span>
-<span class="normal">439</span>
-<span class="normal">440</span>
-<span class="normal">441</span>
-<span class="normal">442</span>
-<span class="normal">443</span>
-<span class="normal">444</span>
-<span class="normal">445</span>
-<span class="normal">446</span>
-<span class="normal">447</span>
-<span class="normal">448</span>
-<span class="normal">449</span>
-<span class="normal">450</span>
-<span class="normal">451</span>
-<span class="normal">452</span>
-<span class="normal">453</span>
-<span class="normal">454</span>
-<span class="normal">455</span>
-<span class="normal">456</span>
-<span class="normal">457</span>
-<span class="normal">458</span>
-<span class="normal">459</span>
-<span class="normal">460</span>
-<span class="normal">461</span>
-<span class="normal">462</span>
-<span class="normal">463</span>
-<span class="normal">464</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">set_print_interval</span><span class="p">(</span>
-    <span class="bp">self</span><span class="p">,</span>
-    <span class="n">interval</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">    Set the print interval in the `print.prt` file.</span>
-
-<span class="sd">    Args:</span>
-<span class="sd">        interval (int): The output print interval within the simulation period.</span>
-<span class="sd">            For example, if `interval = 2`, output will be printed every other day.</span>
-<span class="sd">    &#39;&#39;&#39;</span>
-
-    <span class="c1"># Check input variables type</span>
-    <span class="n">validators</span><span class="o">.</span><span class="n">_variable_origin_static_type</span><span class="p">(</span>
-        <span class="n">vars_types</span><span class="o">=</span><span class="n">typing</span><span class="o">.</span><span class="n">get_type_hints</span><span class="p">(</span>
-            <span class="n">obj</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">set_print_interval</span>
-        <span class="p">),</span>
-        <span class="n">vars_values</span><span class="o">=</span><span class="nb">locals</span><span class="p">()</span>
-    <span class="p">)</span>
-
-    <span class="c1"># File path of print.prt</span>
-    <span class="n">print_prt_path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">root_folder</span> <span class="o">/</span> <span class="s1">&#39;print.prt&#39;</span>
-
-    <span class="c1"># Open the file in read mode and read its contents</span>
-    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">print_prt_path</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
-        <span class="n">lines</span> <span class="o">=</span> <span class="n">file</span><span class="o">.</span><span class="n">readlines</span><span class="p">()</span>
-
-        <span class="n">nth_line</span> <span class="o">=</span> <span class="mi">3</span>
-        <span class="n">columns</span> <span class="o">=</span> <span class="n">lines</span><span class="p">[</span><span class="n">nth_line</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
-        <span class="n">lines</span><span class="p">[</span><span class="n">nth_line</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">columns</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">:</span><span class="s2">&lt;12</span><span class="si">}{</span><span class="n">columns</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">:</span><span class="s2">&lt;11</span><span class="si">}{</span><span class="n">columns</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="si">:</span><span class="s2">&lt;11</span><span class="si">}{</span><span class="n">columns</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="si">:</span><span class="s2">&lt;10</span><span class="si">}{</span><span class="n">columns</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span><span class="si">:</span><span class="s2">&lt;10</span><span class="si">}{</span><span class="n">interval</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
-
-    <span class="c1"># Modify print.prt file</span>
-    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">print_prt_path</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
         <span class="n">file</span><span class="o">.</span><span class="n">writelines</span><span class="p">(</span><span class="n">lines</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="kc">None</span>
