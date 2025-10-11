@@ -11,11 +11,11 @@ def txtinout_reader():
     txtinout_folder = os.path.join(os.path.dirname(__file__), 'TxtInOut')
 
     # initialize TxtinoutReader class
-    txtinout_reader = pySWATPlus.TxtinoutReader(
+    output = pySWATPlus.TxtinoutReader(
         path=txtinout_folder
     )
 
-    yield txtinout_reader
+    yield output
 
 
 def test_calibration_parameters(

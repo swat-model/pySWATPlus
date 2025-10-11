@@ -13,11 +13,11 @@ def txtinout_reader():
     txtinout_folder = os.path.join(os.path.dirname(__file__), 'TxtInOut')
 
     # initialize TxtinoutReader class
-    txtinout_reader = pySWATPlus.TxtinoutReader(
+    output = pySWATPlus.TxtinoutReader(
         path=txtinout_folder
     )
 
-    yield txtinout_reader
+    yield output
 
 
 def test_run_swat(
@@ -73,11 +73,14 @@ def test_run_swat(
                 target_dir=tmp2_dir,
                 begin_date='01-Jan-2010',
                 end_date='01-Jan-2012',
+                simulation_timestep=0,
                 warmup=1,
                 print_prt_control={
                     'channel_sd': {'daily': False},
                     'basin_wb': {}
-                }
+                },
+                start_date_print='01-Feb-2010',
+                print_interval=1
             )
             assert os.path.samefile(target_dir, tmp2_dir)
 
@@ -221,7 +224,7 @@ def test_set_simulation_period(
     assert exc_info.value.args[0] == 'begin_date 01-Jan-2016 must be earlier than end_date 01-Jan-2012'
 
 
-def set_simulation_timestep(
+def test_set_simulation_timestep(
     txtinout_reader
 ):
 
@@ -253,18 +256,11 @@ def set_simulation_timestep(
         assert lines[2] == expected_line, f"Expected:\n{expected_line}\nGot:\n{lines[2]}"
 
     # Error: step is invalid
-    valid_steps = {
-        0: '1 day',
-        1: '12 hours',
-        24: '1 hour',
-        96: '15 minutes',
-        1440: '1 minute',
-    }
     with pytest.raises(ValueError) as exc_info:
         txtinout_reader.set_simulation_timestep(
             step=7
         )
-    assert exc_info.value.args[0] == f'Received invalid step: 7; must be one of the keys in {valid_steps}'
+    assert 'Received invalid step: 7' in exc_info.value.args[0]
 
 
 def test_set_start_date_print(

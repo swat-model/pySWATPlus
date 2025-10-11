@@ -24,7 +24,7 @@ class TxtinoutReader:
         Create a TxtinoutReader instance for accessing SWAT+ model files.
 
         Args:
-            path (str or Path): Path to the `TxtInOut` folder, which must contain
+            path (str | pathlib.Path): Path to the `TxtInOut` folder, which must contain
                 exactly one SWAT+ executable `.exe` file.
         '''
 
@@ -84,7 +84,7 @@ class TxtinoutReader:
             generated even when disabled.
 
         Args:
-            obj (str or None): The name of the object to update (e.g., 'channel_sd', 'reservoir').
+            obj (str | None): The name of the object to update (e.g., 'channel_sd', 'reservoir').
                 If `None`, all objects in the `print.prt` file are updated with the specified time frequency settings.
             daily (bool): If `True`, enable daily frequency output.
             monthly (bool): If `True`, enable monthly frequency output.
@@ -431,7 +431,11 @@ class TxtinoutReader:
         interval: int,
     ) -> None:
         '''
-        Set interval in print.prt file
+        Set the print interval in the `print.prt` file.
+
+        Args:
+            interval (int): The output print interval within the simulation period.
+                For example, if `interval = 2`, output will be printed every other day.
         '''
 
         # Check input variables type
@@ -464,7 +468,10 @@ class TxtinoutReader:
         start_date: str,
     ) -> None:
         '''
-        Set day_start in print.prt file
+        Set the start date in the `print.prt` file to define when output files begin recording simulation results.
+
+        Args:
+            start_date (str): Start date in `DD-Mon-YYYY` format (e.g., 01-Jun-2010).
         '''
 
         # Check input variables type
@@ -510,7 +517,7 @@ class TxtinoutReader:
         `TxtinoutReader` instance to the specified directory for SWAT+ simulation.
 
         Args:
-            target_dir (str or Path): Path to the empty directory where the required files will be copied.
+            target_dir (str | pathlib.Path): Path to the empty directory where the required files will be copied.
 
         Returns:
             The path to the target directory containing the copied files.
@@ -532,11 +539,10 @@ class TxtinoutReader:
             path=target_dir
         )
 
-        # Check targe_dir is empty
-        if any(target_dir.iterdir()):
-            raise FileExistsError(
-                f'Input target_dir {str(target_dir)} contains files; expected an empty directory'
-            )
+        # Check target_dir is empty
+        validators._empty_directory(
+            path=target_dir
+        )
 
         # Ignored files
         _ignored_files_endswith = tuple(
@@ -717,8 +723,7 @@ class TxtinoutReader:
         warmup: typing.Optional[int] = None,
         print_prt_control: typing.Optional[dict[str, dict[str, bool]]] = None,
         start_date_print: typing.Optional[str] = None,
-        print_interval: int = 1,
-
+        print_interval: typing.Optional[int] = None
     ) -> None:
         '''
         Set begin and end year for the simulation, the warm-up period, and toggles the elements in print.prt file
@@ -867,14 +872,14 @@ class TxtinoutReader:
         warmup: typing.Optional[int] = None,
         print_prt_control: typing.Optional[dict[str, dict[str, bool]]] = None,
         start_date_print: typing.Optional[str] = None,
-        print_interval: int = 1,
+        print_interval: typing.Optional[int] = None,
         skip_validation: bool = False
     ) -> pathlib.Path:
         '''
         Run the SWAT+ simulation with optional parameter changes.
 
         Args:
-            target_dir (str or pathlib.Path): Path to the directory where the simulation will be done.
+            target_dir (str | pathlib.Path): Path to the directory where the simulation will be done.
                 If None, the simulation runs directly in the current folder.
 
             parameters (ModifyType): List of dictionaries specifying parameter changes in the `calibration.cal` file.
@@ -944,8 +949,7 @@ class TxtinoutReader:
 
             start_date_print (str): Number of years at the beginning of the simulation to not print output
 
-            print_interval (int): Print interval within the period.
-                Example: If interval = 2, output will be printed for every other day.
+            print_interval (int): Print interval within the period. For example, if interval = 2, output will be printed for every other day.
 
             skip_validation (bool): If `True`, skip validation of units and conditions in parameter changes.
 
@@ -990,7 +994,7 @@ class TxtinoutReader:
             warmup=warmup,
             print_prt_control=print_prt_control,
             start_date_print=start_date_print,
-            print_interval=print_interval,
+            print_interval=print_interval
         )
 
         # Create calibration.cal file

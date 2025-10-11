@@ -46,7 +46,7 @@ packages = ["pySWATPlus"]
 
 
 [tool.pytest.ini_options]
-addopts = "-rA -Wignore::DeprecationWarning --cov=pySWATPlus --cov-report=html:cov_pySWATPlus --cov-report=term -s"
+addopts = "-rA -Wignore::Warning --cov=pySWATPlus --cov-report=html:cov_pySWATPlus --cov-report=term -s"
 testpaths = [
     "tests"
 ]

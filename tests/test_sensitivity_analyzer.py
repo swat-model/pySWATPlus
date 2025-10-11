@@ -1,5 +1,4 @@
 import os
-import shutil
 import pySWATPlus
 import pytest
 import tempfile
@@ -8,14 +7,24 @@ import tempfile
 @pytest.fixture(scope='class')
 def sensitivity_analyzer():
 
-    # initialize TxtinoutReader class
-    sensitivity_analyzer = pySWATPlus.SensitivityAnalyzer()
+    # initialize SensitivityAnalyzer class
+    output = pySWATPlus.SensitivityAnalyzer()
 
-    yield sensitivity_analyzer
+    yield output
+
+
+@pytest.fixture(scope='class')
+def performance_metrics():
+
+    # initialize PerformanceMetrics class
+    output = pySWATPlus.PerformanceMetrics()
+
+    yield output
 
 
 def test_simulation_by_sobol_sample(
-    sensitivity_analyzer
+    sensitivity_analyzer,
+    performance_metrics
 ):
 
     # set up TxtInOut folder path
@@ -25,6 +34,25 @@ def test_simulation_by_sobol_sample(
     txtinout_reader = pySWATPlus.TxtinoutReader(
         path=txtinout_folder
     )
+
+    # Sensitivity parameters
+    parameters = [
+        {
+            'name': 'perco',
+            'change_type': 'absval',
+            'lower_bound': 0,
+            'upper_bound': 1
+        }
+    ]
+    # Target data from sensitivity simulation
+    simulation_data = {
+        'channel_sd_mon.txt': {
+            'has_units': True,
+            'ref_day': 1,
+            'apply_filter': {'name': ['cha561']},
+            'usecols': ['gis_id', 'flo_out']
+        }
+    }
 
     with tempfile.TemporaryDirectory() as tmp1_dir:
         # Copy required files to a target directory
@@ -54,32 +82,7 @@ def test_simulation_by_sobol_sample(
         target_reader.set_warmup_year(
             warmup=1
         )
-        # Sensitivity parameters
-        parameters = [
-            {
-                'name': 'perco',
-                'change_type': 'absval',
-                'lower_bound': 0,
-                'upper_bound': 1
-            }
-        ]
-        # Target data from sensitivity simulation
-        simulation_data = {
-            'channel_sdmorph_mon.txt': {
-                'has_units': True,
-                'ref_day': 15,
-                'apply_filter': {'gis_id': [561]},
-                'usecols': ['gis_id', 'flo_out']
-            },
-            'channel_sd_yr.txt': {
-                'has_units': True,
-                'begin_date': '01-Jun-2011',
-                'ref_day': 15,
-                'ref_month': 6,
-                'apply_filter': {'name': ['cha561'], 'yr': [2012]},
-                'usecols': ['gis_id', 'flo_out']
-            }
-        }
+
         # Pass: sensitivity simulation by Sobol sample
         with tempfile.TemporaryDirectory() as tmp2_dir:
             output = sensitivity_analyzer.simulation_by_sobol_sample(
@@ -105,104 +108,151 @@ def test_simulation_by_sobol_sample(
             assert isinstance(output['simulation'], dict)
             assert len(output['simulation']) == 8
 
+            # Pass: read sensitive DataFrame of scenarios
+            output = pySWATPlus.DataManager().read_sensitive_dfs(
+                sim_file=os.path.join(tmp2_dir, 'sensitivity_simulation.json'),
+                df_name='channel_sd_mon_df',
+                add_problem=True,
+                add_sample=True
+            )
+            assert isinstance(output, dict)
+            assert len(output) == 3
+            assert len(output['scenario']) == 8
+            assert len(output['sample']) == 8
 
-def test_error_simulation_by_sobol_sample(
+            # Indicator list
+            indicators = list(performance_metrics.indicator_names.keys())
+
+            # Pass: indicator values
+            output = performance_metrics.scenario_indicators(
+                sim_file=os.path.join(tmp2_dir, 'sensitivity_simulation.json'),
+                df_name='channel_sd_mon_df',
+                sim_col='flo_out',
+                obs_file=os.path.join(txtinout_folder, 'a_observe_discharge_monthly.csv'),
+                date_format='%Y-%m-%d',
+                obs_col='mean',
+                indicators=indicators,
+                json_file=os.path.join(tmp2_dir, 'indicators.json')
+            )
+            assert isinstance(output, dict)
+            assert len(output) == 2
+            assert len(output['indicator']) == 8
+
+            # Pass: Sobol sensitivity indices
+            output = sensitivity_analyzer.sobol_indices(
+                sim_file=os.path.join(tmp2_dir, 'sensitivity_simulation.json'),
+                df_name='channel_sd_mon_df',
+                sim_col='flo_out',
+                obs_file=os.path.join(txtinout_folder, 'a_observe_discharge_monthly.csv'),
+                date_format='%Y-%m-%d',
+                obs_col='mean',
+                indicators=indicators,
+                json_file=os.path.join(tmp2_dir, 'sobol_indices.json')
+            )
+            assert isinstance(output, dict)
+            assert len(output) == 2
+            sobol_indices = output['sobol_indices']
+            assert isinstance(sobol_indices, dict)
+            assert len(sobol_indices) == 6
+            assert all([isinstance(sobol_indices[i]['S1'][0], float) for i in indicators])
+
+        with tempfile.TemporaryDirectory() as tmp_dir:
+            # Error: invalid simulation_data type
+            with pytest.raises(Exception) as exc_info:
+                sensitivity_analyzer.simulation_by_sobol_sample(
+                    parameters=parameters,
+                    sample_number=1,
+                    simulation_folder=tmp_dir,
+                    txtinout_folder=txtinout_folder,
+                    simulation_data=[]
+                )
+            assert exc_info.value.args[0] == 'Expected "simulation_data" to be "dict", but got type "list"'
+            # Error: invalid data type of value for key in simulation_data
+            with pytest.raises(Exception) as exc_info:
+                sensitivity_analyzer.simulation_by_sobol_sample(
+                    parameters=parameters,
+                    sample_number=1,
+                    simulation_folder=tmp_dir,
+                    txtinout_folder=txtinout_folder,
+                    simulation_data={
+                        'channel_sd_yr.txt': []
+                    }
+                )
+            assert exc_info.value.args[0] == 'Expected "channel_sd_yr.txt" in simulation_date must be a dictionary, but got type "list"'
+            # Error: missing has_units subkey for key in simulation_data
+            with pytest.raises(Exception) as exc_info:
+                sensitivity_analyzer.simulation_by_sobol_sample(
+                    parameters=parameters,
+                    sample_number=1,
+                    simulation_folder=tmp_dir,
+                    txtinout_folder=txtinout_folder,
+                    simulation_data={
+                        'channel_sd_yr.txt': {}
+                    }
+                )
+            assert exc_info.value.args[0] == 'Key has_units is missing for "channel_sd_yr.txt" in simulation_data'
+            # Error: invalid sub_key for key in simulation_data
+            with pytest.raises(Exception) as exc_info:
+                sensitivity_analyzer.simulation_by_sobol_sample(
+                    parameters=parameters,
+                    sample_number=1,
+                    simulation_folder=tmp_dir,
+                    txtinout_folder=txtinout_folder,
+                    simulation_data={
+                        'channel_sd_yr.txt': {
+                            'has_units': True,
+                            'begin_datee': None
+                        }
+                    }
+                )
+            assert 'Invalid key "begin_datee" for "channel_sd_yr.txt" in simulation_data' in exc_info.value.args[0]
+
+
+def test_error_scenario_indicators(
+    performance_metrics
+):
+
+    # Error: invalid indicator name
+    with pytest.raises(Exception) as exc_info:
+        performance_metrics.scenario_indicators(
+            sim_file='sensitivity_simulation.json',
+            df_name='channel_sd_mon_df',
+            sim_col='flo_out',
+            obs_file='a_observe_discharge_monthly.csv',
+            date_format='%Y-%m-%d',
+            obs_col='mean',
+            indicators=['NSEE']
+        )
+    assert 'Invalid name "NSEE" in "indicatiors" list' in exc_info.value.args[0]
+
+
+def test_create_sobol_problem(
     sensitivity_analyzer
 ):
 
-    # set up TxtInOut folder path
-    txtinout_folder = os.path.join(os.path.dirname(__file__), 'TxtInOut')
-    # Sensitivity parameters
     parameters = [
         {
             'name': 'perco',
+            'change_type': 'absval',
+            'lower_bound': 0,
+            'upper_bound': 1
+        },
+        {
+            'name': 'perco',
+            'change_type': 'absval',
             'lower_bound': 0,
             'upper_bound': 1,
-            'change_type': 'absval'
+            'units': [1, 2, 3]
         }
     ]
 
-    # Sensitivity simulation_data dictionary to extract data
-    simulation_data = {
-        'channel_sd_yr.txt': {
-            'has_units': True,
-            'apply_filter': {'name': ['cha561'], 'yr': [2012]},
-            'usecols': ['gis_id', 'flo_out']
-        }
-    }
+    params_bounds = [
+        pySWATPlus.types.BoundDict(**param) for param in parameters
+    ]
 
-    # Error: non-empty simulation folder path
-    with tempfile.TemporaryDirectory() as tmp_dir:
-        shutil.copy2(
-            src=os.path.join(txtinout_folder, 'topography.hyd'),
-            dst=os.path.join(tmp_dir, 'topography.hyd')
-        )
-        with pytest.raises(Exception) as exc_info:
-            sensitivity_analyzer.simulation_by_sobol_sample(
-                parameters=parameters,
-                sample_number=1,
-                simulation_folder=tmp_dir,
-                txtinout_folder=txtinout_folder,
-                simulation_data=simulation_data
-            )
-        assert exc_info.value.args[0] == 'Provided simulation_folder must be an empty directory'
+    output = sensitivity_analyzer._create_sobol_problem(
+        params_bounds=params_bounds
+    )
 
-    with tempfile.TemporaryDirectory() as tmp_dir:
-        # Error: invalid simulation_data type
-        with pytest.raises(Exception) as exc_info:
-            sensitivity_analyzer.simulation_by_sobol_sample(
-                parameters=parameters,
-                sample_number=1,
-                simulation_folder=tmp_dir,
-                txtinout_folder=txtinout_folder,
-                simulation_data=[]
-            )
-        assert exc_info.value.args[0] == 'Expected "simulation_data" to be "dict", but got type "list"'
-        # Error: invalid data type of value for key in simulation_data
-        with pytest.raises(Exception) as exc_info:
-            sensitivity_analyzer.simulation_by_sobol_sample(
-                parameters=parameters,
-                sample_number=1,
-                simulation_folder=tmp_dir,
-                txtinout_folder=txtinout_folder,
-                simulation_data={
-                    'channel_sd_yr.txt': []
-                }
-            )
-        assert exc_info.value.args[0] == 'Expected "channel_sd_yr.txt" in simulation_date must be a dictionary, but got type "list"'
-        # Error: missing has_units subkey for key in simulation_data
-        with pytest.raises(Exception) as exc_info:
-            sensitivity_analyzer.simulation_by_sobol_sample(
-                parameters=parameters,
-                sample_number=1,
-                simulation_folder=tmp_dir,
-                txtinout_folder=txtinout_folder,
-                simulation_data={
-                    'channel_sd_yr.txt': {}
-                }
-            )
-        assert exc_info.value.args[0] == 'Key has_units is missing for "channel_sd_yr.txt" in simulation_data'
-        # Error: invalid sub_key for key in simulation_data
-        valid_subkeys = [
-            'has_units',
-            'begin_date',
-            'end_date',
-            'ref_day',
-            'ref_month',
-            'apply_filter',
-            'usecols'
-        ]
-        with pytest.raises(Exception) as exc_info:
-            sensitivity_analyzer.simulation_by_sobol_sample(
-                parameters=parameters,
-                sample_number=1,
-                simulation_folder=tmp_dir,
-                txtinout_folder=txtinout_folder,
-                simulation_data={
-                    'channel_sd_yr.txt': {
-                        'has_units': True,
-                        'begin_datee': None
-                    }
-                }
-            )
-        assert exc_info.value.args[0] == f'Invalid key "begin_datee" for "channel_sd_yr.txt" in simulation_data; expected subkeys are {valid_subkeys}'
+    assert output['names'][0] == 'perco|1'
+    assert output['names'][1] == 'perco|2'
