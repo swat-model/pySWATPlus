@@ -48,6 +48,14 @@ class PerformanceMetrics:
             obs_col (str): Name of the column containing observed values.
         '''
 
+        # Check input variables type
+        validators._variable_origin_static_type(
+            vars_types=typing.get_type_hints(
+                obj=self.compute_nse
+            ),
+            vars_values=locals()
+        )
+
         # Simulation values
         sim_arr = df[sim_col].astype(float)
 
@@ -79,6 +87,14 @@ class PerformanceMetrics:
             obs_col (str): Name of the column containing observed values.
         '''
 
+        # Check input variables type
+        validators._variable_origin_static_type(
+            vars_types=typing.get_type_hints(
+                obj=self.compute_kge
+            ),
+            vars_values=locals()
+        )
+
         # Simulation values
         sim_arr = df[sim_col].astype(float)
 
@@ -106,7 +122,7 @@ class PerformanceMetrics:
         obs_col: str
     ) -> float:
         '''
-        Calculate the Mean Squared Error metric between simulated and observed values
+        Calculate the `Mean Squared Error` metric between simulated and observed values
 
         Args:
             df (pandas.DataFrame): DataFrame containing at least two columns with simulated and observed values.
@@ -115,6 +131,14 @@ class PerformanceMetrics:
 
             obs_col (str): Name of the column containing observed values.
         '''
+
+        # Check input variables type
+        validators._variable_origin_static_type(
+            vars_types=typing.get_type_hints(
+                obj=self.compute_mse
+            ),
+            vars_values=locals()
+        )
 
         # Simulation values
         sim_arr = df[sim_col].astype(float)
@@ -134,7 +158,7 @@ class PerformanceMetrics:
         obs_col: str
     ) -> float:
         '''
-        Calculate the Root Mean Squared Error metric between simulated and observed values.
+        Calculate the `Root Mean Squared Error` metric between simulated and observed values.
 
         Args:
             df (pandas.DataFrame): DataFrame containing at least two columns with simulated and observed values.
@@ -143,6 +167,14 @@ class PerformanceMetrics:
 
             obs_col (str): Name of the column containing observed values.
         '''
+
+        # Check input variables type
+        validators._variable_origin_static_type(
+            vars_types=typing.get_type_hints(
+                obj=self.compute_rmse
+            ),
+            vars_values=locals()
+        )
 
         # computer MSE error
         mse_value = self.compute_mse(
@@ -163,7 +195,7 @@ class PerformanceMetrics:
         obs_col: str
     ) -> float:
         '''
-        Calculate the Percent Bias metric between simulated and observed values.
+        Calculate the `Percent Bias` metric between simulated and observed values.
 
         Args:
             df (pandas.DataFrame): DataFrame containing at least two columns with simulated and observed values.
@@ -172,6 +204,14 @@ class PerformanceMetrics:
 
             obs_col (str): Name of the column containing observed values.
         '''
+
+        # Check input variables type
+        validators._variable_origin_static_type(
+            vars_types=typing.get_type_hints(
+                obj=self.compute_pbias
+            ),
+            vars_values=locals()
+        )
 
         # Simulation values
         sim_arr = df[sim_col].astype(float)
@@ -191,7 +231,7 @@ class PerformanceMetrics:
         obs_col: str
     ) -> float:
         '''
-        Calculate the Mean Absolute Relative Error metric between simulated and observed values
+        Calculate the `Mean Absolute Relative Error` metric between simulated and observed values
 
         Args:
             df (pandas.DataFrame): DataFrame containing at least two columns with simulated and observed values.
@@ -200,6 +240,14 @@ class PerformanceMetrics:
 
             obs_col (str): Name of the column containing observed values.
         '''
+
+        # Check input variables type
+        validators._variable_origin_static_type(
+            vars_types=typing.get_type_hints(
+                obj=self.compute_mare
+            ),
+            vars_values=locals()
+        )
 
         # Simulation values
         sim_arr = df[sim_col].astype(float)
@@ -214,7 +262,7 @@ class PerformanceMetrics:
 
     def scenario_indicators(
         self,
-        sim_file: str | pathlib.Path,
+        sensim_file: str | pathlib.Path,
         df_name: str,
         sim_col: str,
         obs_file: str | pathlib.Path,
@@ -224,20 +272,20 @@ class PerformanceMetrics:
         json_file: typing.Optional[str | pathlib.Path] = None
     ) -> dict[str, typing.Any]:
         '''
-        Compute performance indicators for sample scenarios obtained using
-        the [`simulation_by_sobol_sample`](https://swat-model.github.io/pySWATPlus/api/sensitivity_analyzer/#pySWATPlus.SensitivityAnalyzer.simulation_by_sobol_sample) method.
+        Compute performance indicators for sample scenarios obtained using the method
+        [`simulation_by_sample_parameters`](https://swat-model.github.io/pySWATPlus/api/sensitivity_analyzer/#pySWATPlus.SensitivityAnalyzer.simulation_by_sample_parameters).
 
         Before computing the indicators, simulated and observed values are normalized using the formula `(v - min_v) / (max_v - min_v)`,
         where `min_v` and `max_v` represent the minimum and maximum of all simulated and observed values combined.
 
         The method returns a dictionary with two keys:
 
-        - `problem`: The definition dictionary passed to Sobol sampling.
+        - `problem`: The definition dictionary passed to sampling.
         - `indicator`: A `DataFrame` containing the `Scenario` column and one column per indicator,
           with scenario indices and corresponding indicator values.
 
         Args:
-            sim_file (str | pathlib.Path): Path to the `sensitivity_simulation.json` file produced by `simulation_by_sobol_sample`.
+            sensim_file (str | pathlib.Path): Path to the `sensitivity_simulation.json` file produced by `simulation_by_sobol_sample`.
 
             df_name (str): Name of the `DataFrame` within `sensitivity_simulation.json` from which to compute scenario indicators.
 
@@ -284,7 +332,7 @@ class PerformanceMetrics:
                 )
 
         # Observed DataFrame
-        obs_df = utils._df_observed(
+        obs_df = utils._df_observe(
             obs_file=pathlib.Path(obs_file).resolve(),
             date_format=date_format,
             obs_col=obs_col
@@ -293,7 +341,7 @@ class PerformanceMetrics:
 
         # Retrieve sensitivity output
         sensitivity_sim = utils._retrieve_sensitivity_output(
-            sim_file=pathlib.Path(sim_file).resolve(),
+            sensim_file=pathlib.Path(sensim_file).resolve(),
             df_name=df_name,
             add_problem=True,
             add_sample=False

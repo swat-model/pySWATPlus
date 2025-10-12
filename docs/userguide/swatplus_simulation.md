@@ -12,10 +12,10 @@ Once the `TxtInOut` folder is properly configured with the necessary input files
 import pySWATPlus
 
 # Replace this with the path to your project's TxtInOut folder
-txtinout_folder = r"C:\Users\Username\project\Scenarios\Default\TxtInOut"
+txtinout_dir = r"C:\Users\Username\project\Scenarios\Default\TxtInOut"
 
 txtinout_reader = pySWATPlus.TxtinoutReader(
-    path=txtinout_folder
+    tio_dir=txtinout_dir
 )
 ```
 
@@ -42,26 +42,26 @@ To keep your original `TxtInOut` folder unchanged, it is recommended to run `SWA
 
     ```python
     # Replace this with your desired empty custom directory
-    target_dir = r"C:\Users\Username\custom_folder" 
+    sim_dir = r"C:\Users\Username\custom_folder" 
 
     # Ensure the required files are copied to the custom directory
     txtinout_reader.copy_required_files(
-        target_dir=target_dir
+        sim_dir=sim_dir
     )
     ```
 
 - Initialize `TxtinoutReader` class for the custom directory
 
     ```python
-    target_reader = pySWATPlus.TxtinoutReader(
-        path=target_dir
+    sim_reader = pySWATPlus.TxtinoutReader(
+        tio_dir=sim_dir
     )
     ```
     
 - Run simulation
 
     ```python
-    target_reader.run_swat()
+    sim_reader.run_swat()
     ```
 
 ## Step-wise Configurations and Simulations
@@ -74,9 +74,9 @@ The following steps demonstrate how to configure parameters in a custom director
 
     ```python
     # Update timeline in `time.sim` file
-    target_reader.set_simulation_period(
+    sim_reader.set_simulation_period(
         begin_date='01-Jan-2012',
-        end_date='31-Dec-2016',
+        end_date='31-Dec-2016'
     )
     ```
 
@@ -93,7 +93,7 @@ The following steps demonstrate how to configure parameters in a custom director
 
     ```python
     # Ensure simulation outputs for `channel_sd` object in `print.prt` file  
-    target_reader.enable_object_in_print_prt(
+    sim_reader.enable_object_in_print_prt(
         obj='channel_sd',
         daily=False,
         monthly=True,
@@ -102,12 +102,22 @@ The following steps demonstrate how to configure parameters in a custom director
     )
     ```
     
-- Set output print interval within the simulation period:
+- Set print interval within the simulation period:
 
     ```python
-    # Set ouput print every other day  
-    target_reader.set_print_interval(
-        interval=2
+    # Set print interval in `print.prt` file
+    sim_reader.set_print_interval(
+        interval=1
+    )
+    ```
+    
+- Set print period within the simulation timeline to record result in output files:
+
+    ```python
+    # Set print period in `print.prt` file  
+    sim_reader.set_print_period(
+        begin_date='15-Jun-2012',
+        end_date='15-Jun-2016'
     )
     ```
     
@@ -121,7 +131,7 @@ The following steps demonstrate how to configure parameters in a custom director
             'value': 0.5
         }
     ]
-    target_reader.run_swat(
+    sim_reader.run_swat(
         parameters=parameters
     )
     ```
@@ -148,13 +158,15 @@ parameters = [
 
 # Run SWAT+ simulation from the original `TxtInOut` folder
 txtinout_reader.run_swat(
-    target_dir=r"C:\Users\Username\custom_folder",  # mandatory
+    sim_dir=r"C:\Users\Username\custom_folder",  # mandatory
     parameters=parameters,  # optional
-    begin_date='01-Jan-2012', # optional
-    end_date= '31-Dec-2016', # optional
+    begin_date='01-Jan-2012',  # optional
+    end_date= '31-Dec-2016',  # optional
+    simulation_timestep=0,  # optional
     warmup=1,  # optional
     print_prt_control={'channel_sd': {'daily': False}},  # optional
+    print_begin_date='15-Jun-2012',  # optional
+    print_end_date='15-Jun-2016',  # optional
     print_interval=1  # optional
 )
 ```
-

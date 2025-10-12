@@ -17,13 +17,13 @@ def test_simulated_timeseries_df(
     data_manager
 ):
 
-    # set up TxtInOut folder path
-    txtinout_folder = os.path.join(os.path.dirname(__file__), 'TxtInOut')
+    # set up TxtInOut directory path
+    txtinout_dir = os.path.join(os.path.dirname(__file__), 'TxtInOut')
 
     # Pass: time series DataFrame and save output
     with tempfile.TemporaryDirectory() as tmp_dir:
         df = data_manager.simulated_timeseries_df(
-            target_file=os.path.join(txtinout_folder, 'zrecall_yr.txt'),
+            sim_file=os.path.join(txtinout_dir, 'zrecall_yr.txt'),
             ref_day=15,
             ref_month=6,
             has_units=True,
@@ -35,7 +35,7 @@ def test_simulated_timeseries_df(
     missing_cols = ['mon', 'day']
     with pytest.raises(Exception) as exc_info:
         data_manager.simulated_timeseries_df(
-            target_file=os.path.join(txtinout_folder, 'basin_carbon_all.txt'),
+            sim_file=os.path.join(txtinout_dir, 'basin_carbon_all.txt'),
             has_units=True
         )
     assert exc_info.value.args[0] == f'Missing required time series columns "{missing_cols}" in file "basin_carbon_all.txt"'
@@ -43,7 +43,7 @@ def test_simulated_timeseries_df(
     # Error: invalid begin_date format
     with pytest.raises(Exception) as exc_info:
         data_manager.simulated_timeseries_df(
-            target_file=os.path.join(txtinout_folder, 'zrecall_yr.txt'),
+            sim_file=os.path.join(txtinout_dir, 'zrecall_yr.txt'),
             has_units=True,
             begin_date='2025-01-01'
         )
@@ -52,7 +52,7 @@ def test_simulated_timeseries_df(
     # Error: empty DataFrame extracted by date range
     with pytest.raises(Exception) as exc_info:
         data_manager.simulated_timeseries_df(
-            target_file=os.path.join(txtinout_folder, 'zrecall_yr.txt'),
+            sim_file=os.path.join(txtinout_dir, 'zrecall_yr.txt'),
             has_units=True,
             begin_date='01-Jan-1900',
             end_date='31-Dec-1900'
@@ -62,7 +62,7 @@ def test_simulated_timeseries_df(
     # Error: invalid file for reference day
     with pytest.raises(Exception) as exc_info:
         data_manager.simulated_timeseries_df(
-            target_file=os.path.join(txtinout_folder, 'zrecall_day.txt'),
+            sim_file=os.path.join(txtinout_dir, 'zrecall_day.txt'),
             has_units=True,
             ref_day=6
         )
@@ -71,7 +71,7 @@ def test_simulated_timeseries_df(
     # Error: invalid file for reference month
     with pytest.raises(Exception) as exc_info:
         data_manager.simulated_timeseries_df(
-            target_file=os.path.join(txtinout_folder, 'zrecall_mon.txt'),
+            sim_file=os.path.join(txtinout_dir, 'zrecall_mon.txt'),
             has_units=True,
             ref_month=6
         )
@@ -80,7 +80,7 @@ def test_simulated_timeseries_df(
     # Error: invalid column name to filter rows
     with pytest.raises(Exception) as exc_info:
         data_manager.simulated_timeseries_df(
-            target_file=os.path.join(txtinout_folder, 'zrecall_yr.txt'),
+            sim_file=os.path.join(txtinout_dir, 'zrecall_yr.txt'),
             has_units=True,
             apply_filter={'unavailable': 1}
         )
@@ -89,7 +89,7 @@ def test_simulated_timeseries_df(
     # Error: invalid column value type
     with pytest.raises(Exception) as exc_info:
         data_manager.simulated_timeseries_df(
-            target_file=os.path.join(txtinout_folder, 'zrecall_yr.txt'),
+            sim_file=os.path.join(txtinout_dir, 'zrecall_yr.txt'),
             has_units=True,
             apply_filter={'name': 1}
         )
@@ -99,7 +99,7 @@ def test_simulated_timeseries_df(
     val = ['hru007']
     with pytest.raises(Exception) as exc_info:
         data_manager.simulated_timeseries_df(
-            target_file=os.path.join(txtinout_folder, 'zrecall_yr.txt'),
+            sim_file=os.path.join(txtinout_dir, 'zrecall_yr.txt'),
             has_units=True,
             apply_filter={'name': val}
         )
@@ -108,7 +108,7 @@ def test_simulated_timeseries_df(
     # Error: invalid column name in usecols
     with pytest.raises(Exception) as exc_info:
         data_manager.simulated_timeseries_df(
-            target_file=os.path.join(txtinout_folder, 'zrecall_yr.txt'),
+            sim_file=os.path.join(txtinout_dir, 'zrecall_yr.txt'),
             has_units=True,
             usecols=['unavailable_col']
         )
@@ -117,7 +117,7 @@ def test_simulated_timeseries_df(
     # Error: invalid JSON file extension to save the DataFrame
     with pytest.raises(Exception) as exc_info:
         data_manager.simulated_timeseries_df(
-            target_file=os.path.join(txtinout_folder, 'zrecall_yr.txt'),
+            sim_file=os.path.join(txtinout_dir, 'zrecall_yr.txt'),
             has_units=True,
             json_file='ext_invalid.txt'
         )
