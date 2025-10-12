@@ -8,9 +8,10 @@
 
 ## ✨ Key Features
 
-- Modify parameters via the `calibration.cal` file.
-- Run SWAT+ simulations.
-- Perform sensitivity analysis on model parameters using the [SALib](https://github.com/SALib/SALib) Python package, with support for parallel computation.
+- Modify model parameters through the `calibration.cal` file.
+- Run SWAT+ simulations seamlessly.
+- Compute performance metrics using widely adopted indicators.
+- Perform sensitivity analysis on model parameters using the [SALib](https://github.com/SALib/SALib) Python package, with support for parallel computation; currently, only Sobol sampling and Sobol indices are supported.
 
 
 ## 📥 Install pySWATPlus

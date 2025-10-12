@@ -1,7 +1,6 @@
-# Sensitivity Analysis
+# Sensitivity Interface
 
-Sensitivity analysis helps quantify how variation in input parameters affects model outputs. This tutorial demonstrates how to perform sensitivity analysis on SWAT+ model parameters.  
-The parameter sampling is handled by the [SALib](https://github.com/SALib/SALib) Python package using [Sobol](https://doi.org/10.1016/S0378-4754(00)00270-6) sampling from a defined parameter space.
+Sensitivity interface helps quantify how variation in input parameters affects model outputs. This tutorial demonstrates how to perform sensitivity analysis on SWAT+ model parameters.  
 
 
 ## Configuration Settings
@@ -15,25 +14,25 @@ import pySWATPlus
 
 # Initialize the project's TxtInOut folder
 txtinout_reader = pySWATPlus.TxtinoutReader(
-    path=r"C:\Users\Username\project\Scenarios\Default\TxtInOut"
+    tio_dir=r"C:\Users\Username\project\Scenarios\Default\TxtInOut"
 )
 
-# Copy required files to an empty custom directory
-target_dir = r"C:\Users\Username\custom_folder" 
-target_dir = txtinout_reader.copy_required_files(
-    target_dir=target_dir
+# Copy required files to an empty simulation directory
+sim_dir = r"C:\Users\Username\custom_folder" 
+sim_dir = txtinout_reader.copy_required_files(
+    sim_dir=sim_dir
 )
 
-# Initialize TxtinoutReader with the custom directory
-target_reader = pySWATPlus.TxtinoutReader(
-    path=target_dir
+# Initialize TxtinoutReader with the simulation directory
+sim_reader = pySWATPlus.TxtinoutReader(
+    tio_dir=sim_dir
 )
 
 # Disable CSV file generation to save time
-target_reader.disable_csv_print()
+sim_reader.disable_csv_print()
 
 # Disable daily time series in print.prt (saves time and space)
-target_reader.enable_object_in_print_prt(
+sim_reader.enable_object_in_print_prt(
     obj=None,
     daily=False,
     monthly=True,
@@ -41,8 +40,8 @@ target_reader.enable_object_in_print_prt(
     avann=True
 )
 
-# Run a trial simulation to verify expected time series outputs
-target_reader.run_swat(
+# Set simulation period and run a trial simulation to verify expected time series outputs
+sim_reader.run_swat(
     begin_date='01-Jan-2010',
     end_date='31-Dec-2012',
     warmup=1,
@@ -51,14 +50,16 @@ target_reader.run_swat(
     }  # enable daily time series for 'channel_sd'
 ```
 
-## Sobol-Based Interface
+## Sensitivity Simulation
 
-This high-level interface builds on the above configuration to run sensitivity simulations using Sobol sampling. It includes:
+This high-level interface builds on the above configuration to run sensitivity simulations using sampling, powered by the [SALib](https://github.com/SALib/SALib) Python package.  
+Currently, it supports [Sobol](https://doi.org/10.1016/S0378-4754(00)00270-6) sampling from a defined parameter space. The interface provides:
 
-- Automatic generation of Sobol samples for the parameter space  
-- Parallel computation to speed up simulations  
-- Output extraction with filtering options
-- Structured export of results for downstream analysis  
+- Automatic generation of samples for the parameter space  
+- Parallel computation to accelerate simulations  
+- Output extraction with filtering options  
+- Structured export of results for downstream analysis
+
 
 ```python
 # Sensitivity parameter space
@@ -78,7 +79,7 @@ parameters = [
 ]
 
 # Target data extraction from sensitivity simulation
-simulation_data = {
+extract_data = {
     'channel_sdmorph_yr.txt': {
         'has_units': True,
         'ref_day': 15,
@@ -97,13 +98,30 @@ simulation_data = {
 
 # Sensitivity simulation
 if __name__ == '__main__':
-    output = pySWATPlus.SensitivityAnalyzer().simulation_by_sobol_sample(
+    output = pySWATPlus.SensitivityAnalyzer().simulation_by_sample_parameters(
         parameters=parameters,
         sample_number=1,
-        simulation_folder=r"C:\Users\Username\simulation_folder",
-        txtinout_folder=target_dir,
-        simulation_data=simulation_data,
-        clean_setup=True
+        sensim_dir=r"C:\Users\Username\simulation_folder",
+        txtinout_folder=sim_dir,
+        extract_data=extract_data
     )
     print(output)
+```
+
+## Sensitivity Indices
+
+Sensitivity indices (first, second, and total orders) are computed using the indicators available in the `pySWATPlus.PerformanceMetrics` class, along with their confidence intervals.
+
+
+```python
+output = pySWATPlus.SensitivityAnalyzer().parameter_sensitivity_indices(
+    sensim_file=r"C:\Users\Username\simulation_folder\sensitivity_simulation.json",
+    df_name='channel_sd_mon_df',
+    sim_col='flo_out',
+    obs_file=r"C:\Users\Username\observed_folder\discharge_monthly.csv",
+    date_format='%Y-%m-%d',
+    obs_col='discharge',
+    indicators=['KGE', 'RMSE'],
+    json_file=r"C:\Users\Username\sensitivity_indices.json"
+)
 ```

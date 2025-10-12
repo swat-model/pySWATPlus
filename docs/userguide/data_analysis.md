@@ -32,10 +32,10 @@ print(output)
 
 ## Read Sensitivity Simulation Data
 
-The sensitivity analysis performed using the [`simulation_by_sobol_sample`](https://swat-model.github.io/pySWATPlus/api/sensitivity_analyzer/#pySWATPlus.SensitivityAnalyzer.simulation_by_sobol_sample) method generates a file named `sensitivity_simulation.json` within the simulation directory.  
-This JSON file contains all the information required for Sobol sensitivity analysis, including:
+The sensitivity analysis performed using the
+[`simulation_by_sample_parameters`](https://swat-model.github.io/pySWATPlus/api/sensitivity_analyzer/#pySWATPlus.SensitivityAnalyzer.simulation_by_sample_parameters) method generates a file named `sensitivity_simulation.json`. This JSON file contains all the information required for sensitivity analysis, including:
 
-- `problem`: Sobol problem definition  
+- `problem`: Problem definition dictionary  
 - `sample`: List of generated samples  
 - `simulation`: Simulated `DataFrame` corresponding to each sample  
 
@@ -43,7 +43,7 @@ To retrieve the selected `DataFrame` for all scenarios, use:
 
 ```python
 output = pySWATPlus.DataManager().read_sensitive_dfs(
-    sim_file=r"C:\Users\Username\simulation_folder\sensitivity_simulation.json",
+    sensim_file=r"C:\Users\Username\simulation_folder\sensitivity_simulation.json",
     df_name='channel_sd_mon_df',
     add_problem=True,
     add_sample=True
@@ -65,7 +65,7 @@ To compute performance metrics for the desired indicators:
 
 ```python
 output = pySWATPlus.SensitivityAnalyzer().scenario_indicators(
-    sim_file=r"C:\Users\Username\simulation_folder\sensitivity_simulation.json",
+    sensim_file=r"C:\Users\Username\simulation_folder\sensitivity_simulation.json",
     df_name='channel_sd_mon_df',
     sim_col='flo_out',
     obs_file=r"C:\Users\Username\observed_folder\discharge_monthly.csv",
@@ -76,22 +76,7 @@ output = pySWATPlus.SensitivityAnalyzer().scenario_indicators(
 )
 ```
 
-## Sobol Indices
 
-The available indicators can also be used to compute Sobol indices (first, second, and total orders) along with their confidence intervals.
-
-```python
-output = pySWATPlus.SensitivityAnalyzer().sobol_indices(
-    sim_file=r"C:\Users\Username\simulation_folder\sensitivity_simulation.json",
-    df_name='channel_sd_mon_df',
-    sim_col='flo_out',
-    obs_file=r"C:\Users\Username\observed_folder\discharge_monthly.csv",
-    date_format='%Y-%m-%d',
-    obs_col='discharge',
-    indicators=['KGE', 'RMSE'],
-    json_file=r"C:\Users\Username\data_analysis\sobol_indices.json"
-)
-```
 
 
 
