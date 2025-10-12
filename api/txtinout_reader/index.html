@@ -2019,7 +2019,10 @@ SWAT+ model files located in the <code>TxtInOut</code> folder.</p>
 <span class="normal">1051</span>
 <span class="normal">1052</span>
 <span class="normal">1053</span>
-<span class="normal">1054</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">TxtinoutReader</span><span class="p">:</span>
+<span class="normal">1054</span>
+<span class="normal">1055</span>
+<span class="normal">1056</span>
+<span class="normal">1057</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">TxtinoutReader</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    Provide functionality for seamless reading, editing, and writing of</span>
 <span class="sd">    SWAT+ model files located in the `TxtInOut` folder.</span>
@@ -2027,13 +2030,13 @@ SWAT+ model files located in the <code>TxtInOut</code> folder.</p>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
-        <span class="n">path</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span>
+        <span class="n">tio_dir</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">        Create a TxtinoutReader instance for accessing SWAT+ model files.</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            path (str | pathlib.Path): Path to the `TxtInOut` folder, which must contain</span>
+<span class="sd">            tio_dir (str | pathlib.Path): Path to the `TxtInOut` directory, which must contain</span>
 <span class="sd">                exactly one SWAT+ executable `.exe` file.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
 
@@ -2046,16 +2049,16 @@ SWAT+ model files located in the <code>TxtInOut</code> folder.</p>
         <span class="p">)</span>
 
         <span class="c1"># Absolute path</span>
-        <span class="n">path</span> <span class="o">=</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="n">path</span><span class="p">)</span><span class="o">.</span><span class="n">resolve</span><span class="p">()</span>
+        <span class="n">tio_dir</span> <span class="o">=</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="n">tio_dir</span><span class="p">)</span><span class="o">.</span><span class="n">resolve</span><span class="p">()</span>
 
         <span class="c1"># Check validity of path</span>
-        <span class="n">validators</span><span class="o">.</span><span class="n">_path_directory</span><span class="p">(</span>
-            <span class="n">path</span><span class="o">=</span><span class="n">path</span>
+        <span class="n">validators</span><span class="o">.</span><span class="n">_dir_path</span><span class="p">(</span>
+            <span class="n">input_dir</span><span class="o">=</span><span class="n">tio_dir</span>
         <span class="p">)</span>
 
         <span class="c1"># Check .exe files in the directory</span>
         <span class="n">exe_files</span> <span class="o">=</span> <span class="p">[</span>
-            <span class="n">file</span> <span class="k">for</span> <span class="n">file</span> <span class="ow">in</span> <span class="n">path</span><span class="o">.</span><span class="n">iterdir</span><span class="p">()</span> <span class="k">if</span> <span class="n">file</span><span class="o">.</span><span class="n">suffix</span> <span class="o">==</span> <span class="s2">&quot;.exe&quot;</span>
+            <span class="n">file</span> <span class="k">for</span> <span class="n">file</span> <span class="ow">in</span> <span class="n">tio_dir</span><span class="o">.</span><span class="n">iterdir</span><span class="p">()</span> <span class="k">if</span> <span class="n">file</span><span class="o">.</span><span class="n">suffix</span> <span class="o">==</span> <span class="s2">&quot;.exe&quot;</span>
         <span class="p">]</span>
 
         <span class="c1"># Raise error on .exe file</span>
@@ -2065,10 +2068,10 @@ SWAT+ model files located in the <code>TxtInOut</code> folder.</p>
             <span class="p">)</span>
 
         <span class="c1"># TxtInOut directory path</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">root_folder</span> <span class="o">=</span> <span class="n">path</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">root_dir</span> <span class="o">=</span> <span class="n">tio_dir</span>
 
         <span class="c1"># EXE file path</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">swat_exe_path</span> <span class="o">=</span> <span class="n">path</span> <span class="o">/</span> <span class="n">exe_files</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">exe_file</span> <span class="o">=</span> <span class="n">tio_dir</span> <span class="o">/</span> <span class="n">exe_files</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">enable_object_in_print_prt</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
@@ -2136,7 +2139,7 @@ SWAT+ model files located in the <code>TxtInOut</code> folder.</p>
             <span class="p">)</span>
 
         <span class="c1"># File path of print.prt</span>
-        <span class="n">print_prt_path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">root_folder</span> <span class="o">/</span> <span class="s1">&#39;print.prt&#39;</span>
+        <span class="n">print_prt_path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">root_dir</span> <span class="o">/</span> <span class="s1">&#39;print.prt&#39;</span>
 
         <span class="c1"># Read and modify print.prt file strings</span>
         <span class="n">new_print_prt</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
@@ -2240,7 +2243,7 @@ SWAT+ model files located in the <code>TxtInOut</code> folder.</p>
         <span class="n">nth_line</span> <span class="o">=</span> <span class="mi">3</span>
 
         <span class="c1"># File path of time.sim</span>
-        <span class="n">time_sim_path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">root_folder</span> <span class="o">/</span> <span class="s1">&#39;time.sim&#39;</span>
+        <span class="n">time_sim_path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">root_dir</span> <span class="o">/</span> <span class="s1">&#39;time.sim&#39;</span>
 
         <span class="c1"># Open the file in read mode and read its contents</span>
         <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">time_sim_path</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
@@ -2309,7 +2312,7 @@ SWAT+ model files located in the <code>TxtInOut</code> folder.</p>
         <span class="n">nth_line</span> <span class="o">=</span> <span class="mi">3</span>
 
         <span class="c1"># File path of time.sim</span>
-        <span class="n">time_sim_path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">root_folder</span> <span class="o">/</span> <span class="s1">&#39;time.sim&#39;</span>
+        <span class="n">time_sim_path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">root_dir</span> <span class="o">/</span> <span class="s1">&#39;time.sim&#39;</span>
 
         <span class="c1"># Open the file in read mode and read its contents</span>
         <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">time_sim_path</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
@@ -2357,7 +2360,7 @@ SWAT+ model files located in the <code>TxtInOut</code> folder.</p>
             <span class="p">)</span>
 
         <span class="c1"># File path of print.prt</span>
-        <span class="n">print_prt_path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">root_folder</span> <span class="o">/</span> <span class="s1">&#39;print.prt&#39;</span>
+        <span class="n">print_prt_path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">root_dir</span> <span class="o">/</span> <span class="s1">&#39;print.prt&#39;</span>
 
         <span class="c1"># Open the file in read mode and read its contents</span>
         <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">print_prt_path</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
@@ -2392,7 +2395,7 @@ SWAT+ model files located in the <code>TxtInOut</code> folder.</p>
 <span class="sd">        &#39;&#39;&#39;</span>
 
         <span class="c1"># File path of print.prt</span>
-        <span class="n">print_prt_path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">root_folder</span> <span class="o">/</span> <span class="s1">&#39;print.prt&#39;</span>
+        <span class="n">print_prt_path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">root_dir</span> <span class="o">/</span> <span class="s1">&#39;print.prt&#39;</span>
 
         <span class="c1"># Target line</span>
         <span class="n">nth_line</span> <span class="o">=</span> <span class="mi">7</span>
@@ -2456,7 +2459,7 @@ SWAT+ model files located in the <code>TxtInOut</code> folder.</p>
         <span class="p">)</span>
 
         <span class="c1"># File path of print.prt</span>
-        <span class="n">print_prt_path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">root_folder</span> <span class="o">/</span> <span class="s1">&#39;print.prt&#39;</span>
+        <span class="n">print_prt_path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">root_dir</span> <span class="o">/</span> <span class="s1">&#39;print.prt&#39;</span>
 
         <span class="c1"># Open the file in read mode and read its contents</span>
         <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">print_prt_path</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
@@ -2514,7 +2517,7 @@ SWAT+ model files located in the <code>TxtInOut</code> folder.</p>
         <span class="n">end_year</span> <span class="o">=</span> <span class="n">end_dt</span><span class="o">.</span><span class="n">year</span>
 
         <span class="c1"># File path of print.prt</span>
-        <span class="n">print_prt_path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">root_folder</span> <span class="o">/</span> <span class="s1">&#39;print.prt&#39;</span>
+        <span class="n">print_prt_path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">root_dir</span> <span class="o">/</span> <span class="s1">&#39;print.prt&#39;</span>
 
         <span class="c1"># Open the file in read mode and read its contents</span>
         <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">print_prt_path</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
@@ -2532,14 +2535,14 @@ SWAT+ model files located in the <code>TxtInOut</code> folder.</p>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">copy_required_files</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
-        <span class="n">target_dir</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">,</span>
+        <span class="n">sim_dir</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">        Copy the required file from the input folder associated with the</span>
+<span class="sd">        Copy the required file from the input directory associated with the</span>
 <span class="sd">        `TxtinoutReader` instance to the specified directory for SWAT+ simulation.</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            target_dir (str | pathlib.Path): Path to the empty directory where the required files will be copied.</span>
+<span class="sd">            sim_dir (str | pathlib.Path): Path to the empty directory where the required files will be copied.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            The path to the target directory containing the copied files.</span>
@@ -2553,17 +2556,17 @@ SWAT+ model files located in the <code>TxtInOut</code> folder.</p>
             <span class="n">vars_values</span><span class="o">=</span><span class="nb">locals</span><span class="p">()</span>
         <span class="p">)</span>
 
-        <span class="c1"># Absolute path of target_dir</span>
-        <span class="n">target_dir</span> <span class="o">=</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="n">target_dir</span><span class="p">)</span><span class="o">.</span><span class="n">resolve</span><span class="p">()</span>
+        <span class="c1"># Absolute path of sim_dir</span>
+        <span class="n">sim_dir</span> <span class="o">=</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="n">sim_dir</span><span class="p">)</span><span class="o">.</span><span class="n">resolve</span><span class="p">()</span>
 
-        <span class="c1"># Check validity of target_dir</span>
-        <span class="n">validators</span><span class="o">.</span><span class="n">_path_directory</span><span class="p">(</span>
-            <span class="n">path</span><span class="o">=</span><span class="n">target_dir</span>
+        <span class="c1"># Check validity of sim_dir</span>
+        <span class="n">validators</span><span class="o">.</span><span class="n">_dir_path</span><span class="p">(</span>
+            <span class="n">input_dir</span><span class="o">=</span><span class="n">sim_dir</span>
         <span class="p">)</span>
 
-        <span class="c1"># Check target_dir is empty</span>
-        <span class="n">validators</span><span class="o">.</span><span class="n">_empty_directory</span><span class="p">(</span>
-            <span class="n">path</span><span class="o">=</span><span class="n">target_dir</span>
+        <span class="c1"># Check sim_dir is empty</span>
+        <span class="n">validators</span><span class="o">.</span><span class="n">_dir_empty</span><span class="p">(</span>
+            <span class="n">input_dir</span><span class="o">=</span><span class="n">sim_dir</span>
         <span class="p">)</span>
 
         <span class="c1"># Ignored files</span>
@@ -2574,12 +2577,12 @@ SWAT+ model files located in the <code>TxtInOut</code> folder.</p>
         <span class="p">)</span>
 
         <span class="c1"># Copy files from source folder</span>
-        <span class="k">for</span> <span class="n">src_file</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">root_folder</span><span class="o">.</span><span class="n">iterdir</span><span class="p">():</span>
+        <span class="k">for</span> <span class="n">src_file</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">root_dir</span><span class="o">.</span><span class="n">iterdir</span><span class="p">():</span>
             <span class="k">if</span> <span class="n">src_file</span><span class="o">.</span><span class="n">is_dir</span><span class="p">()</span> <span class="ow">or</span> <span class="n">src_file</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="n">_ignored_files_endswith</span><span class="p">):</span>
                 <span class="k">continue</span>
-            <span class="n">shutil</span><span class="o">.</span><span class="n">copy2</span><span class="p">(</span><span class="n">src_file</span><span class="p">,</span> <span class="n">target_dir</span> <span class="o">/</span> <span class="n">src_file</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+            <span class="n">shutil</span><span class="o">.</span><span class="n">copy2</span><span class="p">(</span><span class="n">src_file</span><span class="p">,</span> <span class="n">sim_dir</span> <span class="o">/</span> <span class="n">src_file</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
 
-        <span class="k">return</span> <span class="n">target_dir</span>
+        <span class="k">return</span> <span class="n">sim_dir</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_write_calibration_file</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
@@ -2589,7 +2592,7 @@ SWAT+ model files located in the <code>TxtInOut</code> folder.</p>
 <span class="sd">        Writes `calibration.cal` file with parameter changes.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
 
-        <span class="n">outfile</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">root_folder</span> <span class="o">/</span> <span class="s1">&#39;calibration.cal&#39;</span>
+        <span class="n">outfile</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">root_dir</span> <span class="o">/</span> <span class="s1">&#39;calibration.cal&#39;</span>
 
         <span class="c1"># If calibration.cal exists, remove it (always recreate)</span>
         <span class="k">if</span> <span class="n">outfile</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
@@ -2685,11 +2688,11 @@ SWAT+ model files located in the <code>TxtInOut</code> folder.</p>
         <span class="n">add</span><span class="p">:</span> <span class="nb">bool</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">        Add or remove the calibration line to &#39;file.cio&#39;</span>
+<span class="sd">        Add or remove the calibration line to &#39;file.cio&#39;.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
 
         <span class="c1"># Path of file.cio</span>
-        <span class="n">file_path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">root_folder</span> <span class="o">/</span> <span class="s1">&#39;file.cio&#39;</span>
+        <span class="n">file_path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">root_dir</span> <span class="o">/</span> <span class="s1">&#39;file.cio&#39;</span>
 
         <span class="c1"># Line format</span>
         <span class="n">fmt</span> <span class="o">=</span> <span class="p">(</span>
@@ -2744,30 +2747,38 @@ SWAT+ model files located in the <code>TxtInOut</code> folder.</p>
         <span class="n">simulation_timestep</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">warmup</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">print_prt_control</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">bool</span><span class="p">]]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-        <span class="n">begin_date_print</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-        <span class="n">end_date_print</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">print_begin_date</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">print_end_date</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">print_interval</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">        Set begin and end year for the simulation, the warm-up period, and toggles the elements in print.prt file</span>
+<span class="sd">        Configure and write parameter settings to SWAT+ input files.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
 
-        <span class="n">validators</span><span class="o">.</span><span class="n">_ensure_together</span><span class="p">(</span><span class="n">begin_date</span><span class="o">=</span><span class="n">begin_date</span><span class="p">,</span> <span class="n">end_date</span><span class="o">=</span><span class="n">end_date</span><span class="p">)</span>
-        <span class="n">validators</span><span class="o">.</span><span class="n">_ensure_together</span><span class="p">(</span><span class="n">begin_date_print</span><span class="o">=</span><span class="n">begin_date_print</span><span class="p">,</span> <span class="n">end_date_print</span><span class="o">=</span><span class="n">end_date_print</span><span class="p">)</span>
+        <span class="c1"># Ensure both begin and end dates are given</span>
+        <span class="n">validators</span><span class="o">.</span><span class="n">_ensure_together</span><span class="p">(</span>
+            <span class="n">begin_date</span><span class="o">=</span><span class="n">begin_date</span><span class="p">,</span>
+            <span class="n">end_date</span><span class="o">=</span><span class="n">end_date</span>
+        <span class="p">)</span>
+
+        <span class="c1"># Ensure both begin and end print dates are given</span>
+        <span class="n">validators</span><span class="o">.</span><span class="n">_ensure_together</span><span class="p">(</span>
+            <span class="n">print_begin_date</span><span class="o">=</span><span class="n">print_begin_date</span><span class="p">,</span>
+            <span class="n">print_end_date</span><span class="o">=</span><span class="n">print_end_date</span>
+        <span class="p">)</span>
 
         <span class="c1"># Validate dependencies between simulation and print periods</span>
-        <span class="k">if</span> <span class="p">(</span><span class="n">begin_date_print</span> <span class="ow">or</span> <span class="n">end_date_print</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="p">(</span><span class="n">begin_date</span> <span class="ow">and</span> <span class="n">end_date</span><span class="p">):</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">print_begin_date</span> <span class="ow">or</span> <span class="n">print_end_date</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="p">(</span><span class="n">begin_date</span> <span class="ow">and</span> <span class="n">end_date</span><span class="p">):</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-                <span class="s2">&quot;&#39;begin_date_print&#39;/&#39;end_date_print&#39; cannot be set unless &quot;</span>
-                <span class="s2">&quot;&#39;begin_date&#39; and &#39;end_date&#39; are also provided.&quot;</span>
+                <span class="s1">&#39;print_begin_date or print_end_date cannot be set unless begin_date and end_date are also provided&#39;</span>
             <span class="p">)</span>
 
         <span class="c1"># Validate date relationships</span>
-        <span class="k">if</span> <span class="n">begin_date_print</span> <span class="ow">and</span> <span class="n">end_date_print</span> <span class="ow">and</span> <span class="n">begin_date</span> <span class="ow">and</span> <span class="n">end_date</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">print_begin_date</span> <span class="ow">and</span> <span class="n">print_end_date</span> <span class="ow">and</span> <span class="n">begin_date</span> <span class="ow">and</span> <span class="n">end_date</span><span class="p">:</span>
             <span class="n">begin_dt</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">_date_str_to_object</span><span class="p">(</span><span class="n">begin_date</span><span class="p">)</span>
             <span class="n">end_dt</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">_date_str_to_object</span><span class="p">(</span><span class="n">end_date</span><span class="p">)</span>
-            <span class="n">start_print_dt</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">_date_str_to_object</span><span class="p">(</span><span class="n">begin_date_print</span><span class="p">)</span>
-            <span class="n">end_print_dt</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">_date_str_to_object</span><span class="p">(</span><span class="n">end_date_print</span><span class="p">)</span>
+            <span class="n">start_print_dt</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">_date_str_to_object</span><span class="p">(</span><span class="n">print_begin_date</span><span class="p">)</span>
+            <span class="n">end_print_dt</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">_date_str_to_object</span><span class="p">(</span><span class="n">print_end_date</span><span class="p">)</span>
 
             <span class="n">validators</span><span class="o">.</span><span class="n">_date_within_range</span><span class="p">(</span>
                 <span class="n">date_to_check</span><span class="o">=</span><span class="n">start_print_dt</span><span class="p">,</span>
@@ -2810,8 +2821,7 @@ SWAT+ model files located in the <code>TxtInOut</code> folder.</p>
             <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">print_prt_control</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
                 <span class="k">if</span> <span class="n">key</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
                     <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-                        <span class="s1">&#39;&quot;None&quot; cannot be used as a key in print_prt_control; &#39;</span>
-                        <span class="s1">&#39;use the method &quot;enable_object_in_print_prt&quot; with &quot;target_dir=None&quot; for this setting&#39;</span>
+                        <span class="s1">&#39;Use enable_object_in_print_prt method instead of None as a key in print_prt_control&#39;</span>
                     <span class="p">)</span>
                 <span class="k">elif</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
                     <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span>
@@ -2835,10 +2845,10 @@ SWAT+ model files located in the <code>TxtInOut</code> folder.</p>
                         <span class="o">**</span><span class="n">key_dict</span>
                     <span class="p">)</span>
 
-        <span class="k">if</span> <span class="n">begin_date_print</span> <span class="ow">and</span> <span class="n">end_date_print</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">print_begin_date</span> <span class="ow">and</span> <span class="n">print_end_date</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">set_print_period</span><span class="p">(</span>
-                <span class="n">begin_date</span><span class="o">=</span><span class="n">begin_date_print</span><span class="p">,</span>
-                <span class="n">end_date</span><span class="o">=</span><span class="n">end_date_print</span>
+                <span class="n">begin_date</span><span class="o">=</span><span class="n">print_begin_date</span><span class="p">,</span>
+                <span class="n">end_date</span><span class="o">=</span><span class="n">print_end_date</span>
             <span class="p">)</span>
 
         <span class="k">if</span> <span class="n">print_interval</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
@@ -2858,8 +2868,8 @@ SWAT+ model files located in the <code>TxtInOut</code> folder.</p>
         <span class="k">try</span><span class="p">:</span>
             <span class="c1"># Run simulation</span>
             <span class="n">process</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">Popen</span><span class="p">(</span>
-                <span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">swat_exe_path</span><span class="o">.</span><span class="n">resolve</span><span class="p">())],</span>
-                <span class="n">cwd</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">root_folder</span><span class="o">.</span><span class="n">resolve</span><span class="p">()),</span>
+                <span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">exe_file</span><span class="o">.</span><span class="n">resolve</span><span class="p">())],</span>
+                <span class="n">cwd</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">root_dir</span><span class="o">.</span><span class="n">resolve</span><span class="p">()),</span>
                 <span class="n">stdout</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">PIPE</span><span class="p">,</span>
                 <span class="n">stderr</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">PIPE</span><span class="p">,</span>
                 <span class="n">bufsize</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
@@ -2891,15 +2901,15 @@ SWAT+ model files located in the <code>TxtInOut</code> folder.</p>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">run_swat</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
-        <span class="n">target_dir</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span> <span class="o">|</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">sim_dir</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span> <span class="o">|</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">parameters</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">ModifyType</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">begin_date</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">end_date</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">simulation_timestep</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">warmup</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">print_prt_control</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">bool</span><span class="p">]]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-        <span class="n">begin_date_print</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-        <span class="n">end_date_print</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">print_begin_date</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">print_end_date</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">print_interval</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">skip_validation</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">:</span>
@@ -2907,7 +2917,7 @@ SWAT+ model files located in the <code>TxtInOut</code> folder.</p>
 <span class="sd">        Run the SWAT+ simulation with optional parameter changes.</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            target_dir (str | pathlib.Path): Path to the directory where the simulation will be done.</span>
+<span class="sd">            sim_dir (str | pathlib.Path): Path to the directory where the simulation will be done.</span>
 <span class="sd">                If None, the simulation runs directly in the current folder.</span>
 
 <span class="sd">            parameters (ModifyType): List of dictionaries specifying parameter changes in the `calibration.cal` file.</span>
@@ -2975,9 +2985,9 @@ SWAT+ model files located in the <code>TxtInOut</code> folder.</p>
 <span class="sd">                }</span>
 <span class="sd">                ```</span>
 
-<span class="sd">            begin_date_print (str): The start date for printing the output</span>
+<span class="sd">            print_begin_date (str): The start date for printing the output.</span>
 
-<span class="sd">            end_date_print (str): The end date for printing the output</span>
+<span class="sd">            print_end_date (str): The end date for printing the output.</span>
 
 <span class="sd">            print_interval (int): Print interval within the period. For example, if interval = 2, output will be printed for every other day.</span>
 
@@ -2996,25 +3006,21 @@ SWAT+ model files located in the <code>TxtInOut</code> folder.</p>
         <span class="p">)</span>
 
         <span class="c1"># TxtinoutReader class instance</span>
-        <span class="k">if</span> <span class="n">target_dir</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="c1"># Absolute path</span>
-            <span class="n">target_dir</span> <span class="o">=</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="n">target_dir</span><span class="p">)</span><span class="o">.</span><span class="n">resolve</span><span class="p">()</span>
-            <span class="c1"># Check validity of target_dir</span>
-            <span class="n">validators</span><span class="o">.</span><span class="n">_path_directory</span><span class="p">(</span>
-                <span class="n">path</span><span class="o">=</span><span class="n">target_dir</span>
+        <span class="k">if</span> <span class="n">sim_dir</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">sim_dir</span> <span class="o">=</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="n">sim_dir</span><span class="p">)</span><span class="o">.</span><span class="n">resolve</span><span class="p">()</span>
+            <span class="c1"># Check validity of sim_dir</span>
+            <span class="n">validators</span><span class="o">.</span><span class="n">_dir_path</span><span class="p">(</span>
+                <span class="n">input_dir</span><span class="o">=</span><span class="n">sim_dir</span>
             <span class="p">)</span>
-            <span class="c1"># Copy files to the target directory</span>
             <span class="n">run_path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">copy_required_files</span><span class="p">(</span>
-                <span class="n">target_dir</span><span class="o">=</span><span class="n">target_dir</span>
+                <span class="n">sim_dir</span><span class="o">=</span><span class="n">sim_dir</span>
             <span class="p">)</span>
-            <span class="c1"># Initialize new TxtinoutReader class</span>
             <span class="n">reader</span> <span class="o">=</span> <span class="n">TxtinoutReader</span><span class="p">(</span>
-                <span class="n">path</span><span class="o">=</span><span class="n">run_path</span>
+                <span class="n">tio_dir</span><span class="o">=</span><span class="n">run_path</span>
             <span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="c1"># Select existing TxtinoutReader class instance</span>
             <span class="n">reader</span> <span class="o">=</span> <span class="bp">self</span>
-            <span class="n">run_path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">root_folder</span>
+            <span class="n">run_path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">root_dir</span>
 
         <span class="c1"># Apply SWAT+ configuration changes</span>
         <span class="n">reader</span><span class="o">.</span><span class="n">_apply_swat_configuration</span><span class="p">(</span>
@@ -3023,16 +3029,16 @@ SWAT+ model files located in the <code>TxtInOut</code> folder.</p>
             <span class="n">simulation_timestep</span><span class="o">=</span><span class="n">simulation_timestep</span><span class="p">,</span>
             <span class="n">warmup</span><span class="o">=</span><span class="n">warmup</span><span class="p">,</span>
             <span class="n">print_prt_control</span><span class="o">=</span><span class="n">print_prt_control</span><span class="p">,</span>
-            <span class="n">begin_date_print</span><span class="o">=</span><span class="n">begin_date_print</span><span class="p">,</span>
-            <span class="n">end_date_print</span><span class="o">=</span><span class="n">end_date_print</span><span class="p">,</span>
+            <span class="n">print_begin_date</span><span class="o">=</span><span class="n">print_begin_date</span><span class="p">,</span>
+            <span class="n">print_end_date</span><span class="o">=</span><span class="n">print_end_date</span><span class="p">,</span>
             <span class="n">print_interval</span><span class="o">=</span><span class="n">print_interval</span>
         <span class="p">)</span>
 
         <span class="c1"># Create calibration.cal file</span>
         <span class="k">if</span> <span class="n">parameters</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
 
-            <span class="c1"># Validate unique dictionaries for sensitive parameters</span>
-            <span class="n">validators</span><span class="o">.</span><span class="n">_list_contain_unique_dict</span><span class="p">(</span>
+            <span class="c1"># Validate unique dictionaries for calibration parameters</span>
+            <span class="n">validators</span><span class="o">.</span><span class="n">_calibration_list_contain_unique_dict</span><span class="p">(</span>
                 <span class="n">parameters</span><span class="o">=</span><span class="n">parameters</span>
             <span class="p">)</span>
 
@@ -3043,13 +3049,13 @@ SWAT+ model files located in the <code>TxtInOut</code> folder.</p>
 
             <span class="c1"># Check if input calibration parameters exists in cal_parms.cal</span>
             <span class="n">validators</span><span class="o">.</span><span class="n">_calibration_parameters</span><span class="p">(</span>
-                <span class="n">txtinout_path</span><span class="o">=</span><span class="n">reader</span><span class="o">.</span><span class="n">root_folder</span><span class="p">,</span>
+                <span class="n">input_dir</span><span class="o">=</span><span class="n">reader</span><span class="o">.</span><span class="n">root_dir</span><span class="p">,</span>
                 <span class="n">parameters</span><span class="o">=</span><span class="n">params</span>
             <span class="p">)</span>
 
             <span class="k">if</span> <span class="ow">not</span> <span class="n">skip_validation</span><span class="p">:</span>
                 <span class="n">validators</span><span class="o">.</span><span class="n">_calibration_conditions_and_units</span><span class="p">(</span>
-                    <span class="n">txtinout_path</span><span class="o">=</span><span class="n">reader</span><span class="o">.</span><span class="n">root_folder</span><span class="p">,</span>
+                    <span class="n">input_dir</span><span class="o">=</span><span class="n">reader</span><span class="o">.</span><span class="n">root_dir</span><span class="p">,</span>
                     <span class="n">parameters</span><span class="o">=</span><span class="n">params</span>
                 <span class="p">)</span>
 
@@ -3081,7 +3087,7 @@ SWAT+ model files located in the <code>TxtInOut</code> folder.</p>
 
 
 <h3 id="pySWATPlus.TxtinoutReader.__init__" class="doc doc-heading">
-            <code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="n">path</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span></code>
+            <code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="n">tio_dir</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span></code>
 
 </h3>
 
@@ -3104,14 +3110,14 @@ SWAT+ model files located in the <code>TxtInOut</code> folder.</p>
       <tbody>
           <tr class="doc-section-item">
             <td>
-                <code>path</code>
+                <code>tio_dir</code>
             </td>
             <td>
                   <code><span title="str">str</span> | <span title="pathlib.Path">Path</span></code>
             </td>
             <td>
               <div class="doc-md-description">
-                <p>Path to the <code>TxtInOut</code> folder, which must contain
+                <p>Path to the <code>TxtInOut</code> directory, which must contain
 exactly one SWAT+ executable <code>.exe</code> file.</p>
               </div>
             </td>
@@ -3170,13 +3176,13 @@ exactly one SWAT+ executable <code>.exe</code> file.</p>
 <span class="normal">61</span>
 <span class="normal">62</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
-    <span class="n">path</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span>
+    <span class="n">tio_dir</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    Create a TxtinoutReader instance for accessing SWAT+ model files.</span>
 
 <span class="sd">    Args:</span>
-<span class="sd">        path (str | pathlib.Path): Path to the `TxtInOut` folder, which must contain</span>
+<span class="sd">        tio_dir (str | pathlib.Path): Path to the `TxtInOut` directory, which must contain</span>
 <span class="sd">            exactly one SWAT+ executable `.exe` file.</span>
 <span class="sd">    &#39;&#39;&#39;</span>
 
@@ -3189,16 +3195,16 @@ exactly one SWAT+ executable <code>.exe</code> file.</p>
     <span class="p">)</span>
 
     <span class="c1"># Absolute path</span>
-    <span class="n">path</span> <span class="o">=</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="n">path</span><span class="p">)</span><span class="o">.</span><span class="n">resolve</span><span class="p">()</span>
+    <span class="n">tio_dir</span> <span class="o">=</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="n">tio_dir</span><span class="p">)</span><span class="o">.</span><span class="n">resolve</span><span class="p">()</span>
 
     <span class="c1"># Check validity of path</span>
-    <span class="n">validators</span><span class="o">.</span><span class="n">_path_directory</span><span class="p">(</span>
-        <span class="n">path</span><span class="o">=</span><span class="n">path</span>
+    <span class="n">validators</span><span class="o">.</span><span class="n">_dir_path</span><span class="p">(</span>
+        <span class="n">input_dir</span><span class="o">=</span><span class="n">tio_dir</span>
     <span class="p">)</span>
 
     <span class="c1"># Check .exe files in the directory</span>
     <span class="n">exe_files</span> <span class="o">=</span> <span class="p">[</span>
-        <span class="n">file</span> <span class="k">for</span> <span class="n">file</span> <span class="ow">in</span> <span class="n">path</span><span class="o">.</span><span class="n">iterdir</span><span class="p">()</span> <span class="k">if</span> <span class="n">file</span><span class="o">.</span><span class="n">suffix</span> <span class="o">==</span> <span class="s2">&quot;.exe&quot;</span>
+        <span class="n">file</span> <span class="k">for</span> <span class="n">file</span> <span class="ow">in</span> <span class="n">tio_dir</span><span class="o">.</span><span class="n">iterdir</span><span class="p">()</span> <span class="k">if</span> <span class="n">file</span><span class="o">.</span><span class="n">suffix</span> <span class="o">==</span> <span class="s2">&quot;.exe&quot;</span>
     <span class="p">]</span>
 
     <span class="c1"># Raise error on .exe file</span>
@@ -3208,10 +3214,10 @@ exactly one SWAT+ executable <code>.exe</code> file.</p>
         <span class="p">)</span>
 
     <span class="c1"># TxtInOut directory path</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">root_folder</span> <span class="o">=</span> <span class="n">path</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">root_dir</span> <span class="o">=</span> <span class="n">tio_dir</span>
 
     <span class="c1"># EXE file path</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">swat_exe_path</span> <span class="o">=</span> <span class="n">path</span> <span class="o">/</span> <span class="n">exe_files</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">exe_file</span> <span class="o">=</span> <span class="n">tio_dir</span> <span class="o">/</span> <span class="n">exe_files</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 </code></pre></div></td></tr></table></div>
             </details>
     </div>
@@ -3222,14 +3228,14 @@ exactly one SWAT+ executable <code>.exe</code> file.</p>
 
 
 <h3 id="pySWATPlus.TxtinoutReader.copy_required_files" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">copy_required_files</span><span class="p">(</span><span class="n">target_dir</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span></code>
+            <code class="highlight language-python"><span class="n">copy_required_files</span><span class="p">(</span><span class="n">sim_dir</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span></code>
 
 </h3>
 
 
     <div class="doc doc-contents ">
 
-        <p>Copy the required file from the input folder associated with the
+        <p>Copy the required file from the input directory associated with the
 <code>TxtinoutReader</code> instance to the specified directory for SWAT+ simulation.</p>
 
 
@@ -3246,7 +3252,7 @@ exactly one SWAT+ executable <code>.exe</code> file.</p>
       <tbody>
           <tr class="doc-section-item">
             <td>
-                <code>target_dir</code>
+                <code>sim_dir</code>
             </td>
             <td>
                   <code><span title="str">str</span> | <span title="pathlib.Path">Path</span></code>
@@ -3340,14 +3346,14 @@ exactly one SWAT+ executable <code>.exe</code> file.</p>
 <span class="normal">572</span>
 <span class="normal">573</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">copy_required_files</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
-    <span class="n">target_dir</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">,</span>
+    <span class="n">sim_dir</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">    Copy the required file from the input folder associated with the</span>
+<span class="sd">    Copy the required file from the input directory associated with the</span>
 <span class="sd">    `TxtinoutReader` instance to the specified directory for SWAT+ simulation.</span>
 
 <span class="sd">    Args:</span>
-<span class="sd">        target_dir (str | pathlib.Path): Path to the empty directory where the required files will be copied.</span>
+<span class="sd">        sim_dir (str | pathlib.Path): Path to the empty directory where the required files will be copied.</span>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        The path to the target directory containing the copied files.</span>
@@ -3361,17 +3367,17 @@ exactly one SWAT+ executable <code>.exe</code> file.</p>
         <span class="n">vars_values</span><span class="o">=</span><span class="nb">locals</span><span class="p">()</span>
     <span class="p">)</span>
 
-    <span class="c1"># Absolute path of target_dir</span>
-    <span class="n">target_dir</span> <span class="o">=</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="n">target_dir</span><span class="p">)</span><span class="o">.</span><span class="n">resolve</span><span class="p">()</span>
+    <span class="c1"># Absolute path of sim_dir</span>
+    <span class="n">sim_dir</span> <span class="o">=</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="n">sim_dir</span><span class="p">)</span><span class="o">.</span><span class="n">resolve</span><span class="p">()</span>
 
-    <span class="c1"># Check validity of target_dir</span>
-    <span class="n">validators</span><span class="o">.</span><span class="n">_path_directory</span><span class="p">(</span>
-        <span class="n">path</span><span class="o">=</span><span class="n">target_dir</span>
+    <span class="c1"># Check validity of sim_dir</span>
+    <span class="n">validators</span><span class="o">.</span><span class="n">_dir_path</span><span class="p">(</span>
+        <span class="n">input_dir</span><span class="o">=</span><span class="n">sim_dir</span>
     <span class="p">)</span>
 
-    <span class="c1"># Check target_dir is empty</span>
-    <span class="n">validators</span><span class="o">.</span><span class="n">_empty_directory</span><span class="p">(</span>
-        <span class="n">path</span><span class="o">=</span><span class="n">target_dir</span>
+    <span class="c1"># Check sim_dir is empty</span>
+    <span class="n">validators</span><span class="o">.</span><span class="n">_dir_empty</span><span class="p">(</span>
+        <span class="n">input_dir</span><span class="o">=</span><span class="n">sim_dir</span>
     <span class="p">)</span>
 
     <span class="c1"># Ignored files</span>
@@ -3382,12 +3388,12 @@ exactly one SWAT+ executable <code>.exe</code> file.</p>
     <span class="p">)</span>
 
     <span class="c1"># Copy files from source folder</span>
-    <span class="k">for</span> <span class="n">src_file</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">root_folder</span><span class="o">.</span><span class="n">iterdir</span><span class="p">():</span>
+    <span class="k">for</span> <span class="n">src_file</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">root_dir</span><span class="o">.</span><span class="n">iterdir</span><span class="p">():</span>
         <span class="k">if</span> <span class="n">src_file</span><span class="o">.</span><span class="n">is_dir</span><span class="p">()</span> <span class="ow">or</span> <span class="n">src_file</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="n">_ignored_files_endswith</span><span class="p">):</span>
             <span class="k">continue</span>
-        <span class="n">shutil</span><span class="o">.</span><span class="n">copy2</span><span class="p">(</span><span class="n">src_file</span><span class="p">,</span> <span class="n">target_dir</span> <span class="o">/</span> <span class="n">src_file</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+        <span class="n">shutil</span><span class="o">.</span><span class="n">copy2</span><span class="p">(</span><span class="n">src_file</span><span class="p">,</span> <span class="n">sim_dir</span> <span class="o">/</span> <span class="n">src_file</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
 
-    <span class="k">return</span> <span class="n">target_dir</span>
+    <span class="k">return</span> <span class="n">sim_dir</span>
 </code></pre></div></td></tr></table></div>
             </details>
     </div>
@@ -3805,7 +3811,7 @@ a ValueError is raised. Defaults to False.</p>
         <span class="p">)</span>
 
     <span class="c1"># File path of print.prt</span>
-    <span class="n">print_prt_path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">root_folder</span> <span class="o">/</span> <span class="s1">&#39;print.prt&#39;</span>
+    <span class="n">print_prt_path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">root_dir</span> <span class="o">/</span> <span class="s1">&#39;print.prt&#39;</span>
 
     <span class="c1"># Read and modify print.prt file strings</span>
     <span class="n">new_print_prt</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
@@ -3872,7 +3878,7 @@ a ValueError is raised. Defaults to False.</p>
 
 
 <h3 id="pySWATPlus.TxtinoutReader.run_swat" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">run_swat</span><span class="p">(</span><span class="n">target_dir</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span> <span class="o">|</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">parameters</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">ModifyType</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">begin_date</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">end_date</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">simulation_timestep</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">warmup</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">print_prt_control</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">bool</span><span class="p">]]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">begin_date_print</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">end_date_print</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">print_interval</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">skip_validation</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span></code>
+            <code class="highlight language-python"><span class="n">run_swat</span><span class="p">(</span><span class="n">sim_dir</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span> <span class="o">|</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">parameters</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">ModifyType</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">begin_date</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">end_date</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">simulation_timestep</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">warmup</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">print_prt_control</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">bool</span><span class="p">]]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">print_begin_date</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">print_end_date</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">print_interval</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">skip_validation</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span></code>
 
 </h3>
 
@@ -3895,7 +3901,7 @@ a ValueError is raised. Defaults to False.</p>
       <tbody>
           <tr class="doc-section-item">
             <td>
-                <code>target_dir</code>
+                <code>sim_dir</code>
             </td>
             <td>
                   <code><span title="str">str</span> | <span title="pathlib.Path">Path</span></code>
@@ -4063,14 +4069,14 @@ The time step keys represent:</p>
           </tr>
           <tr class="doc-section-item">
             <td>
-                <code>begin_date_print</code>
+                <code>print_begin_date</code>
             </td>
             <td>
                   <code><span title="str">str</span></code>
             </td>
             <td>
               <div class="doc-md-description">
-                <p>The start date for printing the output</p>
+                <p>The start date for printing the output.</p>
               </div>
             </td>
             <td>
@@ -4079,14 +4085,14 @@ The time step keys represent:</p>
           </tr>
           <tr class="doc-section-item">
             <td>
-                <code>end_date_print</code>
+                <code>print_end_date</code>
             </td>
             <td>
                   <code><span title="str">str</span></code>
             </td>
             <td>
               <div class="doc-md-description">
-                <p>The end date for printing the output</p>
+                <p>The end date for printing the output.</p>
               </div>
             </td>
             <td>
@@ -4154,14 +4160,7 @@ The time step keys represent:</p>
 
             <details class="quote">
               <summary>Source code in <code>pySWATPlus/txtinout_reader.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 883</span>
-<span class="normal"> 884</span>
-<span class="normal"> 885</span>
-<span class="normal"> 886</span>
-<span class="normal"> 887</span>
-<span class="normal"> 888</span>
-<span class="normal"> 889</span>
-<span class="normal"> 890</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 890</span>
 <span class="normal"> 891</span>
 <span class="normal"> 892</span>
 <span class="normal"> 893</span>
@@ -4325,17 +4324,20 @@ The time step keys represent:</p>
 <span class="normal">1051</span>
 <span class="normal">1052</span>
 <span class="normal">1053</span>
-<span class="normal">1054</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">run_swat</span><span class="p">(</span>
+<span class="normal">1054</span>
+<span class="normal">1055</span>
+<span class="normal">1056</span>
+<span class="normal">1057</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">run_swat</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
-    <span class="n">target_dir</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span> <span class="o">|</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">sim_dir</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span> <span class="o">|</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">parameters</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="n">ModifyType</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">begin_date</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">end_date</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">simulation_timestep</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">warmup</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">print_prt_control</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">bool</span><span class="p">]]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">begin_date_print</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">end_date_print</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">print_begin_date</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">print_end_date</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">print_interval</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">skip_validation</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">:</span>
@@ -4343,7 +4345,7 @@ The time step keys represent:</p>
 <span class="sd">    Run the SWAT+ simulation with optional parameter changes.</span>
 
 <span class="sd">    Args:</span>
-<span class="sd">        target_dir (str | pathlib.Path): Path to the directory where the simulation will be done.</span>
+<span class="sd">        sim_dir (str | pathlib.Path): Path to the directory where the simulation will be done.</span>
 <span class="sd">            If None, the simulation runs directly in the current folder.</span>
 
 <span class="sd">        parameters (ModifyType): List of dictionaries specifying parameter changes in the `calibration.cal` file.</span>
@@ -4411,9 +4413,9 @@ The time step keys represent:</p>
 <span class="sd">            }</span>
 <span class="sd">            ```</span>
 
-<span class="sd">        begin_date_print (str): The start date for printing the output</span>
+<span class="sd">        print_begin_date (str): The start date for printing the output.</span>
 
-<span class="sd">        end_date_print (str): The end date for printing the output</span>
+<span class="sd">        print_end_date (str): The end date for printing the output.</span>
 
 <span class="sd">        print_interval (int): Print interval within the period. For example, if interval = 2, output will be printed for every other day.</span>
 
@@ -4432,25 +4434,21 @@ The time step keys represent:</p>
     <span class="p">)</span>
 
     <span class="c1"># TxtinoutReader class instance</span>
-    <span class="k">if</span> <span class="n">target_dir</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="c1"># Absolute path</span>
-        <span class="n">target_dir</span> <span class="o">=</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="n">target_dir</span><span class="p">)</span><span class="o">.</span><span class="n">resolve</span><span class="p">()</span>
-        <span class="c1"># Check validity of target_dir</span>
-        <span class="n">validators</span><span class="o">.</span><span class="n">_path_directory</span><span class="p">(</span>
-            <span class="n">path</span><span class="o">=</span><span class="n">target_dir</span>
+    <span class="k">if</span> <span class="n">sim_dir</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">sim_dir</span> <span class="o">=</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="n">sim_dir</span><span class="p">)</span><span class="o">.</span><span class="n">resolve</span><span class="p">()</span>
+        <span class="c1"># Check validity of sim_dir</span>
+        <span class="n">validators</span><span class="o">.</span><span class="n">_dir_path</span><span class="p">(</span>
+            <span class="n">input_dir</span><span class="o">=</span><span class="n">sim_dir</span>
         <span class="p">)</span>
-        <span class="c1"># Copy files to the target directory</span>
         <span class="n">run_path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">copy_required_files</span><span class="p">(</span>
-            <span class="n">target_dir</span><span class="o">=</span><span class="n">target_dir</span>
+            <span class="n">sim_dir</span><span class="o">=</span><span class="n">sim_dir</span>
         <span class="p">)</span>
-        <span class="c1"># Initialize new TxtinoutReader class</span>
         <span class="n">reader</span> <span class="o">=</span> <span class="n">TxtinoutReader</span><span class="p">(</span>
-            <span class="n">path</span><span class="o">=</span><span class="n">run_path</span>
+            <span class="n">tio_dir</span><span class="o">=</span><span class="n">run_path</span>
         <span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="c1"># Select existing TxtinoutReader class instance</span>
         <span class="n">reader</span> <span class="o">=</span> <span class="bp">self</span>
-        <span class="n">run_path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">root_folder</span>
+        <span class="n">run_path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">root_dir</span>
 
     <span class="c1"># Apply SWAT+ configuration changes</span>
     <span class="n">reader</span><span class="o">.</span><span class="n">_apply_swat_configuration</span><span class="p">(</span>
@@ -4459,16 +4457,16 @@ The time step keys represent:</p>
         <span class="n">simulation_timestep</span><span class="o">=</span><span class="n">simulation_timestep</span><span class="p">,</span>
         <span class="n">warmup</span><span class="o">=</span><span class="n">warmup</span><span class="p">,</span>
         <span class="n">print_prt_control</span><span class="o">=</span><span class="n">print_prt_control</span><span class="p">,</span>
-        <span class="n">begin_date_print</span><span class="o">=</span><span class="n">begin_date_print</span><span class="p">,</span>
-        <span class="n">end_date_print</span><span class="o">=</span><span class="n">end_date_print</span><span class="p">,</span>
+        <span class="n">print_begin_date</span><span class="o">=</span><span class="n">print_begin_date</span><span class="p">,</span>
+        <span class="n">print_end_date</span><span class="o">=</span><span class="n">print_end_date</span><span class="p">,</span>
         <span class="n">print_interval</span><span class="o">=</span><span class="n">print_interval</span>
     <span class="p">)</span>
 
     <span class="c1"># Create calibration.cal file</span>
     <span class="k">if</span> <span class="n">parameters</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
 
-        <span class="c1"># Validate unique dictionaries for sensitive parameters</span>
-        <span class="n">validators</span><span class="o">.</span><span class="n">_list_contain_unique_dict</span><span class="p">(</span>
+        <span class="c1"># Validate unique dictionaries for calibration parameters</span>
+        <span class="n">validators</span><span class="o">.</span><span class="n">_calibration_list_contain_unique_dict</span><span class="p">(</span>
             <span class="n">parameters</span><span class="o">=</span><span class="n">parameters</span>
         <span class="p">)</span>
 
@@ -4479,13 +4477,13 @@ The time step keys represent:</p>
 
         <span class="c1"># Check if input calibration parameters exists in cal_parms.cal</span>
         <span class="n">validators</span><span class="o">.</span><span class="n">_calibration_parameters</span><span class="p">(</span>
-            <span class="n">txtinout_path</span><span class="o">=</span><span class="n">reader</span><span class="o">.</span><span class="n">root_folder</span><span class="p">,</span>
+            <span class="n">input_dir</span><span class="o">=</span><span class="n">reader</span><span class="o">.</span><span class="n">root_dir</span><span class="p">,</span>
             <span class="n">parameters</span><span class="o">=</span><span class="n">params</span>
         <span class="p">)</span>
 
         <span class="k">if</span> <span class="ow">not</span> <span class="n">skip_validation</span><span class="p">:</span>
             <span class="n">validators</span><span class="o">.</span><span class="n">_calibration_conditions_and_units</span><span class="p">(</span>
-                <span class="n">txtinout_path</span><span class="o">=</span><span class="n">reader</span><span class="o">.</span><span class="n">root_folder</span><span class="p">,</span>
+                <span class="n">input_dir</span><span class="o">=</span><span class="n">reader</span><span class="o">.</span><span class="n">root_dir</span><span class="p">,</span>
                 <span class="n">parameters</span><span class="o">=</span><span class="n">params</span>
             <span class="p">)</span>
 
@@ -4607,7 +4605,7 @@ For example, if <code>interval = 2</code>, output will be printed every other da
     <span class="p">)</span>
 
     <span class="c1"># File path of print.prt</span>
-    <span class="n">print_prt_path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">root_folder</span> <span class="o">/</span> <span class="s1">&#39;print.prt&#39;</span>
+    <span class="n">print_prt_path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">root_dir</span> <span class="o">/</span> <span class="s1">&#39;print.prt&#39;</span>
 
     <span class="c1"># Open the file in read mode and read its contents</span>
     <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">print_prt_path</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
@@ -4789,7 +4787,7 @@ For example, if <code>interval = 2</code>, output will be printed every other da
     <span class="n">end_year</span> <span class="o">=</span> <span class="n">end_dt</span><span class="o">.</span><span class="n">year</span>
 
     <span class="c1"># File path of print.prt</span>
-    <span class="n">print_prt_path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">root_folder</span> <span class="o">/</span> <span class="s1">&#39;print.prt&#39;</span>
+    <span class="n">print_prt_path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">root_dir</span> <span class="o">/</span> <span class="s1">&#39;print.prt&#39;</span>
 
     <span class="c1"># Open the file in read mode and read its contents</span>
     <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">print_prt_path</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
@@ -4989,7 +4987,7 @@ the begin and end dates in the <code>time.sim</code> file.</p>
     <span class="n">nth_line</span> <span class="o">=</span> <span class="mi">3</span>
 
     <span class="c1"># File path of time.sim</span>
-    <span class="n">time_sim_path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">root_folder</span> <span class="o">/</span> <span class="s1">&#39;time.sim&#39;</span>
+    <span class="n">time_sim_path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">root_dir</span> <span class="o">/</span> <span class="s1">&#39;time.sim&#39;</span>
 
     <span class="c1"># Open the file in read mode and read its contents</span>
     <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">time_sim_path</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
@@ -5181,7 +5179,7 @@ the begin and end dates in the <code>time.sim</code> file.</p>
     <span class="n">nth_line</span> <span class="o">=</span> <span class="mi">3</span>
 
     <span class="c1"># File path of time.sim</span>
-    <span class="n">time_sim_path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">root_folder</span> <span class="o">/</span> <span class="s1">&#39;time.sim&#39;</span>
+    <span class="n">time_sim_path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">root_dir</span> <span class="o">/</span> <span class="s1">&#39;time.sim&#39;</span>
 
     <span class="c1"># Open the file in read mode and read its contents</span>
     <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">time_sim_path</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
@@ -5331,7 +5329,7 @@ the begin and end dates in the <code>time.sim</code> file.</p>
         <span class="p">)</span>
 
     <span class="c1"># File path of print.prt</span>
-    <span class="n">print_prt_path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">root_folder</span> <span class="o">/</span> <span class="s1">&#39;print.prt&#39;</span>
+    <span class="n">print_prt_path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">root_dir</span> <span class="o">/</span> <span class="s1">&#39;print.prt&#39;</span>
 
     <span class="c1"># Open the file in read mode and read its contents</span>
     <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">print_prt_path</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>

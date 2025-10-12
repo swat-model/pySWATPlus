@@ -490,15 +490,6 @@
   
 </li>
       
-        <li class="md-nav__item">
-  <a href="#sobol-indices" class="md-nav__link">
-    <span class="md-ellipsis">
-      Sobol Indices
-    </span>
-  </a>
-  
-</li>
-      
     </ul>
   
 </nav>
@@ -775,15 +766,6 @@
   
 </li>
       
-        <li class="md-nav__item">
-  <a href="#sobol-indices" class="md-nav__link">
-    <span class="md-ellipsis">
-      Sobol Indices
-    </span>
-  </a>
-  
-</li>
-      
     </ul>
   
 </nav>
@@ -823,16 +805,16 @@ The following method creates a time series <code>DataFrame</code> that includes 
 <span class="nb">print</span><span class="p">(</span><span class="n">output</span><span class="p">)</span>
 </code></pre></div>
 <h2 id="read-sensitivity-simulation-data">Read Sensitivity Simulation Data</h2>
-<p>The sensitivity analysis performed using the <a href="https://swat-model.github.io/pySWATPlus/api/sensitivity_analyzer/#pySWATPlus.SensitivityAnalyzer.simulation_by_sobol_sample"><code>simulation_by_sobol_sample</code></a> method generates a file named <code>sensitivity_simulation.json</code> within the simulation directory.<br />
-This JSON file contains all the information required for Sobol sensitivity analysis, including:</p>
+<p>The sensitivity analysis performed using the
+<a href="https://swat-model.github.io/pySWATPlus/api/sensitivity_analyzer/#pySWATPlus.SensitivityAnalyzer.simulation_by_sample_parameters"><code>simulation_by_sample_parameters</code></a> method generates a file named <code>sensitivity_simulation.json</code>. This JSON file contains all the information required for sensitivity analysis, including:</p>
 <ul>
-<li><code>problem</code>: Sobol problem definition  </li>
+<li><code>problem</code>: Problem definition dictionary  </li>
 <li><code>sample</code>: List of generated samples  </li>
 <li><code>simulation</code>: Simulated <code>DataFrame</code> corresponding to each sample  </li>
 </ul>
 <p>To retrieve the selected <code>DataFrame</code> for all scenarios, use:</p>
 <div class="highlight"><pre><span></span><code><span class="n">output</span> <span class="o">=</span> <span class="n">pySWATPlus</span><span class="o">.</span><span class="n">DataManager</span><span class="p">()</span><span class="o">.</span><span class="n">read_sensitive_dfs</span><span class="p">(</span>
-    <span class="n">sim_file</span><span class="o">=</span><span class="sa">r</span><span class="s2">&quot;C:\Users\Username\simulation_folder\sensitivity_simulation.json&quot;</span><span class="p">,</span>
+    <span class="n">sensim_file</span><span class="o">=</span><span class="sa">r</span><span class="s2">&quot;C:\Users\Username\simulation_folder\sensitivity_simulation.json&quot;</span><span class="p">,</span>
     <span class="n">df_name</span><span class="o">=</span><span class="s1">&#39;channel_sd_mon_df&#39;</span><span class="p">,</span>
     <span class="n">add_problem</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
     <span class="n">add_sample</span><span class="o">=</span><span class="kc">True</span>
@@ -845,7 +827,7 @@ This JSON file contains all the information required for Sobol sensitivity analy
 </code></pre></div>
 <p>To compute performance metrics for the desired indicators:</p>
 <div class="highlight"><pre><span></span><code><span class="n">output</span> <span class="o">=</span> <span class="n">pySWATPlus</span><span class="o">.</span><span class="n">SensitivityAnalyzer</span><span class="p">()</span><span class="o">.</span><span class="n">scenario_indicators</span><span class="p">(</span>
-    <span class="n">sim_file</span><span class="o">=</span><span class="sa">r</span><span class="s2">&quot;C:\Users\Username\simulation_folder\sensitivity_simulation.json&quot;</span><span class="p">,</span>
+    <span class="n">sensim_file</span><span class="o">=</span><span class="sa">r</span><span class="s2">&quot;C:\Users\Username\simulation_folder\sensitivity_simulation.json&quot;</span><span class="p">,</span>
     <span class="n">df_name</span><span class="o">=</span><span class="s1">&#39;channel_sd_mon_df&#39;</span><span class="p">,</span>
     <span class="n">sim_col</span><span class="o">=</span><span class="s1">&#39;flo_out&#39;</span><span class="p">,</span>
     <span class="n">obs_file</span><span class="o">=</span><span class="sa">r</span><span class="s2">&quot;C:\Users\Username\observed_folder\discharge_monthly.csv&quot;</span><span class="p">,</span>
@@ -853,19 +835,6 @@ This JSON file contains all the information required for Sobol sensitivity analy
     <span class="n">obs_col</span><span class="o">=</span><span class="s1">&#39;discharge&#39;</span><span class="p">,</span>
     <span class="n">indicators</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;NSE&#39;</span><span class="p">,</span> <span class="s1">&#39;MSE&#39;</span><span class="p">],</span>
     <span class="n">json_file</span><span class="o">=</span><span class="sa">r</span><span class="s2">&quot;C:\Users\Username\data_analysis\performance_metrics.json&quot;</span>
-<span class="p">)</span>
-</code></pre></div>
-<h2 id="sobol-indices">Sobol Indices</h2>
-<p>The available indicators can also be used to compute Sobol indices (first, second, and total orders) along with their confidence intervals.</p>
-<div class="highlight"><pre><span></span><code><span class="n">output</span> <span class="o">=</span> <span class="n">pySWATPlus</span><span class="o">.</span><span class="n">SensitivityAnalyzer</span><span class="p">()</span><span class="o">.</span><span class="n">sobol_indices</span><span class="p">(</span>
-    <span class="n">sim_file</span><span class="o">=</span><span class="sa">r</span><span class="s2">&quot;C:\Users\Username\simulation_folder\sensitivity_simulation.json&quot;</span><span class="p">,</span>
-    <span class="n">df_name</span><span class="o">=</span><span class="s1">&#39;channel_sd_mon_df&#39;</span><span class="p">,</span>
-    <span class="n">sim_col</span><span class="o">=</span><span class="s1">&#39;flo_out&#39;</span><span class="p">,</span>
-    <span class="n">obs_file</span><span class="o">=</span><span class="sa">r</span><span class="s2">&quot;C:\Users\Username\observed_folder\discharge_monthly.csv&quot;</span><span class="p">,</span>
-    <span class="n">date_format</span><span class="o">=</span><span class="s1">&#39;%Y-%m-</span><span class="si">%d</span><span class="s1">&#39;</span><span class="p">,</span>
-    <span class="n">obs_col</span><span class="o">=</span><span class="s1">&#39;discharge&#39;</span><span class="p">,</span>
-    <span class="n">indicators</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;KGE&#39;</span><span class="p">,</span> <span class="s1">&#39;RMSE&#39;</span><span class="p">],</span>
-    <span class="n">json_file</span><span class="o">=</span><span class="sa">r</span><span class="s2">&quot;C:\Users\Username\data_analysis\sobol_indices.json&quot;</span>
 <span class="p">)</span>
 </code></pre></div>
 

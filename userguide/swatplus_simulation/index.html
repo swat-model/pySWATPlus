@@ -808,10 +808,10 @@
 <div class="highlight"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">pySWATPlus</span>
 
 <span class="c1"># Replace this with the path to your project&#39;s TxtInOut folder</span>
-<span class="n">txtinout_folder</span> <span class="o">=</span> <span class="sa">r</span><span class="s2">&quot;C:\Users\Username\project\Scenarios\Default\TxtInOut&quot;</span>
+<span class="n">txtinout_dir</span> <span class="o">=</span> <span class="sa">r</span><span class="s2">&quot;C:\Users\Username\project\Scenarios\Default\TxtInOut&quot;</span>
 
 <span class="n">txtinout_reader</span> <span class="o">=</span> <span class="n">pySWATPlus</span><span class="o">.</span><span class="n">TxtinoutReader</span><span class="p">(</span>
-    <span class="n">path</span><span class="o">=</span><span class="n">txtinout_folder</span>
+    <span class="n">tio_dir</span><span class="o">=</span><span class="n">txtinout_dir</span>
 <span class="p">)</span>
 </code></pre></div>
 <p><code>pySWATPlus</code> offers multiple options for executing <code>SWAT+</code> simulations, providing flexibility for diverse workflows and automation needs.</p>
@@ -826,24 +826,24 @@
 <li>
 <p>Copy required files to the custom directory:</p>
 <div class="highlight"><pre><span></span><code><span class="c1"># Replace this with your desired empty custom directory</span>
-<span class="n">target_dir</span> <span class="o">=</span> <span class="sa">r</span><span class="s2">&quot;C:\Users\Username\custom_folder&quot;</span> 
+<span class="n">sim_dir</span> <span class="o">=</span> <span class="sa">r</span><span class="s2">&quot;C:\Users\Username\custom_folder&quot;</span> 
 
 <span class="c1"># Ensure the required files are copied to the custom directory</span>
 <span class="n">txtinout_reader</span><span class="o">.</span><span class="n">copy_required_files</span><span class="p">(</span>
-    <span class="n">target_dir</span><span class="o">=</span><span class="n">target_dir</span>
+    <span class="n">sim_dir</span><span class="o">=</span><span class="n">sim_dir</span>
 <span class="p">)</span>
 </code></pre></div>
 </li>
 <li>
 <p>Initialize <code>TxtinoutReader</code> class for the custom directory</p>
-<div class="highlight"><pre><span></span><code><span class="n">target_reader</span> <span class="o">=</span> <span class="n">pySWATPlus</span><span class="o">.</span><span class="n">TxtinoutReader</span><span class="p">(</span>
-    <span class="n">path</span><span class="o">=</span><span class="n">target_dir</span>
+<div class="highlight"><pre><span></span><code><span class="n">sim_reader</span> <span class="o">=</span> <span class="n">pySWATPlus</span><span class="o">.</span><span class="n">TxtinoutReader</span><span class="p">(</span>
+    <span class="n">tio_dir</span><span class="o">=</span><span class="n">sim_dir</span>
 <span class="p">)</span>
 </code></pre></div>
 </li>
 <li>
 <p>Run simulation</p>
-<div class="highlight"><pre><span></span><code><span class="n">target_reader</span><span class="o">.</span><span class="n">run_swat</span><span class="p">()</span>
+<div class="highlight"><pre><span></span><code><span class="n">sim_reader</span><span class="o">.</span><span class="n">run_swat</span><span class="p">()</span>
 </code></pre></div>
 </li>
 </ul>
@@ -853,9 +853,9 @@
 <li>
 <p>Modify simulation timeline:</p>
 <div class="highlight"><pre><span></span><code><span class="c1"># Update timeline in `time.sim` file</span>
-<span class="n">target_reader</span><span class="o">.</span><span class="n">set_simulation_period</span><span class="p">(</span>
+<span class="n">sim_reader</span><span class="o">.</span><span class="n">set_simulation_period</span><span class="p">(</span>
     <span class="n">begin_date</span><span class="o">=</span><span class="s1">&#39;01-Jan-2012&#39;</span><span class="p">,</span>
-    <span class="n">end_date</span><span class="o">=</span><span class="s1">&#39;31-Dec-2016&#39;</span><span class="p">,</span>
+    <span class="n">end_date</span><span class="o">=</span><span class="s1">&#39;31-Dec-2016&#39;</span>
 <span class="p">)</span>
 </code></pre></div>
 </li>
@@ -870,7 +870,7 @@
 <li>
 <p>Enable required simulation files:</p>
 <div class="highlight"><pre><span></span><code><span class="c1"># Ensure simulation outputs for `channel_sd` object in `print.prt` file  </span>
-<span class="n">target_reader</span><span class="o">.</span><span class="n">enable_object_in_print_prt</span><span class="p">(</span>
+<span class="n">sim_reader</span><span class="o">.</span><span class="n">enable_object_in_print_prt</span><span class="p">(</span>
     <span class="n">obj</span><span class="o">=</span><span class="s1">&#39;channel_sd&#39;</span><span class="p">,</span>
     <span class="n">daily</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
     <span class="n">monthly</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
@@ -880,10 +880,19 @@
 </code></pre></div>
 </li>
 <li>
-<p>Set output print interval within the simulation period:</p>
-<div class="highlight"><pre><span></span><code><span class="c1"># Set ouput print every other day  </span>
-<span class="n">target_reader</span><span class="o">.</span><span class="n">set_print_interval</span><span class="p">(</span>
-    <span class="n">interval</span><span class="o">=</span><span class="mi">2</span>
+<p>Set print interval within the simulation period:</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># Set print interval in `print.prt` file</span>
+<span class="n">sim_reader</span><span class="o">.</span><span class="n">set_print_interval</span><span class="p">(</span>
+    <span class="n">interval</span><span class="o">=</span><span class="mi">1</span>
+<span class="p">)</span>
+</code></pre></div>
+</li>
+<li>
+<p>Set print period within the simulation timeline to record result in output files:</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># Set print period in `print.prt` file  </span>
+<span class="n">sim_reader</span><span class="o">.</span><span class="n">set_print_period</span><span class="p">(</span>
+    <span class="n">begin_date</span><span class="o">=</span><span class="s1">&#39;15-Jun-2012&#39;</span><span class="p">,</span>
+    <span class="n">end_date</span><span class="o">=</span><span class="s1">&#39;15-Jun-2016&#39;</span>
 <span class="p">)</span>
 </code></pre></div>
 </li>
@@ -896,7 +905,7 @@
         <span class="s1">&#39;value&#39;</span><span class="p">:</span> <span class="mf">0.5</span>
     <span class="p">}</span>
 <span class="p">]</span>
-<span class="n">target_reader</span><span class="o">.</span><span class="n">run_swat</span><span class="p">(</span>
+<span class="n">sim_reader</span><span class="o">.</span><span class="n">run_swat</span><span class="p">(</span>
     <span class="n">parameters</span><span class="o">=</span><span class="n">parameters</span>
 <span class="p">)</span>
 </code></pre></div>
@@ -920,12 +929,15 @@
 
 <span class="c1"># Run SWAT+ simulation from the original `TxtInOut` folder</span>
 <span class="n">txtinout_reader</span><span class="o">.</span><span class="n">run_swat</span><span class="p">(</span>
-    <span class="n">target_dir</span><span class="o">=</span><span class="sa">r</span><span class="s2">&quot;C:\Users\Username\custom_folder&quot;</span><span class="p">,</span>  <span class="c1"># mandatory</span>
+    <span class="n">sim_dir</span><span class="o">=</span><span class="sa">r</span><span class="s2">&quot;C:\Users\Username\custom_folder&quot;</span><span class="p">,</span>  <span class="c1"># mandatory</span>
     <span class="n">parameters</span><span class="o">=</span><span class="n">parameters</span><span class="p">,</span>  <span class="c1"># optional</span>
-    <span class="n">begin_date</span><span class="o">=</span><span class="s1">&#39;01-Jan-2012&#39;</span><span class="p">,</span> <span class="c1"># optional</span>
-    <span class="n">end_date</span><span class="o">=</span> <span class="s1">&#39;31-Dec-2016&#39;</span><span class="p">,</span> <span class="c1"># optional</span>
+    <span class="n">begin_date</span><span class="o">=</span><span class="s1">&#39;01-Jan-2012&#39;</span><span class="p">,</span>  <span class="c1"># optional</span>
+    <span class="n">end_date</span><span class="o">=</span> <span class="s1">&#39;31-Dec-2016&#39;</span><span class="p">,</span>  <span class="c1"># optional</span>
+    <span class="n">simulation_timestep</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>  <span class="c1"># optional</span>
     <span class="n">warmup</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>  <span class="c1"># optional</span>
     <span class="n">print_prt_control</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;channel_sd&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;daily&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">}},</span>  <span class="c1"># optional</span>
+    <span class="n">print_begin_date</span><span class="o">=</span><span class="s1">&#39;15-Jun-2012&#39;</span><span class="p">,</span>  <span class="c1"># optional</span>
+    <span class="n">print_end_date</span><span class="o">=</span><span class="s1">&#39;15-Jun-2016&#39;</span><span class="p">,</span>  <span class="c1"># optional</span>
     <span class="n">print_interval</span><span class="o">=</span><span class="mi">1</span>  <span class="c1"># optional</span>
 <span class="p">)</span>
 </code></pre></div>

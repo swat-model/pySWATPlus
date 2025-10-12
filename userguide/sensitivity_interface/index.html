@@ -74,7 +74,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#sensitivity-analysis" class="md-skip">
+        <a href="#sensitivity-interface" class="md-skip">
           Skip to content
         </a>
       
@@ -450,9 +450,18 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#sobol-based-interface" class="md-nav__link">
+  <a href="#sensitivity-simulation" class="md-nav__link">
     <span class="md-ellipsis">
-      Sobol-Based Interface
+      Sensitivity Simulation
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sensitivity-indices" class="md-nav__link">
+    <span class="md-ellipsis">
+      Sensitivity Indices
     </span>
   </a>
   
@@ -740,9 +749,18 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#sobol-based-interface" class="md-nav__link">
+  <a href="#sensitivity-simulation" class="md-nav__link">
     <span class="md-ellipsis">
-      Sobol-Based Interface
+      Sensitivity Simulation
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sensitivity-indices" class="md-nav__link">
+    <span class="md-ellipsis">
+      Sensitivity Indices
     </span>
   </a>
   
@@ -764,9 +782,8 @@
 
 
 
-<h1 id="sensitivity-analysis">Sensitivity Analysis</h1>
-<p>Sensitivity analysis helps quantify how variation in input parameters affects model outputs. This tutorial demonstrates how to perform sensitivity analysis on SWAT+ model parameters.<br />
-The parameter sampling is handled by the <a href="https://github.com/SALib/SALib">SALib</a> Python package using <a href="https://doi.org/10.1016/S0378-4754(00)00270-6">Sobol</a> sampling from a defined parameter space.</p>
+<h1 id="sensitivity-interface">Sensitivity Interface</h1>
+<p>Sensitivity interface helps quantify how variation in input parameters affects model outputs. This tutorial demonstrates how to perform sensitivity analysis on SWAT+ model parameters.  </p>
 <h2 id="configuration-settings">Configuration Settings</h2>
 <p>Before running a sensitivity simulation, you must define the necessary configuration settings.<br />
 These settings specify key parameters such as the simulation timeline, output print options, and other essential model controls.</p>
@@ -774,25 +791,25 @@ These settings specify key parameters such as the simulation timeline, output pr
 
 <span class="c1"># Initialize the project&#39;s TxtInOut folder</span>
 <span class="n">txtinout_reader</span> <span class="o">=</span> <span class="n">pySWATPlus</span><span class="o">.</span><span class="n">TxtinoutReader</span><span class="p">(</span>
-    <span class="n">path</span><span class="o">=</span><span class="sa">r</span><span class="s2">&quot;C:\Users\Username\project\Scenarios\Default\TxtInOut&quot;</span>
+    <span class="n">tio_dir</span><span class="o">=</span><span class="sa">r</span><span class="s2">&quot;C:\Users\Username\project\Scenarios\Default\TxtInOut&quot;</span>
 <span class="p">)</span>
 
-<span class="c1"># Copy required files to an empty custom directory</span>
-<span class="n">target_dir</span> <span class="o">=</span> <span class="sa">r</span><span class="s2">&quot;C:\Users\Username\custom_folder&quot;</span> 
-<span class="n">target_dir</span> <span class="o">=</span> <span class="n">txtinout_reader</span><span class="o">.</span><span class="n">copy_required_files</span><span class="p">(</span>
-    <span class="n">target_dir</span><span class="o">=</span><span class="n">target_dir</span>
+<span class="c1"># Copy required files to an empty simulation directory</span>
+<span class="n">sim_dir</span> <span class="o">=</span> <span class="sa">r</span><span class="s2">&quot;C:\Users\Username\custom_folder&quot;</span> 
+<span class="n">sim_dir</span> <span class="o">=</span> <span class="n">txtinout_reader</span><span class="o">.</span><span class="n">copy_required_files</span><span class="p">(</span>
+    <span class="n">sim_dir</span><span class="o">=</span><span class="n">sim_dir</span>
 <span class="p">)</span>
 
-<span class="c1"># Initialize TxtinoutReader with the custom directory</span>
-<span class="n">target_reader</span> <span class="o">=</span> <span class="n">pySWATPlus</span><span class="o">.</span><span class="n">TxtinoutReader</span><span class="p">(</span>
-    <span class="n">path</span><span class="o">=</span><span class="n">target_dir</span>
+<span class="c1"># Initialize TxtinoutReader with the simulation directory</span>
+<span class="n">sim_reader</span> <span class="o">=</span> <span class="n">pySWATPlus</span><span class="o">.</span><span class="n">TxtinoutReader</span><span class="p">(</span>
+    <span class="n">tio_dir</span><span class="o">=</span><span class="n">sim_dir</span>
 <span class="p">)</span>
 
 <span class="c1"># Disable CSV file generation to save time</span>
-<span class="n">target_reader</span><span class="o">.</span><span class="n">disable_csv_print</span><span class="p">()</span>
+<span class="n">sim_reader</span><span class="o">.</span><span class="n">disable_csv_print</span><span class="p">()</span>
 
 <span class="c1"># Disable daily time series in print.prt (saves time and space)</span>
-<span class="n">target_reader</span><span class="o">.</span><span class="n">enable_object_in_print_prt</span><span class="p">(</span>
+<span class="n">sim_reader</span><span class="o">.</span><span class="n">enable_object_in_print_prt</span><span class="p">(</span>
     <span class="n">obj</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="n">daily</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
     <span class="n">monthly</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
@@ -800,8 +817,8 @@ These settings specify key parameters such as the simulation timeline, output pr
     <span class="n">avann</span><span class="o">=</span><span class="kc">True</span>
 <span class="p">)</span>
 
-<span class="c1"># Run a trial simulation to verify expected time series outputs</span>
-<span class="n">target_reader</span><span class="o">.</span><span class="n">run_swat</span><span class="p">(</span>
+<span class="c1"># Set simulation period and run a trial simulation to verify expected time series outputs</span>
+<span class="n">sim_reader</span><span class="o">.</span><span class="n">run_swat</span><span class="p">(</span>
     <span class="n">begin_date</span><span class="o">=</span><span class="s1">&#39;01-Jan-2010&#39;</span><span class="p">,</span>
     <span class="n">end_date</span><span class="o">=</span><span class="s1">&#39;31-Dec-2012&#39;</span><span class="p">,</span>
     <span class="n">warmup</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
@@ -809,13 +826,14 @@ These settings specify key parameters such as the simulation timeline, output pr
         <span class="s1">&#39;channel_sd&#39;</span><span class="p">:</span> <span class="p">{}</span>
     <span class="p">}</span>  <span class="c1"># enable daily time series for &#39;channel_sd&#39;</span>
 </code></pre></div>
-<h2 id="sobol-based-interface">Sobol-Based Interface</h2>
-<p>This high-level interface builds on the above configuration to run sensitivity simulations using Sobol sampling. It includes:</p>
+<h2 id="sensitivity-simulation">Sensitivity Simulation</h2>
+<p>This high-level interface builds on the above configuration to run sensitivity simulations using sampling, powered by the <a href="https://github.com/SALib/SALib">SALib</a> Python package.<br />
+Currently, it supports <a href="https://doi.org/10.1016/S0378-4754(00)00270-6">Sobol</a> sampling from a defined parameter space. The interface provides:</p>
 <ul>
-<li>Automatic generation of Sobol samples for the parameter space  </li>
-<li>Parallel computation to speed up simulations  </li>
-<li>Output extraction with filtering options</li>
-<li>Structured export of results for downstream analysis  </li>
+<li>Automatic generation of samples for the parameter space  </li>
+<li>Parallel computation to accelerate simulations  </li>
+<li>Output extraction with filtering options  </li>
+<li>Structured export of results for downstream analysis</li>
 </ul>
 <div class="highlight"><pre><span></span><code><span class="c1"># Sensitivity parameter space</span>
 <span class="n">parameters</span> <span class="o">=</span> <span class="p">[</span>
@@ -834,7 +852,7 @@ These settings specify key parameters such as the simulation timeline, output pr
 <span class="p">]</span>
 
 <span class="c1"># Target data extraction from sensitivity simulation</span>
-<span class="n">simulation_data</span> <span class="o">=</span> <span class="p">{</span>
+<span class="n">extract_data</span> <span class="o">=</span> <span class="p">{</span>
     <span class="s1">&#39;channel_sdmorph_yr.txt&#39;</span><span class="p">:</span> <span class="p">{</span>
         <span class="s1">&#39;has_units&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
         <span class="s1">&#39;ref_day&#39;</span><span class="p">:</span> <span class="mi">15</span><span class="p">,</span>
@@ -853,15 +871,27 @@ These settings specify key parameters such as the simulation timeline, output pr
 
 <span class="c1"># Sensitivity simulation</span>
 <span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
-    <span class="n">output</span> <span class="o">=</span> <span class="n">pySWATPlus</span><span class="o">.</span><span class="n">SensitivityAnalyzer</span><span class="p">()</span><span class="o">.</span><span class="n">simulation_by_sobol_sample</span><span class="p">(</span>
+    <span class="n">output</span> <span class="o">=</span> <span class="n">pySWATPlus</span><span class="o">.</span><span class="n">SensitivityAnalyzer</span><span class="p">()</span><span class="o">.</span><span class="n">simulation_by_sample_parameters</span><span class="p">(</span>
         <span class="n">parameters</span><span class="o">=</span><span class="n">parameters</span><span class="p">,</span>
         <span class="n">sample_number</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
-        <span class="n">simulation_folder</span><span class="o">=</span><span class="sa">r</span><span class="s2">&quot;C:\Users\Username\simulation_folder&quot;</span><span class="p">,</span>
-        <span class="n">txtinout_folder</span><span class="o">=</span><span class="n">target_dir</span><span class="p">,</span>
-        <span class="n">simulation_data</span><span class="o">=</span><span class="n">simulation_data</span><span class="p">,</span>
-        <span class="n">clean_setup</span><span class="o">=</span><span class="kc">True</span>
+        <span class="n">sensim_dir</span><span class="o">=</span><span class="sa">r</span><span class="s2">&quot;C:\Users\Username\simulation_folder&quot;</span><span class="p">,</span>
+        <span class="n">txtinout_folder</span><span class="o">=</span><span class="n">sim_dir</span><span class="p">,</span>
+        <span class="n">extract_data</span><span class="o">=</span><span class="n">extract_data</span>
     <span class="p">)</span>
     <span class="nb">print</span><span class="p">(</span><span class="n">output</span><span class="p">)</span>
+</code></pre></div>
+<h2 id="sensitivity-indices">Sensitivity Indices</h2>
+<p>Sensitivity indices (first, second, and total orders) are computed using the indicators available in the <code>pySWATPlus.PerformanceMetrics</code> class, along with their confidence intervals.</p>
+<div class="highlight"><pre><span></span><code><span class="n">output</span> <span class="o">=</span> <span class="n">pySWATPlus</span><span class="o">.</span><span class="n">SensitivityAnalyzer</span><span class="p">()</span><span class="o">.</span><span class="n">parameter_sensitivity_indices</span><span class="p">(</span>
+    <span class="n">sensim_file</span><span class="o">=</span><span class="sa">r</span><span class="s2">&quot;C:\Users\Username\simulation_folder\sensitivity_simulation.json&quot;</span><span class="p">,</span>
+    <span class="n">df_name</span><span class="o">=</span><span class="s1">&#39;channel_sd_mon_df&#39;</span><span class="p">,</span>
+    <span class="n">sim_col</span><span class="o">=</span><span class="s1">&#39;flo_out&#39;</span><span class="p">,</span>
+    <span class="n">obs_file</span><span class="o">=</span><span class="sa">r</span><span class="s2">&quot;C:\Users\Username\observed_folder\discharge_monthly.csv&quot;</span><span class="p">,</span>
+    <span class="n">date_format</span><span class="o">=</span><span class="s1">&#39;%Y-%m-</span><span class="si">%d</span><span class="s1">&#39;</span><span class="p">,</span>
+    <span class="n">obs_col</span><span class="o">=</span><span class="s1">&#39;discharge&#39;</span><span class="p">,</span>
+    <span class="n">indicators</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;KGE&#39;</span><span class="p">,</span> <span class="s1">&#39;RMSE&#39;</span><span class="p">],</span>
+    <span class="n">json_file</span><span class="o">=</span><span class="sa">r</span><span class="s2">&quot;C:\Users\Username\sensitivity_indices.json&quot;</span>
+<span class="p">)</span>
 </code></pre></div>
 
 
