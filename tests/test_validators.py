@@ -7,12 +7,12 @@ import pandas
 @pytest.fixture(scope='class')
 def txtinout_reader():
 
-    # set up TxtInOut folder path
-    txtinout_folder = os.path.join(os.path.dirname(__file__), 'TxtInOut')
+    # set up TxtInOut direcotry path
+    tio_dir = os.path.join(os.path.dirname(__file__), 'TxtInOut')
 
     # initialize TxtinoutReader class
     output = pySWATPlus.TxtinoutReader(
-        path=txtinout_folder
+        tio_dir=tio_dir
     )
 
     yield output
@@ -27,7 +27,7 @@ def test_calibration_parameters(
         pySWATPlus.types.ModifyDict(**{'name': 'cn2', 'value': 0.5, 'change_type': 'absval'})
     ]
     pySWATPlus.validators._calibration_parameters(
-        txtinout_path=txtinout_reader.root_folder,
+        input_dir=txtinout_reader.root_dir,
         parameters=parameters
     )
 
@@ -37,7 +37,7 @@ def test_calibration_parameters(
     ]
     with pytest.raises(ValueError, match='obj_that_doesnt_exist'):
         pySWATPlus.validators._calibration_parameters(
-            txtinout_path=txtinout_reader.root_folder,
+            input_dir=txtinout_reader.root_dir,
             parameters=parameters
         )
 
@@ -49,21 +49,21 @@ def test_calibration_units(
     # Pass: parameter that supports units
     param_change = pySWATPlus.types.ModifyDict(name='cn2', change_type='pctchg', value=-50, units=[1, 2, 3])
     pySWATPlus.validators._calibration_units(
-        txtinout_path=txtinout_reader.root_folder,
+        input_dir=txtinout_reader.root_dir,
         param_change=param_change
     )
 
     # Pass: parameter that supports units with range
     param_change = pySWATPlus.types.ModifyDict(name='cn2', change_type='pctchg', value=-50, units=range(1, 4))
     pySWATPlus.validators._calibration_units(
-        txtinout_path=txtinout_reader.root_folder,
+        input_dir=txtinout_reader.root_dir,
         param_change=param_change
     )
 
     # Pass: parameter that supports units with set
     param_change = pySWATPlus.types.ModifyDict(name='cn2', change_type='pctchg', value=-50, units={1, 2, 3})
     pySWATPlus.validators._calibration_units(
-        txtinout_path=txtinout_reader.root_folder,
+        input_dir=txtinout_reader.root_dir,
         param_change=param_change
     )
 
@@ -71,14 +71,14 @@ def test_calibration_units(
     param_change = pySWATPlus.types.ModifyDict(name='organicn', change_type='pctchg', value=-50, units=[1, 2, 3])
     with pytest.raises(Exception) as exc_info:
         pySWATPlus.validators._calibration_units(
-            txtinout_path=txtinout_reader.root_folder,
+            input_dir=txtinout_reader.root_dir,
             param_change=param_change
         )
     assert 'does not support "units" key' in exc_info.value.args[0]
 
     # Error: check units that does not exist
     df = pandas.read_csv(
-        filepath_or_buffer=txtinout_reader.root_folder / 'hru-data.hru',
+        filepath_or_buffer=txtinout_reader.root_dir / 'hru-data.hru',
         skiprows=1,
         sep=r'\s+',
         usecols=['id']
@@ -86,7 +86,7 @@ def test_calibration_units(
     param_change = pySWATPlus.types.ModifyDict(name='cn2', change_type='pctchg', value=-50, units=[len(df) + 1])
     with pytest.raises(Exception) as exc_info:
         pySWATPlus.validators._calibration_units(
-            txtinout_path=txtinout_reader.root_folder,
+            input_dir=txtinout_reader.root_dir,
             param_change=param_change
         )
     assert 'Invalid units for parameter' in exc_info.value.args[0]
@@ -99,18 +99,18 @@ def test_calibration_conditions(
     # Pass: No conditions
     param_change = pySWATPlus.types.ModifyDict(name="cn2", change_type="pctchg", value=-50)
     pySWATPlus.validators._calibration_conditions(
-        txtinout_path=txtinout_reader.root_folder,
+        input_dir=txtinout_reader.root_dir,
         param_change=param_change
     )
 
     # Pass: Supported conditions with valid values
-    df_textures = pandas.read_fwf(txtinout_reader.root_folder / 'soils.sol', skiprows=1)
+    df_textures = pandas.read_fwf(txtinout_reader.root_dir / 'soils.sol', skiprows=1)
     valid_textures = df_textures['texture'].dropna().unique()
 
-    df_plants = pandas.read_fwf(txtinout_reader.root_folder / 'plants.plt', sep=r'\s+', skiprows=1)
+    df_plants = pandas.read_fwf(txtinout_reader.root_dir / 'plants.plt', sep=r'\s+', skiprows=1)
     valid_plants = df_plants['name'].dropna().unique()
 
-    df_landuse = pandas.read_csv(txtinout_reader.root_folder / 'landuse.lum', sep=r'\s+', skiprows=1)
+    df_landuse = pandas.read_csv(txtinout_reader.root_dir / 'landuse.lum', sep=r'\s+', skiprows=1)
     valid_landuse = df_landuse['plnt_com'].dropna().unique()
 
     conditions = {
@@ -122,7 +122,7 @@ def test_calibration_conditions(
 
     param_change = pySWATPlus.types.ModifyDict(name='cn2', change_type='pctchg', value=-50, conditions=conditions)
     pySWATPlus.validators._calibration_conditions(
-        txtinout_path=txtinout_reader.root_folder,
+        input_dir=txtinout_reader.root_dir,
         param_change=param_change
     )
 
@@ -134,7 +134,7 @@ def test_calibration_conditions(
     param_change = pySWATPlus.types.ModifyDict(name='cn2', change_type='pctchg', value=-50, conditions=conditions)
     with pytest.raises(Exception) as exc_info:
         pySWATPlus.validators._calibration_conditions(
-            txtinout_path=txtinout_reader.root_folder,
+            input_dir=txtinout_reader.root_dir,
             param_change=param_change
         )
     assert 'is not supported' in exc_info.value.args[0]
@@ -147,7 +147,7 @@ def test_calibration_conditions(
     param_change = pySWATPlus.types.ModifyDict(name='cn2', change_type='pctchg', value=-50, conditions=conditions)
     with pytest.raises(Exception) as exc_info:
         pySWATPlus.validators._calibration_conditions(
-            txtinout_path=txtinout_reader.root_folder,
+            input_dir=txtinout_reader.root_dir,
             param_change=param_change
         )
     assert 'has invalid value' in exc_info.value.args[0]
@@ -158,7 +158,7 @@ def test_calibration_conditions(
     param_change = pySWATPlus.types.ModifyDict(name='cn2', change_type='pctchg', value=-50, conditions=conditions)
     with pytest.raises(Exception) as exc_info:
         pySWATPlus.validators._calibration_conditions(
-            txtinout_path=txtinout_reader.root_folder,
+            input_dir=txtinout_reader.root_dir,
             param_change=param_change
         )
     assert 'has invalid value' in exc_info.value.args[0]
@@ -169,7 +169,7 @@ def test_calibration_conditions(
     param_change = pySWATPlus.types.ModifyDict(name='cn2', change_type='pctchg', value=-50, conditions=conditions)
     with pytest.raises(Exception) as exc_info:
         pySWATPlus.validators._calibration_conditions(
-            txtinout_path=txtinout_reader.root_folder,
+            input_dir=txtinout_reader.root_dir,
             param_change=param_change
         )
     assert 'has invalid value' in exc_info.value.args[0]
@@ -180,7 +180,7 @@ def test_calibration_conditions(
     param_change = pySWATPlus.types.ModifyDict(name='cn2', change_type='pctchg', value=-50, conditions=conditions)
     with pytest.raises(Exception) as exc_info:
         pySWATPlus.validators._calibration_conditions(
-            txtinout_path=txtinout_reader.root_folder,
+            input_dir=txtinout_reader.root_dir,
             param_change=param_change
         )
     assert 'has invalid value' in exc_info.value.args[0]

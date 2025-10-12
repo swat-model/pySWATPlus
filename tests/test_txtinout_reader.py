@@ -9,12 +9,12 @@ import pathlib
 @pytest.fixture(scope='class')
 def txtinout_reader():
 
-    # set up TxtInOut folder path
-    txtinout_folder = os.path.join(os.path.dirname(__file__), 'TxtInOut')
+    # set up TxtInOut directory path
+    tio_dir = os.path.join(os.path.dirname(__file__), 'TxtInOut')
 
     # initialize TxtinoutReader class
     output = pySWATPlus.TxtinoutReader(
-        path=txtinout_folder
+        tio_dir=tio_dir
     )
 
     yield output
@@ -26,30 +26,30 @@ def test_run_swat(
 
     with tempfile.TemporaryDirectory() as tmp1_dir:
 
-        # Intialize TxtinOutReader class by target direcotry
-        target_dir = txtinout_reader.copy_required_files(
-            target_dir=tmp1_dir
+        # Intialize TxtinOutReader class by simulation direcotry
+        sim_dir = txtinout_reader.copy_required_files(
+            sim_dir=tmp1_dir
         )
-        target_reader = pySWATPlus.TxtinoutReader(
-            path=target_dir
+        sim_reader = pySWATPlus.TxtinoutReader(
+            tio_dir=sim_dir
         )
 
         # Error: run SWAT+ in same directory
         with pytest.raises(Exception) as exc_info:
-            target_reader.run_swat(
-                target_dir=target_dir
+            sim_reader.run_swat(
+                sim_dir=sim_dir
             )
         assert 'expected an empty directory' in exc_info.value.args[0]
 
         # Pass: enable CSV print
-        target_reader.enable_csv_print()
-        printprt_file = os.path.join(str(target_reader.root_folder), 'print.prt')
+        sim_reader.enable_csv_print()
+        printprt_file = os.path.join(str(sim_reader.root_dir), 'print.prt')
         with open(printprt_file, 'r') as read_output:
             target_line = read_output.readlines()[6]
         assert target_line[0] == 'y'
 
         # Pass: update all objects in print.prt
-        target_reader.enable_object_in_print_prt(
+        sim_reader.enable_object_in_print_prt(
             obj=None,
             daily=False,
             monthly=False,
@@ -69,8 +69,8 @@ def test_run_swat(
         with tempfile.TemporaryDirectory() as tmp2_dir:
 
             # Pass: run SWAT+ in other directory
-            target_dir = target_reader.run_swat(
-                target_dir=tmp2_dir,
+            sim2_dir = sim_reader.run_swat(
+                sim_dir=tmp2_dir,
                 begin_date='01-Jan-2010',
                 end_date='01-Jan-2012',
                 simulation_timestep=0,
@@ -79,24 +79,24 @@ def test_run_swat(
                     'channel_sd': {'daily': False},
                     'basin_wb': {}
                 },
-                begin_date_print='01-Feb-2010',
-                end_date_print='31-Dec-2011',
+                print_begin_date='01-Feb-2010',
+                print_end_date='31-Dec-2011',
                 print_interval=1
             )
-            assert os.path.samefile(target_dir, tmp2_dir)
+            assert os.path.samefile(sim2_dir, tmp2_dir)
 
             # Pass: data types are parsed correctly (for example jday must be int)
-            df = pySWATPlus.utils._load_file(
-                path=target_dir / 'channel_sd_yr.txt',
-                skip_rows=[0, 2],
+            df = pySWATPlus.utils._df_extract(
+                input_file=sim2_dir / 'channel_sd_yr.txt',
+                skiprows=[0, 2],
             )
 
             assert pandas.api.types.is_integer_dtype(df['jday'])
 
             # Pass: read CSV file
-            csv_df = pySWATPlus.utils._load_file(
-                path=target_dir / 'channel_sd_yr.csv',
-                skip_rows=[0, 2],
+            csv_df = pySWATPlus.utils._df_extract(
+                input_file=sim2_dir / 'channel_sd_yr.csv',
+                skiprows=[0, 2],
             )
 
             # Pass: TXT and CSV file DataFrames. They cannot be compared directly due to rounding differences.
@@ -105,10 +105,10 @@ def test_run_swat(
             assert all(df.dtypes == csv_df.dtypes)
 
             # Pass: adding invalid object with flag
-            target_reader = pySWATPlus.TxtinoutReader(
-                path=target_dir
+            sim2_reader = pySWATPlus.TxtinoutReader(
+                tio_dir=sim2_dir
             )
-            target_reader.enable_object_in_print_prt(
+            sim2_reader.enable_object_in_print_prt(
                 obj='my_custom_obj',
                 daily=True,
                 monthly=False,
@@ -116,13 +116,14 @@ def test_run_swat(
                 avann=True,
                 allow_unavailable_object=True
             )
-            printprt_file = os.path.join(str(target_reader.root_folder), 'print.prt')
+            printprt_file = os.path.join(str(sim2_reader.root_dir), 'print.prt')
             with open(printprt_file, 'r') as f:
                 lines = f.readlines()
             assert any(line.startswith('my_custom_obj') for line in lines)
             assert ' y' in lines[-1]
+
             # Pass: disable CSV print
-            target_reader.disable_csv_print()
+            sim2_reader.disable_csv_print()
             with open(printprt_file, 'r') as read_output:
                 target_line = read_output.readlines()[6]
             assert target_line[0] == 'n'
@@ -133,24 +134,24 @@ def test_error_txtinoutreader_class():
     # Error: invalid input path type
     with pytest.raises(Exception) as exc_info:
         pySWATPlus.TxtinoutReader(
-            path=1
+            tio_dir=1
         )
     valid_type = ['str', 'Path']
-    assert exc_info.value.args[0] == f'Expected "path" to be one of {valid_type}, but got type "int"'
+    assert exc_info.value.args[0] == f'Expected "tio_dir" to be one of {valid_type}, but got type "int"'
 
     # Error: invalid TxtInOut directory
     invalid_dir = 'nonexist_folder'
     with pytest.raises(Exception) as exc_info:
         pySWATPlus.TxtinoutReader(
-            path=invalid_dir
+            tio_dir=invalid_dir
         )
-    assert exc_info.value.args[0] == f'Invalid target_dir path: {str(pathlib.Path(invalid_dir).resolve())}'
+    assert exc_info.value.args[0] == f'Invalid directory path: {str(pathlib.Path(invalid_dir).resolve())}'
 
     # Error: no EXE file
     with tempfile.TemporaryDirectory() as tmp_dir:
         with pytest.raises(Exception) as exc_info:
             pySWATPlus.TxtinoutReader(
-                path=tmp_dir
+                tio_dir=tmp_dir
             )
         assert exc_info.value.args[0] == 'Expected exactly one .exe file in the parent folder, but found none or multiple'
 
@@ -190,10 +191,10 @@ def test_set_simulation_period(
     # Pass: modify begin and end date in time.sim
     with tempfile.TemporaryDirectory() as tmp_dir:
 
-        target_dir = txtinout_reader.copy_required_files(tmp_dir)
+        sim_dir = txtinout_reader.copy_required_files(tmp_dir)
 
         # Read original time.sim
-        with open(target_dir / 'time.sim', 'r') as f:
+        with open(sim_dir / 'time.sim', 'r') as f:
             original_lines = f.readlines()
 
         # Replace begin and end date in read line
@@ -204,15 +205,17 @@ def test_set_simulation_period(
         parts[3] = str(2012)
         expected_line = '{: >8} {: >10} {: >10} {: >10} {: >10} \n'.format(*parts)
 
-        target_reader = pySWATPlus.TxtinoutReader(target_dir)
+        sim_reader = pySWATPlus.TxtinoutReader(
+            tio_dir=sim_dir
+        )
 
-        target_reader.set_simulation_period(
+        sim_reader.set_simulation_period(
             begin_date='15-Mar-2010',
             end_date='20-Oct-2012'
         )
 
         # Read the line in time.sim again
-        with open(target_dir / 'time.sim', 'r') as f:
+        with open(sim_dir / 'time.sim', 'r') as f:
             lines = f.readlines()
         assert lines[2] == expected_line, f'Expected:\n{expected_line}\nGot:\n{lines[2]}'
 
@@ -232,11 +235,11 @@ def test_set_simulation_timestep(
     # Pass: modify step in time.sim
     with tempfile.TemporaryDirectory() as tmp_dir:
 
-        target_dir = txtinout_reader.copy_required_files(tmp_dir)
+        sim_dir = txtinout_reader.copy_required_files(tmp_dir)
         simulation_timestep = 1
 
         # Read original time.sim
-        with open(target_dir / 'time.sim', 'r') as f:
+        with open(sim_dir / 'time.sim', 'r') as f:
             original_lines = f.readlines()
 
         # Replace simulation timestep in read line
@@ -244,13 +247,15 @@ def test_set_simulation_timestep(
         parts[4] = str(simulation_timestep)  # new timestep value
         expected_line = '{: >8} {: >10} {: >10} {: >10} {: >10} \n'.format(*parts)
 
-        target_reader = pySWATPlus.TxtinoutReader(target_dir)
-        target_reader.set_simulation_timestep(
+        sim_reader = pySWATPlus.TxtinoutReader(
+            tio_dir=sim_dir
+        )
+        sim_reader.set_simulation_timestep(
             step=simulation_timestep
         )
 
         # Read the line in time.sim again
-        with open(target_dir / 'time.sim', 'r') as f:
+        with open(sim_dir / 'time.sim', 'r') as f:
             lines = f.readlines()
 
         # Now just compare
@@ -271,10 +276,10 @@ def test_set_print_period(
     # Pass: modify begin date in print.prt
     with tempfile.TemporaryDirectory() as tmp_dir:
 
-        target_dir = txtinout_reader.copy_required_files(tmp_dir)
+        sim_dir = txtinout_reader.copy_required_files(tmp_dir)
 
         # Read original print.prt
-        with open(target_dir / 'print.prt', 'r') as f:
+        with open(sim_dir / 'print.prt', 'r') as f:
             original_lines = f.readlines()
 
         # Replace start date in read line
@@ -286,21 +291,23 @@ def test_set_print_period(
 
         expected_line = f"{parts[0]:<12}{parts[1]:<11}{parts[2]:<11}{parts[3]:<10}{parts[4]:<10}{parts[5]}\n"
 
-        target_reader = pySWATPlus.TxtinoutReader(target_dir)
+        sim_reader = pySWATPlus.TxtinoutReader(
+            tio_dir=sim_dir
+        )
 
-        target_reader.set_print_period(
+        sim_reader.set_print_period(
             begin_date='15-Mar-2010',
             end_date='31-Dec-2021'
         )
 
         # Read the line in print.prt again
-        with open(target_dir / 'print.prt', 'r') as f:
+        with open(sim_dir / 'print.prt', 'r') as f:
             lines = f.readlines()
         assert lines[2] == expected_line, f'Expected:\n{expected_line}\nGot:\n{lines[2]}'
 
         # Error: begin date earlier than end date
         with pytest.raises(ValueError) as exc_info:
-            target_reader.set_print_period(
+            sim_reader.set_print_period(
                 begin_date='01-Jan-2016',
                 end_date='01-Jan-2012'
             )
@@ -314,11 +321,11 @@ def test_set_print_interval(
     # Pass: modify interval in print.prt
     with tempfile.TemporaryDirectory() as tmp_dir:
 
-        target_dir = txtinout_reader.copy_required_files(tmp_dir)
+        sim_dir = txtinout_reader.copy_required_files(tmp_dir)
         print_interval = 2
 
         # Read original print.prt
-        with open(target_dir / 'print.prt', 'r') as f:
+        with open(sim_dir / 'print.prt', 'r') as f:
             original_lines = f.readlines()
 
         # Replace start date in read line
@@ -326,14 +333,16 @@ def test_set_print_interval(
         parts[5] = str(print_interval)
         expected_line = f"{parts[0]:<12}{parts[1]:<11}{parts[2]:<11}{parts[3]:<10}{parts[4]:<10}{parts[5]}\n"
 
-        target_reader = pySWATPlus.TxtinoutReader(target_dir)
+        sim_reader = pySWATPlus.TxtinoutReader(
+            tio_dir=sim_dir
+        )
 
-        target_reader.set_print_interval(
+        sim_reader.set_print_interval(
             interval=print_interval
         )
 
         # Read the line in print.prt again
-        with open(target_dir / 'print.prt', 'r') as f:
+        with open(sim_dir / 'print.prt', 'r') as f:
             lines = f.readlines()
         assert lines[2] == expected_line, f'Expected:\n{expected_line}\nGot:\n{lines[2]}'
 
@@ -356,47 +365,47 @@ def test_error_run_swat(
         )
     assert "must be provided together" in exc_info.value.args[0]
 
-    # Error: begin_date_print set but no end_date_print
+    # Error: print_begin_date set but no print_end_date
     with pytest.raises(ValueError) as exc_info:
         txtinout_reader.run_swat(
-            begin_date_print='01-Jan-2010'
+            print_begin_date='01-Jan-2010'
         )
     assert "must be provided together" in exc_info.value.args[0]
 
-    # Error: end_date_print set but no begin_date_print
+    # Error: print_end_date set but no print_begin_date
     with pytest.raises(ValueError) as exc_info:
         txtinout_reader.run_swat(
-            end_date_print='31-Dec-2013'
+            print_end_date='31-Dec-2013'
         )
     assert "must be provided together" in exc_info.value.args[0]
 
-    # Error: begin_date_print and end_date_print set without begin_date and end_date
+    # Error: print_begin_date and print_end_date set without begin_date and end_date
     with pytest.raises(ValueError) as exc_info:
         txtinout_reader.run_swat(
-            begin_date_print='01-Jan-2010',
-            end_date_print='01-Jan-2011'
+            print_begin_date='01-Jan-2010',
+            print_end_date='01-Jan-2011'
         )
-    assert "'begin_date_print'/'end_date_print' cannot be set unless 'begin_date' and 'end_date' are also provided." == exc_info.value.args[0]
+    assert 'print_begin_date or print_end_date cannot be set unless begin_date and end_date are also provided' == exc_info.value.args[0]
 
-    # Error: begin_date_print out of range
+    # Error: print_begin_date out of range
     with pytest.raises(ValueError) as exc_info:
         txtinout_reader.run_swat(
             begin_date='01-Jan-2010',
             end_date='31-Dec-2010',
-            begin_date_print='31-Dec-2011',
-            end_date_print='31-Dec-2012'
+            print_begin_date='31-Dec-2011',
+            print_end_date='31-Dec-2012'
         )
     assert "must be between" in exc_info.value.args[0]
 
-    # Error: end_date_print out of range
+    # Error: print_end_date out of range
     with pytest.raises(ValueError) as exc_info:
         txtinout_reader.run_swat(
             begin_date='01-Jan-2010',
             end_date='31-Dec-2010',
-            begin_date_print='15-Jan-2010',
-            end_date_print='31-Dec-2012'
+            print_begin_date='15-Jan-2010',
+            print_end_date='31-Dec-2012'
         )
-    assert "must be between" in exc_info.value.args[0]
+    assert 'must be between' in exc_info.value.args[0]
 
     # Error: invalid warm-up years
     with pytest.raises(Exception) as exc_info:
@@ -410,12 +419,12 @@ def test_error_run_swat(
         txtinout_reader.run_swat(
             print_prt_control={None: {}}
         )
-    assert '"None" cannot be used as a key in print_prt_control' in exc_info.value.args[0]
+    assert exc_info.value.args[0] == 'Use enable_object_in_print_prt method instead of None as a key in print_prt_control'
 
     # Error: invalid sub key value type of print_prt_control
     with pytest.raises(Exception) as exc_info:
         txtinout_reader.run_swat(
-            target_dir=None,
+            sim_dir=None,
             print_prt_control={'basin_wb': []}
         )
     assert exc_info.value.args[0] == 'Expected a dictionary for key "basin_wb" in print_prt_control, but got type "list"'
@@ -451,14 +460,14 @@ def test_calibration_cal_in_file_cio(
 ):
 
     with tempfile.TemporaryDirectory() as tmp1_dir:
-        target_dir = txtinout_reader.copy_required_files(
-            target_dir=tmp1_dir
+        sim_dir = txtinout_reader.copy_required_files(
+            sim_dir=tmp1_dir
         )
-        target_reader = pySWATPlus.TxtinoutReader(
-            path=target_dir
+        sim_reader = pySWATPlus.TxtinoutReader(
+            tio_dir=sim_dir
         )
 
-        file_path = target_reader.root_folder / 'file.cio'
+        file_path = sim_reader.root_dir / 'file.cio'
 
         fmt = (
             f"{'{:<18}'}"  # chg
@@ -476,7 +485,7 @@ def test_calibration_cal_in_file_cio(
         )
 
         # Pass: adding calibration line
-        target_reader._calibration_cal_in_file_cio(
+        sim_reader._calibration_cal_in_file_cio(
             add=True
         )
         lines = file_path.read_text().splitlines()
@@ -486,7 +495,7 @@ def test_calibration_cal_in_file_cio(
         assert lines[21] == expected_line
 
         # Pass: removing calibration line
-        target_reader._calibration_cal_in_file_cio(
+        sim_reader._calibration_cal_in_file_cio(
             add=False
         )
         lines = file_path.read_text().splitlines()
@@ -502,11 +511,11 @@ def test_write_calibration_file(
 ):
     with tempfile.TemporaryDirectory() as tmp1_dir:
         # Initialize TxtinOutReader class by target directory
-        target_dir = txtinout_reader.copy_required_files(
-            target_dir=tmp1_dir
+        sim_dir = txtinout_reader.copy_required_files(
+            sim_dir=tmp1_dir
         )
-        target_reader = pySWATPlus.TxtinoutReader(
-            path=target_dir
+        sim_reader = pySWATPlus.TxtinoutReader(
+            tio_dir=sim_dir
         )
 
         par_change = [
@@ -548,7 +557,7 @@ def test_write_calibration_file(
         ]
 
         # Run the method
-        target_reader._write_calibration_file(par_change)
+        sim_reader._write_calibration_file(par_change)
 
         # Expected output
         expected_content = (
@@ -592,7 +601,7 @@ def test_write_calibration_file(
         )
 
         # Compare file content
-        cal_file = target_reader.root_folder / 'calibration.cal'
+        cal_file = sim_reader.root_dir / 'calibration.cal'
         content = cal_file.read_text()
 
         assert content == expected_content
