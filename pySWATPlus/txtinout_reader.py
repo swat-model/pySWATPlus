@@ -18,13 +18,13 @@ class TxtinoutReader:
 
     def __init__(
         self,
-        path: str | pathlib.Path
+        tio_dir: str | pathlib.Path
     ) -> None:
         '''
         Create a TxtinoutReader instance for accessing SWAT+ model files.
 
         Args:
-            path (str | pathlib.Path): Path to the `TxtInOut` folder, which must contain
+            tio_dir (str | pathlib.Path): Path to the `TxtInOut` directory, which must contain
                 exactly one SWAT+ executable `.exe` file.
         '''
 
@@ -37,16 +37,16 @@ class TxtinoutReader:
         )
 
         # Absolute path
-        path = pathlib.Path(path).resolve()
+        tio_dir = pathlib.Path(tio_dir).resolve()
 
         # Check validity of path
-        validators._path_directory(
-            path=path
+        validators._dir_path(
+            input_dir=tio_dir
         )
 
         # Check .exe files in the directory
         exe_files = [
-            file for file in path.iterdir() if file.suffix == ".exe"
+            file for file in tio_dir.iterdir() if file.suffix == ".exe"
         ]
 
         # Raise error on .exe file
@@ -56,10 +56,10 @@ class TxtinoutReader:
             )
 
         # TxtInOut directory path
-        self.root_folder = path
+        self.root_dir = tio_dir
 
         # EXE file path
-        self.swat_exe_path = path / exe_files[0]
+        self.exe_file = tio_dir / exe_files[0]
 
     def enable_object_in_print_prt(
         self,
@@ -127,7 +127,7 @@ class TxtinoutReader:
             )
 
         # File path of print.prt
-        print_prt_path = self.root_folder / 'print.prt'
+        print_prt_path = self.root_dir / 'print.prt'
 
         # Read and modify print.prt file strings
         new_print_prt = ''
@@ -231,7 +231,7 @@ class TxtinoutReader:
         nth_line = 3
 
         # File path of time.sim
-        time_sim_path = self.root_folder / 'time.sim'
+        time_sim_path = self.root_dir / 'time.sim'
 
         # Open the file in read mode and read its contents
         with open(time_sim_path, 'r') as file:
@@ -300,7 +300,7 @@ class TxtinoutReader:
         nth_line = 3
 
         # File path of time.sim
-        time_sim_path = self.root_folder / 'time.sim'
+        time_sim_path = self.root_dir / 'time.sim'
 
         # Open the file in read mode and read its contents
         with open(time_sim_path, 'r') as file:
@@ -348,7 +348,7 @@ class TxtinoutReader:
             )
 
         # File path of print.prt
-        print_prt_path = self.root_folder / 'print.prt'
+        print_prt_path = self.root_dir / 'print.prt'
 
         # Open the file in read mode and read its contents
         with open(print_prt_path, 'r') as file:
@@ -383,7 +383,7 @@ class TxtinoutReader:
         '''
 
         # File path of print.prt
-        print_prt_path = self.root_folder / 'print.prt'
+        print_prt_path = self.root_dir / 'print.prt'
 
         # Target line
         nth_line = 7
@@ -447,7 +447,7 @@ class TxtinoutReader:
         )
 
         # File path of print.prt
-        print_prt_path = self.root_folder / 'print.prt'
+        print_prt_path = self.root_dir / 'print.prt'
 
         # Open the file in read mode and read its contents
         with open(print_prt_path, 'r') as file:
@@ -505,7 +505,7 @@ class TxtinoutReader:
         end_year = end_dt.year
 
         # File path of print.prt
-        print_prt_path = self.root_folder / 'print.prt'
+        print_prt_path = self.root_dir / 'print.prt'
 
         # Open the file in read mode and read its contents
         with open(print_prt_path, 'r') as file:
@@ -523,14 +523,14 @@ class TxtinoutReader:
 
     def copy_required_files(
         self,
-        target_dir: str | pathlib.Path,
+        sim_dir: str | pathlib.Path,
     ) -> pathlib.Path:
         '''
-        Copy the required file from the input folder associated with the
+        Copy the required file from the input directory associated with the
         `TxtinoutReader` instance to the specified directory for SWAT+ simulation.
 
         Args:
-            target_dir (str | pathlib.Path): Path to the empty directory where the required files will be copied.
+            sim_dir (str | pathlib.Path): Path to the empty directory where the required files will be copied.
 
         Returns:
             The path to the target directory containing the copied files.
@@ -544,17 +544,17 @@ class TxtinoutReader:
             vars_values=locals()
         )
 
-        # Absolute path of target_dir
-        target_dir = pathlib.Path(target_dir).resolve()
+        # Absolute path of sim_dir
+        sim_dir = pathlib.Path(sim_dir).resolve()
 
-        # Check validity of target_dir
-        validators._path_directory(
-            path=target_dir
+        # Check validity of sim_dir
+        validators._dir_path(
+            input_dir=sim_dir
         )
 
-        # Check target_dir is empty
-        validators._empty_directory(
-            path=target_dir
+        # Check sim_dir is empty
+        validators._dir_empty(
+            input_dir=sim_dir
         )
 
         # Ignored files
@@ -565,12 +565,12 @@ class TxtinoutReader:
         )
 
         # Copy files from source folder
-        for src_file in self.root_folder.iterdir():
+        for src_file in self.root_dir.iterdir():
             if src_file.is_dir() or src_file.name.endswith(_ignored_files_endswith):
                 continue
-            shutil.copy2(src_file, target_dir / src_file.name)
+            shutil.copy2(src_file, sim_dir / src_file.name)
 
-        return target_dir
+        return sim_dir
 
     def _write_calibration_file(
         self,
@@ -580,7 +580,7 @@ class TxtinoutReader:
         Writes `calibration.cal` file with parameter changes.
         '''
 
-        outfile = self.root_folder / 'calibration.cal'
+        outfile = self.root_dir / 'calibration.cal'
 
         # If calibration.cal exists, remove it (always recreate)
         if outfile.exists():
@@ -676,11 +676,11 @@ class TxtinoutReader:
         add: bool
     ) -> None:
         '''
-        Add or remove the calibration line to 'file.cio'
+        Add or remove the calibration line to 'file.cio'.
         '''
 
         # Path of file.cio
-        file_path = self.root_folder / 'file.cio'
+        file_path = self.root_dir / 'file.cio'
 
         # Line format
         fmt = (
@@ -735,30 +735,38 @@ class TxtinoutReader:
         simulation_timestep: typing.Optional[int] = None,
         warmup: typing.Optional[int] = None,
         print_prt_control: typing.Optional[dict[str, dict[str, bool]]] = None,
-        begin_date_print: typing.Optional[str] = None,
-        end_date_print: typing.Optional[str] = None,
+        print_begin_date: typing.Optional[str] = None,
+        print_end_date: typing.Optional[str] = None,
         print_interval: typing.Optional[int] = None
     ) -> None:
         '''
-        Set begin and end year for the simulation, the warm-up period, and toggles the elements in print.prt file
+        Configure and write parameter settings to SWAT+ input files.
         '''
 
-        validators._ensure_together(begin_date=begin_date, end_date=end_date)
-        validators._ensure_together(begin_date_print=begin_date_print, end_date_print=end_date_print)
+        # Ensure both begin and end dates are given
+        validators._ensure_together(
+            begin_date=begin_date,
+            end_date=end_date
+        )
+
+        # Ensure both begin and end print dates are given
+        validators._ensure_together(
+            print_begin_date=print_begin_date,
+            print_end_date=print_end_date
+        )
 
         # Validate dependencies between simulation and print periods
-        if (begin_date_print or end_date_print) and not (begin_date and end_date):
+        if (print_begin_date or print_end_date) and not (begin_date and end_date):
             raise ValueError(
-                "'begin_date_print'/'end_date_print' cannot be set unless "
-                "'begin_date' and 'end_date' are also provided."
+                'print_begin_date or print_end_date cannot be set unless begin_date and end_date are also provided'
             )
 
         # Validate date relationships
-        if begin_date_print and end_date_print and begin_date and end_date:
+        if print_begin_date and print_end_date and begin_date and end_date:
             begin_dt = utils._date_str_to_object(begin_date)
             end_dt = utils._date_str_to_object(end_date)
-            start_print_dt = utils._date_str_to_object(begin_date_print)
-            end_print_dt = utils._date_str_to_object(end_date_print)
+            start_print_dt = utils._date_str_to_object(print_begin_date)
+            end_print_dt = utils._date_str_to_object(print_end_date)
 
             validators._date_within_range(
                 date_to_check=start_print_dt,
@@ -801,8 +809,7 @@ class TxtinoutReader:
             for key, val in print_prt_control.items():
                 if key is None:
                     raise ValueError(
-                        '"None" cannot be used as a key in print_prt_control; '
-                        'use the method "enable_object_in_print_prt" with "target_dir=None" for this setting'
+                        'Use enable_object_in_print_prt method instead of None as a key in print_prt_control'
                     )
                 elif not isinstance(val, dict):
                     raise TypeError(
@@ -826,10 +833,10 @@ class TxtinoutReader:
                         **key_dict
                     )
 
-        if begin_date_print and end_date_print:
+        if print_begin_date and print_end_date:
             self.set_print_period(
-                begin_date=begin_date_print,
-                end_date=end_date_print
+                begin_date=print_begin_date,
+                end_date=print_end_date
             )
 
         if print_interval is not None:
@@ -849,8 +856,8 @@ class TxtinoutReader:
         try:
             # Run simulation
             process = subprocess.Popen(
-                [str(self.swat_exe_path.resolve())],
-                cwd=str(self.root_folder.resolve()),
+                [str(self.exe_file.resolve())],
+                cwd=str(self.root_dir.resolve()),
                 stdout=subprocess.PIPE,
                 stderr=subprocess.PIPE,
                 bufsize=1,
@@ -882,15 +889,15 @@ class TxtinoutReader:
 
     def run_swat(
         self,
-        target_dir: typing.Optional[str | pathlib.Path] = None,
+        sim_dir: typing.Optional[str | pathlib.Path] = None,
         parameters: typing.Optional[ModifyType] = None,
         begin_date: typing.Optional[str] = None,
         end_date: typing.Optional[str] = None,
         simulation_timestep: typing.Optional[int] = None,
         warmup: typing.Optional[int] = None,
         print_prt_control: typing.Optional[dict[str, dict[str, bool]]] = None,
-        begin_date_print: typing.Optional[str] = None,
-        end_date_print: typing.Optional[str] = None,
+        print_begin_date: typing.Optional[str] = None,
+        print_end_date: typing.Optional[str] = None,
         print_interval: typing.Optional[int] = None,
         skip_validation: bool = False
     ) -> pathlib.Path:
@@ -898,7 +905,7 @@ class TxtinoutReader:
         Run the SWAT+ simulation with optional parameter changes.
 
         Args:
-            target_dir (str | pathlib.Path): Path to the directory where the simulation will be done.
+            sim_dir (str | pathlib.Path): Path to the directory where the simulation will be done.
                 If None, the simulation runs directly in the current folder.
 
             parameters (ModifyType): List of dictionaries specifying parameter changes in the `calibration.cal` file.
@@ -966,9 +973,9 @@ class TxtinoutReader:
                 }
                 ```
 
-            begin_date_print (str): The start date for printing the output
+            print_begin_date (str): The start date for printing the output.
 
-            end_date_print (str): The end date for printing the output
+            print_end_date (str): The end date for printing the output.
 
             print_interval (int): Print interval within the period. For example, if interval = 2, output will be printed for every other day.
 
@@ -987,25 +994,21 @@ class TxtinoutReader:
         )
 
         # TxtinoutReader class instance
-        if target_dir is not None:
-            # Absolute path
-            target_dir = pathlib.Path(target_dir).resolve()
-            # Check validity of target_dir
-            validators._path_directory(
-                path=target_dir
+        if sim_dir is not None:
+            sim_dir = pathlib.Path(sim_dir).resolve()
+            # Check validity of sim_dir
+            validators._dir_path(
+                input_dir=sim_dir
             )
-            # Copy files to the target directory
             run_path = self.copy_required_files(
-                target_dir=target_dir
+                sim_dir=sim_dir
             )
-            # Initialize new TxtinoutReader class
             reader = TxtinoutReader(
-                path=run_path
+                tio_dir=run_path
             )
         else:
-            # Select existing TxtinoutReader class instance
             reader = self
-            run_path = self.root_folder
+            run_path = self.root_dir
 
         # Apply SWAT+ configuration changes
         reader._apply_swat_configuration(
@@ -1014,16 +1017,16 @@ class TxtinoutReader:
             simulation_timestep=simulation_timestep,
             warmup=warmup,
             print_prt_control=print_prt_control,
-            begin_date_print=begin_date_print,
-            end_date_print=end_date_print,
+            print_begin_date=print_begin_date,
+            print_end_date=print_end_date,
             print_interval=print_interval
         )
 
         # Create calibration.cal file
         if parameters is not None:
 
-            # Validate unique dictionaries for sensitive parameters
-            validators._list_contain_unique_dict(
+            # Validate unique dictionaries for calibration parameters
+            validators._calibration_list_contain_unique_dict(
                 parameters=parameters
             )
 
@@ -1034,13 +1037,13 @@ class TxtinoutReader:
 
             # Check if input calibration parameters exists in cal_parms.cal
             validators._calibration_parameters(
-                txtinout_path=reader.root_folder,
+                input_dir=reader.root_dir,
                 parameters=params
             )
 
             if not skip_validation:
                 validators._calibration_conditions_and_units(
-                    txtinout_path=reader.root_folder,
+                    input_dir=reader.root_dir,
                     parameters=params
                 )
 

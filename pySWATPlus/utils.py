@@ -4,8 +4,7 @@ import json
 import io
 import pathlib
 import typing
-from collections.abc import Iterable
-from collections.abc import Callable
+import collections.abc
 from .types import ModifyDict
 
 
@@ -53,55 +52,6 @@ def _date_str_to_object(
     return get_date
 
 
-def _clean(
-    df: pandas.DataFrame
-) -> pandas.DataFrame:
-    '''
-    Clean a DataFrame by stripping whitespace from column names and string values.
-    '''
-
-    # Strip spaces from column names
-    df.columns = [str(c).strip() for c in df.columns]
-
-    # Strip spaces from string/object values
-    obj_cols = df.select_dtypes(include=['object', 'string']).columns
-    for col in obj_cols:
-        df[col] = df[col].str.strip()
-
-    return df
-
-
-def _load_file(
-    path: pathlib.Path,
-    skip_rows: typing.Optional[list[int]] = None
-) -> pandas.DataFrame:
-    '''
-    Attempt to load a dataframe from `path` using multiple parsing strategies.
-    '''
-
-    if path.suffix.lower() == '.csv':
-        df_from_csv = pandas.read_csv(
-            filepath_or_buffer=path,
-            skiprows=skip_rows,
-            skipinitialspace=True
-        )
-        return _clean(df_from_csv)
-
-    strategies: list[Callable[[], pandas.DataFrame]] = [
-        lambda: pandas.read_csv(path, sep=r'\s+', skiprows=skip_rows),
-        lambda: pandas.read_csv(path, sep=r'[ ]{2,}', skiprows=skip_rows),
-        lambda: pandas.read_fwf(path, skiprows=skip_rows)
-    ]
-    for attempt in strategies:
-        try:
-            df: pandas.DataFrame = attempt()
-            return _clean(df)
-        except Exception:
-            pass
-
-    raise ValueError(f'Error reading the file: {path}')
-
-
 def _format_val_field(
     value: float
 ) -> str:
@@ -127,7 +77,7 @@ def _format_val_field(
 
 
 def _compact_units(
-    unit_list: Iterable[int]
+    unit_list: collections.abc.Iterable[int]
 ) -> list[int]:
     '''
     Compact a 1-based list of unit IDs into SWAT units syntax.
@@ -189,7 +139,67 @@ def _parse_conditions(
     return conditions_parsed
 
 
-def _df_observed(
+def _df_clean(
+    df: pandas.DataFrame
+) -> pandas.DataFrame:
+    '''
+    Clean a DataFrame by stripping whitespace from column names and string values.
+    '''
+
+    # Strip spaces from column names
+    df.columns = [str(c).strip() for c in df.columns]
+
+    # Strip spaces from string/object values
+    obj_cols = df.select_dtypes(include=['object', 'string']).columns
+    for col in obj_cols:
+        df[col] = df[col].str.strip()
+
+    return df
+
+
+def _df_extract(
+    input_file: pathlib.Path,
+    skiprows: typing.Optional[list[int]] = None
+) -> pandas.DataFrame:
+    '''
+    Extract a DataFrame from `input_file` using multiple parsing strategies.
+    '''
+
+    if input_file.suffix.lower() == '.csv':
+        csv_df = pandas.read_csv(
+            filepath_or_buffer=input_file,
+            skiprows=skiprows,
+            skipinitialspace=True
+        )
+        return _df_clean(csv_df)
+
+    strategies: list[collections.abc.Callable[[], pandas.DataFrame]] = [
+        lambda: pandas.read_csv(
+            filepath_or_buffer=input_file,
+            sep=r'\s+',
+            skiprows=skiprows
+        ),
+        lambda: pandas.read_csv(
+            filepath_or_buffer=input_file,
+            sep=r'[ ]{2,}',
+            skiprows=skiprows
+        ),
+        lambda: pandas.read_fwf(
+            filepath_or_buffer=input_file,
+            skiprows=skiprows
+        )
+    ]
+    for attempt in strategies:
+        try:
+            txt_df: pandas.DataFrame = attempt()
+            return _df_clean(txt_df)
+        except Exception:
+            pass
+
+    raise ValueError(f'Error reading the file: {input_file}')
+
+
+def _df_observe(
     obs_file: pathlib.Path,
     date_format: str,
     obs_col: str
@@ -237,7 +247,7 @@ def _df_normalize(
 
 
 def _retrieve_sensitivity_output(
-    sim_file: pathlib.Path,
+    sensim_file: pathlib.Path,
     df_name: str,
     add_problem: bool,
     add_sample: bool
@@ -251,7 +261,7 @@ def _retrieve_sensitivity_output(
     '''
 
     # Load sensitivity simulation dictionary from JSON file
-    with open(sim_file, 'r') as input_sim:
+    with open(sensim_file, 'r') as input_sim:
         sensitivity_sim = json.load(input_sim)
 
     # Dictionary of sample DataFrames

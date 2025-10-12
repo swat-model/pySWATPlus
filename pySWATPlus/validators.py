@@ -52,31 +52,31 @@ def _variable_origin_static_type(
     return None
 
 
-def _path_directory(
-    path: pathlib.Path
+def _dir_path(
+    input_dir: pathlib.Path
 ) -> None:
     '''
-    Ensure the input path refers to a valid directory.
+    Ensure the input directory refers to a valid path.
     '''
 
-    if not path.is_dir():
+    if not input_dir.is_dir():
         raise NotADirectoryError(
-            f'Invalid target_dir path: {str(path)}'
+            f'Invalid directory path: {str(input_dir)}'
         )
 
     return None
 
 
-def _empty_directory(
-    path: pathlib.Path
+def _dir_empty(
+    input_dir: pathlib.Path
 ) -> None:
     '''
     Ensure the input directory is empty.
     '''
 
-    if any(path.iterdir()):
+    if any(input_dir.iterdir()):
         raise FileExistsError(
-            f'Input directory {str(path)} contains files; expected an empty directory'
+            f'Input directory {str(input_dir)} contains files; expected an empty directory'
         )
 
     return None
@@ -120,11 +120,11 @@ def _date_within_range(
     return None
 
 
-def _list_contain_unique_dict(
+def _calibration_list_contain_unique_dict(
     parameters: list[dict[str, typing.Any]]
 ) -> None:
     '''
-    Check whether the input list contains only unique dictionaries.
+    Check whether the input calibration list contains only unique dictionaries of parameters.
     '''
 
     # Get unique dictionaries
@@ -142,7 +142,7 @@ def _list_contain_unique_dict(
 
 
 def _calibration_units(
-    txtinout_path: pathlib.Path,
+    input_dir: pathlib.Path,
     param_change: ModifyDict
 ) -> None:
     '''
@@ -156,7 +156,7 @@ def _calibration_units(
         return
 
     cal_parms_df = pandas.read_csv(
-        filepath_or_buffer=txtinout_path / "cal_parms.cal",
+        filepath_or_buffer=input_dir / 'cal_parms.cal',
         skiprows=2,
         sep=r'\s+'
     )
@@ -179,7 +179,7 @@ def _calibration_units(
         )
 
     file = obj_type_files[obj_type]
-    file_path = txtinout_path / file
+    file_path = input_dir / file
 
     # Open file and check that units id are valid
     df = pandas.read_csv(
@@ -202,7 +202,7 @@ def _calibration_units(
 
 
 def _calibration_conditions(
-    txtinout_path: pathlib.Path,
+    input_dir: pathlib.Path,
     param_change: ModifyDict
 ) -> None:
     '''
@@ -222,13 +222,13 @@ def _calibration_conditions(
     if 'hsg' in conditions:
         validators['hsg'] = {'A', 'B', 'C', 'D'}
     if 'texture' in conditions:
-        df_textures = pandas.read_fwf(txtinout_path / 'soils.sol', skiprows=1)
+        df_textures = pandas.read_fwf(input_dir / 'soils.sol', skiprows=1)
         validators['texture'] = set(df_textures['texture'].dropna().unique())
     if 'plant' in conditions:
-        df_plants = pandas.read_fwf(txtinout_path / 'plants.plt', sep=r'\s+', skiprows=1)
+        df_plants = pandas.read_fwf(input_dir / 'plants.plt', sep=r'\s+', skiprows=1)
         validators['plant'] = set(df_plants['name'].dropna().unique())
     if 'landuse' in conditions:
-        df_landuse = pandas.read_csv(txtinout_path / 'landuse.lum', sep=r'\s+', skiprows=1)
+        df_landuse = pandas.read_csv(input_dir / 'landuse.lum', sep=r'\s+', skiprows=1)
         validators['landuse'] = set(df_landuse['plnt_com'].dropna().unique())
 
     # Validate conditions
@@ -251,7 +251,7 @@ def _calibration_conditions(
 
 
 def _calibration_conditions_and_units(
-    txtinout_path: pathlib.Path,
+    input_dir: pathlib.Path,
     parameters: list[ModifyDict]
 ) -> None:
     '''
@@ -265,11 +265,11 @@ def _calibration_conditions_and_units(
     for param_change in parameters:
         try:
             _calibration_conditions(
-                txtinout_path=txtinout_path,
+                input_dir=input_dir,
                 param_change=param_change
             )
             _calibration_units(
-                txtinout_path=txtinout_path,
+                input_dir=input_dir,
                 param_change=param_change
             )
         except ValueError as e:
@@ -282,7 +282,7 @@ def _calibration_conditions_and_units(
 
 
 def _calibration_parameters(
-    txtinout_path: pathlib.Path,
+    input_dir: pathlib.Path,
     parameters: list[BoundDict] | list[ModifyDict]
 ) -> None:
     '''
@@ -290,7 +290,7 @@ def _calibration_parameters(
     '''
 
     # Path of cal_parms.cal
-    file_path = txtinout_path / 'cal_parms.cal'
+    file_path = input_dir / 'cal_parms.cal'
 
     # DataFrame from cal_parms.cal file
     parms_df = pandas.read_csv(
@@ -325,20 +325,20 @@ def _json_extension(
 
 
 def _ensure_together(**kwargs: typing.Any) -> None:
-    """
+    '''
     Ensure that either all or none of the given arguments are provided (not None).
 
     Example:
         _ensure_together(begin_date=begin, end_date=end)
-    """
+    '''
+
     total = len(kwargs)
     provided = [name for name, value in kwargs.items() if value is not None]
 
     # If some (but not all) values are provided → inconsistent input
     if 0 < len(provided) < total:
         missing = [name for name in kwargs if name not in provided]
-        all_args = ", ".join(kwargs.keys())
+        all_args = ', '.join(kwargs.keys())
         raise ValueError(
-            f"Arguments [{all_args}] must be provided together. "
-            f"Missing: {missing}, Provided: {provided}"
+            f'Arguments [{all_args}] must be provided together, but missing: {missing}'
         )

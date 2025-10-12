@@ -22,12 +22,12 @@ class SensitivityAnalyzer:
     Provide functionality for sensitivity analyzis.
     '''
 
-    def _validate_simulation_data_config(
+    def _validate_extract_data_config(
         self,
-        simulation_data: dict[str, dict[str, typing.Any]],
+        extract_data: dict[str, dict[str, typing.Any]],
     ) -> None:
         '''
-        Validate `simulation_data` configuration.
+        Validate `extract_data` configuration.
         '''
 
         valid_subkeys = [
@@ -39,19 +39,19 @@ class SensitivityAnalyzer:
             'apply_filter',
             'usecols'
         ]
-        for sim_fname, sim_fdict in simulation_data.items():
+        for sim_fname, sim_fdict in extract_data.items():
             if not isinstance(sim_fdict, dict):
                 raise TypeError(
                     f'Expected "{sim_fname}" in simulation_date must be a dictionary, but got type "{type(sim_fdict).__name__}"'
                 )
             if 'has_units' not in sim_fdict:
                 raise KeyError(
-                    f'Key has_units is missing for "{sim_fname}" in simulation_data'
+                    f'Key has_units is missing for "{sim_fname}" in extract_data'
                 )
             for sim_fkey in sim_fdict:
                 if sim_fkey not in valid_subkeys:
                     raise ValueError(
-                        f'Invalid key "{sim_fkey}" for "{sim_fname}" in simulation_data; expected subkeys are {valid_subkeys}'
+                        f'Invalid key "{sim_fkey}" for "{sim_fname}" in extract_data; expected subkeys are {valid_subkeys}'
                     )
 
         return None
@@ -104,10 +104,10 @@ class SensitivityAnalyzer:
         var_array: numpy.typing.NDArray[numpy.float64],
         num_sim: int,
         var_names: list[str],
-        simulation_folder: pathlib.Path,
-        txtinout_folder: pathlib.Path,
+        sensim_dir: pathlib.Path,
+        txtinout_dir: pathlib.Path,
         params_bounds: list[BoundDict],
-        simulation_data: dict[str, dict[str, typing.Any]],
+        extract_data: dict[str, dict[str, typing.Any]],
         clean_setup: bool
     ) -> dict[str, typing.Any]:
         '''
@@ -140,7 +140,7 @@ class SensitivityAnalyzer:
 
         # Create simulation directory
         cpu_dir = f'sim_{track_sim}'
-        cpu_path = simulation_folder / cpu_dir
+        cpu_path = sensim_dir / cpu_dir
         cpu_path.mkdir()
 
         # Output simulation dictionary
@@ -151,23 +151,23 @@ class SensitivityAnalyzer:
 
         # Initialize TxtinoutReader class
         txtinout_reader = TxtinoutReader(
-            path=txtinout_folder
+            tio_dir=txtinout_dir
         )
 
         # Run SWAT+ model in CPU directory
         txtinout_reader.run_swat(
-            target_dir=cpu_path,
+            sim_dir=cpu_path,
             parameters=params_sim
         )
 
         # Extract simulated data
-        for sim_fname, sim_fdict in simulation_data.items():
-            target_file = cpu_path / sim_fname
+        for sim_fname, sim_fdict in extract_data.items():
+            sim_file = cpu_path / sim_fname
             df = DataManager().simulated_timeseries_df(
-                target_file=target_file,
+                sim_file=sim_file,
                 **sim_fdict
             )
-            cpu_output[f'{target_file.stem}_df'] = df
+            cpu_output[f'{sim_file.stem}_df'] = df
 
         # Remove simulation directory
         if clean_setup:
@@ -177,17 +177,17 @@ class SensitivityAnalyzer:
 
     def _save_output_in_json(
         self,
-        simulation_folder: pathlib.Path,
-        simulation_output: dict[str, typing.Any]
+        sensim_dir: pathlib.Path,
+        sensim_output: dict[str, typing.Any]
     ) -> None:
         '''
         Write sensitivity simulation outputs to the file `sensitivity_simulation.json`
-        within the `simulation_folder`.
+        within the `sensim_dir`.
         '''
 
-        # copy the simulation_output dictionary
+        # copy the sensim_output dictionary
         copy_simulation = copy.deepcopy(
-            x=simulation_output
+            x=sensim_output
         )
 
         # Modify the copied dictionary
@@ -204,7 +204,7 @@ class SensitivityAnalyzer:
                             copy_simulation[key][sub_key][k] = v.to_json()
 
         # Path to the JOSN file
-        json_file = simulation_folder / 'sensitivity_simulation.json'
+        json_file = sensim_dir / 'sensitivity_simulation.json'
 
         # Write output to the JSON file
         with open(json_file, 'w') as output_write:
@@ -212,13 +212,13 @@ class SensitivityAnalyzer:
 
         return None
 
-    def simulation_by_sobol_sample(
+    def simulation_by_sample_parameters(
         self,
         parameters: BoundType,
         sample_number: int,
-        simulation_folder: str | pathlib.Path,
-        txtinout_folder: str | pathlib.Path,
-        simulation_data: dict[str, dict[str, typing.Any]],
+        sensim_dir: str | pathlib.Path,
+        txtinout_dir: str | pathlib.Path,
+        extract_data: dict[str, dict[str, typing.Any]],
         max_workers: typing.Optional[int] = None,
         save_output: bool = True,
         clean_setup: bool = True
@@ -282,13 +282,13 @@ class SensitivityAnalyzer:
                 Generates an array of length `2^N * (D + 1)`, where `D` is the number of parameter changes
                 and `N = sample_number + 1`. For example, when `sample_number` is 1, 12 samples will be generated.
 
-            simulation_folder (str | pathlib.Path): Path to the folder where individual simulations for each parameter set will be performed.
+            sensim_dir (str | pathlib.Path): Path to the directory where individual simulations for each parameter set will be performed.
                 Raises an error if the folder is not empty. This precaution helps prevent data deletion, overwriting directories,
                 and issues with reading required data files not generated by the simulation.
 
-            txtinout_folder (str | pathlib.Path): Path to the `TxtInOut` folder. Raises an error if the folder does not contain exactly one SWAT+ executable `.exe` file.
+            txtinout_dir (str | pathlib.Path): Path to the `TxtInOut` directory. Raises an error if the folder does not contain exactly one SWAT+ executable `.exe` file.
 
-            simulation_data (dict[str, dict[str, typing.Any]]): A nested dictionary specifying how to extract data from SWAT+ simulation output files.
+            extract_data (dict[str, dict[str, typing.Any]]): A nested dictionary specifying how to extract data from SWAT+ simulation output files.
                 The top-level keys are filenames of the output files, without paths (e.g., `channel_sd_day.txt`). Each key must map to a non-empty dictionary
                 containing the following subkeys, as defined in [`simulated_timeseries_df`](https://swat-model.github.io/pySWATPlus/api/data_manager/#pySWATPlus.DataManager.simulated_timeseries_df):
 
@@ -305,7 +305,7 @@ class SensitivityAnalyzer:
                 - `usecols` (list[str]): Optional. List of columns to extract from the simulated file. By default, all available columns are used.
 
                 ```python
-                simulation_data = {
+                extract_data = {
                     'channel_sd_mon.txt': {
                         'has_units': True,
                         'begin_date': '01-Jun-2014',
@@ -323,7 +323,7 @@ class SensitivityAnalyzer:
 
             max_workers (int): Number of logical CPUs to use for parallel processing. If `None` (default), all available logical CPUs are used.
 
-            save_output (bool): If `True` (default), saves the output dictionary to `simulation_folder` as `sensitivity_simulation.json`.
+            save_output (bool): If `True` (default), saves the output dictionary to `sensim_dir` as `sensitivity_simulation.json`.
 
             clean_setup (bool): If `True` (default), each folder created during the parallel simulation and its contents
                 will be deleted dynamically after collecting the required data.
@@ -352,7 +352,7 @@ class SensitivityAnalyzer:
                     - `dir`: Name of the directory (e.g., `sim_<i>`) where the simulation was executed. This is useful when `clean_setup` is `False`, as it allows users
                       to verify whether the sampled values were correctly applied to the target files. The simulation index and directory name (e.g., `sim_<i>`)
                       may not always match one-to-one due to deduplication or asynchronous execution.
-                    - `<simulation_data_filename>_df`: Filtered `DataFrame` generated for each file specified in the `simulation_data` dictionary
+                    - `<extract_data_filename>_df`: Filtered `DataFrame` generated for each file specified in the `extract_data` dictionary
                       (e.g., `channel_sd_mon_df`, `channel_sd_yr_df`). Each DataFrame includes a `date` column with `datetime.date` objects.
 
         Note:
@@ -365,7 +365,7 @@ class SensitivityAnalyzer:
 
             - The output dictionary contains `datetime.date` objects in the `date` column for each `DataFrame` in the `simulation` dictionary.
               These `datetime.date` objects are converted to `DD-Mon-YYYY` strings when saving the output dictionary to
-              `sensitivity_simulation.json` within the `simulation_folder`.
+              `sensitivity_simulation.json` within the `sensim_dir`.
 
             - The computation progress can be tracked through the following `console` messages, where
               the simulation index ranges from 1 to the total number of unique simulations:
@@ -373,7 +373,7 @@ class SensitivityAnalyzer:
                 - `Started simulation: <started_index>/<unique_simulations>`
                 - `Completed simulation: <completed_index>/<unique_simulations>`
 
-            - The disk space on the computer for `simulation_folder` must be sufficient to run
+            - The disk space on the computer for `sensim_dir` must be sufficient to run
               parallel simulations (at least `max_workers` times the size of the `TxtInOut` folder).
               Otherwise, no error will be raised by the system, but simulation outputs may not be generated.
         '''
@@ -384,35 +384,35 @@ class SensitivityAnalyzer:
         # Check input variables type
         validators._variable_origin_static_type(
             vars_types=typing.get_type_hints(
-                obj=self.simulation_by_sobol_sample
+                obj=self.simulation_by_sample_parameters
             ),
             vars_values=locals()
         )
 
         # Absolute path
-        txtinout_folder = pathlib.Path(txtinout_folder).resolve()
-        simulation_folder = pathlib.Path(simulation_folder).resolve()
+        txtinout_dir = pathlib.Path(txtinout_dir).resolve()
+        sensim_dir = pathlib.Path(sensim_dir).resolve()
 
-        # Check validity of path
-        validators._path_directory(
-            path=txtinout_folder
+        # Check validity of directory path
+        validators._dir_path(
+            input_dir=txtinout_dir
         )
-        validators._path_directory(
-            path=simulation_folder
-        )
-
-        # Check simulation_folder is empty
-        validators._empty_directory(
-            path=simulation_folder
+        validators._dir_path(
+            input_dir=sensim_dir
         )
 
-        # Validate simulation_data configuration
-        self._validate_simulation_data_config(
-            simulation_data=simulation_data
+        # Check sensim_dir is empty
+        validators._dir_empty(
+            input_dir=sensim_dir
         )
 
-        # Validate unique dictionaries for sensitive parameters
-        validators._list_contain_unique_dict(
+        # Validate extract_data configuration
+        self._validate_extract_data_config(
+            extract_data=extract_data
+        )
+
+        # Validate unique dictionaries for parameters
+        validators._calibration_list_contain_unique_dict(
             parameters=parameters
         )
 
@@ -421,11 +421,11 @@ class SensitivityAnalyzer:
             BoundDict(**param) for param in parameters
         ]
         validators._calibration_parameters(
-            txtinout_path=txtinout_folder,
+            input_dir=txtinout_dir,
             parameters=params_bounds
         )
 
-        # Sobol problem dictionary
+        # problem dictionary
         problem = self._create_sobol_problem(
             params_bounds=params_bounds
         )
@@ -453,10 +453,10 @@ class SensitivityAnalyzer:
             self._cpu_simulation,
             num_sim=num_sim,
             var_names=copy_problem['names'],
-            simulation_folder=simulation_folder,
-            txtinout_folder=txtinout_folder,
+            sensim_dir=sensim_dir,
+            txtinout_dir=txtinout_dir,
             params_bounds=params_bounds,
-            simulation_data=simulation_data,
+            extract_data=extract_data,
             clean_setup=clean_setup
         )
 
@@ -467,13 +467,13 @@ class SensitivityAnalyzer:
             futures = [
                 executor.submit(cpu_sim, idx, arr) for idx, arr in enumerate(unique_array, start=1)
             ]
-            for idx, future in enumerate(concurrent.futures.as_completed(futures), start=1):
+            for future in concurrent.futures.as_completed(futures):
                 # Message for completion of individual simulation for better tracking
-                print(f'Completed simulation: {idx}/{num_sim}', flush=True)
+                print(f'Completed simulation: {futures.index(future) + 1}/{num_sim}', flush=True)
                 # Collect simulation results
-                idx_r = future.result()
-                cpu_dict[tuple(idx_r['array'])] = {
-                    k: v for k, v in idx_r.items() if k != 'array'
+                f_r = future.result()
+                cpu_dict[tuple(f_r['array'])] = {
+                    k: v for k, v in f_r.items() if k != 'array'
                 }
 
         # Generate sensitivity simulation output for all sample_array from unique_array outputs
@@ -501,25 +501,25 @@ class SensitivityAnalyzer:
         }
 
         # Sensitivity simulaton output
-        simulation_output = {
+        sensim_output = {
             'time': time_stats,
             'problem': problem,
             'sample': sample_array,
             'simulation': sim_dict
         }
 
-        # Write output to the file 'sensitivity_simulation_sobol.json' in simulation folder
+        # Write output to the file 'sensitivity_simulation.json' in simulation folder
         if save_output:
             self._save_output_in_json(
-                simulation_folder=simulation_folder,
-                simulation_output=simulation_output
+                sensim_dir=sensim_dir,
+                sensim_output=sensim_output
             )
 
-        return simulation_output
+        return sensim_output
 
-    def sobol_indices(
+    def parameter_sensitivity_indices(
         self,
-        sim_file: str | pathlib.Path,
+        sensim_file: str | pathlib.Path,
         df_name: str,
         sim_col: str,
         obs_file: str | pathlib.Path,
@@ -529,16 +529,16 @@ class SensitivityAnalyzer:
         json_file: typing.Optional[str | pathlib.Path] = None
     ) -> dict[str, typing.Any]:
         '''
-        Compute Sobol sensitivy indices for sample scenarios obtained using
-        the [`simulation_by_sobol_sample`](https://swat-model.github.io/pySWATPlus/api/sensitivity_analyzer/#pySWATPlus.SensitivityAnalyzer.simulation_by_sobol_sample) method.
+        Compute parameter sensitivy indices for sample scenarios obtained using
+        the [`simulation_by_sample_parameters`](https://swat-model.github.io/pySWATPlus/api/sensitivity_analyzer/#pySWATPlus.SensitivityAnalyzer.simulation_by_sample_parameters) method.
 
         The method returns a dictionary with two keys:
 
-        - `problem`: The definition dictionary passed to Sobol sampling.
-        - `sobol_indices`: A dictionary where each key is an indicator name and the corresponding value is the computed Sobol sensitivity indices.
+        - `problem`: The definition dictionary passed to sampling.
+        - `sensitivty_indices`: A dictionary where each key is an indicator name and the corresponding value is the computed sensitivity indices.
 
         Args:
-            sim_file (str | pathlib.Path): Path to the `sensitivity_simulation.json` file produced by `simulation_by_sobol_sample`.
+            sensim_file (str | pathlib.Path): Path to the `sensitivity_simulation.json` file produced by `simulation_by_sample_parameters`.
 
             df_name (str): Name of the `DataFrame` within `sensitivity_simulation.json` from which to compute scenario indicators.
 
@@ -551,7 +551,7 @@ class SensitivityAnalyzer:
 
             obs_col (str): Name of the column in `obs_file` containing observed data. All negative and `None` observed values are removed before analysis.
 
-            indicators (list[str]): List of indicators to compute Sobol indices. Available options:
+            indicators (list[str]): List of indicators to compute sensitivity indices. Available options:
 
                 - `NSE`: Nash–Sutcliffe Efficiency
                 - `KGE`: Kling–Gupta Efficiency
@@ -561,23 +561,23 @@ class SensitivityAnalyzer:
                 - `MARE`: Mean Absolute Relative Error
 
             json_file (str | pathlib.Path, optional): Path to a JSON file for saving the output dictionary where each key is an indicator name
-                and the corresponding value is the computed Sobol sensitivity indices. If `None` (default), the dictionary is not saved.
+                and the corresponding value is the computed sensitivity indices. If `None` (default), the dictionary is not saved.
 
         Returns:
-            Dictionary with two keys, `problem` and `sobol_indices`, and their corresponding values.
+            Dictionary with two keys, `problem` and `sensitivity_indices`, and their corresponding values.
         '''
 
         # Check input variables type
         validators._variable_origin_static_type(
             vars_types=typing.get_type_hints(
-                obj=self.sobol_indices
+                obj=self.parameter_sensitivity_indices
             ),
             vars_values=locals()
         )
 
         # Problem and indicators
         prob_inct = PerformanceMetrics().scenario_indicators(
-            sim_file=sim_file,
+            sensim_file=sensim_file,
             df_name=df_name,
             sim_col=sim_col,
             obs_file=obs_file,
@@ -588,17 +588,17 @@ class SensitivityAnalyzer:
         problem = prob_inct['problem']
         indicator_df = prob_inct['indicator']
 
-        # Sobol sensitivity indices
-        sobol_indices = {}
+        # Sensitivity indices
+        sensitivity_indices = {}
         for indicator in indicators:
             # Indicator sensitivity indices
             indicator_sensitivity = SALib.analyze.sobol.analyze(
                 problem=copy.deepcopy(problem),
                 Y=indicator_df[indicator].values
             )
-            sobol_indices[indicator] = indicator_sensitivity
+            sensitivity_indices[indicator] = indicator_sensitivity
 
-        # Save the Sobol indices
+        # Save the sensitivity indices
         if json_file is not None:
             # Raise error for invalid JSON file extension
             json_file = pathlib.Path(json_file).resolve()
@@ -606,7 +606,7 @@ class SensitivityAnalyzer:
                 json_file=json_file
             )
             # Modify sensitivity index to write in the JSON file
-            copy_indices = copy.deepcopy(sobol_indices)
+            copy_indices = copy.deepcopy(sensitivity_indices)
             write_indices = {}
             for indicator in indicators:
                 write_indices[indicator] = {
@@ -619,7 +619,7 @@ class SensitivityAnalyzer:
         # Output dictionary
         output = {
             'problem': problem,
-            'sobol_indices': sobol_indices
+            'sensitivity_indices': sensitivity_indices
         }
 
         return output
