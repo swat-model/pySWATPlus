@@ -1,6 +1,6 @@
 # Release Notes
 
-## Version 1.2.0 (Month DD, YYYY, not released yet)
+## Version 1.2.0 (October 13, 2025)
 
 - All SWAT+ simulations with modified parameters are now configured through the `calibration.cal` file, eliminating the need to read and modify individual input files.
 
