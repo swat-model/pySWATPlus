@@ -84,7 +84,7 @@ The following steps demonstrate how to configure parameters in a custom director
 
     ```python
     # Set warm-up years in `print.prt` file
-    target_reader.set_warmup_year(
+    sim_reader.set_warmup_year(
         warmup=1
     )
     ```
