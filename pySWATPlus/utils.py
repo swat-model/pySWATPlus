@@ -6,6 +6,8 @@ import pathlib
 import typing
 import collections.abc
 from .types import ModifyDict
+import os
+import sys
 
 
 def _build_line_to_add(
@@ -287,3 +289,51 @@ def _retrieve_sensitivity_output(
         output['sample'] = sensitivity_sim['sample']
 
     return output
+
+
+def _is_real_executable(file_path: pathlib.Path) -> bool:
+    """
+    Check if a file is truly executable.
+
+    Windows:
+        - Must end with .exe
+        - Must have the PE header (b'MZ')
+
+    Linux:
+        - Must have execute permission
+        - Must be a compiled ELF binary (excludes scripts with shebang)
+    """
+    if not file_path.is_file():
+        return False
+
+    # Windows check
+    if sys.platform.startswith("win"):
+        # Must end in .exe
+        if file_path.suffix.lower() != ".exe":
+            return False
+        try:
+            with open(file_path, "rb") as f:
+                header = f.read(2)
+            # Check PE signature (MZ)
+            return header == b'MZ'
+        except OSError:
+            return False
+
+    # Linux check
+    # 1. Must have execute permission
+    if not os.access(file_path, os.X_OK):
+        return False
+
+    # 2. Must be an ELF binary
+    try:
+        with open(file_path, "rb") as f:
+            # Read first 4 bytes for ELF magic number
+            header = f.read(4)
+        return header == b'\x7fELF'
+    except OSError:
+        return False
+
+
+def _find_executables(folder: pathlib.Path):
+    """Find all executable files in a given folder."""
+    return [f for f in folder.iterdir() if _is_real_executable(f)]
