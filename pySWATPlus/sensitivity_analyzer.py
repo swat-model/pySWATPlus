@@ -60,7 +60,6 @@ class SensitivityAnalyzer:
         self,
         params_bounds: list[BoundDict]
     ) -> dict[str, typing.Any]:
-
         '''
         Prepare Sobol problem dictionary for sensitivity analysis.
         '''
@@ -566,7 +565,6 @@ class SensitivityAnalyzer:
         Returns:
             Dictionary with two keys, `problem` and `sensitivity_indices`, and their corresponding values.
         '''
-
         # Check input variables type
         validators._variable_origin_static_type(
             vars_types=typing.get_type_hints(
