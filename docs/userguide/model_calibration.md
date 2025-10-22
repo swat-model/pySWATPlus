@@ -18,7 +18,6 @@ the calibration interface offers flexible options for optimizing model parameter
     - Multi-objective algorithms
     
         - [Non-dominated sorted Genetic Algorithm-II](https://doi.org/10.1109/4235.996017)
-        - [Adaptive Geometry Estimation based Multi-objective Evolutionary Algorithm - II](https://doi.org/10.1145/3512290.3528732).
         
 - Five indicators for comparing simulated and observed values:
 

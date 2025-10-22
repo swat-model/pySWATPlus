@@ -161,7 +161,6 @@ class Calibration(pymoo.core.problem.Problem):  # type: ignore[misc]
             - `GA`: Genetic Algorithm (**single-objective**).
             - `DE`: [Differential Evolution Algorithm](https://doi.org/10.1007/3-540-31306-0) (**single-objective**).
             - `NSGA2`: [Non-dominated sorted Genetic Algorithm - II](https://doi.org/10.1109/4235.996017) (**multi-objective**).
-            - `AGEMOEA2`: [Adaptive Geometry Estimation based Multi-objective Evolutionary Algorithm - II](https://doi.org/10.1145/3512290.3528732) (**multi-objective**).
 
             !!! Note
                 Multi-objective algorithms can be used for single-objective optimization, but not vice versa.
@@ -307,7 +306,7 @@ class Calibration(pymoo.core.problem.Problem):  # type: ignore[misc]
         # Display start of current generation number
         self.track_gen = self.track_gen + 1
         print(
-            f'{"\n"}Started generation: {self.track_gen}/{self.n_gen}{"\n"}'
+            f'\nStarted generation: {self.track_gen}/{self.n_gen}\n'
         )
 
         # Simulation in separate CPU
@@ -395,7 +394,7 @@ class Calibration(pymoo.core.problem.Problem):  # type: ignore[misc]
 
         # Print end of current generation number
         print(
-            f'{"\n"}Completed generation: {self.track_gen}/{self.n_gen}{"\n"}'
+            f'\nCompleted generation: {self.track_gen}/{self.n_gen}\n'
         )
 
     def _objectives_directions(
@@ -515,8 +514,7 @@ class Calibration(pymoo.core.problem.Problem):  # type: ignore[misc]
         api_module = {
             'GA': importlib.import_module('pymoo.algorithms.soo.nonconvex.ga'),
             'DE': importlib.import_module('pymoo.algorithms.soo.nonconvex.de'),
-            'NSGA2': importlib.import_module('pymoo.algorithms.moo.nsga2'),
-            'AGEMOEA2': importlib.import_module('pymoo.algorithms.moo.age2')
+            'NSGA2': importlib.import_module('pymoo.algorithms.moo.nsga2')
         }
 
         # Check algorithm name is valid
