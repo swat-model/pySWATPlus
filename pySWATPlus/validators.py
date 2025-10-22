@@ -4,7 +4,7 @@ import typing
 import types
 import datetime
 import json
-from .types import ModifyDict, BoundDict
+from . import newtype
 
 
 def _variable_origin_static_type(
@@ -120,7 +120,7 @@ def _date_within_range(
     return None
 
 
-def _calibration_list_contain_unique_dict(
+def _parameters_contain_unique_dict(
     parameters: list[dict[str, typing.Any]]
 ) -> None:
     '''
@@ -143,7 +143,7 @@ def _calibration_list_contain_unique_dict(
 
 def _calibration_units(
     input_dir: pathlib.Path,
-    param_change: ModifyDict
+    param_change: newtype.ModifyDict
 ) -> None:
     '''
     Validate units for a given parameter change against calibration parameters.
@@ -189,7 +189,7 @@ def _calibration_units(
         usecols=['id']
     )
 
-    # Id's in the files are consecutive (and starting from 1). We can use the length of the df to check if all units are present
+    # Use the DataFrame length to check if all units starting from 1 are present
     max_unit = max(units)
     if len(df) < max_unit:
         raise ValueError(
@@ -203,7 +203,7 @@ def _calibration_units(
 
 def _calibration_conditions(
     input_dir: pathlib.Path,
-    param_change: ModifyDict
+    param_change: newtype.ModifyDict
 ) -> None:
     '''
     Validate conditions for a given parameter change against calibration parameters.
@@ -252,7 +252,7 @@ def _calibration_conditions(
 
 def _calibration_conditions_and_units(
     input_dir: pathlib.Path,
-    parameters: list[ModifyDict]
+    parameters: list[newtype.ModifyDict]
 ) -> None:
     '''
     Check the following:
@@ -283,7 +283,7 @@ def _calibration_conditions_and_units(
 
 def _calibration_parameters(
     input_dir: pathlib.Path,
-    parameters: list[BoundDict] | list[ModifyDict]
+    parameters: list[newtype.BoundDict] | list[newtype.ModifyDict]
 ) -> None:
     '''
     Validate existence of input calibration parameters in `cal_parms.cal`.
@@ -324,12 +324,14 @@ def _json_extension(
     return None
 
 
-def _ensure_together(**kwargs: typing.Any) -> None:
+def _variables_defined_or_none(
+    **kwargs: typing.Any
+) -> None:
     '''
     Ensure that either all or none of the given arguments are provided (not None).
 
     Example:
-        _ensure_together(begin_date=begin, end_date=end)
+        _ensure_together(begin_date=begin_date, end_date=end_date)
     '''
 
     total = len(kwargs)
@@ -342,3 +344,73 @@ def _ensure_together(**kwargs: typing.Any) -> None:
         raise ValueError(
             f'Arguments [{all_args}] must be provided together, but missing: {missing}'
         )
+
+    return None
+
+
+def _simulation_preliminary_setup(
+    sim_dir: pathlib.Path,
+    tio_dir: pathlib.Path,
+    parameters: list[newtype.BoundDict] | list[newtype.ModifyDict]
+) -> None:
+
+    # Check validity of simulation directory path
+    _dir_path(
+        input_dir=sim_dir
+    )
+
+    # Check simulation directory is empty
+    _dir_empty(
+        input_dir=sim_dir
+    )
+
+    # Validate parameter names
+    _calibration_parameters(
+        input_dir=tio_dir,
+        parameters=parameters
+    )
+
+    return None
+
+
+def _extract_data_config(
+    extract_data: dict[str, dict[str, typing.Any]],
+) -> None:
+    '''
+    Validate `extract_data` configuration.
+    '''
+
+    # List of valid sub-keys of sub-dictionaries
+    valid_subkeys = [
+        'has_units',
+        'begin_date',
+        'end_date',
+        'ref_day',
+        'ref_month',
+        'apply_filter',
+        'usecols'
+    ]
+
+    # Iterate dictionary
+    for file_key, file_dict in extract_data.items():
+        # Check type of a sub-dictionary
+        if not isinstance(file_dict, dict):
+            raise TypeError(
+                f'Expected "{file_key}" in extract_data must be a dictionary, '
+                f'but got type "{type(file_dict).__name__}"'
+            )
+        # Check mandatory 'has_units' sub-key in sub-dictionary
+        if 'has_units' not in file_dict:
+            raise KeyError(
+                f'Key has_units is missing for "{file_key}" in extract_data'
+            )
+        # Iterate sub-key
+        for sub_key in file_dict:
+            # Check valid sub-key
+            if sub_key not in valid_subkeys:
+                raise KeyError(
+                    f'Invalid sub-key "{sub_key}" for "{file_key}" in extract_data; '
+                    f'expected sub-keys are {json.dumps(valid_subkeys)}'
+                )
+
+    return None

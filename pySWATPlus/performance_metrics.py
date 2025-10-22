@@ -275,14 +275,20 @@ class PerformanceMetrics:
         Compute performance indicators for sample scenarios obtained using the method
         [`simulation_by_sample_parameters`](https://swat-model.github.io/pySWATPlus/api/sensitivity_analyzer/#pySWATPlus.SensitivityAnalyzer.simulation_by_sample_parameters).
 
-        Before computing the indicators, simulated and observed values are normalized using the formula `(v - min_v) / (max_v - min_v)`,
-        where `min_v` and `max_v` represent the minimum and maximum of all simulated and observed values combined.
+        Before computing the indicators, simulated and observed values are normalized using the formula `(v - min_o) / (max_o - min_o)`,
+        where `min_o` and `max_o` represent the minimum and maximum of observed values, respectively.
 
         The method returns a dictionary with two keys:
 
         - `problem`: The definition dictionary passed to sampling.
         - `indicator`: A `DataFrame` containing the `Scenario` column and one column per indicator,
           with scenario indices and corresponding indicator values.
+
+        Before computing the indicators, both simulated and observed values are normalized using the formula
+        `(v - min_o) / (max_o - min_o)`, where `min_o` and `max_o` represent the minimum and maximum of observed values, respectively.
+
+        Note:
+            All negative and `None` observed values are removed before computing `min_o` and `max_o` to prevent errors during normalization.
 
         Args:
             sensim_file (str | pathlib.Path): Path to the `sensitivity_simulation.json` file produced by `simulation_by_sobol_sample`.
@@ -296,8 +302,7 @@ class PerformanceMetrics:
 
             date_format (str): Date format of the `date` column in `obs_file`, used to parse `datetime.date` objects from date strings.
 
-            obs_col (str): Name of the column in `obs_file` containing observed data. All negative and `None` observed values are removed
-                due to the normalization of observed and similated values before computing indicators.
+            obs_col (str): Name of the column in `obs_file` containing observed data.
 
             indicators (list[str]): List of performance indicators to compute. Available options:
 
@@ -340,7 +345,7 @@ class PerformanceMetrics:
         obs_df.columns = ['date', 'obs']
 
         # Retrieve sensitivity output
-        sensitivity_sim = utils._retrieve_sensitivity_output(
+        sensitivity_sim = utils._sensitivity_output_retrieval(
             sensim_file=pathlib.Path(sensim_file).resolve(),
             df_name=df_name,
             add_problem=True,
@@ -348,7 +353,7 @@ class PerformanceMetrics:
         )
 
         # Empty DataFrame to store scenario indicators
-        inct_df = pandas.DataFrame(
+        ind_df = pandas.DataFrame(
             columns=indicators
         )
 
@@ -364,7 +369,8 @@ class PerformanceMetrics:
             )
             # Normalized DataFrame
             norm_df = utils._df_normalize(
-                df=merge_df[['sim', 'obs']]
+                df=merge_df[['sim', 'obs']],
+                norm_col='obs'
             )
             # Iterate indicators
             for indicator in indicators:
@@ -373,21 +379,21 @@ class PerformanceMetrics:
                     self,
                     f'compute_{indicator.lower()}'
                 )
-                # indicator value
+                # Indicator value
                 key_indicator = indicator_method(
                     df=norm_df,
                     sim_col='sim',
                     obs_col='obs'
                 )
-                # Store error in DataFrame
-                inct_df.loc[key, indicator] = key_indicator
+                # Store indicator value in DataFrame
+                ind_df.loc[key, indicator] = key_indicator
 
         # Reset index to scenario column
         scnro_col = 'Scenario'
-        inct_df = inct_df.reset_index(
+        ind_df = ind_df.reset_index(
             names=[scnro_col]
         )
-        inct_df[scnro_col] = inct_df[scnro_col].astype(int)
+        ind_df[scnro_col] = ind_df[scnro_col].astype(int)
 
         # Save DataFrame
         if json_file is not None:
@@ -397,7 +403,7 @@ class PerformanceMetrics:
                 json_file=json_file
             )
             # Write DataFrame to the JSON file
-            inct_df.to_json(
+            ind_df.to_json(
                 path_or_buf=json_file,
                 orient='records',
                 indent=4
@@ -406,7 +412,7 @@ class PerformanceMetrics:
         # Output dictionary
         output = {
             'problem': sensitivity_sim['problem'],
-            'indicator': inct_df
+            'indicator': ind_df
         }
 
         return output

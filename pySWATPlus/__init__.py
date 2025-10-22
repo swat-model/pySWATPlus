@@ -2,6 +2,7 @@ from .txtinout_reader import TxtinoutReader
 from .data_manager import DataManager
 from .sensitivity_analyzer import SensitivityAnalyzer
 from .performance_metrics import PerformanceMetrics
+from .calibration import Calibration
 from importlib.metadata import version, PackageNotFoundError
 
 try:
@@ -16,5 +17,6 @@ __all__ = [
     'DataManager',
     'SensitivityAnalyzer',
     'PerformanceMetrics',
+    'Calibration',
     '__version__'
 ]

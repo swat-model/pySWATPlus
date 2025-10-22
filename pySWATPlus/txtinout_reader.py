@@ -3,7 +3,7 @@ import shutil
 import pathlib
 import typing
 import logging
-from .types import ModifyType, ModifyDict
+from . import newtype
 from . import utils
 from . import validators
 
@@ -51,8 +51,8 @@ class TxtinoutReader:
 
         # Raise error on .exe file
         if len(exe_files) != 1:
-            raise TypeError(
-                'Expected exactly one .exe file in the parent folder, but found none or multiple'
+            raise ValueError(
+                f'Expected exactly one ".exe" file in directory {str(tio_dir)}, but found none or multiple'
             )
 
         # TxtInOut directory path
@@ -71,11 +71,8 @@ class TxtinoutReader:
         allow_unavailable_object: bool = False
     ) -> None:
         '''
-        Update or add an object in the `print.prt` file with specified time frequency flags.
-
-        This method modifies the `print.prt` file in a SWAT+ project to enable or disable output
-        for a specific object (or all objects if `obj` is None) at specified time frequencies
-        (daily, monthly, yearly, or average annual). If the object does not exist in the file
+        Update the `print.prt` file to enable or disable output for a specific object (or all objects if `obj` is None)
+        at specified time frequencies (daily, monthly, yearly, or average annual). If the object does not exist in the file
         and `obj` is not None, it is appended to the end of the file.
 
         Note:
@@ -150,7 +147,7 @@ class TxtinoutReader:
 
                 if obj is None:
                     # Update all objects
-                    new_print_prt += utils._build_line_to_add(
+                    new_print_prt += utils._print_prt_line_add(
                         obj=line_obj,
                         daily=daily,
                         monthly=monthly,
@@ -159,7 +156,7 @@ class TxtinoutReader:
                     )
                 elif line_obj == obj:
                     # Already 'obj' exist, replace it in same position
-                    new_print_prt += utils._build_line_to_add(
+                    new_print_prt += utils._print_prt_line_add(
                         obj=line_obj,
                         daily=daily,
                         monthly=monthly,
@@ -171,7 +168,7 @@ class TxtinoutReader:
                     new_print_prt += line
 
         if not found and obj is not None:
-            new_print_prt += utils._build_line_to_add(
+            new_print_prt += utils._print_prt_line_add(
                 obj=obj,
                 daily=daily,
                 monthly=monthly,
@@ -574,7 +571,7 @@ class TxtinoutReader:
 
     def _write_calibration_file(
         self,
-        parameters: list[ModifyDict]
+        parameters: list[newtype.ModifyDict]
     ) -> None:
         '''
         Writes `calibration.cal` file with parameter changes.
@@ -614,10 +611,10 @@ class TxtinoutReader:
             units = change.units
 
             # Convert to compact representation
-            compacted_units = utils._compact_units(units) if units else []
+            compacted_units = utils._dict_units_compact(units) if units else []
 
             # get conditions
-            parsed_conditions = utils._parse_conditions(change)
+            parsed_conditions = utils._dict_conditions_parse(change)
 
             calibration_cal_rows.append(
                 {
@@ -655,7 +652,7 @@ class TxtinoutReader:
                     if col == 'NAME':
                         line += f'{row[col]:<{col_widths[col]}}'   # left-align
                     elif col == 'VAL' and isinstance(row[col], float):
-                        line += utils._format_val_field(typing.cast(float, row[col]))  # special VAL formatting
+                        line += utils._calibration_val_field_str(typing.cast(float, row[col]))  # special VAL formatting
                     else:
                         line += f'{row[col]:>{col_widths[col]}}'  # right-align numeric columns
 
@@ -744,13 +741,13 @@ class TxtinoutReader:
         '''
 
         # Ensure both begin and end dates are given
-        validators._ensure_together(
+        validators._variables_defined_or_none(
             begin_date=begin_date,
             end_date=end_date
         )
 
         # Ensure both begin and end print dates are given
-        validators._ensure_together(
+        validators._variables_defined_or_none(
             print_begin_date=print_begin_date,
             print_end_date=print_end_date
         )
@@ -825,7 +822,8 @@ class TxtinoutReader:
                     for sub_key, sub_val in val.items():
                         if sub_key not in key_dict:
                             raise KeyError(
-                                f'Invalids sub-key "{sub_key}" for key "{key}" in print_prt_control, expected sub-keys are [{", ".join(key_dict.keys())}]'
+                                f'Invalids sub-key "{sub_key}" for key "{key}" in print_prt_control, '
+                                f'expected sub-keys are [{", ".join(key_dict.keys())}]'
                             )
                         key_dict[sub_key] = sub_val
                     self.enable_object_in_print_prt(
@@ -890,7 +888,7 @@ class TxtinoutReader:
     def run_swat(
         self,
         sim_dir: typing.Optional[str | pathlib.Path] = None,
-        parameters: typing.Optional[ModifyType] = None,
+        parameters: typing.Optional[newtype.ModifyType] = None,
         begin_date: typing.Optional[str] = None,
         end_date: typing.Optional[str] = None,
         simulation_timestep: typing.Optional[int] = None,
@@ -908,7 +906,7 @@ class TxtinoutReader:
             sim_dir (str | pathlib.Path): Path to the directory where the simulation will be done.
                 If None, the simulation runs directly in the current folder.
 
-            parameters (ModifyType): List of dictionaries specifying parameter changes in the `calibration.cal` file.
+            parameters (newtype.ModifyType): List of dictionaries specifying parameter changes in the `calibration.cal` file.
                 Each dictionary contain the following keys:
 
                 - `name` (str): **Required.** Name of the parameter in the `cal_parms.cal` file.
@@ -1025,15 +1023,10 @@ class TxtinoutReader:
         # Create calibration.cal file
         if parameters is not None:
 
-            # Validate unique dictionaries for calibration parameters
-            validators._calibration_list_contain_unique_dict(
-                parameters=parameters
+            # List of ModifyDict objects
+            params = utils._parameters_modify_dict_list(
+                parameters=parameters,
             )
-
-            # Check structural validity of input calibration parameters
-            params = [
-                ModifyDict(**param) for param in parameters
-            ]
 
             # Check if input calibration parameters exists in cal_parms.cal
             validators._calibration_parameters(

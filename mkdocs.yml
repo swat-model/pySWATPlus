@@ -38,14 +38,15 @@ nav:
   - User Guide:
     - SWAT+ Simulation: userguide/swatplus_simulation.md
     - Sensitivity Interface: userguide/sensitivity_interface.md
+    - Model Calibration: userguide/model_calibration.md
     - Data Analysis: userguide/data_analysis.md
 
   - API Reference:
     - TxtinoutReader: api/txtinout_reader.md
-    - DataManager: api/data_manager.md
-    - SensitivityAnalyzer: api/sensitivity_analyzer.md
     - PerformanceMetrics: api/performance_metrics.md
-    - pySWATPlus.types: api/types.md
+    - SensitivityAnalyzer: api/sensitivity_analyzer.md
+    - Calibration: api/calibration.md
+    - DataManager: api/data_manager.md
 
   - Contributor Guide: CONTRIBUTING.md
 

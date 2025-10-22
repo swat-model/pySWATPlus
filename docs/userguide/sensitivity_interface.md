@@ -1,12 +1,12 @@
 # Sensitivity Interface
 
-Sensitivity interface helps quantify how variation in input parameters affects model outputs. This tutorial demonstrates how to perform sensitivity analysis on SWAT+ model parameters.  
+The sensitivity interface helps quantify how variations in input parameters affect `SWAT+` model outputs. This tutorial demonstrates how to perform sensitivity analysis on selected parameters.  
 
 
 ## Configuration Settings
 
-Before running a sensitivity simulation, you must define the necessary configuration settings.  
-These settings specify key parameters such as the simulation timeline, output print options, and other essential model controls.
+Before running a sensitivity simulation, configure the necessary settings, such as the simulation period, output print options, and non-targeted parameters,
+so that these parameters remain fixed across all scenarios.
 
 
 ```python
@@ -107,6 +107,12 @@ if __name__ == '__main__':
     )
     print(output)
 ```
+
+
+!!! tip "Troubleshooting Parallel Processing Errors"
+    If you encounter an error related to `concurrent.futures.ProcessPoolExecutor` and  `multiprocessing` without a clear description,
+    try closing the current command terminal and restarting it. This issue can occasionally occur due to lingering background processes
+    or locked resources from previous runs.
 
 ## Sensitivity Indices
 

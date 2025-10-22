@@ -30,12 +30,12 @@ import pytest
         (-12345678901234, ' -12345678901234'),
     ]
 )
-def test_format_val_field_edge_cases(
+def test_calibration_val_field_str(
     value,
     expected
 ):
 
-    result = pySWATPlus.utils._format_val_field(value)
+    result = pySWATPlus.utils._calibration_val_field_str(value)
 
     # Check total length = 16
     assert len(result) == 16
@@ -44,34 +44,34 @@ def test_format_val_field_edge_cases(
     assert result == expected
 
 
-def test_compact_units():
+def test_dict_units_compact():
 
     # --- empty input ---
-    assert pySWATPlus.utils._compact_units([]) == []
+    assert pySWATPlus.utils._dict_units_compact([]) == []
 
     # --- id 0 in array ---
     with pytest.raises(Exception) as exc_info:
-        pySWATPlus.utils._compact_units([0, 1])
+        pySWATPlus.utils._dict_units_compact([0, 1])
     assert exc_info.value.args[0] == 'All unit IDs must be 1-based (Fortran-style).'
 
     # --- single element ---
-    assert pySWATPlus.utils._compact_units([1]) == [1]
+    assert pySWATPlus.utils._dict_units_compact([1]) == [1]
 
     # --- consecutive sequence ---
-    assert pySWATPlus.utils._compact_units([1, 2, 3, 4]) == [1, -4]
+    assert pySWATPlus.utils._dict_units_compact([1, 2, 3, 4]) == [1, -4]
 
     # --- non-consecutive numbers ---
-    assert pySWATPlus.utils._compact_units([1, 2, 3, 5]) == [1, -3, 5]
+    assert pySWATPlus.utils._dict_units_compact([1, 2, 3, 5]) == [1, -3, 5]
 
     # --- unordered input ---
-    assert pySWATPlus.utils._compact_units([5, 2, 4, 1, 3]) == [1, -5]
+    assert pySWATPlus.utils._dict_units_compact([5, 2, 4, 1, 3]) == [1, -5]
 
     # --- input with duplicates ---
-    assert pySWATPlus.utils._compact_units([3, 3, 1, 1, 2]) == [1, -3]
+    assert pySWATPlus.utils._dict_units_compact([3, 3, 1, 1, 2]) == [1, -3]
 
     # --- large range ---
     large_range = list(range(1, 1001))
-    assert pySWATPlus.utils._compact_units(large_range) == [1, -1000]
+    assert pySWATPlus.utils._dict_units_compact(large_range) == [1, -1000]
 
     # --- single non-consecutive elements ---
-    assert pySWATPlus.utils._compact_units([1, 2, 4, 6]) == [1, -2, 4, 6]
+    assert pySWATPlus.utils._dict_units_compact([1, 2, 4, 6]) == [1, -2, 4, 6]

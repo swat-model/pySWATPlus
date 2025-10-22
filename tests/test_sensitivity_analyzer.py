@@ -178,7 +178,7 @@ def test_simulation_by_sample_parameters(
                         'channel_sd_yr.txt': []
                     }
                 )
-            assert exc_info.value.args[0] == 'Expected "channel_sd_yr.txt" in simulation_date must be a dictionary, but got type "list"'
+            assert exc_info.value.args[0] == 'Expected "channel_sd_yr.txt" in extract_data must be a dictionary, but got type "list"'
             # Error: missing has_units subkey for key in extract_data
             with pytest.raises(Exception) as exc_info:
                 sensitivity_analyzer.simulation_by_sample_parameters(
@@ -205,7 +205,7 @@ def test_simulation_by_sample_parameters(
                         }
                     }
                 )
-            assert 'Invalid key "begin_datee" for "channel_sd_yr.txt" in extract_data' in exc_info.value.args[0]
+            assert 'Invalid sub-key "begin_datee" for "channel_sd_yr.txt" in extract_data' in exc_info.value.args[0]
 
 
 def test_error_scenario_indicators(
@@ -247,7 +247,7 @@ def test_create_sobol_problem(
     ]
 
     params_bounds = [
-        pySWATPlus.types.BoundDict(**param) for param in parameters
+        pySWATPlus.newtype.BoundDict(**param) for param in parameters
     ]
 
     output = sensitivity_analyzer._create_sobol_problem(

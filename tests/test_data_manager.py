@@ -122,3 +122,18 @@ def test_simulated_timeseries_df(
             json_file='ext_invalid.txt'
         )
     assert exc_info.value.args[0] == 'Expected ".json" extension for "json_file", but got ".txt"'
+
+
+def test_error_hru_stats_from_daily_simulation(
+    data_manager
+):
+
+    # Error: invalid JSON file extension to save the DataFrame
+    with pytest.raises(Exception) as exc_info:
+        data_manager.hru_stats_from_daily_simulation(
+            sim_file='channel_sd_mon.txt',
+            has_units=True,
+            gis_id=561,
+            sim_col='flo_out'
+        )
+    assert exc_info.value.args[0] == 'Statistical summary applies only to daily time series files ending with "_day"; received file name "channel_sd_mon"'

@@ -55,29 +55,6 @@ Each dictionary contain the following keys:
 - `units` (Iterable[int]): Optional. List of unit IDs to which the parameter change should be constrained.
 - `conditions` (dict[str, list[str]]): Optional. Conditions to apply when changing the parameter.
   Supported keys include `'hsg'`, `'texture'`, `'plant'`, and `'landuse'`, each mapped to a list of allowed values.
-
-Example:
-    ```python
-    parameters = [
-        {
-            'name': 'cn2',
-            'change_type': 'pctchg',
-            'value': 50,
-        },
-        {
-            'name': 'perco',
-            'change_type': 'absval',
-            'value': 0.5,
-            'conditions': {'hsg': ['A']}
-        },
-        {
-            'name': 'bf_max',
-            'change_type': 'absval',
-            'value': 0.3,
-            'units': range(1, 194)
-        }
-    ]
-    ```
 '''
 
 BoundType: typing.TypeAlias = list[dict[str, typing.Any]]
@@ -92,30 +69,4 @@ Each dictionary contain the following keys:
 - `units` (Iterable[int]): Optional. List of unit IDs to which the parameter change should be constrained.
 - `conditions` (dict[str, list[str]]): Optional. Conditions to apply when changing the parameter.
   Supported keys include `'hsg'`, `'texture'`, `'plant'`, and `'landuse'`, each mapped to a list of allowed values.
-
-Example:
-    ```python
-    parameters = [
-        {
-            'name': 'cn2',
-            'change_type': 'pctchg',
-            'lower_bound': 25,
-            'upper_bound': 75,
-        },
-        {
-            'name': 'perco',
-            'change_type': 'absval',
-            'lower_bound': 0,
-            'upper_bound': 1,
-            'conditions': {'hsg': ['A']}
-        },
-        {
-            'name': 'bf_max',
-            'change_type': 'absval',
-            'lower_bound': 0.1,
-            'upper_bound': 2.0,
-            'units': range(1, 194)
-        }
-    ]
-    ```
 '''
