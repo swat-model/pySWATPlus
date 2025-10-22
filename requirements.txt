@@ -1,4 +1,5 @@
 pytest
 pytest-cov
-SALib
 pydantic
+SALib
+pymoo

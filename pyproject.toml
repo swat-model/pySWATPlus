@@ -33,8 +33,9 @@ classifiers = [
 	"Topic :: Scientific/Engineering :: Hydrology"
 ]
 dependencies = [
+    "pydantic",
     "SALib",
-    "pydantic"
+    "pymoo"
 ]
 
 [project.urls]
