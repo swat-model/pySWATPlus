@@ -5,10 +5,11 @@ import io
 import pathlib
 import typing
 import collections.abc
-from .types import ModifyDict
+from . import newtype
+from . import validators
 
 
-def _build_line_to_add(
+def _print_prt_line_add(
     obj: str,
     daily: bool,
     monthly: bool,
@@ -16,7 +17,7 @@ def _build_line_to_add(
     avann: bool
 ) -> str:
     '''
-    Format lines for `print.prt` file
+    Append a new line to the contents of the `print.prt` file string.
     '''
 
     print_periodicity = {
@@ -38,7 +39,7 @@ def _date_str_to_object(
     date_str: str
 ) -> datetime.date:
     '''
-    Convert a date string in 'DD-Mon-YYYY' format to a `datetime.date` object
+    Convert a date string in 'DD-Mon-YYYY' format to a `datetime.date` object.
     '''
 
     date_fmt = '%d-%b-%Y'
@@ -52,42 +53,13 @@ def _date_str_to_object(
     return get_date
 
 
-def _format_val_field(
-    value: float
-) -> str:
-    '''
-    Format a number for the VAL column:
-    - 16 characters total: 1 leading space + 15-character numeric field
-    - Right-aligned
-    - Fixed-point if integer part fits; scientific if too large
-    '''
-
-    # Convert to string without formatting
-    s = str(value)
-
-    if len(s) > 15:
-        # Use scientific notation
-        formatted = f'{value:.6e}'
-    else:
-        # If it fits, just use normal string
-        formatted = s
-
-    # Right-align to 16 characters
-    return f'{formatted:>16}'
-
-
-def _compact_units(
+def _dict_units_compact(
     unit_list: collections.abc.Iterable[int]
 ) -> list[int]:
     '''
-    Compact a 1-based list of unit IDs into SWAT units syntax.
-
-    Consecutive unit IDs are represented as a range using negative numbers:
-
-    - Single units are listed as positive numbers.
-    - Consecutive ranges are represented as [start, -end].
-
-    All IDs must be 1-based (Fortran-style).
+    Compact the `units` key in `pySWATPlus.newtype.ModifyDict` or `pySWATPlus.newtype.BoundDict`,
+    where single units are represented as positive numbers and consecutive ranges as [start, -end],
+    to be added to the `calibration.cal` file for the corresponding parameter.
     '''
 
     if not unit_list:
@@ -120,11 +92,12 @@ def _compact_units(
     return compact
 
 
-def _parse_conditions(
-    parameters: ModifyDict
+def _dict_conditions_parse(
+    parameters: newtype.ModifyDict
 ) -> list[str]:
     '''
-    Parse the conditions that must be added to that parameter in calibration.cal file
+    Parse the `conditions` key in `pySWATPlus.newtype.ModifyDict` or `pySWATPlus.newtype.BoundDict`
+    to be added to the `calibration.cal` file for the corresponding parameter.
     '''
 
     conditions = parameters.conditions
@@ -139,11 +112,35 @@ def _parse_conditions(
     return conditions_parsed
 
 
+def _calibration_val_field_str(
+    value: float
+) -> str:
+    '''
+    Format a number for the VAL column to the `calibration.cal` file:
+    - 16 characters total: 1 leading space + 15-character numeric field
+    - Right-aligned
+    - Fixed-point if integer part fits; scientific if too large
+    '''
+
+    # Convert to string without formatting
+    s = str(value)
+
+    if len(s) > 15:
+        # Use scientific notation
+        formatted = f'{value:.6e}'
+    else:
+        # If it fits, just use normal string
+        formatted = s
+
+    # Right-align to 16 characters
+    return f'{formatted:>16}'
+
+
 def _df_clean(
     df: pandas.DataFrame
 ) -> pandas.DataFrame:
     '''
-    Clean a DataFrame by stripping whitespace from column names and string values.
+    Clean a `DataFrame` by stripping whitespace from column names and string values.
     '''
 
     # Strip spaces from column names
@@ -162,7 +159,7 @@ def _df_extract(
     skiprows: typing.Optional[list[int]] = None
 ) -> pandas.DataFrame:
     '''
-    Extract a DataFrame from `input_file` using multiple parsing strategies.
+    Extract a `DataFrame` from `input_file` using multiple parsing strategies.
     '''
 
     if input_file.suffix.lower() == '.csv':
@@ -210,6 +207,14 @@ def _df_observe(
     and `obs_col` (the observed values).
     '''
 
+    # Check input variables type
+    validators._variable_origin_static_type(
+        vars_types=typing.get_type_hints(
+            obj=_df_observe
+        ),
+        vars_values=locals()
+    )
+
     # DataFrame
     obs_df = pandas.read_csv(
         filepath_or_buffer=obs_file,
@@ -228,7 +233,8 @@ def _df_observe(
 
 
 def _df_normalize(
-    df: pandas.DataFrame
+    df: pandas.DataFrame,
+    norm_col: str
 ) -> pandas.DataFrame:
     '''
     Normalize the values in the input `DataFrame` using the formula `(df - min) / (max - min)`,
@@ -237,16 +243,16 @@ def _df_normalize(
     '''
 
     # Minimum and maximum values
-    df_min = df.min().min()
-    df_max = df.max().max()
+    norm_min = df[norm_col].min()
+    norm_max = df[norm_col].max()
 
     # Normalized DataFrame
-    norm_df = (df - df_min) / (df_max - df_min)
+    norm_df = (df - norm_min) / (norm_max - norm_min)
 
     return norm_df
 
 
-def _retrieve_sensitivity_output(
+def _sensitivity_output_retrieval(
     sensim_file: pathlib.Path,
     df_name: str,
     add_problem: bool,
@@ -287,3 +293,103 @@ def _retrieve_sensitivity_output(
         output['sample'] = sensitivity_sim['sample']
 
     return output
+
+
+def _parameters_modify_dict_list(
+    parameters: list[dict[str, typing.Any]],
+) -> list[newtype.ModifyDict]:
+    '''
+    Convert each dictionary in the `parameters` list into a `pySWATPlus.newtype.ModifyDict` object.
+    '''
+
+    # Validate the "parameters" list contains unique dictionaries
+    validators._parameters_contain_unique_dict(
+        parameters=parameters
+    )
+
+    valid_keys = [
+        'name',
+        'value',
+        'change_type',
+        'units',
+        'conditions'
+    ]
+
+    param_list = []
+    for param in parameters:
+        for key in param:
+            if key not in valid_keys:
+                raise KeyError(
+                    f'Invalid key "{key}" for {json.dumps(param)} in "parameters"; '
+                    f'expected keys are {json.dumps(valid_keys)}'
+                )
+        param_list.append(newtype.ModifyDict(**param))
+
+    return param_list
+
+
+def _parameters_bound_dict_list(
+    parameters: list[dict[str, typing.Any]],
+) -> list[newtype.BoundDict]:
+    '''
+    Convert each dictionary in the `parameters` list into a `pySWATPlus.newtype.BoundDict` object.
+    '''
+
+    # Validate the "parameters" list contains unique dictionaries
+    validators._parameters_contain_unique_dict(
+        parameters=parameters
+    )
+
+    valid_keys = [
+        'name',
+        'change_type',
+        'lower_bound',
+        'upper_bound',
+        'units',
+        'conditions'
+    ]
+
+    param_list = []
+    for param in parameters:
+        for key in param:
+            if key not in valid_keys:
+                raise KeyError(
+                    f'Invalid key "{key}" for {json.dumps(param)} in "parameters"; '
+                    f'expected keys are {json.dumps(valid_keys)}'
+                )
+        param_list.append(newtype.BoundDict(**param))
+
+    return param_list
+
+
+def _parameters_name_with_counter(
+    parameters: list[newtype.BoundDict]
+) -> list[str]:
+    '''
+    Add a counter with parameter name if same calibration parameter appears
+    multiple times in `pySWATPlus.newtype.BoundType` list.
+    '''
+
+    # Count variables
+    count_vars = collections.Counter(
+        p.name for p in parameters
+    )
+
+    # Intialize dictionary to keeps track the count of variables
+    current_count = {
+        v: 0 for v in list(count_vars)
+    }
+
+    # List of unique name with counter
+    name_counter = []
+    for param in parameters:
+        p_name = param.name
+        if count_vars[p_name] == 1:
+            # Keep same name if occur only once in the list
+            name_counter.append(p_name)
+        else:
+            # Add counter suffix if occur multiple times
+            current_count[p_name] = current_count[p_name] + 1
+            name_counter.append(f'{p_name}|{current_count[p_name]}')
+
+    return name_counter
