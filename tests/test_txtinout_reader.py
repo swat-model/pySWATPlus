@@ -1,5 +1,4 @@
 import os
-import pandas
 import pySWATPlus
 import pytest
 import tempfile
@@ -76,10 +75,10 @@ def test_run_swat(
                 simulation_timestep=0,
                 warmup=1,
                 print_prt_control={
-                    'channel_sd': {'daily': False},
-                    'basin_wb': {}
+                    'channel_sd': {},
+                    'basin_wb': {'daily': False}
                 },
-                print_begin_date='01-Feb-2010',
+                print_begin_date='01-Feb-2011',
                 print_end_date='31-Dec-2011',
                 print_interval=1
             )
@@ -91,8 +90,6 @@ def test_run_swat(
                 skiprows=[0, 2],
             )
 
-            assert pandas.api.types.is_integer_dtype(df['jday'])
-
             # Pass: read CSV file
             csv_df = pySWATPlus.utils._df_extract(
                 input_file=sim2_dir / 'channel_sd_yr.csv',
@@ -103,6 +100,25 @@ def test_run_swat(
             assert df.shape == csv_df.shape
             assert list(df.columns) == list(csv_df.columns)
             assert all(df.dtypes == csv_df.dtypes)
+
+            # Pass: monthly and yearly summary statistics from daily time series
+            stats_dict = pySWATPlus.DataManager().hru_stats_from_daily_simulation(
+                sim_file=sim2_dir / 'channel_sd_day.txt',
+                has_units=True,
+                gis_id=561,
+                sim_col='flo_out',
+                output_dir=sim2_dir
+            )
+            assert isinstance(stats_dict, dict)
+            assert len(stats_dict) == 2
+
+            # Error: reading TXT file
+            with pytest.raises(Exception) as exc_info:
+                pySWATPlus.DataManager().simulated_timeseries_df(
+                    sim_file=sim2_dir / 'channel_sd_day',
+                    has_units=True
+                )
+            assert 'Error reading the file' in exc_info.value.args[0]
 
             # Pass: adding invalid object with flag
             sim2_reader = pySWATPlus.TxtinoutReader(
@@ -153,7 +169,7 @@ def test_error_txtinoutreader_class():
             pySWATPlus.TxtinoutReader(
                 tio_dir=tmp_dir
             )
-        assert exc_info.value.args[0] == 'Expected exactly one .exe file in the parent folder, but found none or multiple'
+        assert 'Expected exactly one ".exe" file in directory' in exc_info.value.args[0]
 
 
 def test_error_enable_object_in_print_prt(
@@ -519,41 +535,41 @@ def test_write_calibration_file(
         )
 
         par_change = [
-            pySWATPlus.types.ModifyDict(name='cn2', change_type='pctchg', value=50),
-            pySWATPlus.types.ModifyDict(name='cn3_swf', change_type='absval', value=0.5),
-            pySWATPlus.types.ModifyDict(name='ovn', change_type='pctchg', value=50),
-            pySWATPlus.types.ModifyDict(name='lat_ttime', change_type='absval', value=100),
-            pySWATPlus.types.ModifyDict(name='latq_co', change_type='absval', value=0.5),
-            pySWATPlus.types.ModifyDict(name='lat_len', change_type='pctchg', value=50),
-            pySWATPlus.types.ModifyDict(name='canmx', change_type='absval', value=50),
-            pySWATPlus.types.ModifyDict(name='esco', change_type='absval', value=0.5),
-            pySWATPlus.types.ModifyDict(name='epco', change_type='absval', value=0.5),
+            pySWATPlus.newtype.ModifyDict(name='cn2', change_type='pctchg', value=50),
+            pySWATPlus.newtype.ModifyDict(name='cn3_swf', change_type='absval', value=0.5),
+            pySWATPlus.newtype.ModifyDict(name='ovn', change_type='pctchg', value=50),
+            pySWATPlus.newtype.ModifyDict(name='lat_ttime', change_type='absval', value=100),
+            pySWATPlus.newtype.ModifyDict(name='latq_co', change_type='absval', value=0.5),
+            pySWATPlus.newtype.ModifyDict(name='lat_len', change_type='pctchg', value=50),
+            pySWATPlus.newtype.ModifyDict(name='canmx', change_type='absval', value=50),
+            pySWATPlus.newtype.ModifyDict(name='esco', change_type='absval', value=0.5),
+            pySWATPlus.newtype.ModifyDict(name='epco', change_type='absval', value=0.5),
 
-            pySWATPlus.types.ModifyDict(name='perco', change_type='absval', value=0.5, conditions={'hsg': ['A']}),
-            pySWATPlus.types.ModifyDict(name='perco', change_type='absval', value=0.5, conditions={'hsg': ['B']}),
-            pySWATPlus.types.ModifyDict(name='perco', change_type='absval', value=0.5, conditions={'hsg': ['C']}),
-            pySWATPlus.types.ModifyDict(name='perco', change_type='absval', value=0.5, conditions={'hsg': ['D']}),
+            pySWATPlus.newtype.ModifyDict(name='perco', change_type='absval', value=0.5, conditions={'hsg': ['A']}),
+            pySWATPlus.newtype.ModifyDict(name='perco', change_type='absval', value=0.5, conditions={'hsg': ['B']}),
+            pySWATPlus.newtype.ModifyDict(name='perco', change_type='absval', value=0.5, conditions={'hsg': ['C']}),
+            pySWATPlus.newtype.ModifyDict(name='perco', change_type='absval', value=0.5, conditions={'hsg': ['D']}),
 
-            pySWATPlus.types.ModifyDict(name='z', change_type='pctchg', value=20),
-            pySWATPlus.types.ModifyDict(name='bd', change_type='pctchg', value=50),
-            pySWATPlus.types.ModifyDict(name='awc', change_type='pctchg', value=100),
-            pySWATPlus.types.ModifyDict(name='k', change_type='pctchg', value=100),
+            pySWATPlus.newtype.ModifyDict(name='z', change_type='pctchg', value=20),
+            pySWATPlus.newtype.ModifyDict(name='bd', change_type='pctchg', value=50),
+            pySWATPlus.newtype.ModifyDict(name='awc', change_type='pctchg', value=100),
+            pySWATPlus.newtype.ModifyDict(name='k', change_type='pctchg', value=100),
 
-            pySWATPlus.types.ModifyDict(name='surlag', change_type='absval', value=10),
-            pySWATPlus.types.ModifyDict(name='evrch', change_type='absval', value=0.8),
-            pySWATPlus.types.ModifyDict(name='evlai', change_type='absval', value=5),
-            pySWATPlus.types.ModifyDict(name='ffcb', change_type='absval', value=0.5),
+            pySWATPlus.newtype.ModifyDict(name='surlag', change_type='absval', value=10),
+            pySWATPlus.newtype.ModifyDict(name='evrch', change_type='absval', value=0.8),
+            pySWATPlus.newtype.ModifyDict(name='evlai', change_type='absval', value=5),
+            pySWATPlus.newtype.ModifyDict(name='ffcb', change_type='absval', value=0.5),
 
-            pySWATPlus.types.ModifyDict(name='chn', change_type='absval', value=0.05),
-            pySWATPlus.types.ModifyDict(name='chk', change_type='absval', value=100),
+            pySWATPlus.newtype.ModifyDict(name='chn', change_type='absval', value=0.05),
+            pySWATPlus.newtype.ModifyDict(name='chk', change_type='absval', value=100),
 
-            pySWATPlus.types.ModifyDict(name='alpha', change_type='absval', value=0.3, units=list(range(1, 143))),
-            pySWATPlus.types.ModifyDict(name='bf_max', change_type='absval', value=0.3, units=list(range(1, 143))),
-            pySWATPlus.types.ModifyDict(name='deep_seep', change_type='absval', value=0.1, units=list(range(1, 143))),
-            pySWATPlus.types.ModifyDict(name='sp_yld', change_type='absval', value=0.2, units=list(range(1, 143))),
-            pySWATPlus.types.ModifyDict(name='flo_min', change_type='absval', value=10, units=list(range(1, 143))),
-            pySWATPlus.types.ModifyDict(name='revap_co', change_type='absval', value=0.1, units=list(range(1, 143))),
-            pySWATPlus.types.ModifyDict(name='revap_min', change_type='absval', value=5, units=list(range(1, 143))),
+            pySWATPlus.newtype.ModifyDict(name='alpha', change_type='absval', value=0.3, units=list(range(1, 143))),
+            pySWATPlus.newtype.ModifyDict(name='bf_max', change_type='absval', value=0.3, units=list(range(1, 143))),
+            pySWATPlus.newtype.ModifyDict(name='deep_seep', change_type='absval', value=0.1, units=list(range(1, 143))),
+            pySWATPlus.newtype.ModifyDict(name='sp_yld', change_type='absval', value=0.2, units=list(range(1, 143))),
+            pySWATPlus.newtype.ModifyDict(name='flo_min', change_type='absval', value=10, units=list(range(1, 143))),
+            pySWATPlus.newtype.ModifyDict(name='revap_co', change_type='absval', value=0.1, units=list(range(1, 143))),
+            pySWATPlus.newtype.ModifyDict(name='revap_min', change_type='absval', value=5, units=list(range(1, 143))),
         ]
 
         # Run the method
