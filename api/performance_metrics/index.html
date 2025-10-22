@@ -9,10 +9,10 @@
       
       
       
-        <link rel="prev" href="../sensitivity_analyzer/">
+        <link rel="prev" href="../txtinout_reader/">
       
       
-        <link rel="next" href="../types/">
+        <link rel="next" href="../sensitivity_analyzer/">
       
       
       <link rel="icon" href="../../assets/images/favicon.png">
@@ -409,6 +409,29 @@
   
   
     <li class="md-nav__item">
+      <a href="../../userguide/model_calibration/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Model Calibration
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../../userguide/data_analysis/" class="md-nav__link">
         
   
@@ -491,52 +514,6 @@
   
   <span class="md-ellipsis">
     TxtinoutReader
-    
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../data_manager/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    DataManager
-    
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../sensitivity_analyzer/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    SensitivityAnalyzer
     
   </span>
   
@@ -702,12 +679,58 @@
   
   
     <li class="md-nav__item">
-      <a href="../types/" class="md-nav__link">
+      <a href="../sensitivity_analyzer/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
-    pySWATPlus.types
+    SensitivityAnalyzer
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../calibration/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Calibration
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../data_manager/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    DataManager
     
   </span>
   
@@ -1327,7 +1350,13 @@
 <span class="normal">409</span>
 <span class="normal">410</span>
 <span class="normal">411</span>
-<span class="normal">412</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">PerformanceMetrics</span><span class="p">:</span>
+<span class="normal">412</span>
+<span class="normal">413</span>
+<span class="normal">414</span>
+<span class="normal">415</span>
+<span class="normal">416</span>
+<span class="normal">417</span>
+<span class="normal">418</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">PerformanceMetrics</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    Provide functionality to compute errors between simulated and ovserved values.</span>
 <span class="sd">    &#39;&#39;&#39;</span>
@@ -1597,14 +1626,20 @@
 <span class="sd">        Compute performance indicators for sample scenarios obtained using the method</span>
 <span class="sd">        [`simulation_by_sample_parameters`](https://swat-model.github.io/pySWATPlus/api/sensitivity_analyzer/#pySWATPlus.SensitivityAnalyzer.simulation_by_sample_parameters).</span>
 
-<span class="sd">        Before computing the indicators, simulated and observed values are normalized using the formula `(v - min_v) / (max_v - min_v)`,</span>
-<span class="sd">        where `min_v` and `max_v` represent the minimum and maximum of all simulated and observed values combined.</span>
+<span class="sd">        Before computing the indicators, simulated and observed values are normalized using the formula `(v - min_o) / (max_o - min_o)`,</span>
+<span class="sd">        where `min_o` and `max_o` represent the minimum and maximum of observed values, respectively.</span>
 
 <span class="sd">        The method returns a dictionary with two keys:</span>
 
 <span class="sd">        - `problem`: The definition dictionary passed to sampling.</span>
 <span class="sd">        - `indicator`: A `DataFrame` containing the `Scenario` column and one column per indicator,</span>
 <span class="sd">          with scenario indices and corresponding indicator values.</span>
+
+<span class="sd">        Before computing the indicators, both simulated and observed values are normalized using the formula</span>
+<span class="sd">        `(v - min_o) / (max_o - min_o)`, where `min_o` and `max_o` represent the minimum and maximum of observed values, respectively.</span>
+
+<span class="sd">        Note:</span>
+<span class="sd">            All negative and `None` observed values are removed before computing `min_o` and `max_o` to prevent errors during normalization.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            sensim_file (str | pathlib.Path): Path to the `sensitivity_simulation.json` file produced by `simulation_by_sobol_sample`.</span>
@@ -1618,8 +1653,7 @@
 
 <span class="sd">            date_format (str): Date format of the `date` column in `obs_file`, used to parse `datetime.date` objects from date strings.</span>
 
-<span class="sd">            obs_col (str): Name of the column in `obs_file` containing observed data. All negative and `None` observed values are removed</span>
-<span class="sd">                due to the normalization of observed and similated values before computing indicators.</span>
+<span class="sd">            obs_col (str): Name of the column in `obs_file` containing observed data.</span>
 
 <span class="sd">            indicators (list[str]): List of performance indicators to compute. Available options:</span>
 
@@ -1662,7 +1696,7 @@
         <span class="n">obs_df</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;date&#39;</span><span class="p">,</span> <span class="s1">&#39;obs&#39;</span><span class="p">]</span>
 
         <span class="c1"># Retrieve sensitivity output</span>
-        <span class="n">sensitivity_sim</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">_retrieve_sensitivity_output</span><span class="p">(</span>
+        <span class="n">sensitivity_sim</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">_sensitivity_output_retrieval</span><span class="p">(</span>
             <span class="n">sensim_file</span><span class="o">=</span><span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="n">sensim_file</span><span class="p">)</span><span class="o">.</span><span class="n">resolve</span><span class="p">(),</span>
             <span class="n">df_name</span><span class="o">=</span><span class="n">df_name</span><span class="p">,</span>
             <span class="n">add_problem</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
@@ -1670,7 +1704,7 @@
         <span class="p">)</span>
 
         <span class="c1"># Empty DataFrame to store scenario indicators</span>
-        <span class="n">inct_df</span> <span class="o">=</span> <span class="n">pandas</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
+        <span class="n">ind_df</span> <span class="o">=</span> <span class="n">pandas</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
             <span class="n">columns</span><span class="o">=</span><span class="n">indicators</span>
         <span class="p">)</span>
 
@@ -1686,7 +1720,8 @@
             <span class="p">)</span>
             <span class="c1"># Normalized DataFrame</span>
             <span class="n">norm_df</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">_df_normalize</span><span class="p">(</span>
-                <span class="n">df</span><span class="o">=</span><span class="n">merge_df</span><span class="p">[[</span><span class="s1">&#39;sim&#39;</span><span class="p">,</span> <span class="s1">&#39;obs&#39;</span><span class="p">]]</span>
+                <span class="n">df</span><span class="o">=</span><span class="n">merge_df</span><span class="p">[[</span><span class="s1">&#39;sim&#39;</span><span class="p">,</span> <span class="s1">&#39;obs&#39;</span><span class="p">]],</span>
+                <span class="n">norm_col</span><span class="o">=</span><span class="s1">&#39;obs&#39;</span>
             <span class="p">)</span>
             <span class="c1"># Iterate indicators</span>
             <span class="k">for</span> <span class="n">indicator</span> <span class="ow">in</span> <span class="n">indicators</span><span class="p">:</span>
@@ -1695,21 +1730,21 @@
                     <span class="bp">self</span><span class="p">,</span>
                     <span class="sa">f</span><span class="s1">&#39;compute_</span><span class="si">{</span><span class="n">indicator</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="si">}</span><span class="s1">&#39;</span>
                 <span class="p">)</span>
-                <span class="c1"># indicator value</span>
+                <span class="c1"># Indicator value</span>
                 <span class="n">key_indicator</span> <span class="o">=</span> <span class="n">indicator_method</span><span class="p">(</span>
                     <span class="n">df</span><span class="o">=</span><span class="n">norm_df</span><span class="p">,</span>
                     <span class="n">sim_col</span><span class="o">=</span><span class="s1">&#39;sim&#39;</span><span class="p">,</span>
                     <span class="n">obs_col</span><span class="o">=</span><span class="s1">&#39;obs&#39;</span>
                 <span class="p">)</span>
-                <span class="c1"># Store error in DataFrame</span>
-                <span class="n">inct_df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">key</span><span class="p">,</span> <span class="n">indicator</span><span class="p">]</span> <span class="o">=</span> <span class="n">key_indicator</span>
+                <span class="c1"># Store indicator value in DataFrame</span>
+                <span class="n">ind_df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">key</span><span class="p">,</span> <span class="n">indicator</span><span class="p">]</span> <span class="o">=</span> <span class="n">key_indicator</span>
 
         <span class="c1"># Reset index to scenario column</span>
         <span class="n">scnro_col</span> <span class="o">=</span> <span class="s1">&#39;Scenario&#39;</span>
-        <span class="n">inct_df</span> <span class="o">=</span> <span class="n">inct_df</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span>
+        <span class="n">ind_df</span> <span class="o">=</span> <span class="n">ind_df</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span>
             <span class="n">names</span><span class="o">=</span><span class="p">[</span><span class="n">scnro_col</span><span class="p">]</span>
         <span class="p">)</span>
-        <span class="n">inct_df</span><span class="p">[</span><span class="n">scnro_col</span><span class="p">]</span> <span class="o">=</span> <span class="n">inct_df</span><span class="p">[</span><span class="n">scnro_col</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+        <span class="n">ind_df</span><span class="p">[</span><span class="n">scnro_col</span><span class="p">]</span> <span class="o">=</span> <span class="n">ind_df</span><span class="p">[</span><span class="n">scnro_col</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
 
         <span class="c1"># Save DataFrame</span>
         <span class="k">if</span> <span class="n">json_file</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
@@ -1719,7 +1754,7 @@
                 <span class="n">json_file</span><span class="o">=</span><span class="n">json_file</span>
             <span class="p">)</span>
             <span class="c1"># Write DataFrame to the JSON file</span>
-            <span class="n">inct_df</span><span class="o">.</span><span class="n">to_json</span><span class="p">(</span>
+            <span class="n">ind_df</span><span class="o">.</span><span class="n">to_json</span><span class="p">(</span>
                 <span class="n">path_or_buf</span><span class="o">=</span><span class="n">json_file</span><span class="p">,</span>
                 <span class="n">orient</span><span class="o">=</span><span class="s1">&#39;records&#39;</span><span class="p">,</span>
                 <span class="n">indent</span><span class="o">=</span><span class="mi">4</span>
@@ -1728,7 +1763,7 @@
         <span class="c1"># Output dictionary</span>
         <span class="n">output</span> <span class="o">=</span> <span class="p">{</span>
             <span class="s1">&#39;problem&#39;</span><span class="p">:</span> <span class="n">sensitivity_sim</span><span class="p">[</span><span class="s1">&#39;problem&#39;</span><span class="p">],</span>
-            <span class="s1">&#39;indicator&#39;</span><span class="p">:</span> <span class="n">inct_df</span>
+            <span class="s1">&#39;indicator&#39;</span><span class="p">:</span> <span class="n">ind_df</span>
         <span class="p">}</span>
 
         <span class="k">return</span> <span class="n">output</span>
@@ -2738,15 +2773,22 @@ metric between simulated and observed values</p>
 
         <p>Compute performance indicators for sample scenarios obtained using the method
 <a href="https://swat-model.github.io/pySWATPlus/api/sensitivity_analyzer/#pySWATPlus.SensitivityAnalyzer.simulation_by_sample_parameters"><code>simulation_by_sample_parameters</code></a>.</p>
-<p>Before computing the indicators, simulated and observed values are normalized using the formula <code>(v - min_v) / (max_v - min_v)</code>,
-where <code>min_v</code> and <code>max_v</code> represent the minimum and maximum of all simulated and observed values combined.</p>
+<p>Before computing the indicators, simulated and observed values are normalized using the formula <code>(v - min_o) / (max_o - min_o)</code>,
+where <code>min_o</code> and <code>max_o</code> represent the minimum and maximum of observed values, respectively.</p>
 <p>The method returns a dictionary with two keys:</p>
 <ul>
 <li><code>problem</code>: The definition dictionary passed to sampling.</li>
 <li><code>indicator</code>: A <code>DataFrame</code> containing the <code>Scenario</code> column and one column per indicator,
   with scenario indices and corresponding indicator values.</li>
 </ul>
+<p>Before computing the indicators, both simulated and observed values are normalized using the formula
+<code>(v - min_o) / (max_o - min_o)</code>, where <code>min_o</code> and <code>max_o</code> represent the minimum and maximum of observed values, respectively.</p>
 
+
+<details class="note" open>
+  <summary>Note</summary>
+  <p>All negative and <code>None</code> observed values are removed before computing <code>min_o</code> and <code>max_o</code> to prevent errors during normalization.</p>
+</details>
 
 <p><span class="doc-section-title">Parameters:</span></p>
     <table>
@@ -2849,8 +2891,7 @@ where <code>min_v</code> and <code>max_v</code> represent the minimum and maximu
             </td>
             <td>
               <div class="doc-md-description">
-                <p>Name of the column in <code>obs_file</code> containing observed data. All negative and <code>None</code> observed values are removed
-due to the normalization of observed and similated values before computing indicators.</p>
+                <p>Name of the column in <code>obs_file</code> containing observed data.</p>
               </div>
             </td>
             <td>
@@ -3076,7 +3117,13 @@ If <code>None</code> (default), the <code>DataFrame</code> is not saved.</p>
 <span class="normal">409</span>
 <span class="normal">410</span>
 <span class="normal">411</span>
-<span class="normal">412</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">scenario_indicators</span><span class="p">(</span>
+<span class="normal">412</span>
+<span class="normal">413</span>
+<span class="normal">414</span>
+<span class="normal">415</span>
+<span class="normal">416</span>
+<span class="normal">417</span>
+<span class="normal">418</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">scenario_indicators</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">sensim_file</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">,</span>
     <span class="n">df_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
@@ -3091,14 +3138,20 @@ If <code>None</code> (default), the <code>DataFrame</code> is not saved.</p>
 <span class="sd">    Compute performance indicators for sample scenarios obtained using the method</span>
 <span class="sd">    [`simulation_by_sample_parameters`](https://swat-model.github.io/pySWATPlus/api/sensitivity_analyzer/#pySWATPlus.SensitivityAnalyzer.simulation_by_sample_parameters).</span>
 
-<span class="sd">    Before computing the indicators, simulated and observed values are normalized using the formula `(v - min_v) / (max_v - min_v)`,</span>
-<span class="sd">    where `min_v` and `max_v` represent the minimum and maximum of all simulated and observed values combined.</span>
+<span class="sd">    Before computing the indicators, simulated and observed values are normalized using the formula `(v - min_o) / (max_o - min_o)`,</span>
+<span class="sd">    where `min_o` and `max_o` represent the minimum and maximum of observed values, respectively.</span>
 
 <span class="sd">    The method returns a dictionary with two keys:</span>
 
 <span class="sd">    - `problem`: The definition dictionary passed to sampling.</span>
 <span class="sd">    - `indicator`: A `DataFrame` containing the `Scenario` column and one column per indicator,</span>
 <span class="sd">      with scenario indices and corresponding indicator values.</span>
+
+<span class="sd">    Before computing the indicators, both simulated and observed values are normalized using the formula</span>
+<span class="sd">    `(v - min_o) / (max_o - min_o)`, where `min_o` and `max_o` represent the minimum and maximum of observed values, respectively.</span>
+
+<span class="sd">    Note:</span>
+<span class="sd">        All negative and `None` observed values are removed before computing `min_o` and `max_o` to prevent errors during normalization.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        sensim_file (str | pathlib.Path): Path to the `sensitivity_simulation.json` file produced by `simulation_by_sobol_sample`.</span>
@@ -3112,8 +3165,7 @@ If <code>None</code> (default), the <code>DataFrame</code> is not saved.</p>
 
 <span class="sd">        date_format (str): Date format of the `date` column in `obs_file`, used to parse `datetime.date` objects from date strings.</span>
 
-<span class="sd">        obs_col (str): Name of the column in `obs_file` containing observed data. All negative and `None` observed values are removed</span>
-<span class="sd">            due to the normalization of observed and similated values before computing indicators.</span>
+<span class="sd">        obs_col (str): Name of the column in `obs_file` containing observed data.</span>
 
 <span class="sd">        indicators (list[str]): List of performance indicators to compute. Available options:</span>
 
@@ -3156,7 +3208,7 @@ If <code>None</code> (default), the <code>DataFrame</code> is not saved.</p>
     <span class="n">obs_df</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;date&#39;</span><span class="p">,</span> <span class="s1">&#39;obs&#39;</span><span class="p">]</span>
 
     <span class="c1"># Retrieve sensitivity output</span>
-    <span class="n">sensitivity_sim</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">_retrieve_sensitivity_output</span><span class="p">(</span>
+    <span class="n">sensitivity_sim</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">_sensitivity_output_retrieval</span><span class="p">(</span>
         <span class="n">sensim_file</span><span class="o">=</span><span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="n">sensim_file</span><span class="p">)</span><span class="o">.</span><span class="n">resolve</span><span class="p">(),</span>
         <span class="n">df_name</span><span class="o">=</span><span class="n">df_name</span><span class="p">,</span>
         <span class="n">add_problem</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
@@ -3164,7 +3216,7 @@ If <code>None</code> (default), the <code>DataFrame</code> is not saved.</p>
     <span class="p">)</span>
 
     <span class="c1"># Empty DataFrame to store scenario indicators</span>
-    <span class="n">inct_df</span> <span class="o">=</span> <span class="n">pandas</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
+    <span class="n">ind_df</span> <span class="o">=</span> <span class="n">pandas</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
         <span class="n">columns</span><span class="o">=</span><span class="n">indicators</span>
     <span class="p">)</span>
 
@@ -3180,7 +3232,8 @@ If <code>None</code> (default), the <code>DataFrame</code> is not saved.</p>
         <span class="p">)</span>
         <span class="c1"># Normalized DataFrame</span>
         <span class="n">norm_df</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">_df_normalize</span><span class="p">(</span>
-            <span class="n">df</span><span class="o">=</span><span class="n">merge_df</span><span class="p">[[</span><span class="s1">&#39;sim&#39;</span><span class="p">,</span> <span class="s1">&#39;obs&#39;</span><span class="p">]]</span>
+            <span class="n">df</span><span class="o">=</span><span class="n">merge_df</span><span class="p">[[</span><span class="s1">&#39;sim&#39;</span><span class="p">,</span> <span class="s1">&#39;obs&#39;</span><span class="p">]],</span>
+            <span class="n">norm_col</span><span class="o">=</span><span class="s1">&#39;obs&#39;</span>
         <span class="p">)</span>
         <span class="c1"># Iterate indicators</span>
         <span class="k">for</span> <span class="n">indicator</span> <span class="ow">in</span> <span class="n">indicators</span><span class="p">:</span>
@@ -3189,21 +3242,21 @@ If <code>None</code> (default), the <code>DataFrame</code> is not saved.</p>
                 <span class="bp">self</span><span class="p">,</span>
                 <span class="sa">f</span><span class="s1">&#39;compute_</span><span class="si">{</span><span class="n">indicator</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="si">}</span><span class="s1">&#39;</span>
             <span class="p">)</span>
-            <span class="c1"># indicator value</span>
+            <span class="c1"># Indicator value</span>
             <span class="n">key_indicator</span> <span class="o">=</span> <span class="n">indicator_method</span><span class="p">(</span>
                 <span class="n">df</span><span class="o">=</span><span class="n">norm_df</span><span class="p">,</span>
                 <span class="n">sim_col</span><span class="o">=</span><span class="s1">&#39;sim&#39;</span><span class="p">,</span>
                 <span class="n">obs_col</span><span class="o">=</span><span class="s1">&#39;obs&#39;</span>
             <span class="p">)</span>
-            <span class="c1"># Store error in DataFrame</span>
-            <span class="n">inct_df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">key</span><span class="p">,</span> <span class="n">indicator</span><span class="p">]</span> <span class="o">=</span> <span class="n">key_indicator</span>
+            <span class="c1"># Store indicator value in DataFrame</span>
+            <span class="n">ind_df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">key</span><span class="p">,</span> <span class="n">indicator</span><span class="p">]</span> <span class="o">=</span> <span class="n">key_indicator</span>
 
     <span class="c1"># Reset index to scenario column</span>
     <span class="n">scnro_col</span> <span class="o">=</span> <span class="s1">&#39;Scenario&#39;</span>
-    <span class="n">inct_df</span> <span class="o">=</span> <span class="n">inct_df</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span>
+    <span class="n">ind_df</span> <span class="o">=</span> <span class="n">ind_df</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span>
         <span class="n">names</span><span class="o">=</span><span class="p">[</span><span class="n">scnro_col</span><span class="p">]</span>
     <span class="p">)</span>
-    <span class="n">inct_df</span><span class="p">[</span><span class="n">scnro_col</span><span class="p">]</span> <span class="o">=</span> <span class="n">inct_df</span><span class="p">[</span><span class="n">scnro_col</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+    <span class="n">ind_df</span><span class="p">[</span><span class="n">scnro_col</span><span class="p">]</span> <span class="o">=</span> <span class="n">ind_df</span><span class="p">[</span><span class="n">scnro_col</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
 
     <span class="c1"># Save DataFrame</span>
     <span class="k">if</span> <span class="n">json_file</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
@@ -3213,7 +3266,7 @@ If <code>None</code> (default), the <code>DataFrame</code> is not saved.</p>
             <span class="n">json_file</span><span class="o">=</span><span class="n">json_file</span>
         <span class="p">)</span>
         <span class="c1"># Write DataFrame to the JSON file</span>
-        <span class="n">inct_df</span><span class="o">.</span><span class="n">to_json</span><span class="p">(</span>
+        <span class="n">ind_df</span><span class="o">.</span><span class="n">to_json</span><span class="p">(</span>
             <span class="n">path_or_buf</span><span class="o">=</span><span class="n">json_file</span><span class="p">,</span>
             <span class="n">orient</span><span class="o">=</span><span class="s1">&#39;records&#39;</span><span class="p">,</span>
             <span class="n">indent</span><span class="o">=</span><span class="mi">4</span>
@@ -3222,7 +3275,7 @@ If <code>None</code> (default), the <code>DataFrame</code> is not saved.</p>
     <span class="c1"># Output dictionary</span>
     <span class="n">output</span> <span class="o">=</span> <span class="p">{</span>
         <span class="s1">&#39;problem&#39;</span><span class="p">:</span> <span class="n">sensitivity_sim</span><span class="p">[</span><span class="s1">&#39;problem&#39;</span><span class="p">],</span>
-        <span class="s1">&#39;indicator&#39;</span><span class="p">:</span> <span class="n">inct_df</span>
+        <span class="s1">&#39;indicator&#39;</span><span class="p">:</span> <span class="n">ind_df</span>
     <span class="p">}</span>
 
     <span class="k">return</span> <span class="n">output</span>

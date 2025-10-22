@@ -494,6 +494,29 @@
   
   
     <li class="md-nav__item">
+      <a href="userguide/model_calibration/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Model Calibration
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="userguide/data_analysis/" class="md-nav__link">
         
   
@@ -588,12 +611,12 @@
   
   
     <li class="md-nav__item">
-      <a href="api/data_manager/" class="md-nav__link">
+      <a href="api/performance_metrics/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
-    DataManager
+    PerformanceMetrics
     
   </span>
   
@@ -634,12 +657,12 @@
   
   
     <li class="md-nav__item">
-      <a href="api/performance_metrics/" class="md-nav__link">
+      <a href="api/calibration/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
-    PerformanceMetrics
+    Calibration
     
   </span>
   
@@ -657,12 +680,12 @@
   
   
     <li class="md-nav__item">
-      <a href="api/types/" class="md-nav__link">
+      <a href="api/data_manager/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
-    pySWATPlus.types
+    DataManager
     
   </span>
   
@@ -816,10 +839,12 @@
 <p><code>pySWATPlus</code> is an open-source Python package that provides a programmatic interface to the <a href="https://swat.tamu.edu/software/plus/">SWAT+</a> model, allowing users to run simulations and conduct custom experiments.</p>
 <h2 id="key-features">✨ Key Features</h2>
 <ul>
-<li>Modify model parameters through the <code>calibration.cal</code> file.</li>
-<li>Run SWAT+ simulations seamlessly.</li>
-<li>Compute performance metrics using widely adopted indicators.</li>
-<li>Perform sensitivity analysis on model parameters using the <a href="https://github.com/SALib/SALib">SALib</a> Python package, with support for parallel computation; currently, only Sobol sampling and Sobol indices are supported.</li>
+<li>Run <code>SWAT+</code> simulations by modifying model parameters through the  <code>calibration.cal</code> file..</li>
+<li>Evaluate model performance against observed data using widely recognized statistical indicators.</li>
+<li>Perform sensitivity analysis on model parameters using the <a href="https://github.com/SALib/SALib"><code>SALib</code></a> Python package.</li>
+<li>Calibrate model parameters through multi-objective optimization and evolutionary algorithms using the <a href="https://github.com/anyoptimization/pymoo"><code>pymoo</code></a> Python package. </li>
+<li>Execute sensitivity analysis and model calibration through high-level interfaces with built-in parallel computation support.</li>
+<li>Analyze outputs from model simulations, sensitivity analyses, and calibrations.</li>
 </ul>
 <h2 id="install-pyswatplus">📥 Install pySWATPlus</h2>
 <p>To install from PyPI repository:</p>

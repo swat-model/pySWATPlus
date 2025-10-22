@@ -12,7 +12,7 @@
         <link rel="prev" href="../swatplus_simulation/">
       
       
-        <link rel="next" href="../data_analysis/">
+        <link rel="next" href="../model_calibration/">
       
       
       <link rel="icon" href="../../assets/images/favicon.png">
@@ -483,6 +483,29 @@
   
   
     <li class="md-nav__item">
+      <a href="../model_calibration/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Model Calibration
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../data_analysis/" class="md-nav__link">
         
   
@@ -577,12 +600,12 @@
   
   
     <li class="md-nav__item">
-      <a href="../../api/data_manager/" class="md-nav__link">
+      <a href="../../api/performance_metrics/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
-    DataManager
+    PerformanceMetrics
     
   </span>
   
@@ -623,12 +646,12 @@
   
   
     <li class="md-nav__item">
-      <a href="../../api/performance_metrics/" class="md-nav__link">
+      <a href="../../api/calibration/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
-    PerformanceMetrics
+    Calibration
     
   </span>
   
@@ -646,12 +669,12 @@
   
   
     <li class="md-nav__item">
-      <a href="../../api/types/" class="md-nav__link">
+      <a href="../../api/data_manager/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
-    pySWATPlus.types
+    DataManager
     
   </span>
   
@@ -783,10 +806,10 @@
 
 
 <h1 id="sensitivity-interface">Sensitivity Interface</h1>
-<p>Sensitivity interface helps quantify how variation in input parameters affects model outputs. This tutorial demonstrates how to perform sensitivity analysis on SWAT+ model parameters.  </p>
+<p>The sensitivity interface helps quantify how variations in input parameters affect <code>SWAT+</code> model outputs. This tutorial demonstrates how to perform sensitivity analysis on selected parameters.  </p>
 <h2 id="configuration-settings">Configuration Settings</h2>
-<p>Before running a sensitivity simulation, you must define the necessary configuration settings.<br />
-These settings specify key parameters such as the simulation timeline, output print options, and other essential model controls.</p>
+<p>Before running a sensitivity simulation, configure the necessary settings, such as the simulation period, output print options, and non-targeted parameters,
+so that these parameters remain fixed across all scenarios.</p>
 <div class="highlight"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">pySWATPlus</span>
 
 <span class="c1"># Initialize the project&#39;s TxtInOut folder</span>
@@ -880,6 +903,12 @@ Currently, it supports <a href="https://doi.org/10.1016/S0378-4754(00)00270-6">S
     <span class="p">)</span>
     <span class="nb">print</span><span class="p">(</span><span class="n">output</span><span class="p">)</span>
 </code></pre></div>
+<div class="admonition tip">
+<p class="admonition-title">Troubleshooting Parallel Processing Errors</p>
+<p>If you encounter an error related to <code>concurrent.futures.ProcessPoolExecutor</code> and  <code>multiprocessing</code> without a clear description,
+try closing the current command terminal and restarting it. This issue can occasionally occur due to lingering background processes
+or locked resources from previous runs.</p>
+</div>
 <h2 id="sensitivity-indices">Sensitivity Indices</h2>
 <p>Sensitivity indices (first, second, and total orders) are computed using the indicators available in the <code>pySWATPlus.PerformanceMetrics</code> class, along with their confidence intervals.</p>
 <div class="highlight"><pre><span></span><code><span class="n">output</span> <span class="o">=</span> <span class="n">pySWATPlus</span><span class="o">.</span><span class="n">SensitivityAnalyzer</span><span class="p">()</span><span class="o">.</span><span class="n">parameter_sensitivity_indices</span><span class="p">(</span>

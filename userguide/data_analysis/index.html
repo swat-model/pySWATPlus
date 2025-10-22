@@ -9,7 +9,7 @@
       
       
       
-        <link rel="prev" href="../sensitivity_interface/">
+        <link rel="prev" href="../model_calibration/">
       
       
         <link rel="next" href="../../api/txtinout_reader/">
@@ -411,6 +411,29 @@
                 
   
   
+  
+  
+    <li class="md-nav__item">
+      <a href="../model_calibration/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Model Calibration
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
     
   
   
@@ -467,6 +490,15 @@
   <a href="#time-series-data" class="md-nav__link">
     <span class="md-ellipsis">
       Time Series Data
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#statistics-from-daily-time-series" class="md-nav__link">
+    <span class="md-ellipsis">
+      Statistics from Daily Time Series
     </span>
   </a>
   
@@ -577,12 +609,12 @@
   
   
     <li class="md-nav__item">
-      <a href="../../api/data_manager/" class="md-nav__link">
+      <a href="../../api/performance_metrics/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
-    DataManager
+    PerformanceMetrics
     
   </span>
   
@@ -623,12 +655,12 @@
   
   
     <li class="md-nav__item">
-      <a href="../../api/performance_metrics/" class="md-nav__link">
+      <a href="../../api/calibration/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
-    PerformanceMetrics
+    Calibration
     
   </span>
   
@@ -646,12 +678,12 @@
   
   
     <li class="md-nav__item">
-      <a href="../../api/types/" class="md-nav__link">
+      <a href="../../api/data_manager/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
-    pySWATPlus.types
+    DataManager
     
   </span>
   
@@ -749,6 +781,15 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#statistics-from-daily-time-series" class="md-nav__link">
+    <span class="md-ellipsis">
+      Statistics from Daily Time Series
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#read-sensitivity-simulation-data" class="md-nav__link">
     <span class="md-ellipsis">
       Read Sensitivity Simulation Data
@@ -799,8 +840,17 @@ The following method creates a time series <code>DataFrame</code> that includes 
     <span class="n">usecols</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="s1">&#39;flo_out&#39;</span><span class="p">],</span>
     <span class="n">json_file</span><span class="o">=</span><span class="sa">r</span><span class="s2">&quot;C:\Users\Username\output_folder\tmp.json&quot;</span>
 <span class="p">)</span>
-
-<span class="nb">print</span><span class="p">(</span><span class="n">output</span><span class="p">)</span>
+</code></pre></div>
+<h2 id="statistics-from-daily-time-series">Statistics from Daily Time Series</h2>
+<p>Monthly and yearly statistics such as maximum, minimum, mean, and standard deviation derived from daily time series data help summarize and interpret simulation variability over time.
+The following interface computes monthly and yearly statistical summaries for a Hydrological Response Unit (HRU) based on daily simulated flow discharge data. These metrics provide insight into seasonal patterns, flow extremes, and overall hydrological stability.</p>
+<div class="highlight"><pre><span></span><code><span class="n">output</span> <span class="o">=</span> <span class="n">pySWATPlus</span><span class="o">.</span><span class="n">DataManager</span><span class="p">()</span><span class="o">.</span><span class="n">simulated_timeseries_df</span><span class="p">(</span>
+    <span class="n">sim_file</span><span class="o">=</span><span class="sa">r</span><span class="s2">&quot;C:\Users\Username\custom_folder\channel_sd_day.txt&quot;</span><span class="p">,</span>
+    <span class="n">has_units</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">gis_id</span><span class="o">=</span><span class="mi">561</span><span class="p">,</span>
+    <span class="n">sim_col</span><span class="o">=</span><span class="s1">&#39;flo_out&#39;</span><span class="p">,</span>
+    <span class="n">output_dir</span><span class="o">=</span><span class="sa">r</span><span class="s2">&quot;C:\Users\Username\output_dir&quot;</span>
+<span class="p">)</span>
 </code></pre></div>
 <h2 id="read-sensitivity-simulation-data">Read Sensitivity Simulation Data</h2>
 <p>The sensitivity analysis performed using the
@@ -820,12 +870,6 @@ The following method creates a time series <code>DataFrame</code> that includes 
 </code></pre></div>
 <h2 id="scenario-metrics">Scenario Metrics</h2>
 <p>For a selected <code>DataFrame</code>, scenario metrics across all simulations can be computed by comparing model outputs with observed data.</p>
-<p>NSE: Nash–Sutcliffe Efficiency
-KGE: Kling–Gupta Efficiency
-MSE: Mean Squared Error
-RMSE: Root Mean Squared Error
-PBIAS: Percent Bias
-MARE: Mean Absolute Relative Error</p>
 <ul>
 <li>
 <p>To get the mapping between available indicators and their abbreviations:</p>

@@ -9,10 +9,10 @@
       
       
       
-        <link rel="prev" href="../txtinout_reader/">
+        <link rel="prev" href="../calibration/">
       
       
-        <link rel="next" href="../sensitivity_analyzer/">
+        <link rel="next" href="../../CONTRIBUTING/">
       
       
       <link rel="icon" href="../../assets/images/favicon.png">
@@ -409,6 +409,29 @@
   
   
     <li class="md-nav__item">
+      <a href="../../userguide/model_calibration/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Model Calibration
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../../userguide/data_analysis/" class="md-nav__link">
         
   
@@ -505,6 +528,75 @@
                 
   
   
+  
+  
+    <li class="md-nav__item">
+      <a href="../performance_metrics/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    PerformanceMetrics
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sensitivity_analyzer/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    SensitivityAnalyzer
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../calibration/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Calibration
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
     
   
   
@@ -564,6 +656,15 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#pySWATPlus.DataManager.hru_stats_from_daily_simulation" class="md-nav__link">
+    <span class="md-ellipsis">
+      hru_stats_from_daily_simulation
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#pySWATPlus.DataManager.read_sensitive_dfs" class="md-nav__link">
     <span class="md-ellipsis">
       read_sensitive_dfs
@@ -590,75 +691,6 @@
   
 </nav>
       
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../sensitivity_analyzer/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    SensitivityAnalyzer
-    
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../performance_metrics/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    PerformanceMetrics
-    
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../types/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    pySWATPlus.types
-    
-  </span>
-  
-
-      </a>
     </li>
   
 
@@ -748,6 +780,15 @@
   
     <nav class="md-nav" aria-label="DataManager">
       <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#pySWATPlus.DataManager.hru_stats_from_daily_simulation" class="md-nav__link">
+    <span class="md-ellipsis">
+      hru_stats_from_daily_simulation
+    </span>
+  </a>
+  
+</li>
         
           <li class="md-nav__item">
   <a href="#pySWATPlus.DataManager.read_sensitive_dfs" class="md-nav__link">
@@ -1051,7 +1092,143 @@
 <span class="normal">242</span>
 <span class="normal">243</span>
 <span class="normal">244</span>
-<span class="normal">245</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">DataManager</span><span class="p">:</span>
+<span class="normal">245</span>
+<span class="normal">246</span>
+<span class="normal">247</span>
+<span class="normal">248</span>
+<span class="normal">249</span>
+<span class="normal">250</span>
+<span class="normal">251</span>
+<span class="normal">252</span>
+<span class="normal">253</span>
+<span class="normal">254</span>
+<span class="normal">255</span>
+<span class="normal">256</span>
+<span class="normal">257</span>
+<span class="normal">258</span>
+<span class="normal">259</span>
+<span class="normal">260</span>
+<span class="normal">261</span>
+<span class="normal">262</span>
+<span class="normal">263</span>
+<span class="normal">264</span>
+<span class="normal">265</span>
+<span class="normal">266</span>
+<span class="normal">267</span>
+<span class="normal">268</span>
+<span class="normal">269</span>
+<span class="normal">270</span>
+<span class="normal">271</span>
+<span class="normal">272</span>
+<span class="normal">273</span>
+<span class="normal">274</span>
+<span class="normal">275</span>
+<span class="normal">276</span>
+<span class="normal">277</span>
+<span class="normal">278</span>
+<span class="normal">279</span>
+<span class="normal">280</span>
+<span class="normal">281</span>
+<span class="normal">282</span>
+<span class="normal">283</span>
+<span class="normal">284</span>
+<span class="normal">285</span>
+<span class="normal">286</span>
+<span class="normal">287</span>
+<span class="normal">288</span>
+<span class="normal">289</span>
+<span class="normal">290</span>
+<span class="normal">291</span>
+<span class="normal">292</span>
+<span class="normal">293</span>
+<span class="normal">294</span>
+<span class="normal">295</span>
+<span class="normal">296</span>
+<span class="normal">297</span>
+<span class="normal">298</span>
+<span class="normal">299</span>
+<span class="normal">300</span>
+<span class="normal">301</span>
+<span class="normal">302</span>
+<span class="normal">303</span>
+<span class="normal">304</span>
+<span class="normal">305</span>
+<span class="normal">306</span>
+<span class="normal">307</span>
+<span class="normal">308</span>
+<span class="normal">309</span>
+<span class="normal">310</span>
+<span class="normal">311</span>
+<span class="normal">312</span>
+<span class="normal">313</span>
+<span class="normal">314</span>
+<span class="normal">315</span>
+<span class="normal">316</span>
+<span class="normal">317</span>
+<span class="normal">318</span>
+<span class="normal">319</span>
+<span class="normal">320</span>
+<span class="normal">321</span>
+<span class="normal">322</span>
+<span class="normal">323</span>
+<span class="normal">324</span>
+<span class="normal">325</span>
+<span class="normal">326</span>
+<span class="normal">327</span>
+<span class="normal">328</span>
+<span class="normal">329</span>
+<span class="normal">330</span>
+<span class="normal">331</span>
+<span class="normal">332</span>
+<span class="normal">333</span>
+<span class="normal">334</span>
+<span class="normal">335</span>
+<span class="normal">336</span>
+<span class="normal">337</span>
+<span class="normal">338</span>
+<span class="normal">339</span>
+<span class="normal">340</span>
+<span class="normal">341</span>
+<span class="normal">342</span>
+<span class="normal">343</span>
+<span class="normal">344</span>
+<span class="normal">345</span>
+<span class="normal">346</span>
+<span class="normal">347</span>
+<span class="normal">348</span>
+<span class="normal">349</span>
+<span class="normal">350</span>
+<span class="normal">351</span>
+<span class="normal">352</span>
+<span class="normal">353</span>
+<span class="normal">354</span>
+<span class="normal">355</span>
+<span class="normal">356</span>
+<span class="normal">357</span>
+<span class="normal">358</span>
+<span class="normal">359</span>
+<span class="normal">360</span>
+<span class="normal">361</span>
+<span class="normal">362</span>
+<span class="normal">363</span>
+<span class="normal">364</span>
+<span class="normal">365</span>
+<span class="normal">366</span>
+<span class="normal">367</span>
+<span class="normal">368</span>
+<span class="normal">369</span>
+<span class="normal">370</span>
+<span class="normal">371</span>
+<span class="normal">372</span>
+<span class="normal">373</span>
+<span class="normal">374</span>
+<span class="normal">375</span>
+<span class="normal">376</span>
+<span class="normal">377</span>
+<span class="normal">378</span>
+<span class="normal">379</span>
+<span class="normal">380</span>
+<span class="normal">381</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">DataManager</span><span class="p">:</span>
 
 <span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    Provide functionality for handling data processings and workflows.</span>
@@ -1234,6 +1411,142 @@
 
         <span class="k">return</span> <span class="n">df</span>
 
+    <span class="k">def</span><span class="w"> </span><span class="nf">hru_stats_from_daily_simulation</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">sim_file</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">,</span>
+        <span class="n">has_units</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
+        <span class="n">gis_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+        <span class="n">sim_col</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">output_dir</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span> <span class="o">|</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">pandas</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Compute monthly and yearly statistical summaries for a Hydrological Response Unit (HRU) from daily simulation time series data.</span>
+
+<span class="sd">        The method returns a dictionary containing two keys, `monthly` and `yearly`, whose values are `DataFrame` objects.</span>
+<span class="sd">        Each `DataFrame` includes the following columns:</span>
+
+<span class="sd">            - `date`: The first day of the corresponding month or year.</span>
+<span class="sd">            - `min`: Minimum simulated value within the time window.</span>
+<span class="sd">            - `max`: Maximum simulated value within the time window.</span>
+<span class="sd">            - `mean`: Mean simulated value within the time window.</span>
+<span class="sd">            - `std`: Standard deviation of simulated values within the time window.</span>
+
+<span class="sd">        The statistics are computed using daily values between the first and last dates (both inclusive)</span>
+<span class="sd">        of each month or year. The `date` column represents the first day of the corresponding period</span>
+<span class="sd">        (e.g., 01-Jan-2012, 01-Feb-2012 for monthly; 01-Jan-2012 for yearly).</span>
+
+<span class="sd">        If the first or last record in the input file does not align exactly with the start or end</span>
+<span class="sd">        of a month or year, the statistics are computed for the available portion of that period.</span>
+<span class="sd">        In such cases, the `date` column represents the first available date for that partial period.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            sim_file (str | pathlib.Path): Path to the input file containing time series data generated by</span>
+<span class="sd">                the method [`run_swat`](https://swat-model.github.io/pySWATPlus/api/txtinout_reader/#pySWATPlus.TxtinoutReader.run_swat).</span>
+<span class="sd">                The file must contain `yr`, `mon`, and `day` columns.</span>
+
+<span class="sd">            has_units (bool): If `True`, the third line of the input file contains column units.</span>
+
+<span class="sd">            gis_id (int): Unique identifier for the Hydrological Response Unit (HRU) found in the `gis_id`.</span>
+
+<span class="sd">            sim_col (str): Name of the column containing simulated values.</span>
+
+<span class="sd">            output_dir (str | pathlib.Path): Directory path to save the computed results as two following JSON files.</span>
+<span class="sd">                If `None` (default), the results are not saved.</span>
+
+<span class="sd">                    - `statistics_monthly.json`: Contains the monthly statistical `DataFrame` (with `date` formatted as `DD-Mon-YYYY`).</span>
+<span class="sd">                    - `statistics_yearly.json`: Contains the yearly statistical `DataFrame` (with `date` formatted as `DD-Mon-YYYY`).</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Dictionary with two keys:</span>
+
+<span class="sd">                - `monthly`: `DataFrame` containing monthly statistics, with `date` as `datetime.date` objects.</span>
+<span class="sd">                - `yearly`: `DataFrame` containing yearly statistics, with `date` as `datetime.date` objects.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+
+        <span class="c1"># Check input variables type</span>
+        <span class="n">validators</span><span class="o">.</span><span class="n">_variable_origin_static_type</span><span class="p">(</span>
+            <span class="n">vars_types</span><span class="o">=</span><span class="n">typing</span><span class="o">.</span><span class="n">get_type_hints</span><span class="p">(</span>
+                <span class="n">obj</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">hru_stats_from_daily_simulation</span>
+            <span class="p">),</span>
+            <span class="n">vars_values</span><span class="o">=</span><span class="nb">locals</span><span class="p">()</span>
+        <span class="p">)</span>
+
+        <span class="c1"># Check input file contains daily time series data</span>
+        <span class="n">sim_file</span> <span class="o">=</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="n">sim_file</span><span class="p">)</span><span class="o">.</span><span class="n">resolve</span><span class="p">()</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">sim_file</span><span class="o">.</span><span class="n">stem</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;_day&#39;</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s1">&#39;Statistical summary applies only to daily time series files ending with &quot;_day&quot;; received file name &quot;</span><span class="si">{</span><span class="n">sim_file</span><span class="o">.</span><span class="n">stem</span><span class="si">}</span><span class="s1">&quot;&#39;</span>
+            <span class="p">)</span>
+
+        <span class="c1"># Validate directory path</span>
+        <span class="k">if</span> <span class="n">output_dir</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">validators</span><span class="o">.</span><span class="n">_dir_path</span><span class="p">(</span>
+                <span class="n">input_dir</span><span class="o">=</span><span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="n">output_dir</span><span class="p">)</span><span class="o">.</span><span class="n">resolve</span><span class="p">()</span>
+            <span class="p">)</span>
+
+        <span class="c1"># Simulated DataFrame</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">simulated_timeseries_df</span><span class="p">(</span>
+            <span class="n">sim_file</span><span class="o">=</span><span class="n">sim_file</span><span class="p">,</span>
+            <span class="n">has_units</span><span class="o">=</span><span class="n">has_units</span><span class="p">,</span>
+            <span class="n">apply_filter</span><span class="o">=</span><span class="p">{</span>
+                <span class="s1">&#39;gis_id&#39;</span><span class="p">:</span> <span class="p">[</span><span class="n">gis_id</span><span class="p">]</span>
+            <span class="p">},</span>
+            <span class="n">usecols</span><span class="o">=</span><span class="p">[</span><span class="n">sim_col</span><span class="p">]</span>
+        <span class="p">)</span>
+
+        <span class="c1"># Frequncy abbreviations</span>
+        <span class="n">freq_abb</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;monthly&#39;</span><span class="p">:</span> <span class="s1">&#39;MS&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;yearly&#39;</span><span class="p">:</span> <span class="s1">&#39;YS&#39;</span>
+        <span class="p">}</span>
+
+        <span class="c1"># Date column</span>
+        <span class="n">date_col</span> <span class="o">=</span> <span class="s1">&#39;date&#39;</span>
+
+        <span class="n">output</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="c1"># Iterate frequency</span>
+        <span class="k">for</span> <span class="n">freq</span> <span class="ow">in</span> <span class="n">freq_abb</span><span class="p">:</span>
+            <span class="c1"># Start date</span>
+            <span class="n">start_date</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">date_col</span><span class="p">]</span><span class="o">.</span><span class="n">min</span><span class="p">()</span>
+            <span class="c1"># End date</span>
+            <span class="n">end_date</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">date_col</span><span class="p">]</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
+            <span class="c1"># Time frequency representation days</span>
+            <span class="n">freq_day</span> <span class="o">=</span> <span class="n">pandas</span><span class="o">.</span><span class="n">date_range</span><span class="p">(</span>
+                <span class="n">start</span><span class="o">=</span><span class="n">start_date</span><span class="p">,</span>
+                <span class="n">end</span><span class="o">=</span><span class="n">end_date</span><span class="p">,</span>
+                <span class="n">freq</span><span class="o">=</span><span class="n">freq_abb</span><span class="p">[</span><span class="n">freq</span><span class="p">]</span>
+            <span class="p">)</span>
+            <span class="n">freq_day</span> <span class="o">=</span> <span class="n">pandas</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">freq_day</span><span class="p">)</span><span class="o">.</span><span class="n">dt</span><span class="o">.</span><span class="n">date</span>
+            <span class="c1"># Add start and end date</span>
+            <span class="n">freq_day</span> <span class="o">=</span> <span class="n">pandas</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span>
+                <span class="p">[</span><span class="n">start_date</span><span class="p">]</span> <span class="o">+</span> <span class="n">freq_day</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span> <span class="o">+</span> <span class="p">[</span><span class="n">end_date</span><span class="p">]</span>
+            <span class="p">)</span>
+            <span class="c1"># Get unique date if repitation of start and end dates</span>
+            <span class="n">freq_day</span> <span class="o">=</span> <span class="n">freq_day</span><span class="o">.</span><span class="n">unique</span><span class="p">()</span>
+            <span class="c1"># Frequency DataFrame</span>
+            <span class="n">freq_df</span> <span class="o">=</span> <span class="n">pandas</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">()</span>
+            <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">dates</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">freq_day</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">freq_day</span><span class="p">[</span><span class="mi">1</span><span class="p">:])):</span>
+                <span class="n">idx_df</span> <span class="o">=</span> <span class="n">df</span><span class="p">[(</span><span class="n">df</span><span class="p">[</span><span class="n">date_col</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="n">dates</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">date_col</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">dates</span><span class="p">[</span><span class="mi">1</span><span class="p">])]</span>
+                <span class="n">freq_df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">idx</span><span class="p">,</span> <span class="s1">&#39;date&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">dates</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+                <span class="n">freq_df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">idx</span><span class="p">,</span> <span class="s1">&#39;max&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">idx_df</span><span class="p">[</span><span class="n">sim_col</span><span class="p">]</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
+                <span class="n">freq_df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">idx</span><span class="p">,</span> <span class="s1">&#39;min&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">idx_df</span><span class="p">[</span><span class="n">sim_col</span><span class="p">]</span><span class="o">.</span><span class="n">min</span><span class="p">()</span>
+                <span class="n">freq_df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">idx</span><span class="p">,</span> <span class="s1">&#39;mean&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">idx_df</span><span class="p">[</span><span class="n">sim_col</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+                <span class="n">freq_df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">idx</span><span class="p">,</span> <span class="s1">&#39;std&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">idx_df</span><span class="p">[</span><span class="n">sim_col</span><span class="p">]</span><span class="o">.</span><span class="n">std</span><span class="p">()</span>
+            <span class="c1"># Insert the DataFrame in the output dictionary</span>
+            <span class="n">output</span><span class="p">[</span><span class="n">freq</span><span class="p">]</span> <span class="o">=</span> <span class="n">freq_df</span>
+            <span class="c1"># Save the DataFrame</span>
+            <span class="k">if</span> <span class="n">output_dir</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">save_file</span> <span class="o">=</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="n">output_dir</span><span class="p">)</span><span class="o">.</span><span class="n">resolve</span><span class="p">()</span> <span class="o">/</span> <span class="sa">f</span><span class="s1">&#39;statistics_</span><span class="si">{</span><span class="n">freq</span><span class="si">}</span><span class="s1">.json&#39;</span>
+                <span class="n">copy_df</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">freq_df</span><span class="p">)</span>
+                <span class="n">copy_df</span><span class="p">[</span><span class="n">date_col</span><span class="p">]</span> <span class="o">=</span> <span class="n">copy_df</span><span class="p">[</span><span class="n">date_col</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%d</span><span class="s1">-%b-%Y&#39;</span><span class="p">))</span>
+                <span class="n">copy_df</span><span class="o">.</span><span class="n">to_json</span><span class="p">(</span>
+                    <span class="n">path_or_buf</span><span class="o">=</span><span class="n">save_file</span><span class="p">,</span>
+                    <span class="n">orient</span><span class="o">=</span><span class="s1">&#39;records&#39;</span><span class="p">,</span>
+                    <span class="n">indent</span><span class="o">=</span><span class="mi">4</span>
+                <span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">output</span>
+
     <span class="k">def</span><span class="w"> </span><span class="nf">read_sensitive_dfs</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">sensim_file</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">,</span>
@@ -1280,7 +1593,7 @@
         <span class="n">sensim_file</span> <span class="o">=</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="n">sensim_file</span><span class="p">)</span><span class="o">.</span><span class="n">resolve</span><span class="p">()</span>
 
         <span class="c1"># Sensitiivty output data</span>
-        <span class="n">output</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">_retrieve_sensitivity_output</span><span class="p">(</span>
+        <span class="n">output</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">_sensitivity_output_retrieval</span><span class="p">(</span>
             <span class="n">sensim_file</span><span class="o">=</span><span class="n">sensim_file</span><span class="p">,</span>
             <span class="n">df_name</span><span class="o">=</span><span class="n">df_name</span><span class="p">,</span>
             <span class="n">add_problem</span><span class="o">=</span><span class="n">add_problem</span><span class="p">,</span>
@@ -1303,6 +1616,439 @@
 
 
 
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="pySWATPlus.DataManager.hru_stats_from_daily_simulation" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">hru_stats_from_daily_simulation</span><span class="p">(</span><span class="n">sim_file</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">,</span> <span class="n">has_units</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span> <span class="n">gis_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">sim_col</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">output_dir</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span> <span class="o">|</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">pandas</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">]</span></code>
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Compute monthly and yearly statistical summaries for a Hydrological Response Unit (HRU) from daily simulation time series data.</p>
+<p>The method returns a dictionary containing two keys, <code>monthly</code> and <code>yearly</code>, whose values are <code>DataFrame</code> objects.
+Each <code>DataFrame</code> includes the following columns:</p>
+<div class="highlight"><pre><span></span><code>- `date`: The first day of the corresponding month or year.
+- `min`: Minimum simulated value within the time window.
+- `max`: Maximum simulated value within the time window.
+- `mean`: Mean simulated value within the time window.
+- `std`: Standard deviation of simulated values within the time window.
+</code></pre></div>
+<p>The statistics are computed using daily values between the first and last dates (both inclusive)
+of each month or year. The <code>date</code> column represents the first day of the corresponding period
+(e.g., 01-Jan-2012, 01-Feb-2012 for monthly; 01-Jan-2012 for yearly).</p>
+<p>If the first or last record in the input file does not align exactly with the start or end
+of a month or year, the statistics are computed for the available portion of that period.
+In such cases, the <code>date</code> column represents the first available date for that partial period.</p>
+
+
+<p><span class="doc-section-title">Parameters:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+          <th>Default</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                <code>sim_file</code>
+            </td>
+            <td>
+                  <code><span title="str">str</span> | <span title="pathlib.Path">Path</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Path to the input file containing time series data generated by
+the method <a href="https://swat-model.github.io/pySWATPlus/api/txtinout_reader/#pySWATPlus.TxtinoutReader.run_swat"><code>run_swat</code></a>.
+The file must contain <code>yr</code>, <code>mon</code>, and <code>day</code> columns.</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>has_units</code>
+            </td>
+            <td>
+                  <code><span title="bool">bool</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>If <code>True</code>, the third line of the input file contains column units.</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>gis_id</code>
+            </td>
+            <td>
+                  <code><span title="int">int</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Unique identifier for the Hydrological Response Unit (HRU) found in the <code>gis_id</code>.</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>sim_col</code>
+            </td>
+            <td>
+                  <code><span title="str">str</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Name of the column containing simulated values.</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>output_dir</code>
+            </td>
+            <td>
+                  <code><span title="str">str</span> | <span title="pathlib.Path">Path</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Directory path to save the computed results as two following JSON files.
+If <code>None</code> (default), the results are not saved.</p>
+<div class="highlight"><pre><span></span><code>- `statistics_monthly.json`: Contains the monthly statistical `DataFrame` (with `date` formatted as `DD-Mon-YYYY`).
+- `statistics_yearly.json`: Contains the yearly statistical `DataFrame` (with `date` formatted as `DD-Mon-YYYY`).
+</code></pre></div>
+              </div>
+            </td>
+            <td>
+                  <code>None</code>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+    <p><span class="doc-section-title">Returns:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                  <code><span title="dict">dict</span>[<span title="str">str</span>, <span title="pandas.DataFrame">DataFrame</span>]</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Dictionary with two keys:</p>
+<ul>
+<li><code>monthly</code>: <code>DataFrame</code> containing monthly statistics, with <code>date</code> as <code>datetime.date</code> objects.</li>
+<li><code>yearly</code>: <code>DataFrame</code> containing yearly statistics, with <code>date</code> as <code>datetime.date</code> objects.</li>
+</ul>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+            <details class="quote">
+              <summary>Source code in <code>pySWATPlus/data_manager.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">192</span>
+<span class="normal">193</span>
+<span class="normal">194</span>
+<span class="normal">195</span>
+<span class="normal">196</span>
+<span class="normal">197</span>
+<span class="normal">198</span>
+<span class="normal">199</span>
+<span class="normal">200</span>
+<span class="normal">201</span>
+<span class="normal">202</span>
+<span class="normal">203</span>
+<span class="normal">204</span>
+<span class="normal">205</span>
+<span class="normal">206</span>
+<span class="normal">207</span>
+<span class="normal">208</span>
+<span class="normal">209</span>
+<span class="normal">210</span>
+<span class="normal">211</span>
+<span class="normal">212</span>
+<span class="normal">213</span>
+<span class="normal">214</span>
+<span class="normal">215</span>
+<span class="normal">216</span>
+<span class="normal">217</span>
+<span class="normal">218</span>
+<span class="normal">219</span>
+<span class="normal">220</span>
+<span class="normal">221</span>
+<span class="normal">222</span>
+<span class="normal">223</span>
+<span class="normal">224</span>
+<span class="normal">225</span>
+<span class="normal">226</span>
+<span class="normal">227</span>
+<span class="normal">228</span>
+<span class="normal">229</span>
+<span class="normal">230</span>
+<span class="normal">231</span>
+<span class="normal">232</span>
+<span class="normal">233</span>
+<span class="normal">234</span>
+<span class="normal">235</span>
+<span class="normal">236</span>
+<span class="normal">237</span>
+<span class="normal">238</span>
+<span class="normal">239</span>
+<span class="normal">240</span>
+<span class="normal">241</span>
+<span class="normal">242</span>
+<span class="normal">243</span>
+<span class="normal">244</span>
+<span class="normal">245</span>
+<span class="normal">246</span>
+<span class="normal">247</span>
+<span class="normal">248</span>
+<span class="normal">249</span>
+<span class="normal">250</span>
+<span class="normal">251</span>
+<span class="normal">252</span>
+<span class="normal">253</span>
+<span class="normal">254</span>
+<span class="normal">255</span>
+<span class="normal">256</span>
+<span class="normal">257</span>
+<span class="normal">258</span>
+<span class="normal">259</span>
+<span class="normal">260</span>
+<span class="normal">261</span>
+<span class="normal">262</span>
+<span class="normal">263</span>
+<span class="normal">264</span>
+<span class="normal">265</span>
+<span class="normal">266</span>
+<span class="normal">267</span>
+<span class="normal">268</span>
+<span class="normal">269</span>
+<span class="normal">270</span>
+<span class="normal">271</span>
+<span class="normal">272</span>
+<span class="normal">273</span>
+<span class="normal">274</span>
+<span class="normal">275</span>
+<span class="normal">276</span>
+<span class="normal">277</span>
+<span class="normal">278</span>
+<span class="normal">279</span>
+<span class="normal">280</span>
+<span class="normal">281</span>
+<span class="normal">282</span>
+<span class="normal">283</span>
+<span class="normal">284</span>
+<span class="normal">285</span>
+<span class="normal">286</span>
+<span class="normal">287</span>
+<span class="normal">288</span>
+<span class="normal">289</span>
+<span class="normal">290</span>
+<span class="normal">291</span>
+<span class="normal">292</span>
+<span class="normal">293</span>
+<span class="normal">294</span>
+<span class="normal">295</span>
+<span class="normal">296</span>
+<span class="normal">297</span>
+<span class="normal">298</span>
+<span class="normal">299</span>
+<span class="normal">300</span>
+<span class="normal">301</span>
+<span class="normal">302</span>
+<span class="normal">303</span>
+<span class="normal">304</span>
+<span class="normal">305</span>
+<span class="normal">306</span>
+<span class="normal">307</span>
+<span class="normal">308</span>
+<span class="normal">309</span>
+<span class="normal">310</span>
+<span class="normal">311</span>
+<span class="normal">312</span>
+<span class="normal">313</span>
+<span class="normal">314</span>
+<span class="normal">315</span>
+<span class="normal">316</span>
+<span class="normal">317</span>
+<span class="normal">318</span>
+<span class="normal">319</span>
+<span class="normal">320</span>
+<span class="normal">321</span>
+<span class="normal">322</span>
+<span class="normal">323</span>
+<span class="normal">324</span>
+<span class="normal">325</span>
+<span class="normal">326</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">hru_stats_from_daily_simulation</span><span class="p">(</span>
+    <span class="bp">self</span><span class="p">,</span>
+    <span class="n">sim_file</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">,</span>
+    <span class="n">has_units</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
+    <span class="n">gis_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+    <span class="n">sim_col</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">output_dir</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span> <span class="o">|</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">pandas</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Compute monthly and yearly statistical summaries for a Hydrological Response Unit (HRU) from daily simulation time series data.</span>
+
+<span class="sd">    The method returns a dictionary containing two keys, `monthly` and `yearly`, whose values are `DataFrame` objects.</span>
+<span class="sd">    Each `DataFrame` includes the following columns:</span>
+
+<span class="sd">        - `date`: The first day of the corresponding month or year.</span>
+<span class="sd">        - `min`: Minimum simulated value within the time window.</span>
+<span class="sd">        - `max`: Maximum simulated value within the time window.</span>
+<span class="sd">        - `mean`: Mean simulated value within the time window.</span>
+<span class="sd">        - `std`: Standard deviation of simulated values within the time window.</span>
+
+<span class="sd">    The statistics are computed using daily values between the first and last dates (both inclusive)</span>
+<span class="sd">    of each month or year. The `date` column represents the first day of the corresponding period</span>
+<span class="sd">    (e.g., 01-Jan-2012, 01-Feb-2012 for monthly; 01-Jan-2012 for yearly).</span>
+
+<span class="sd">    If the first or last record in the input file does not align exactly with the start or end</span>
+<span class="sd">    of a month or year, the statistics are computed for the available portion of that period.</span>
+<span class="sd">    In such cases, the `date` column represents the first available date for that partial period.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        sim_file (str | pathlib.Path): Path to the input file containing time series data generated by</span>
+<span class="sd">            the method [`run_swat`](https://swat-model.github.io/pySWATPlus/api/txtinout_reader/#pySWATPlus.TxtinoutReader.run_swat).</span>
+<span class="sd">            The file must contain `yr`, `mon`, and `day` columns.</span>
+
+<span class="sd">        has_units (bool): If `True`, the third line of the input file contains column units.</span>
+
+<span class="sd">        gis_id (int): Unique identifier for the Hydrological Response Unit (HRU) found in the `gis_id`.</span>
+
+<span class="sd">        sim_col (str): Name of the column containing simulated values.</span>
+
+<span class="sd">        output_dir (str | pathlib.Path): Directory path to save the computed results as two following JSON files.</span>
+<span class="sd">            If `None` (default), the results are not saved.</span>
+
+<span class="sd">                - `statistics_monthly.json`: Contains the monthly statistical `DataFrame` (with `date` formatted as `DD-Mon-YYYY`).</span>
+<span class="sd">                - `statistics_yearly.json`: Contains the yearly statistical `DataFrame` (with `date` formatted as `DD-Mon-YYYY`).</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        Dictionary with two keys:</span>
+
+<span class="sd">            - `monthly`: `DataFrame` containing monthly statistics, with `date` as `datetime.date` objects.</span>
+<span class="sd">            - `yearly`: `DataFrame` containing yearly statistics, with `date` as `datetime.date` objects.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+
+    <span class="c1"># Check input variables type</span>
+    <span class="n">validators</span><span class="o">.</span><span class="n">_variable_origin_static_type</span><span class="p">(</span>
+        <span class="n">vars_types</span><span class="o">=</span><span class="n">typing</span><span class="o">.</span><span class="n">get_type_hints</span><span class="p">(</span>
+            <span class="n">obj</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">hru_stats_from_daily_simulation</span>
+        <span class="p">),</span>
+        <span class="n">vars_values</span><span class="o">=</span><span class="nb">locals</span><span class="p">()</span>
+    <span class="p">)</span>
+
+    <span class="c1"># Check input file contains daily time series data</span>
+    <span class="n">sim_file</span> <span class="o">=</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="n">sim_file</span><span class="p">)</span><span class="o">.</span><span class="n">resolve</span><span class="p">()</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">sim_file</span><span class="o">.</span><span class="n">stem</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;_day&#39;</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s1">&#39;Statistical summary applies only to daily time series files ending with &quot;_day&quot;; received file name &quot;</span><span class="si">{</span><span class="n">sim_file</span><span class="o">.</span><span class="n">stem</span><span class="si">}</span><span class="s1">&quot;&#39;</span>
+        <span class="p">)</span>
+
+    <span class="c1"># Validate directory path</span>
+    <span class="k">if</span> <span class="n">output_dir</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">validators</span><span class="o">.</span><span class="n">_dir_path</span><span class="p">(</span>
+            <span class="n">input_dir</span><span class="o">=</span><span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="n">output_dir</span><span class="p">)</span><span class="o">.</span><span class="n">resolve</span><span class="p">()</span>
+        <span class="p">)</span>
+
+    <span class="c1"># Simulated DataFrame</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">simulated_timeseries_df</span><span class="p">(</span>
+        <span class="n">sim_file</span><span class="o">=</span><span class="n">sim_file</span><span class="p">,</span>
+        <span class="n">has_units</span><span class="o">=</span><span class="n">has_units</span><span class="p">,</span>
+        <span class="n">apply_filter</span><span class="o">=</span><span class="p">{</span>
+            <span class="s1">&#39;gis_id&#39;</span><span class="p">:</span> <span class="p">[</span><span class="n">gis_id</span><span class="p">]</span>
+        <span class="p">},</span>
+        <span class="n">usecols</span><span class="o">=</span><span class="p">[</span><span class="n">sim_col</span><span class="p">]</span>
+    <span class="p">)</span>
+
+    <span class="c1"># Frequncy abbreviations</span>
+    <span class="n">freq_abb</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;monthly&#39;</span><span class="p">:</span> <span class="s1">&#39;MS&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;yearly&#39;</span><span class="p">:</span> <span class="s1">&#39;YS&#39;</span>
+    <span class="p">}</span>
+
+    <span class="c1"># Date column</span>
+    <span class="n">date_col</span> <span class="o">=</span> <span class="s1">&#39;date&#39;</span>
+
+    <span class="n">output</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="c1"># Iterate frequency</span>
+    <span class="k">for</span> <span class="n">freq</span> <span class="ow">in</span> <span class="n">freq_abb</span><span class="p">:</span>
+        <span class="c1"># Start date</span>
+        <span class="n">start_date</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">date_col</span><span class="p">]</span><span class="o">.</span><span class="n">min</span><span class="p">()</span>
+        <span class="c1"># End date</span>
+        <span class="n">end_date</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">date_col</span><span class="p">]</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
+        <span class="c1"># Time frequency representation days</span>
+        <span class="n">freq_day</span> <span class="o">=</span> <span class="n">pandas</span><span class="o">.</span><span class="n">date_range</span><span class="p">(</span>
+            <span class="n">start</span><span class="o">=</span><span class="n">start_date</span><span class="p">,</span>
+            <span class="n">end</span><span class="o">=</span><span class="n">end_date</span><span class="p">,</span>
+            <span class="n">freq</span><span class="o">=</span><span class="n">freq_abb</span><span class="p">[</span><span class="n">freq</span><span class="p">]</span>
+        <span class="p">)</span>
+        <span class="n">freq_day</span> <span class="o">=</span> <span class="n">pandas</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">freq_day</span><span class="p">)</span><span class="o">.</span><span class="n">dt</span><span class="o">.</span><span class="n">date</span>
+        <span class="c1"># Add start and end date</span>
+        <span class="n">freq_day</span> <span class="o">=</span> <span class="n">pandas</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span>
+            <span class="p">[</span><span class="n">start_date</span><span class="p">]</span> <span class="o">+</span> <span class="n">freq_day</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span> <span class="o">+</span> <span class="p">[</span><span class="n">end_date</span><span class="p">]</span>
+        <span class="p">)</span>
+        <span class="c1"># Get unique date if repitation of start and end dates</span>
+        <span class="n">freq_day</span> <span class="o">=</span> <span class="n">freq_day</span><span class="o">.</span><span class="n">unique</span><span class="p">()</span>
+        <span class="c1"># Frequency DataFrame</span>
+        <span class="n">freq_df</span> <span class="o">=</span> <span class="n">pandas</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">dates</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">freq_day</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">freq_day</span><span class="p">[</span><span class="mi">1</span><span class="p">:])):</span>
+            <span class="n">idx_df</span> <span class="o">=</span> <span class="n">df</span><span class="p">[(</span><span class="n">df</span><span class="p">[</span><span class="n">date_col</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="n">dates</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">date_col</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">dates</span><span class="p">[</span><span class="mi">1</span><span class="p">])]</span>
+            <span class="n">freq_df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">idx</span><span class="p">,</span> <span class="s1">&#39;date&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">dates</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">freq_df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">idx</span><span class="p">,</span> <span class="s1">&#39;max&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">idx_df</span><span class="p">[</span><span class="n">sim_col</span><span class="p">]</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
+            <span class="n">freq_df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">idx</span><span class="p">,</span> <span class="s1">&#39;min&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">idx_df</span><span class="p">[</span><span class="n">sim_col</span><span class="p">]</span><span class="o">.</span><span class="n">min</span><span class="p">()</span>
+            <span class="n">freq_df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">idx</span><span class="p">,</span> <span class="s1">&#39;mean&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">idx_df</span><span class="p">[</span><span class="n">sim_col</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+            <span class="n">freq_df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">idx</span><span class="p">,</span> <span class="s1">&#39;std&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">idx_df</span><span class="p">[</span><span class="n">sim_col</span><span class="p">]</span><span class="o">.</span><span class="n">std</span><span class="p">()</span>
+        <span class="c1"># Insert the DataFrame in the output dictionary</span>
+        <span class="n">output</span><span class="p">[</span><span class="n">freq</span><span class="p">]</span> <span class="o">=</span> <span class="n">freq_df</span>
+        <span class="c1"># Save the DataFrame</span>
+        <span class="k">if</span> <span class="n">output_dir</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">save_file</span> <span class="o">=</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="n">output_dir</span><span class="p">)</span><span class="o">.</span><span class="n">resolve</span><span class="p">()</span> <span class="o">/</span> <span class="sa">f</span><span class="s1">&#39;statistics_</span><span class="si">{</span><span class="n">freq</span><span class="si">}</span><span class="s1">.json&#39;</span>
+            <span class="n">copy_df</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">freq_df</span><span class="p">)</span>
+            <span class="n">copy_df</span><span class="p">[</span><span class="n">date_col</span><span class="p">]</span> <span class="o">=</span> <span class="n">copy_df</span><span class="p">[</span><span class="n">date_col</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%d</span><span class="s1">-%b-%Y&#39;</span><span class="p">))</span>
+            <span class="n">copy_df</span><span class="o">.</span><span class="n">to_json</span><span class="p">(</span>
+                <span class="n">path_or_buf</span><span class="o">=</span><span class="n">save_file</span><span class="p">,</span>
+                <span class="n">orient</span><span class="o">=</span><span class="s1">&#39;records&#39;</span><span class="p">,</span>
+                <span class="n">indent</span><span class="o">=</span><span class="mi">4</span>
+            <span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">output</span>
+</code></pre></div></td></tr></table></div>
+            </details>
+    </div>
+
+</div>
 
 <div class="doc doc-object doc-function">
 
@@ -1433,60 +2179,60 @@ and return a dictionary mapping each scenario integer to its corresponding <code
 
             <details class="quote">
               <summary>Source code in <code>pySWATPlus/data_manager.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">192</span>
-<span class="normal">193</span>
-<span class="normal">194</span>
-<span class="normal">195</span>
-<span class="normal">196</span>
-<span class="normal">197</span>
-<span class="normal">198</span>
-<span class="normal">199</span>
-<span class="normal">200</span>
-<span class="normal">201</span>
-<span class="normal">202</span>
-<span class="normal">203</span>
-<span class="normal">204</span>
-<span class="normal">205</span>
-<span class="normal">206</span>
-<span class="normal">207</span>
-<span class="normal">208</span>
-<span class="normal">209</span>
-<span class="normal">210</span>
-<span class="normal">211</span>
-<span class="normal">212</span>
-<span class="normal">213</span>
-<span class="normal">214</span>
-<span class="normal">215</span>
-<span class="normal">216</span>
-<span class="normal">217</span>
-<span class="normal">218</span>
-<span class="normal">219</span>
-<span class="normal">220</span>
-<span class="normal">221</span>
-<span class="normal">222</span>
-<span class="normal">223</span>
-<span class="normal">224</span>
-<span class="normal">225</span>
-<span class="normal">226</span>
-<span class="normal">227</span>
-<span class="normal">228</span>
-<span class="normal">229</span>
-<span class="normal">230</span>
-<span class="normal">231</span>
-<span class="normal">232</span>
-<span class="normal">233</span>
-<span class="normal">234</span>
-<span class="normal">235</span>
-<span class="normal">236</span>
-<span class="normal">237</span>
-<span class="normal">238</span>
-<span class="normal">239</span>
-<span class="normal">240</span>
-<span class="normal">241</span>
-<span class="normal">242</span>
-<span class="normal">243</span>
-<span class="normal">244</span>
-<span class="normal">245</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">read_sensitive_dfs</span><span class="p">(</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">328</span>
+<span class="normal">329</span>
+<span class="normal">330</span>
+<span class="normal">331</span>
+<span class="normal">332</span>
+<span class="normal">333</span>
+<span class="normal">334</span>
+<span class="normal">335</span>
+<span class="normal">336</span>
+<span class="normal">337</span>
+<span class="normal">338</span>
+<span class="normal">339</span>
+<span class="normal">340</span>
+<span class="normal">341</span>
+<span class="normal">342</span>
+<span class="normal">343</span>
+<span class="normal">344</span>
+<span class="normal">345</span>
+<span class="normal">346</span>
+<span class="normal">347</span>
+<span class="normal">348</span>
+<span class="normal">349</span>
+<span class="normal">350</span>
+<span class="normal">351</span>
+<span class="normal">352</span>
+<span class="normal">353</span>
+<span class="normal">354</span>
+<span class="normal">355</span>
+<span class="normal">356</span>
+<span class="normal">357</span>
+<span class="normal">358</span>
+<span class="normal">359</span>
+<span class="normal">360</span>
+<span class="normal">361</span>
+<span class="normal">362</span>
+<span class="normal">363</span>
+<span class="normal">364</span>
+<span class="normal">365</span>
+<span class="normal">366</span>
+<span class="normal">367</span>
+<span class="normal">368</span>
+<span class="normal">369</span>
+<span class="normal">370</span>
+<span class="normal">371</span>
+<span class="normal">372</span>
+<span class="normal">373</span>
+<span class="normal">374</span>
+<span class="normal">375</span>
+<span class="normal">376</span>
+<span class="normal">377</span>
+<span class="normal">378</span>
+<span class="normal">379</span>
+<span class="normal">380</span>
+<span class="normal">381</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">read_sensitive_dfs</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">sensim_file</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">,</span>
     <span class="n">df_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
@@ -1532,7 +2278,7 @@ and return a dictionary mapping each scenario integer to its corresponding <code
     <span class="n">sensim_file</span> <span class="o">=</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="n">sensim_file</span><span class="p">)</span><span class="o">.</span><span class="n">resolve</span><span class="p">()</span>
 
     <span class="c1"># Sensitiivty output data</span>
-    <span class="n">output</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">_retrieve_sensitivity_output</span><span class="p">(</span>
+    <span class="n">output</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">_sensitivity_output_retrieval</span><span class="p">(</span>
         <span class="n">sensim_file</span><span class="o">=</span><span class="n">sensim_file</span><span class="p">,</span>
         <span class="n">df_name</span><span class="o">=</span><span class="n">df_name</span><span class="p">,</span>
         <span class="n">add_problem</span><span class="o">=</span><span class="n">add_problem</span><span class="p">,</span>
