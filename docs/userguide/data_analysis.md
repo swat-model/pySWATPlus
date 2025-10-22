@@ -20,10 +20,22 @@ output = pySWATPlus.DataManager().simulated_timeseries_df(
     usecols=['name', 'flo_out'],
     json_file=r"C:\Users\Username\output_folder\tmp.json"
 )
-
-print(output)
 ```
 
+## Statistics from Daily Time Series
+
+Monthly and yearly statistics such as maximum, minimum, mean, and standard deviation derived from daily time series data help summarize and interpret simulation variability over time.
+The following interface computes monthly and yearly statistical summaries for a Hydrological Response Unit (HRU) based on daily simulated flow discharge data. These metrics provide insight into seasonal patterns, flow extremes, and overall hydrological stability.
+
+```python
+output = pySWATPlus.DataManager().simulated_timeseries_df(
+    sim_file=r"C:\Users\Username\custom_folder\channel_sd_day.txt",
+    has_units=True,
+    gis_id=561,
+    sim_col='flo_out',
+    output_dir=r"C:\Users\Username\output_dir"
+)
+```
 
 ## Read Sensitivity Simulation Data
 
@@ -48,14 +60,6 @@ output = pySWATPlus.DataManager().read_sensitive_dfs(
 ## Scenario Metrics
 
 For a selected `DataFrame`, scenario metrics across all simulations can be computed by comparing model outputs with observed data.
-
-NSE: Nash–Sutcliffe Efficiency
-KGE: Kling–Gupta Efficiency
-MSE: Mean Squared Error
-RMSE: Root Mean Squared Error
-PBIAS: Percent Bias
-MARE: Mean Absolute Relative Error
-
 
 
 - To get the mapping between available indicators and their abbreviations:
