@@ -7,7 +7,7 @@ name = "pySWATPlus"
 description = "A Python interface for interacting with the SWAT+ hydrological model"
 dynamic = ["version"]
 readme = "README.md"
-requires-python = ">=3.10"
+requires-python = ">=3.10, <3.14"
 license = "GPL-3.0-or-later"
 license-files = ["LICENSE"]
 authors = [
