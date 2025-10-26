@@ -542,7 +542,7 @@ class Calibration(pymoo.core.problem.Problem):  # type: ignore[misc]
 
         Two JSON files are saved in the input directory `calsim_dir`.
 
-        The file `optimization_historyresult.json` stores the optimization history. Each key in this
+        The file `optimization_history.json` stores the optimization history. Each key in this
         file is an integer starting from 1, representing the generation number. The corresponding value
         is a sub-dictionary with two keys: `pop` for the population data (decision variables) and `obj`
         for the objective function values. This file is useful for analyzing optimization progress,
