@@ -32,7 +32,7 @@ the calibration interface offers flexible options for optimizing model parameter
 - Automatic saving of optimization history for each generation, enabling analysis of optimization progress, convergence trends, performance indicators, and visualization.
 
 
-The interface provides a [`Calibration`](https://swat-model.github.io/pySWATPlus/api/model_calibration/) class that must be initialized with the required parameters.
+The interface provides a [`Calibration`](https://swat-model.github.io/pySWATPlus/api/calibration/) class that must be initialized with the required parameters.
 This class includes the `parameter_optimization` method, which performs parameter optimization using multi-objective algorithms, evolutionary strategies, and parallel computation.
 
 The following code provides an example of optimizing flow discharge for both daily and monthly time-series data using multi-objective evolutionary computation.
