@@ -754,11 +754,12 @@ the calibration interface offers flexible options for optimizing model parameter
 </li>
 </ul>
 <p>The interface provides a <a href="https://swat-model.github.io/pySWATPlus/api/calibration/"><code>Calibration</code></a> class that must be initialized with the required parameters.
-This class includes the <code>parameter_optimization</code> method, which performs parameter optimization using multi-objective algorithms, evolutionary strategies, and parallel computation.</p>
+This class includes the <a href="https://swat-model.github.io/pySWATPlus/api/calibration/#pySWATPlus.Calibration.parameter_optimization"><code>parameter_optimization</code></a> method,
+which performs parameter optimization using multi-objective algorithms, evolutionary strategies, and parallel computation.</p>
 <p>The following code provides an example of optimizing flow discharge for both daily and monthly time-series data using multi-objective evolutionary computation.
 The usage of both daily and monthly flow discharge is just for illustrative purposes on how multi-objective optimization can be performed. Users should replace monthly flow
 discharge by nitorgen or phosporus concentration according to their needs.</p>
-<div class="highlight"><pre><span></span><code><span class="c1"># Calibration parameter space</span>
+<div class="highlight"><pre><span></span><code><span class="c1"># Define parameter space</span>
 <span class="n">parameters</span> <span class="o">=</span> <span class="p">[</span>
     <span class="p">{</span>
         <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;esco&#39;</span><span class="p">,</span>
@@ -801,7 +802,7 @@ discharge by nitorgen or phosporus concentration according to their needs.</p>
 <span class="p">}</span>
 
 <span class="c1"># Objective configuration</span>
-<span class="n">objectives</span> <span class="o">=</span> <span class="p">{</span>
+<span class="n">objective_config</span> <span class="o">=</span> <span class="p">{</span>
     <span class="s1">&#39;channel_sd_day.txt&#39;</span><span class="p">:</span> <span class="p">{</span>
         <span class="s1">&#39;sim_col&#39;</span><span class="p">:</span> <span class="s1">&#39;flo_out&#39;</span><span class="p">,</span>
         <span class="s1">&#39;obs_col&#39;</span><span class="p">:</span> <span class="s1">&#39;discharge&#39;</span><span class="p">,</span>
@@ -822,7 +823,7 @@ discharge by nitorgen or phosporus concentration according to their needs.</p>
         <span class="n">txtinout_dir</span><span class="o">=</span><span class="sa">r</span><span class="s2">&quot;C:\Users\Username\project\Scenarios\Default\TxtInOut&quot;</span><span class="p">,</span>
         <span class="n">extract_data</span><span class="o">=</span><span class="n">extract_data</span><span class="p">,</span>
         <span class="n">observe_data</span><span class="o">=</span><span class="n">observe_data</span><span class="p">,</span>
-        <span class="n">objectives</span><span class="o">=</span><span class="n">objectives</span><span class="p">,</span>
+        <span class="n">objective_config</span><span class="o">=</span><span class="n">objective_config</span><span class="p">,</span>
         <span class="n">algorithm</span><span class="o">=</span><span class="s1">&#39;NSGA2&#39;</span><span class="p">,</span>
         <span class="n">n_gen</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
         <span class="n">pop_size</span><span class="o">=</span><span class="mi">5</span>

@@ -943,7 +943,7 @@ containing the following sub-keys, which correspond to the input variables withi
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>The sub-key <code>usecols</code> should <strong>not</strong> be included here. Although no error will be raised, it will be ignored during class initialization
-because the <code>sim_col</code> sub-key from the <code>objectives</code> input is automatically used as <code>usecols</code>. Including it manually has no effect.</p>
+because the <code>sim_col</code> sub-key from the <code>objective_config</code> input is automatically used as <code>usecols</code>. Including it manually has no effect.</p>
 </div>
 <div class="highlight"><pre><span></span><code><span class="n">extract_data</span> <span class="o">=</span> <span class="p">{</span>
     <span class="s1">&#39;channel_sd_day.txt&#39;</span><span class="p">:</span> <span class="p">{</span>
@@ -1000,7 +1000,7 @@ are same as keys of <code>extract_data</code> (e.g., <code>channel_sd_day.txt</c
           </tr>
           <tr class="doc-section-item">
             <td>
-                <code>objectives</code>
+                <code>objective_config</code>
             </td>
             <td>
                   <code><span title="dict">dict</span>[<span title="str">str</span>, <span title="dict">dict</span>[<span title="str">str</span>, <span title="str">str</span>]]</code>
@@ -1028,7 +1028,7 @@ are same as keys of <code>extract_data</code> (e.g., <code>channel_sd_day.txt</c
 <p class="admonition-title">Tip</p>
 <p>Avoid using <code>MARE</code> if <code>obs_col</code> contains zero values, as it will cause a division-by-zero error.</p>
 </div>
-<div class="highlight"><pre><span></span><code><span class="n">objectives</span> <span class="o">=</span> <span class="p">{</span>
+<div class="highlight"><pre><span></span><code><span class="n">objective_config</span> <span class="o">=</span> <span class="p">{</span>
     <span class="s1">&#39;channel_sd_day.txt&#39;</span><span class="p">:</span> <span class="p">{</span>
         <span class="s1">&#39;sim_col&#39;</span><span class="p">:</span> <span class="s1">&#39;flo_out&#39;</span><span class="p">,</span>
         <span class="s1">&#39;obs_col&#39;</span><span class="p">:</span> <span class="s1">&#39;discharge&#39;</span><span class="p">,</span>
@@ -1683,83 +1683,7 @@ therefore, selecting a <code>pop_size</code> of 16 or 32 may improve efficiency.
 <span class="normal">559</span>
 <span class="normal">560</span>
 <span class="normal">561</span>
-<span class="normal">562</span>
-<span class="normal">563</span>
-<span class="normal">564</span>
-<span class="normal">565</span>
-<span class="normal">566</span>
-<span class="normal">567</span>
-<span class="normal">568</span>
-<span class="normal">569</span>
-<span class="normal">570</span>
-<span class="normal">571</span>
-<span class="normal">572</span>
-<span class="normal">573</span>
-<span class="normal">574</span>
-<span class="normal">575</span>
-<span class="normal">576</span>
-<span class="normal">577</span>
-<span class="normal">578</span>
-<span class="normal">579</span>
-<span class="normal">580</span>
-<span class="normal">581</span>
-<span class="normal">582</span>
-<span class="normal">583</span>
-<span class="normal">584</span>
-<span class="normal">585</span>
-<span class="normal">586</span>
-<span class="normal">587</span>
-<span class="normal">588</span>
-<span class="normal">589</span>
-<span class="normal">590</span>
-<span class="normal">591</span>
-<span class="normal">592</span>
-<span class="normal">593</span>
-<span class="normal">594</span>
-<span class="normal">595</span>
-<span class="normal">596</span>
-<span class="normal">597</span>
-<span class="normal">598</span>
-<span class="normal">599</span>
-<span class="normal">600</span>
-<span class="normal">601</span>
-<span class="normal">602</span>
-<span class="normal">603</span>
-<span class="normal">604</span>
-<span class="normal">605</span>
-<span class="normal">606</span>
-<span class="normal">607</span>
-<span class="normal">608</span>
-<span class="normal">609</span>
-<span class="normal">610</span>
-<span class="normal">611</span>
-<span class="normal">612</span>
-<span class="normal">613</span>
-<span class="normal">614</span>
-<span class="normal">615</span>
-<span class="normal">616</span>
-<span class="normal">617</span>
-<span class="normal">618</span>
-<span class="normal">619</span>
-<span class="normal">620</span>
-<span class="normal">621</span>
-<span class="normal">622</span>
-<span class="normal">623</span>
-<span class="normal">624</span>
-<span class="normal">625</span>
-<span class="normal">626</span>
-<span class="normal">627</span>
-<span class="normal">628</span>
-<span class="normal">629</span>
-<span class="normal">630</span>
-<span class="normal">631</span>
-<span class="normal">632</span>
-<span class="normal">633</span>
-<span class="normal">634</span>
-<span class="normal">635</span>
-<span class="normal">636</span>
-<span class="normal">637</span>
-<span class="normal">638</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Calibration</span><span class="p">(</span><span class="n">pymoo</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">problem</span><span class="o">.</span><span class="n">Problem</span><span class="p">):</span>  <span class="c1"># type: ignore[misc]</span>
+<span class="normal">562</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Calibration</span><span class="p">(</span><span class="n">pymoo</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">problem</span><span class="o">.</span><span class="n">Problem</span><span class="p">):</span>  <span class="c1"># type: ignore[misc]</span>
 <span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    Warning:</span>
 <span class="sd">        This class is currently under development.</span>
@@ -1829,7 +1753,7 @@ therefore, selecting a <code>pop_size</code> of 16 or 32 may improve efficiency.
 
 <span class="sd">            !!! note</span>
 <span class="sd">                The sub-key `usecols` should **not** be included here. Although no error will be raised, it will be ignored during class initialization</span>
-<span class="sd">                because the `sim_col` sub-key from the `objectives` input is automatically used as `usecols`. Including it manually has no effect.</span>
+<span class="sd">                because the `sim_col` sub-key from the `objective_config` input is automatically used as `usecols`. Including it manually has no effect.</span>
 
 <span class="sd">            ```python</span>
 <span class="sd">            extract_data = {</span>
@@ -1867,7 +1791,7 @@ therefore, selecting a <code>pop_size</code> of 16 or 32 may improve efficiency.
 <span class="sd">            }</span>
 <span class="sd">            ```</span>
 
-<span class="sd">        objectives (dict[str, dict[str, str]]): A nested dictionary specifying objectives configuration. The top-level keys</span>
+<span class="sd">        objective_config (dict[str, dict[str, str]]): A nested dictionary specifying objectives configuration. The top-level keys</span>
 <span class="sd">            are same as keys of `extract_data` (e.g., `channel_sd_day.txt`). Each key must map to a non-empty dictionary containing the following sub-keys:</span>
 
 <span class="sd">            - `sim_col` (str): **Required.** Name of the column containing simulated values.</span>
@@ -1885,7 +1809,7 @@ therefore, selecting a <code>pop_size</code> of 16 or 32 may improve efficiency.
 <span class="sd">                Avoid using `MARE` if `obs_col` contains zero values, as it will cause a division-by-zero error.</span>
 
 <span class="sd">            ```python</span>
-<span class="sd">            objectives = {</span>
+<span class="sd">            objective_config = {</span>
 <span class="sd">                &#39;channel_sd_day.txt&#39;: {</span>
 <span class="sd">                    &#39;sim_col&#39;: &#39;flo_out&#39;,</span>
 <span class="sd">                    &#39;obs_col&#39;: &#39;discharge&#39;,</span>
@@ -1929,7 +1853,7 @@ therefore, selecting a <code>pop_size</code> of 16 or 32 may improve efficiency.
         <span class="n">txtinout_dir</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">,</span>
         <span class="n">extract_data</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">typing</span><span class="o">.</span><span class="n">Any</span><span class="p">]],</span>
         <span class="n">observe_data</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]],</span>
-        <span class="n">objectives</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]],</span>
+        <span class="n">objective_config</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]],</span>
         <span class="n">algorithm</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
         <span class="n">n_gen</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
         <span class="n">pop_size</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
@@ -1948,11 +1872,17 @@ therefore, selecting a <code>pop_size</code> of 16 or 32 may improve efficiency.
         <span class="n">calsim_dir</span> <span class="o">=</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="n">calsim_dir</span><span class="p">)</span><span class="o">.</span><span class="n">resolve</span><span class="p">()</span>
         <span class="n">txtinout_dir</span> <span class="o">=</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="n">txtinout_dir</span><span class="p">)</span><span class="o">.</span><span class="n">resolve</span><span class="p">()</span>
 
-        <span class="c1"># Check same top-level keys in dictionaries</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="n">extract_data</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span> <span class="o">==</span> <span class="n">observe_data</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span> <span class="o">==</span> <span class="n">objectives</span><span class="o">.</span><span class="n">keys</span><span class="p">()):</span>
-            <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span>
-                <span class="s1">&#39;Mismatch of key names. Ensure extract_data, observe_data, and objectives have identical top-level keys.&#39;</span>
-            <span class="p">)</span>
+        <span class="c1"># Validate same top-level keys in dictionaries</span>
+        <span class="n">validators</span><span class="o">.</span><span class="n">_dict_key_equal</span><span class="p">(</span>
+            <span class="n">extract_data</span><span class="o">=</span><span class="n">extract_data</span><span class="p">,</span>
+            <span class="n">observe_data</span><span class="o">=</span><span class="n">observe_data</span><span class="p">,</span>
+            <span class="n">objective_config</span><span class="o">=</span><span class="n">objective_config</span>
+        <span class="p">)</span>
+
+        <span class="c1"># Dictionary of metric key name</span>
+        <span class="n">df_key</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="n">obj</span><span class="p">:</span> <span class="n">obj</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="s1">&#39;_df&#39;</span> <span class="k">for</span> <span class="n">obj</span> <span class="ow">in</span> <span class="n">objective_config</span>
+        <span class="p">}</span>
 
         <span class="c1"># Validate initialization of TxtinoutReader class</span>
         <span class="n">tmp_reader</span> <span class="o">=</span> <span class="n">TxtinoutReader</span><span class="p">(</span>
@@ -1975,29 +1905,31 @@ therefore, selecting a <code>pop_size</code> of 16 or 32 may improve efficiency.
         <span class="p">)</span>
 
         <span class="c1"># Validate objectives configuration</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_validate_objectives_config</span><span class="p">(</span>
-            <span class="n">objectives</span><span class="o">=</span><span class="n">objectives</span>
+        <span class="n">validators</span><span class="o">.</span><span class="n">_metric_config</span><span class="p">(</span>
+            <span class="n">input_dict</span><span class="o">=</span><span class="n">objective_config</span><span class="p">,</span>
+            <span class="n">var_name</span><span class="o">=</span><span class="s1">&#39;objective_config&#39;</span>
         <span class="p">)</span>
+        <span class="k">for</span> <span class="n">obj</span> <span class="ow">in</span> <span class="n">objective_config</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">objective_config</span><span class="p">[</span><span class="n">obj</span><span class="p">][</span><span class="s1">&#39;indicator&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;PBIAS&#39;</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                    <span class="s1">&#39;Indicator &quot;PBIAS&quot; is invalid in objective_config; it lacks a defined optimization direction&#39;</span>
+                <span class="p">)</span>
 
         <span class="c1"># Validate observe_data configuration</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_validate_observe_data_config</span><span class="p">(</span>
+        <span class="n">validators</span><span class="o">.</span><span class="n">_observe_data_config</span><span class="p">(</span>
             <span class="n">observe_data</span><span class="o">=</span><span class="n">observe_data</span>
         <span class="p">)</span>
 
         <span class="c1"># Dictionary of observed DataFrames</span>
-        <span class="n">observe_dict</span> <span class="o">=</span> <span class="p">{}</span>
-        <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">observe_data</span><span class="p">:</span>
-            <span class="n">key_df</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">_df_observe</span><span class="p">(</span>
-                <span class="n">obs_file</span><span class="o">=</span><span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="n">observe_data</span><span class="p">[</span><span class="n">key</span><span class="p">][</span><span class="s1">&#39;obs_file&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">resolve</span><span class="p">(),</span>
-                <span class="n">date_format</span><span class="o">=</span><span class="n">observe_data</span><span class="p">[</span><span class="n">key</span><span class="p">][</span><span class="s1">&#39;date_format&#39;</span><span class="p">],</span>
-                <span class="n">obs_col</span><span class="o">=</span><span class="n">objectives</span><span class="p">[</span><span class="n">key</span><span class="p">][</span><span class="s1">&#39;obs_col&#39;</span><span class="p">]</span>
-            <span class="p">)</span>
-            <span class="n">key_df</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;date&#39;</span><span class="p">,</span> <span class="s1">&#39;obs&#39;</span><span class="p">]</span>
-            <span class="n">observe_dict</span><span class="p">[</span><span class="n">key</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="s1">&#39;_df&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">key_df</span>
+        <span class="n">observe_dict</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">_observe_data_dict</span><span class="p">(</span>
+            <span class="n">observe_data</span><span class="o">=</span><span class="n">observe_data</span><span class="p">,</span>
+            <span class="n">metric_config</span><span class="o">=</span><span class="n">objective_config</span><span class="p">,</span>
+            <span class="n">df_key</span><span class="o">=</span><span class="n">df_key</span>
+        <span class="p">)</span>
 
         <span class="c1"># Validate extract_data configuration</span>
         <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">extract_data</span><span class="p">:</span>
-            <span class="n">extract_data</span><span class="p">[</span><span class="n">key</span><span class="p">][</span><span class="s1">&#39;usecols&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">objectives</span><span class="p">[</span><span class="n">key</span><span class="p">][</span><span class="s1">&#39;sim_col&#39;</span><span class="p">]]</span>
+            <span class="n">extract_data</span><span class="p">[</span><span class="n">key</span><span class="p">][</span><span class="s1">&#39;usecols&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">objective_config</span><span class="p">[</span><span class="n">key</span><span class="p">][</span><span class="s1">&#39;sim_col&#39;</span><span class="p">]]</span>
         <span class="n">validators</span><span class="o">.</span><span class="n">_extract_data_config</span><span class="p">(</span>
             <span class="n">extract_data</span><span class="o">=</span><span class="n">extract_data</span>
         <span class="p">)</span>
@@ -2017,8 +1949,9 @@ therefore, selecting a <code>pop_size</code> of 16 or 32 may improve efficiency.
         <span class="c1"># Initalize parameters</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">params_bounds</span> <span class="o">=</span> <span class="n">params_bounds</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">extract_data</span> <span class="o">=</span> <span class="n">extract_data</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">objectives</span> <span class="o">=</span> <span class="n">objectives</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">objective_config</span> <span class="o">=</span> <span class="n">objective_config</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">var_names</span> <span class="o">=</span> <span class="n">var_names</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">df_key</span> <span class="o">=</span> <span class="n">df_key</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">observe_dict</span> <span class="o">=</span> <span class="n">observe_dict</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">calsim_dir</span> <span class="o">=</span> <span class="n">calsim_dir</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">txtinout_dir</span> <span class="o">=</span> <span class="n">txtinout_dir</span>
@@ -2032,7 +1965,7 @@ therefore, selecting a <code>pop_size</code> of 16 or 32 may improve efficiency.
         <span class="c1"># Access properties and methods from Problem class</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
             <span class="n">n_var</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">params_bounds</span><span class="p">),</span>
-            <span class="n">n_obj</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">objectives</span><span class="p">),</span>
+            <span class="n">n_obj</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">objective_config</span><span class="p">),</span>
             <span class="n">xl</span><span class="o">=</span><span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">var_lb</span><span class="p">),</span>
             <span class="n">xu</span><span class="o">=</span><span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">var_ub</span><span class="p">)</span>
         <span class="p">)</span>
@@ -2093,16 +2026,12 @@ therefore, selecting a <code>pop_size</code> of 16 or 32 may improve efficiency.
             <span class="c1"># Simulation output for the population</span>
             <span class="n">pop_sim</span> <span class="o">=</span> <span class="n">cpu_dict</span><span class="p">[</span><span class="nb">tuple</span><span class="p">(</span><span class="n">pop</span><span class="p">)]</span>
             <span class="c1"># Iterate objectives</span>
-            <span class="k">for</span> <span class="n">obj</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">objectives</span><span class="p">:</span>
-                <span class="c1"># Objective indicator</span>
-                <span class="n">obj_ind</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">objectives</span><span class="p">[</span><span class="n">obj</span><span class="p">][</span><span class="s1">&#39;indicator&#39;</span><span class="p">]</span>
-                <span class="c1"># Objective key name to extract simulated and obseved DataFrames</span>
-                <span class="n">obj_key</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="s1">&#39;_df&#39;</span>
+            <span class="k">for</span> <span class="n">obj</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">objective_config</span><span class="p">:</span>
                 <span class="c1"># Simulated DataFrame</span>
-                <span class="n">sim_df</span> <span class="o">=</span> <span class="n">pop_sim</span><span class="p">[</span><span class="n">obj_key</span><span class="p">]</span>
+                <span class="n">sim_df</span> <span class="o">=</span> <span class="n">pop_sim</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">df_key</span><span class="p">[</span><span class="n">obj</span><span class="p">]]</span>
                 <span class="n">sim_df</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;date&#39;</span><span class="p">,</span> <span class="s1">&#39;sim&#39;</span><span class="p">]</span>
                 <span class="c1"># Observed DataFrame</span>
-                <span class="n">obs_df</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">observe_dict</span><span class="p">[</span><span class="n">obj_key</span><span class="p">]</span>
+                <span class="n">obs_df</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">observe_dict</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">df_key</span><span class="p">[</span><span class="n">obj</span><span class="p">]]</span>
                 <span class="c1"># Merge simulated and observed DataFrames by &#39;date&#39; column</span>
                 <span class="n">merge_df</span> <span class="o">=</span> <span class="n">sim_df</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span>
                     <span class="n">right</span><span class="o">=</span><span class="n">obs_df</span><span class="p">,</span>
@@ -2115,6 +2044,7 @@ therefore, selecting a <code>pop_size</code> of 16 or 32 may improve efficiency.
                     <span class="n">norm_col</span><span class="o">=</span><span class="s1">&#39;obs&#39;</span>
                 <span class="p">)</span>
                 <span class="c1"># Indicator method from abbreviation</span>
+                <span class="n">obj_ind</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">objective_config</span><span class="p">[</span><span class="n">obj</span><span class="p">][</span><span class="s1">&#39;indicator&#39;</span><span class="p">]</span>
                 <span class="n">indicator_method</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span>
                     <span class="n">PerformanceMetrics</span><span class="p">(),</span>
                     <span class="sa">f</span><span class="s1">&#39;compute_</span><span class="si">{</span><span class="n">obj_ind</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="si">}</span><span class="s1">&#39;</span>
@@ -2157,94 +2087,6 @@ therefore, selecting a <code>pop_size</code> of 16 or 32 may improve efficiency.
 
         <span class="k">return</span> <span class="n">objs_dirs</span>
 
-    <span class="k">def</span><span class="w"> </span><span class="nf">_validate_observe_data_config</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span>
-        <span class="n">observe_data</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]],</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">        Validate `observe_data` configuration.</span>
-<span class="sd">        &#39;&#39;&#39;</span>
-
-        <span class="c1"># List of valid sub-keys of sub-dictionaries</span>
-        <span class="n">valid_subkeys</span> <span class="o">=</span> <span class="p">[</span>
-            <span class="s1">&#39;obs_file&#39;</span><span class="p">,</span>
-            <span class="s1">&#39;date_format&#39;</span>
-        <span class="p">]</span>
-
-        <span class="c1"># Iterate dictionary</span>
-        <span class="k">for</span> <span class="n">file_key</span><span class="p">,</span> <span class="n">file_dict</span> <span class="ow">in</span> <span class="n">observe_data</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-            <span class="c1"># Check type of a sub-dictionary</span>
-            <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">file_dict</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
-                <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span>
-                    <span class="sa">f</span><span class="s1">&#39;Expected &quot;</span><span class="si">{</span><span class="n">file_key</span><span class="si">}</span><span class="s1">&quot; in observe_data must be a dictionary, &#39;</span>
-                    <span class="sa">f</span><span class="s1">&#39;but got type &quot;</span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">file_dict</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s1">&quot;&#39;</span>
-                <span class="p">)</span>
-            <span class="c1"># Check sub-dictionary length</span>
-            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">file_dict</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">2</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-                    <span class="sa">f</span><span class="s1">&#39;Length of &quot;</span><span class="si">{</span><span class="n">file_key</span><span class="si">}</span><span class="s1">&quot; sub-dictionary in observe_data must be 2, &#39;</span>
-                    <span class="sa">f</span><span class="s1">&#39;but got </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">file_dict</span><span class="p">)</span><span class="si">}</span><span class="s1">&#39;</span>
-                <span class="p">)</span>
-            <span class="c1"># Iterate sub-key</span>
-            <span class="k">for</span> <span class="n">sub_key</span> <span class="ow">in</span> <span class="n">file_dict</span><span class="p">:</span>
-                <span class="c1"># Check valid sub-key</span>
-                <span class="k">if</span> <span class="n">sub_key</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">valid_subkeys</span><span class="p">:</span>
-                    <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span>
-                        <span class="sa">f</span><span class="s1">&#39;Invalid sub-key &quot;</span><span class="si">{</span><span class="n">sub_key</span><span class="si">}</span><span class="s1">&quot; for &quot;</span><span class="si">{</span><span class="n">file_key</span><span class="si">}</span><span class="s1">&quot; in observe_data; &#39;</span>
-                        <span class="sa">f</span><span class="s1">&#39;expected sub-keys are </span><span class="si">{</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">valid_subkeys</span><span class="p">)</span><span class="si">}</span><span class="s1">&#39;</span>
-                    <span class="p">)</span>
-
-        <span class="k">return</span> <span class="kc">None</span>
-
-    <span class="k">def</span><span class="w"> </span><span class="nf">_validate_objectives_config</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span>
-        <span class="n">objectives</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]],</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">        Validate `objectives` configuration.</span>
-<span class="sd">        &#39;&#39;&#39;</span>
-
-        <span class="c1"># List of valid sub-keys of sub-dictionaries</span>
-        <span class="n">valid_subkeys</span> <span class="o">=</span> <span class="p">[</span>
-            <span class="s1">&#39;sim_col&#39;</span><span class="p">,</span>
-            <span class="s1">&#39;obs_col&#39;</span><span class="p">,</span>
-            <span class="s1">&#39;indicator&#39;</span>
-        <span class="p">]</span>
-
-        <span class="n">valid_indicators</span> <span class="o">=</span> <span class="p">[</span>
-            <span class="n">key</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">PerformanceMetrics</span><span class="p">()</span><span class="o">.</span><span class="n">indicator_names</span> <span class="k">if</span> <span class="n">key</span> <span class="o">!=</span> <span class="s1">&#39;PBIAS&#39;</span>
-        <span class="p">]</span>
-
-        <span class="c1"># Iterate dictionary</span>
-        <span class="k">for</span> <span class="n">file_key</span><span class="p">,</span> <span class="n">file_dict</span> <span class="ow">in</span> <span class="n">objectives</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-            <span class="c1"># Check type of a sub-dictionary</span>
-            <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">file_dict</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
-                <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span>
-                    <span class="sa">f</span><span class="s1">&#39;Expected &quot;</span><span class="si">{</span><span class="n">file_key</span><span class="si">}</span><span class="s1">&quot; in &quot;objectives&quot; must be a dictionary, &#39;</span>
-                    <span class="sa">f</span><span class="s1">&#39;but got type &quot;</span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">file_dict</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s1">&quot;&#39;</span>
-                <span class="p">)</span>
-            <span class="c1"># Check sub-dictionary length</span>
-            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">file_dict</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">3</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-                    <span class="sa">f</span><span class="s1">&#39;Length of &quot;</span><span class="si">{</span><span class="n">file_key</span><span class="si">}</span><span class="s1">&quot; sub-dictionary in &quot;objectives&quot; must be 3, &#39;</span>
-                    <span class="sa">f</span><span class="s1">&#39;but got </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">file_dict</span><span class="p">)</span><span class="si">}</span><span class="s1">&#39;</span>
-                <span class="p">)</span>
-            <span class="c1"># Iterate sub-key</span>
-            <span class="k">for</span> <span class="n">sub_key</span> <span class="ow">in</span> <span class="n">file_dict</span><span class="p">:</span>
-                <span class="c1"># Check valid sub-key</span>
-                <span class="k">if</span> <span class="n">sub_key</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">valid_subkeys</span><span class="p">:</span>
-                    <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span>
-                        <span class="sa">f</span><span class="s1">&#39;Invalid sub-key &quot;</span><span class="si">{</span><span class="n">sub_key</span><span class="si">}</span><span class="s1">&quot; for &quot;</span><span class="si">{</span><span class="n">file_key</span><span class="si">}</span><span class="s1">&quot; in &quot;objectives&quot;; &#39;</span>
-                        <span class="sa">f</span><span class="s1">&#39;expected sub-keys are </span><span class="si">{</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">valid_subkeys</span><span class="p">)</span><span class="si">}</span><span class="s1">&#39;</span>
-                    <span class="p">)</span>
-                <span class="k">if</span> <span class="n">sub_key</span> <span class="o">==</span> <span class="s1">&#39;indicator&#39;</span> <span class="ow">and</span> <span class="n">file_dict</span><span class="p">[</span><span class="n">sub_key</span><span class="p">]</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">valid_indicators</span><span class="p">:</span>
-                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-                        <span class="sa">f</span><span class="s1">&#39;Invalid &quot;indicator&quot; value &quot;</span><span class="si">{</span><span class="n">file_dict</span><span class="p">[</span><span class="n">sub_key</span><span class="p">]</span><span class="si">}</span><span class="s1">&quot; for &quot;</span><span class="si">{</span><span class="n">file_key</span><span class="si">}</span><span class="s1">&quot; in &quot;objectives&quot;; &#39;</span>
-                        <span class="sa">f</span><span class="s1">&#39;expected indicators are </span><span class="si">{</span><span class="n">valid_indicators</span><span class="si">}</span><span class="s1">&#39;</span>
-                    <span class="p">)</span>
-
-        <span class="k">return</span> <span class="kc">None</span>
-
     <span class="k">def</span><span class="w"> </span><span class="nf">_algorithm_class</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">algorithm</span><span class="p">:</span> <span class="nb">str</span>
@@ -2252,6 +2094,9 @@ therefore, selecting a <code>pop_size</code> of 16 or 32 may improve efficiency.
 <span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">        Retrieve the optimization algorithm class from the `pymoo` package.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
+
+        <span class="n">single_obj</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;GA&#39;</span><span class="p">,</span> <span class="s1">&#39;DE&#39;</span><span class="p">]</span>
+        <span class="n">multi_obj</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;NSGA2&#39;</span><span class="p">]</span>
 
         <span class="c1"># Dictionary mapping between algorithm name and module</span>
         <span class="n">api_module</span> <span class="o">=</span> <span class="p">{</span>
@@ -2264,6 +2109,12 @@ therefore, selecting a <code>pop_size</code> of 16 or 32 may improve efficiency.
         <span class="k">if</span> <span class="n">algorithm</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">api_module</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">NameError</span><span class="p">(</span>
                 <span class="sa">f</span><span class="s1">&#39;Invalid algorithm &quot;</span><span class="si">{</span><span class="n">algorithm</span><span class="si">}</span><span class="s1">&quot;; valid names are </span><span class="si">{</span><span class="nb">list</span><span class="p">(</span><span class="n">api_module</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span><span class="si">}</span><span class="s1">&#39;</span>
+            <span class="p">)</span>
+
+        <span class="c1"># Check single objective algorithm cannot be used for multiple objectives</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">objective_config</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">2</span> <span class="ow">and</span> <span class="n">algorithm</span> <span class="ow">in</span> <span class="n">single_obj</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s1">&#39;Algorithm &quot;</span><span class="si">{</span><span class="n">algorithm</span><span class="si">}</span><span class="s1">&quot; cannot handle multiple objectives; use one of </span><span class="si">{</span><span class="n">multi_obj</span><span class="si">}</span><span class="s1">&#39;</span>
             <span class="p">)</span>
 
         <span class="c1"># Algorithm class</span>
@@ -2283,15 +2134,15 @@ therefore, selecting a <code>pop_size</code> of 16 or 32 may improve efficiency.
 <span class="sd">        This method executes the optimization process and returns a dictionary containing the optimized</span>
 <span class="sd">        parameters, corresponding objective values, and total execution time.</span>
 
-<span class="sd">        Two JSON files are saved in the input directory `calsim_dir`.</span>
+<span class="sd">        The following JSON files are saved in `calsim_dir`:</span>
 
-<span class="sd">        The file `optimization_history.json` stores the optimization history. Each key in this</span>
-<span class="sd">        file is an integer starting from 1, representing the generation number. The corresponding value</span>
-<span class="sd">        is a sub-dictionary with two keys: `pop` for the population data (decision variables) and `obj`</span>
-<span class="sd">        for the objective function values. This file is useful for analyzing optimization progress,</span>
-<span class="sd">        convergence trends, performance indicators, and visualization.</span>
+<span class="sd">        - `optimization_history.json`: A dictionary containing the optimization history. Each key in this</span>
+<span class="sd">          file is an integer starting from 1, representing the generation number. The corresponding value</span>
+<span class="sd">          is a sub-dictionary with two keys: `pop` for the population data (decision variables) and `obj`</span>
+<span class="sd">          for the objective function values. This file is useful for analyzing optimization progress,</span>
+<span class="sd">          convergence trends, performance indicators, and visualization.</span>
 
-<span class="sd">        The file `optimization_result.json` contains the final output dictionary described below.</span>
+<span class="sd">        - `optimization_result.json`: A dictionary containing the final output dictionary.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            Dictionary with the following keys:</span>
@@ -2342,7 +2193,7 @@ therefore, selecting a <code>pop_size</code> of 16 or 32 may improve efficiency.
         <span class="c1"># Sign of objective directions</span>
         <span class="n">objs_dirs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_objectives_directions</span><span class="p">()</span>
         <span class="n">dir_list</span> <span class="o">=</span> <span class="p">[</span>
-            <span class="n">objs_dirs</span><span class="p">[</span><span class="n">v</span><span class="p">[</span><span class="s1">&#39;indicator&#39;</span><span class="p">]]</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">objectives</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+            <span class="n">objs_dirs</span><span class="p">[</span><span class="n">v</span><span class="p">[</span><span class="s1">&#39;indicator&#39;</span><span class="p">]]</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">objective_config</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
         <span class="p">]</span>
         <span class="n">dir_sign</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">dir_list</span><span class="p">)</span> <span class="o">==</span> <span class="s1">&#39;max&#39;</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
 
@@ -2353,18 +2204,16 @@ therefore, selecting a <code>pop_size</code> of 16 or 32 may improve efficiency.
                 <span class="s1">&#39;pop&#39;</span><span class="p">:</span> <span class="n">gen</span><span class="o">.</span><span class="n">pop</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;X&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">tolist</span><span class="p">(),</span>
                 <span class="s1">&#39;obj&#39;</span><span class="p">:</span> <span class="p">(</span><span class="n">gen</span><span class="o">.</span><span class="n">pop</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;F&#39;</span><span class="p">)</span> <span class="o">*</span> <span class="n">dir_sign</span><span class="p">)</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
             <span class="p">}</span>
-        <span class="n">json_file</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">calsim_dir</span> <span class="o">/</span> <span class="s1">&#39;optimization_history.json&#39;</span>
-        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">json_file</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">output_write</span><span class="p">:</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">calsim_dir</span> <span class="o">/</span> <span class="s1">&#39;optimization_history.json&#39;</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">output_write</span><span class="p">:</span>
             <span class="n">json</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">opt_hist</span><span class="p">,</span> <span class="n">output_write</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
 
         <span class="c1"># Optimized output of parameters, objectives, and execution times</span>
-        <span class="n">required_time</span> <span class="o">=</span> <span class="nb">round</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">exec_time</span><span class="p">)</span>
         <span class="n">opt_output</span> <span class="o">=</span> <span class="p">{</span>
             <span class="s1">&#39;algorithm&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">algorithm</span><span class="p">,</span>
             <span class="s1">&#39;generation&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_gen</span><span class="p">,</span>
             <span class="s1">&#39;population&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">pop_size</span><span class="p">,</span>
             <span class="s1">&#39;total_simulation&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">pop_size</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_gen</span><span class="p">,</span>
-            <span class="s1">&#39;time_sec&#39;</span><span class="p">:</span> <span class="n">required_time</span><span class="p">,</span>
+            <span class="s1">&#39;time_sec&#39;</span><span class="p">:</span> <span class="nb">round</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">exec_time</span><span class="p">),</span>
             <span class="s1">&#39;variables&#39;</span><span class="p">:</span> <span class="n">result</span><span class="o">.</span><span class="n">X</span><span class="p">,</span>
             <span class="s1">&#39;objectives&#39;</span><span class="p">:</span> <span class="n">result</span><span class="o">.</span><span class="n">F</span> <span class="o">*</span> <span class="n">dir_sign</span>
         <span class="p">}</span>
@@ -2374,8 +2223,7 @@ therefore, selecting a <code>pop_size</code> of 16 or 32 may improve efficiency.
         <span class="n">save_output</span> <span class="o">=</span> <span class="p">{</span>
             <span class="n">k</span><span class="p">:</span> <span class="n">v</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span> <span class="k">if</span> <span class="n">k</span><span class="o">.</span><span class="n">startswith</span><span class="p">((</span><span class="s1">&#39;var&#39;</span><span class="p">,</span> <span class="s1">&#39;obj&#39;</span><span class="p">))</span> <span class="k">else</span> <span class="n">v</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">save_output</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
         <span class="p">}</span>
-        <span class="n">json_file</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">calsim_dir</span> <span class="o">/</span> <span class="s1">&#39;optimization_result.json&#39;</span>
-        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">json_file</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">output_write</span><span class="p">:</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">calsim_dir</span> <span class="o">/</span> <span class="s1">&#39;optimization_result.json&#39;</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">output_write</span><span class="p">:</span>
             <span class="n">json</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">save_output</span><span class="p">,</span> <span class="n">output_write</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="n">opt_output</span>
@@ -2409,13 +2257,19 @@ therefore, selecting a <code>pop_size</code> of 16 or 32 may improve efficiency.
         <p>Run the optimization using the configured algorithm, population size, and number of generations.</p>
 <p>This method executes the optimization process and returns a dictionary containing the optimized
 parameters, corresponding objective values, and total execution time.</p>
-<p>Two JSON files are saved in the input directory <code>calsim_dir</code>.</p>
-<p>The file <code>optimization_history.json</code> stores the optimization history. Each key in this
-file is an integer starting from 1, representing the generation number. The corresponding value
-is a sub-dictionary with two keys: <code>pop</code> for the population data (decision variables) and <code>obj</code>
-for the objective function values. This file is useful for analyzing optimization progress,
-convergence trends, performance indicators, and visualization.</p>
-<p>The file <code>optimization_result.json</code> contains the final output dictionary described below.</p>
+<p>The following JSON files are saved in <code>calsim_dir</code>:</p>
+<ul>
+<li>
+<p><code>optimization_history.json</code>: A dictionary containing the optimization history. Each key in this
+  file is an integer starting from 1, representing the generation number. The corresponding value
+  is a sub-dictionary with two keys: <code>pop</code> for the population data (decision variables) and <code>obj</code>
+  for the objective function values. This file is useful for analyzing optimization progress,
+  convergence trends, performance indicators, and visualization.</p>
+</li>
+<li>
+<p><code>optimization_result.json</code>: A dictionary containing the final output dictionary.</p>
+</li>
+</ul>
 
 
     <p><span class="doc-section-title">Returns:</span></p>
@@ -2479,7 +2333,80 @@ convergence trends, performance indicators, and visualization.</p>
 
             <details class="quote">
               <summary>Source code in <code>pySWATPlus/calibration.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">534</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">461</span>
+<span class="normal">462</span>
+<span class="normal">463</span>
+<span class="normal">464</span>
+<span class="normal">465</span>
+<span class="normal">466</span>
+<span class="normal">467</span>
+<span class="normal">468</span>
+<span class="normal">469</span>
+<span class="normal">470</span>
+<span class="normal">471</span>
+<span class="normal">472</span>
+<span class="normal">473</span>
+<span class="normal">474</span>
+<span class="normal">475</span>
+<span class="normal">476</span>
+<span class="normal">477</span>
+<span class="normal">478</span>
+<span class="normal">479</span>
+<span class="normal">480</span>
+<span class="normal">481</span>
+<span class="normal">482</span>
+<span class="normal">483</span>
+<span class="normal">484</span>
+<span class="normal">485</span>
+<span class="normal">486</span>
+<span class="normal">487</span>
+<span class="normal">488</span>
+<span class="normal">489</span>
+<span class="normal">490</span>
+<span class="normal">491</span>
+<span class="normal">492</span>
+<span class="normal">493</span>
+<span class="normal">494</span>
+<span class="normal">495</span>
+<span class="normal">496</span>
+<span class="normal">497</span>
+<span class="normal">498</span>
+<span class="normal">499</span>
+<span class="normal">500</span>
+<span class="normal">501</span>
+<span class="normal">502</span>
+<span class="normal">503</span>
+<span class="normal">504</span>
+<span class="normal">505</span>
+<span class="normal">506</span>
+<span class="normal">507</span>
+<span class="normal">508</span>
+<span class="normal">509</span>
+<span class="normal">510</span>
+<span class="normal">511</span>
+<span class="normal">512</span>
+<span class="normal">513</span>
+<span class="normal">514</span>
+<span class="normal">515</span>
+<span class="normal">516</span>
+<span class="normal">517</span>
+<span class="normal">518</span>
+<span class="normal">519</span>
+<span class="normal">520</span>
+<span class="normal">521</span>
+<span class="normal">522</span>
+<span class="normal">523</span>
+<span class="normal">524</span>
+<span class="normal">525</span>
+<span class="normal">526</span>
+<span class="normal">527</span>
+<span class="normal">528</span>
+<span class="normal">529</span>
+<span class="normal">530</span>
+<span class="normal">531</span>
+<span class="normal">532</span>
+<span class="normal">533</span>
+<span class="normal">534</span>
 <span class="normal">535</span>
 <span class="normal">536</span>
 <span class="normal">537</span>
@@ -2507,83 +2434,7 @@ convergence trends, performance indicators, and visualization.</p>
 <span class="normal">559</span>
 <span class="normal">560</span>
 <span class="normal">561</span>
-<span class="normal">562</span>
-<span class="normal">563</span>
-<span class="normal">564</span>
-<span class="normal">565</span>
-<span class="normal">566</span>
-<span class="normal">567</span>
-<span class="normal">568</span>
-<span class="normal">569</span>
-<span class="normal">570</span>
-<span class="normal">571</span>
-<span class="normal">572</span>
-<span class="normal">573</span>
-<span class="normal">574</span>
-<span class="normal">575</span>
-<span class="normal">576</span>
-<span class="normal">577</span>
-<span class="normal">578</span>
-<span class="normal">579</span>
-<span class="normal">580</span>
-<span class="normal">581</span>
-<span class="normal">582</span>
-<span class="normal">583</span>
-<span class="normal">584</span>
-<span class="normal">585</span>
-<span class="normal">586</span>
-<span class="normal">587</span>
-<span class="normal">588</span>
-<span class="normal">589</span>
-<span class="normal">590</span>
-<span class="normal">591</span>
-<span class="normal">592</span>
-<span class="normal">593</span>
-<span class="normal">594</span>
-<span class="normal">595</span>
-<span class="normal">596</span>
-<span class="normal">597</span>
-<span class="normal">598</span>
-<span class="normal">599</span>
-<span class="normal">600</span>
-<span class="normal">601</span>
-<span class="normal">602</span>
-<span class="normal">603</span>
-<span class="normal">604</span>
-<span class="normal">605</span>
-<span class="normal">606</span>
-<span class="normal">607</span>
-<span class="normal">608</span>
-<span class="normal">609</span>
-<span class="normal">610</span>
-<span class="normal">611</span>
-<span class="normal">612</span>
-<span class="normal">613</span>
-<span class="normal">614</span>
-<span class="normal">615</span>
-<span class="normal">616</span>
-<span class="normal">617</span>
-<span class="normal">618</span>
-<span class="normal">619</span>
-<span class="normal">620</span>
-<span class="normal">621</span>
-<span class="normal">622</span>
-<span class="normal">623</span>
-<span class="normal">624</span>
-<span class="normal">625</span>
-<span class="normal">626</span>
-<span class="normal">627</span>
-<span class="normal">628</span>
-<span class="normal">629</span>
-<span class="normal">630</span>
-<span class="normal">631</span>
-<span class="normal">632</span>
-<span class="normal">633</span>
-<span class="normal">634</span>
-<span class="normal">635</span>
-<span class="normal">636</span>
-<span class="normal">637</span>
-<span class="normal">638</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">parameter_optimization</span><span class="p">(</span>
+<span class="normal">562</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">parameter_optimization</span><span class="p">(</span>
     <span class="bp">self</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">typing</span><span class="o">.</span><span class="n">Any</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
@@ -2592,15 +2443,15 @@ convergence trends, performance indicators, and visualization.</p>
 <span class="sd">    This method executes the optimization process and returns a dictionary containing the optimized</span>
 <span class="sd">    parameters, corresponding objective values, and total execution time.</span>
 
-<span class="sd">    Two JSON files are saved in the input directory `calsim_dir`.</span>
+<span class="sd">    The following JSON files are saved in `calsim_dir`:</span>
 
-<span class="sd">    The file `optimization_history.json` stores the optimization history. Each key in this</span>
-<span class="sd">    file is an integer starting from 1, representing the generation number. The corresponding value</span>
-<span class="sd">    is a sub-dictionary with two keys: `pop` for the population data (decision variables) and `obj`</span>
-<span class="sd">    for the objective function values. This file is useful for analyzing optimization progress,</span>
-<span class="sd">    convergence trends, performance indicators, and visualization.</span>
+<span class="sd">    - `optimization_history.json`: A dictionary containing the optimization history. Each key in this</span>
+<span class="sd">      file is an integer starting from 1, representing the generation number. The corresponding value</span>
+<span class="sd">      is a sub-dictionary with two keys: `pop` for the population data (decision variables) and `obj`</span>
+<span class="sd">      for the objective function values. This file is useful for analyzing optimization progress,</span>
+<span class="sd">      convergence trends, performance indicators, and visualization.</span>
 
-<span class="sd">    The file `optimization_result.json` contains the final output dictionary described below.</span>
+<span class="sd">    - `optimization_result.json`: A dictionary containing the final output dictionary.</span>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        Dictionary with the following keys:</span>
@@ -2651,7 +2502,7 @@ convergence trends, performance indicators, and visualization.</p>
     <span class="c1"># Sign of objective directions</span>
     <span class="n">objs_dirs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_objectives_directions</span><span class="p">()</span>
     <span class="n">dir_list</span> <span class="o">=</span> <span class="p">[</span>
-        <span class="n">objs_dirs</span><span class="p">[</span><span class="n">v</span><span class="p">[</span><span class="s1">&#39;indicator&#39;</span><span class="p">]]</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">objectives</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+        <span class="n">objs_dirs</span><span class="p">[</span><span class="n">v</span><span class="p">[</span><span class="s1">&#39;indicator&#39;</span><span class="p">]]</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">objective_config</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
     <span class="p">]</span>
     <span class="n">dir_sign</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">dir_list</span><span class="p">)</span> <span class="o">==</span> <span class="s1">&#39;max&#39;</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
 
@@ -2662,18 +2513,16 @@ convergence trends, performance indicators, and visualization.</p>
             <span class="s1">&#39;pop&#39;</span><span class="p">:</span> <span class="n">gen</span><span class="o">.</span><span class="n">pop</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;X&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">tolist</span><span class="p">(),</span>
             <span class="s1">&#39;obj&#39;</span><span class="p">:</span> <span class="p">(</span><span class="n">gen</span><span class="o">.</span><span class="n">pop</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;F&#39;</span><span class="p">)</span> <span class="o">*</span> <span class="n">dir_sign</span><span class="p">)</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
         <span class="p">}</span>
-    <span class="n">json_file</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">calsim_dir</span> <span class="o">/</span> <span class="s1">&#39;optimization_history.json&#39;</span>
-    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">json_file</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">output_write</span><span class="p">:</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">calsim_dir</span> <span class="o">/</span> <span class="s1">&#39;optimization_history.json&#39;</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">output_write</span><span class="p">:</span>
         <span class="n">json</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">opt_hist</span><span class="p">,</span> <span class="n">output_write</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
 
     <span class="c1"># Optimized output of parameters, objectives, and execution times</span>
-    <span class="n">required_time</span> <span class="o">=</span> <span class="nb">round</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">exec_time</span><span class="p">)</span>
     <span class="n">opt_output</span> <span class="o">=</span> <span class="p">{</span>
         <span class="s1">&#39;algorithm&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">algorithm</span><span class="p">,</span>
         <span class="s1">&#39;generation&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_gen</span><span class="p">,</span>
         <span class="s1">&#39;population&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">pop_size</span><span class="p">,</span>
         <span class="s1">&#39;total_simulation&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">pop_size</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_gen</span><span class="p">,</span>
-        <span class="s1">&#39;time_sec&#39;</span><span class="p">:</span> <span class="n">required_time</span><span class="p">,</span>
+        <span class="s1">&#39;time_sec&#39;</span><span class="p">:</span> <span class="nb">round</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">exec_time</span><span class="p">),</span>
         <span class="s1">&#39;variables&#39;</span><span class="p">:</span> <span class="n">result</span><span class="o">.</span><span class="n">X</span><span class="p">,</span>
         <span class="s1">&#39;objectives&#39;</span><span class="p">:</span> <span class="n">result</span><span class="o">.</span><span class="n">F</span> <span class="o">*</span> <span class="n">dir_sign</span>
     <span class="p">}</span>
@@ -2683,8 +2532,7 @@ convergence trends, performance indicators, and visualization.</p>
     <span class="n">save_output</span> <span class="o">=</span> <span class="p">{</span>
         <span class="n">k</span><span class="p">:</span> <span class="n">v</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span> <span class="k">if</span> <span class="n">k</span><span class="o">.</span><span class="n">startswith</span><span class="p">((</span><span class="s1">&#39;var&#39;</span><span class="p">,</span> <span class="s1">&#39;obj&#39;</span><span class="p">))</span> <span class="k">else</span> <span class="n">v</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">save_output</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
     <span class="p">}</span>
-    <span class="n">json_file</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">calsim_dir</span> <span class="o">/</span> <span class="s1">&#39;optimization_result.json&#39;</span>
-    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">json_file</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">output_write</span><span class="p">:</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">calsim_dir</span> <span class="o">/</span> <span class="s1">&#39;optimization_result.json&#39;</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">output_write</span><span class="p">:</span>
         <span class="n">json</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">save_output</span><span class="p">,</span> <span class="n">output_write</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">opt_output</span>

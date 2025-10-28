@@ -467,6 +467,15 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#integrated-simulation-and-sensitivity" class="md-nav__link">
+    <span class="md-ellipsis">
+      Integrated Simulation and Sensitivity
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -789,6 +798,15 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#integrated-simulation-and-sensitivity" class="md-nav__link">
+    <span class="md-ellipsis">
+      Integrated Simulation and Sensitivity
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -921,6 +939,77 @@ or locked resources from previous runs.</p>
     <span class="n">indicators</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;KGE&#39;</span><span class="p">,</span> <span class="s1">&#39;RMSE&#39;</span><span class="p">],</span>
     <span class="n">json_file</span><span class="o">=</span><span class="sa">r</span><span class="s2">&quot;C:\Users\Username\sensitivity_indices.json&quot;</span>
 <span class="p">)</span>
+</code></pre></div>
+<h2 id="integrated-simulation-and-sensitivity">Integrated Simulation and Sensitivity</h2>
+<p>To compute sensitivity indices directly for multiple outputs against observed data and skip saving the detailed simulation results, use the following interface:</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># Define parameter space</span>
+<span class="n">parameters</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">{</span>
+        <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;esco&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;change_type&#39;</span><span class="p">:</span> <span class="s1">&#39;absval&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;lower_bound&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+        <span class="s1">&#39;upper_bound&#39;</span><span class="p">:</span> <span class="mi">1</span>
+    <span class="p">},</span>
+    <span class="p">{</span>
+        <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;perco&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;change_type&#39;</span><span class="p">:</span> <span class="s1">&#39;absval&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;lower_bound&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+        <span class="s1">&#39;upper_bound&#39;</span><span class="p">:</span> <span class="mi">1</span>
+    <span class="p">}</span>
+<span class="p">]</span>
+
+
+<span class="c1"># Extract data configuration</span>
+<span class="n">extract_data</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;channel_sd_day.txt&#39;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s1">&#39;has_units&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="s1">&#39;apply_filter&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;cha561&#39;</span><span class="p">]}</span>
+    <span class="p">},</span>
+    <span class="s1">&#39;channel_sd_mon.txt&#39;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s1">&#39;has_units&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="s1">&#39;ref_day&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="s1">&#39;apply_filter&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;cha561&#39;</span><span class="p">]}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="c1"># Observe data configuration</span>
+<span class="n">observe_data</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;channel_sd_day.txt&#39;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s1">&#39;obs_file&#39;</span><span class="p">:</span> <span class="sa">r</span><span class="s2">&quot;C:\Users\Username\observed_folder\discharge_daily.csv&quot;</span><span class="p">,</span>
+        <span class="s1">&#39;date_format&#39;</span><span class="p">:</span> <span class="s1">&#39;%Y-%m-</span><span class="si">%d</span><span class="s1">&#39;</span>
+    <span class="p">},</span>
+    <span class="s1">&#39;channel_sd_mon.txt&#39;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s1">&#39;obs_file&#39;</span><span class="p">:</span> <span class="sa">r</span><span class="s2">&quot;C:\Users\Username\observed_folder\discharge_monthly.csv&quot;</span><span class="p">,</span>
+        <span class="s1">&#39;date_format&#39;</span><span class="p">:</span> <span class="s1">&#39;%Y-%m-</span><span class="si">%d</span><span class="s1">&#39;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="c1"># Metric configuration</span>
+<span class="n">metric_config</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;channel_sd_day.txt&#39;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s1">&#39;sim_col&#39;</span><span class="p">:</span> <span class="s1">&#39;flo_out&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;obs_col&#39;</span><span class="p">:</span> <span class="s1">&#39;discharge&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;indicator&#39;</span><span class="p">:</span> <span class="s1">&#39;NSE&#39;</span>
+    <span class="p">},</span>
+    <span class="s1">&#39;channel_sd_mon.txt&#39;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s1">&#39;sim_col&#39;</span><span class="p">:</span> <span class="s1">&#39;flo_out&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;obs_col&#39;</span><span class="p">:</span> <span class="s1">&#39;mean&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;indicator&#39;</span><span class="p">:</span> <span class="s1">&#39;RMSE&#39;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="c1"># Sensitivity indices</span>
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="n">output</span> <span class="o">=</span> <span class="n">pySWATPlus</span><span class="o">.</span><span class="n">SensitivityAnalyzer</span><span class="p">()</span><span class="o">.</span><span class="n">simulation_and_indices</span><span class="p">(</span>
+        <span class="n">parameters</span><span class="o">=</span><span class="n">parameters</span><span class="p">,</span>
+        <span class="n">sample_number</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+        <span class="n">sensim_dir</span><span class="o">=</span><span class="sa">r</span><span class="s2">&quot;C:\Users\dpal22\Desktop\swat_run\experiment_dominant_hru\empty_dir&quot;</span><span class="p">,</span>
+        <span class="n">txtinout_dir</span><span class="o">=</span><span class="sa">r</span><span class="s2">&quot;C:\Users\dpal22\Desktop\swat_run\experiment_dominant_hru\txtinout_copy&quot;</span><span class="p">,</span>
+        <span class="n">extract_data</span><span class="o">=</span><span class="n">extract_data</span><span class="p">,</span>
+        <span class="n">observe_data</span><span class="o">=</span><span class="n">observe_data</span><span class="p">,</span>
+        <span class="n">metric_config</span><span class="o">=</span><span class="n">metric_config</span>
+    <span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">output</span><span class="p">)</span>
 </code></pre></div>
 
 
