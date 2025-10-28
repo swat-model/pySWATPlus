@@ -48,7 +48,7 @@ class SensitivityAnalyzer:
 
         return problem
 
-    def _save_output_in_json(
+    def _write_simulation_in_json(
         self,
         sensim_dir: pathlib.Path,
         sensim_output: dict[str, typing.Any]
@@ -202,12 +202,12 @@ class SensitivityAnalyzer:
                 will be deleted dynamically after collecting the required data.
 
         Returns:
-            A dictionary with the follwoing keys:
+            Dictionary with the follwoing keys:
 
                 - `time`: A dictionary containing time-related statistics:
 
-                    - `sample_length`: Total number of samples, including duplicates.
                     - `time_sec`: Total time in seconds for the simulation.
+                    - `sample_length`: Total number of samples, including duplicates.
                     - `time_per_sample_sec`: Average simulation time per sample in seconds.
 
                 - `problem`: The problem definition dictionary passed to `Sobol` sampling, containing:
@@ -251,7 +251,7 @@ class SensitivityAnalyzer:
               Otherwise, no error will be raised by the system, but simulation outputs may not be generated.
         '''
 
-        # start time
+        # Start time
         start_time = time.time()
 
         # Check input variables type
@@ -376,12 +376,35 @@ class SensitivityAnalyzer:
 
         # Write output to the file 'sensitivity_simulation.json' in simulation folder
         if save_output:
-            self._save_output_in_json(
+            self._write_simulation_in_json(
                 sensim_dir=sensim_dir,
                 sensim_output=sensim_output
             )
 
         return sensim_output
+
+    def _write_index_in_json(
+        self,
+        index_dict: dict[str, typing.Any],
+        json_file: pathlib.Path
+    ) -> None:
+        '''
+        Write sensitivity indices outputs a JSON file.
+        '''
+
+        # covert array to list
+        copy_index = copy.deepcopy(index_dict)
+        write_index = {}
+        for i in copy_index:
+            write_index[i] = {
+                k: v.tolist() for k, v in copy_index[i].items()
+            }
+
+        # write index data
+        with open(json_file, 'w') as output_json:
+            json.dump(write_index, output_json, indent=4)
+
+        return None
 
     def parameter_sensitivity_indices(
         self,
@@ -471,23 +494,16 @@ class SensitivityAnalyzer:
             )
             sensitivity_indices[indicator] = indicator_sensitivity
 
-        # Save the sensitivity indices
+        # Write the sensitivity indices
         if json_file is not None:
-            # Raise error for invalid JSON file extension
             json_file = pathlib.Path(json_file).resolve()
             validators._json_extension(
                 json_file=json_file
             )
-            # Modify sensitivity index to write in the JSON file
-            copy_indices = copy.deepcopy(sensitivity_indices)
-            write_indices = {}
-            for indicator in indicators:
-                write_indices[indicator] = {
-                    k: v.tolist() for k, v in copy_indices[indicator].items()
-                }
-            # saving output data
-            with open(json_file, 'w') as output_json:
-                json.dump(write_indices, output_json, indent=4)
+            self._write_index_in_json(
+                index_dict=sensitivity_indices,
+                json_file=json_file
+            )
 
         # Output dictionary
         output = {
@@ -496,3 +512,373 @@ class SensitivityAnalyzer:
         }
 
         return output
+
+    def simulation_and_indices(
+        self,
+        parameters: newtype.BoundType,
+        sample_number: int,
+        sensim_dir: str | pathlib.Path,
+        txtinout_dir: str | pathlib.Path,
+        extract_data: dict[str, dict[str, typing.Any]],
+        observe_data: dict[str, dict[str, str]],
+        metric_config: dict[str, dict[str, str]],
+        max_workers: typing.Optional[int] = None
+    ) -> dict[str, typing.Any]:
+        '''
+        Warning:
+            This method is currently under development.
+
+        Provide a high-level interface for directly computing sensitivity indices. Similar to the method
+        [`simulation_by_sample_parameters`](https://swat-model.github.io/pySWATPlus/api/sensitivity_analyzer/#pySWATPlus.SensitivityAnalyzer.simulation_by_sample_parameters),
+        it follows the same computational approach but skips saving the simulated data, instead computing sensitivity indices directly against the observed data.
+
+        The method returns a dictionary containing keys correspond to entries in `metric_config`, and values are the computed sensitivity indices.
+
+        The following JSON files are saved in `sensim_dir`:
+
+        - `sensitivity_indices.json`: A dictionary where keys correspond to entries in `metric_config`, and values are the computed sensitivity indices.
+        - `time.json`: A dictionary containing the computation time details.
+
+        Args:
+            parameters (newtype.BoundType): List of dictionaries defining parameter configurations for sensitivity simulations.
+                Each dictionary contain the following keys:
+
+                - `name` (str): **Required.** Name of the parameter in the `cal_parms.cal` file.
+                - `change_type` (str): **Required.** Type of change to apply. Must be one of 'absval', 'abschg', or 'pctchg'.
+                - `lower_bound` (float): **Required.** Lower bound for the parameter.
+                - `upper_bound` (float): **Required.** Upper bound for the parameter.
+                - `units` (Iterable[int]): Optional. List of unit IDs to which the parameter change should be constrained.
+                - `conditions` (dict[str, list[str]]): Optional.  Conditions to apply when changing the parameter.
+                  Supported keys include `'hsg'`, `'texture'`, `'plant'`, and `'landuse'`, each mapped to a list of allowed values.
+
+                ```python
+                parameters = [
+                    {
+                        'name': 'cn2',
+                        'change_type': 'pctchg',
+                        'lower_bound': 25,
+                        'upper_bound': 75,
+                    },
+                    {
+                        'name': 'perco',
+                        'change_type': 'absval',
+                        'lower_bound': 0,
+                        'upper_bound': 1,
+                        'conditions': {'hsg': ['A']}
+                    },
+                    {
+                        'name': 'bf_max',
+                        'change_type': 'absval',
+                        'lower_bound': 0.1,
+                        'upper_bound': 2.0,
+                        'units': range(1, 194)
+                    }
+                ]
+                ```
+
+            sample_number (int): sample_number (int): Determines the number of samples.
+                Generates an array of length `2^N * (D + 1)`, where `D` is the number of parameter changes
+                and `N = sample_number + 1`. For example, when `sample_number` is 1, 12 samples will be generated.
+
+            sensim_dir (str | pathlib.Path): Path to the directory where individual simulations for each parameter set will be performed.
+                Raises an error if the folder is not empty. This precaution helps prevent data deletion, overwriting directories,
+                and issues with reading required data files not generated by the simulation.
+
+            txtinout_dir (str | pathlib.Path): Path to the `TxtInOut` directory containing the required files for SWAT+ simulation.
+
+            extract_data (dict[str, dict[str, typing.Any]]): A nested dictionary specifying how to extract data from SWAT+ simulation output files.
+                The top-level keys are filenames of the output files, without paths (e.g., `channel_sd_day.txt`). Each key must map to a non-empty dictionary
+                containing the following sub-keys, which correspond to the input variables within the method
+                [`simulated_timeseries_df`](https://swat-model.github.io/pySWATPlus/api/data_manager/#pySWATPlus.DataManager.simulated_timeseries_df):
+
+                - `has_units` (bool): **Required.** If `True`, the third line of the simulated file contains units for the columns.
+                - `begin_date` (str): Optional. Start date in `DD-Mon-YYYY` format (e.g., 01-Jan-2010). Defaults to the earliest date in the simulated file.
+                - `end_date` (str): Optional. End date in `DD-Mon-YYYY` format (e.g., 31-Dec-2013). Defaults to the latest date in the simulated file.
+                - `ref_day` (int): Optional. Reference day for monthly and yearly time series.
+                   If `None` (default), the last day of the month or year is used, obtained from simulation. Not applicable to daily time series files (ending with `_day`).
+                - `ref_month` (int): Optional. Reference month for yearly time series. If `None` (default), the last month of the year is used, obtained from simulation.
+                  Not applicable to monthly time series files (ending with `_mon`).
+                - `apply_filter` (dict[str, list[typing.Any]]): Optional. Each key is a column name and the corresponding value
+                  is a list of allowed values for filtering rows in the DataFrame. By default, no filtering is applied.
+                  An error is raised if filtering produces an empty DataFrame.
+
+                !!! note
+                    The sub-key `usecols` should **not** be included here. Although no error will be raised, it will be ignored during class initialization
+                    because the `sim_col` sub-key from the `objective_config` input is automatically used as `usecols`. Including it manually has no effect.
+
+                ```python
+                extract_data = {
+                    'channel_sd_mon.txt': {
+                        'has_units': True,
+                        'begin_date': '01-Jun-2014',
+                        'end_date': '01-Oct-2016',
+                        'apply_filter': {'gis_id': [561], 'yr': [2015, 2016]},
+                        'usecols': ['gis_id', 'flo_out']
+                    },
+                    'channel_sd_yr.txt': {
+                        'has_units': True,
+                        'apply_filter': {'name': ['cha561'], 'yr': [2015, 2016]},
+                        'usecols': ['gis_id', 'flo_out']
+                    }
+                }
+                ```
+
+            observe_data (dict[str, dict[str, str]]): A nested dictionary specifying observed data configuration. The top-level keys
+                are same as keys of `extract_data` (e.g., `channel_sd_day.txt`). Each key must map to a non-empty dictionary containing the following sub-keys:
+
+                - `obs_file` (str): **Required.** Path to the CSV file containing observed data. The file must include a `date` column with comma as the
+                  separator to read the `DataFrame` by the [`pandas.read_csv`](https://pandas.pydata.org/docs/reference/api/pandas.read_csv.html#pandas-read-csv)
+                  method. The `date` col will be used to merge simulated and observed data.
+                - `date_format` (str): **Required.** Date format of the `date` column in `obs_file`, used to parse `datetime.date` objects from date strings.
+
+                ```python
+                observe_data = {
+                    'channel_sd_day.txt': {
+                        'obs_file': "C:\\Users\\Username\\observed_data\\discharge_daily.csv",
+                        'date_format': '%Y-%m-%d'
+                    },
+                    'channel_sd_mon.txt': {
+                        'obs_file': "C:\\Users\\Username\\observed_data\\discharge_monthly.csv",
+                        'date_format': '%Y-%m-%d'
+                    }
+                }
+                ```
+
+            metric_config (dict[str, dict[str, str]]): A nested dictionary specifying metric configuration. The top-level keys
+                are same as keys of `extract_data` (e.g., `channel_sd_day.txt`). Each key must map to a non-empty dictionary containing the following sub-keys:
+
+                - `sim_col` (str): **Required.** Name of the column containing simulated values.
+                - `obs_col` (str): **Required.** Name of the column containing observed values.
+                - `indicator` (str): **Required.** Name of the performance indicator used for optimization.
+                  Available options with their optimization direction are listed below:
+
+                    - `NSE`: Nash–Sutcliffe Efficiency.
+                    - `KGE`: Kling–Gupta Efficiency.
+                    - `MSE`: Mean Squared Error.
+                    - `RMSE`: Root Mean Squared Error.
+                    - `PBIAS`: Percent Bias.
+                    - `MARE`: Mean Absolute Relative Error.
+
+                !!! tip
+                    Avoid using `MARE` if `obs_col` contains zero values, as it will cause a division-by-zero error.
+
+                ```python
+                metric_config = {
+                    'channel_sd_day.txt': {
+                        'sim_col': 'flo_out',
+                        'obs_col': 'discharge',
+                        'indicator': 'NSE'
+                    },
+                    'channel_sd_mon.txt': {
+                        'sim_col': 'flo_out',
+                        'obs_col': 'discharge',
+                        'indicator': 'MSE'
+                    }
+                }
+                ```
+
+            max_workers (int): Number of logical CPUs to use for parallel processing. If `None` (default), all available logical CPUs are used.
+
+        Returns:
+            Dictionary where keys correspond to entries in `metric_config`, and values are the computed sensitivity indices.
+        '''
+
+        # Start time
+        start_time = time.time()
+
+        # Check input variables type
+        validators._variable_origin_static_type(
+            vars_types=typing.get_type_hints(
+                obj=self.simulation_and_indices
+            ),
+            vars_values=locals()
+        )
+
+        # Absolute directory path
+        sensim_dir = pathlib.Path(sensim_dir).resolve()
+        txtinout_dir = pathlib.Path(txtinout_dir).resolve()
+
+        # Validate same top-level keys in dictionaries
+        validators._dict_key_equal(
+            extract_data=extract_data,
+            observe_data=observe_data,
+            metric_config=metric_config
+        )
+
+        # Dictionary of DataFrame key name
+        df_key = {
+            m: m.split('.')[0] + '_df' for m in metric_config
+        }
+
+        # Validate initialization of TxtinoutReader class
+        tmp_reader = TxtinoutReader(
+            tio_dir=txtinout_dir
+        )
+
+        # Disable CSV print to save time
+        tmp_reader.disable_csv_print()
+
+        # List of BoundDict objects
+        params_bounds = utils._parameters_bound_dict_list(
+            parameters=parameters
+        )
+
+        # Validate configuration of simulation parameters
+        validators._simulation_preliminary_setup(
+            sim_dir=sensim_dir,
+            tio_dir=txtinout_dir,
+            parameters=params_bounds
+        )
+
+        # Validate metric configuration
+        validators._metric_config(
+            input_dict=metric_config,
+            var_name='metric_config'
+        )
+
+        # Validate observe_data configuration
+        validators._observe_data_config(
+            observe_data=observe_data
+        )
+
+        # Dictionary of observed DataFrames
+        observe_dict = utils._observe_data_dict(
+            observe_data=observe_data,
+            metric_config=metric_config,
+            df_key=df_key
+        )
+
+        # Validate extract_data configuration
+        for key in extract_data:
+            extract_data[key]['usecols'] = [metric_config[key]['sim_col']]
+        validators._extract_data_config(
+            extract_data=extract_data
+        )
+
+        # problem dictionary
+        problem = self._create_sobol_problem(
+            params_bounds=params_bounds
+        )
+        copy_problem = copy.deepcopy(
+            x=problem
+        )
+
+        # Generate sample array
+        sample_array = SALib.sample.sobol.sample(
+            problem=copy_problem,
+            N=pow(2, sample_number)
+        )
+
+        # Unique array to avoid duplicate computations
+        unique_array = numpy.unique(
+            ar=sample_array,
+            axis=0
+        )
+
+        # Number of unique simulations
+        num_sim = len(unique_array)
+
+        # Simulation in separate CPU
+        cpu_sim = functools.partial(
+            cpu._simulation_output,
+            num_sim=num_sim,
+            var_names=copy_problem['names'],
+            sim_dir=sensim_dir,
+            tio_dir=txtinout_dir,
+            params_bounds=params_bounds,
+            extract_data=extract_data,
+            clean_setup=True
+        )
+
+        # Assign model simulation in individual computer CPU and collect results
+        cpu_dict = {}
+        with concurrent.futures.ProcessPoolExecutor(max_workers=max_workers) as executor:
+            # Multicore simulation
+            futures = [
+                executor.submit(cpu_sim, idx, arr) for idx, arr in enumerate(unique_array, start=1)
+            ]
+            for future in concurrent.futures.as_completed(futures):
+                # Message simulation completion for tracking
+                print(f'Completed simulation: {futures.index(future) + 1}/{num_sim}', flush=True)
+                # Collect simulation results
+                future_result = future.result()
+                cpu_dict[tuple(future_result['array'])] = {
+                    k: v for k, v in future_result.items() if k != 'array'
+                }
+
+        # An empty dictionary to store metric values for array
+        metric_dict = {}
+
+        # Iterate unique array
+        for arr in unique_array:
+            # Empty dictionary to store DataFrame metric
+            arr_ind = {}
+            # Simulation output for the array
+            arr_sim = cpu_dict[tuple(arr)]
+            # Iterate metric
+            for m in metric_config:
+                # Simulated DataFrame
+                sim_df = arr_sim[df_key[m]]
+                sim_df.columns = ['date', 'sim']
+                # Observed DataFrame
+                obs_df = observe_dict[df_key[m]]
+                # Merge simulated and observed DataFrames by 'date' column
+                merge_df = sim_df.merge(
+                    right=obs_df,
+                    how='inner',
+                    on='date'
+                )
+                # Normalized DataFrame
+                norm_df = utils._df_normalize(
+                    df=merge_df[['sim', 'obs']],
+                    norm_col='obs'
+                )
+                # Indicator method from abbreviation
+                ind_method = getattr(
+                    PerformanceMetrics(),
+                    f'compute_{metric_config[m]['indicator'].lower()}'
+                )
+                # Indicator value computed from method
+                ind_val = ind_method(
+                    df=norm_df,
+                    sim_col='sim',
+                    obs_col='obs'
+                )
+                # Store DataFrame metric in dictionary
+                arr_ind[df_key[m]] = ind_val
+            # Store metric values for array
+            metric_dict[tuple(arr)] = arr_ind
+
+        # Sensitivity indices
+        sensitivity_indices = {}
+        for m in metric_config:
+            # List of metric values
+            m_list = [
+                metric_dict[tuple(arr)][df_key[m]] for arr in sample_array
+            ]
+            # Indicator sensitivity indices
+            m_index = SALib.analyze.sobol.analyze(
+                problem=copy.deepcopy(problem),
+                Y=numpy.array(m_list)
+            )
+            sensitivity_indices[m] = m_index
+
+        # Write the sensitivity indices
+        self._write_index_in_json(
+            index_dict=sensitivity_indices,
+            json_file=sensim_dir / 'sensitivity_indices.json'
+        )
+
+        # Time statistics
+        required_time = time.time() - start_time
+        time_stats = {
+            'time_sec': round(required_time),
+            'sample_length': len(sample_array),
+            'time_per_sample_sec': round(required_time / len(sample_array), 1)
+        }
+
+        # Write time statistics
+        with open(sensim_dir / 'time.json', 'w') as output_json:
+            json.dump(time_stats, output_json, indent=4)
+
+        return sensitivity_indices
