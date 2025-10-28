@@ -86,7 +86,7 @@ class Calibration(pymoo.core.problem.Problem):  # type: ignore[misc]
 
             !!! note
                 The sub-key `usecols` should **not** be included here. Although no error will be raised, it will be ignored during class initialization
-                because the `sim_col` sub-key from the `objectives` input is automatically used as `usecols`. Including it manually has no effect.
+                because the `sim_col` sub-key from the `objective_config` input is automatically used as `usecols`. Including it manually has no effect.
 
             ```python
             extract_data = {
@@ -124,7 +124,7 @@ class Calibration(pymoo.core.problem.Problem):  # type: ignore[misc]
             }
             ```
 
-        objectives (dict[str, dict[str, str]]): A nested dictionary specifying objectives configuration. The top-level keys
+        objective_config (dict[str, dict[str, str]]): A nested dictionary specifying objectives configuration. The top-level keys
             are same as keys of `extract_data` (e.g., `channel_sd_day.txt`). Each key must map to a non-empty dictionary containing the following sub-keys:
 
             - `sim_col` (str): **Required.** Name of the column containing simulated values.
@@ -142,7 +142,7 @@ class Calibration(pymoo.core.problem.Problem):  # type: ignore[misc]
                 Avoid using `MARE` if `obs_col` contains zero values, as it will cause a division-by-zero error.
 
             ```python
-            objectives = {
+            objective_config = {
                 'channel_sd_day.txt': {
                     'sim_col': 'flo_out',
                     'obs_col': 'discharge',
@@ -186,7 +186,7 @@ class Calibration(pymoo.core.problem.Problem):  # type: ignore[misc]
         txtinout_dir: str | pathlib.Path,
         extract_data: dict[str, dict[str, typing.Any]],
         observe_data: dict[str, dict[str, str]],
-        objectives: dict[str, dict[str, str]],
+        objective_config: dict[str, dict[str, str]],
         algorithm: str,
         n_gen: int,
         pop_size: int,
@@ -205,11 +205,17 @@ class Calibration(pymoo.core.problem.Problem):  # type: ignore[misc]
         calsim_dir = pathlib.Path(calsim_dir).resolve()
         txtinout_dir = pathlib.Path(txtinout_dir).resolve()
 
-        # Check same top-level keys in dictionaries
-        if not (extract_data.keys() == observe_data.keys() == objectives.keys()):
-            raise KeyError(
-                'Mismatch of key names. Ensure extract_data, observe_data, and objectives have identical top-level keys.'
-            )
+        # Validate same top-level keys in dictionaries
+        validators._dict_key_equal(
+            extract_data=extract_data,
+            observe_data=observe_data,
+            objective_config=objective_config
+        )
+
+        # Dictionary of metric key name
+        df_key = {
+            obj: obj.split('.')[0] + '_df' for obj in objective_config
+        }
 
         # Validate initialization of TxtinoutReader class
         tmp_reader = TxtinoutReader(
@@ -232,29 +238,31 @@ class Calibration(pymoo.core.problem.Problem):  # type: ignore[misc]
         )
 
         # Validate objectives configuration
-        self._validate_objectives_config(
-            objectives=objectives
+        validators._metric_config(
+            input_dict=objective_config,
+            var_name='objective_config'
         )
+        for obj in objective_config:
+            if objective_config[obj]['indicator'] == 'PBIAS':
+                raise ValueError(
+                    'Indicator "PBIAS" is invalid in objective_config; it lacks a defined optimization direction'
+                )
 
         # Validate observe_data configuration
-        self._validate_observe_data_config(
+        validators._observe_data_config(
             observe_data=observe_data
         )
 
         # Dictionary of observed DataFrames
-        observe_dict = {}
-        for key in observe_data:
-            key_df = utils._df_observe(
-                obs_file=pathlib.Path(observe_data[key]['obs_file']).resolve(),
-                date_format=observe_data[key]['date_format'],
-                obs_col=objectives[key]['obs_col']
-            )
-            key_df.columns = ['date', 'obs']
-            observe_dict[key.split('.')[0] + '_df'] = key_df
+        observe_dict = utils._observe_data_dict(
+            observe_data=observe_data,
+            metric_config=objective_config,
+            df_key=df_key
+        )
 
         # Validate extract_data configuration
         for key in extract_data:
-            extract_data[key]['usecols'] = [objectives[key]['sim_col']]
+            extract_data[key]['usecols'] = [objective_config[key]['sim_col']]
         validators._extract_data_config(
             extract_data=extract_data
         )
@@ -274,8 +282,9 @@ class Calibration(pymoo.core.problem.Problem):  # type: ignore[misc]
         # Initalize parameters
         self.params_bounds = params_bounds
         self.extract_data = extract_data
-        self.objectives = objectives
+        self.objective_config = objective_config
         self.var_names = var_names
+        self.df_key = df_key
         self.observe_dict = observe_dict
         self.calsim_dir = calsim_dir
         self.txtinout_dir = txtinout_dir
@@ -289,7 +298,7 @@ class Calibration(pymoo.core.problem.Problem):  # type: ignore[misc]
         # Access properties and methods from Problem class
         super().__init__(
             n_var=len(params_bounds),
-            n_obj=len(objectives),
+            n_obj=len(objective_config),
             xl=numpy.array(var_lb),
             xu=numpy.array(var_ub)
         )
@@ -350,16 +359,12 @@ class Calibration(pymoo.core.problem.Problem):  # type: ignore[misc]
             # Simulation output for the population
             pop_sim = cpu_dict[tuple(pop)]
             # Iterate objectives
-            for obj in self.objectives:
-                # Objective indicator
-                obj_ind = self.objectives[obj]['indicator']
-                # Objective key name to extract simulated and obseved DataFrames
-                obj_key = obj.split('.')[0] + '_df'
+            for obj in self.objective_config:
                 # Simulated DataFrame
-                sim_df = pop_sim[obj_key]
+                sim_df = pop_sim[self.df_key[obj]]
                 sim_df.columns = ['date', 'sim']
                 # Observed DataFrame
-                obs_df = self.observe_dict[obj_key]
+                obs_df = self.observe_dict[self.df_key[obj]]
                 # Merge simulated and observed DataFrames by 'date' column
                 merge_df = sim_df.merge(
                     right=obs_df,
@@ -372,6 +377,7 @@ class Calibration(pymoo.core.problem.Problem):  # type: ignore[misc]
                     norm_col='obs'
                 )
                 # Indicator method from abbreviation
+                obj_ind = self.objective_config[obj]['indicator']
                 indicator_method = getattr(
                     PerformanceMetrics(),
                     f'compute_{obj_ind.lower()}'
@@ -414,94 +420,6 @@ class Calibration(pymoo.core.problem.Problem):  # type: ignore[misc]
 
         return objs_dirs
 
-    def _validate_observe_data_config(
-        self,
-        observe_data: dict[str, dict[str, str]],
-    ) -> None:
-        '''
-        Validate `observe_data` configuration.
-        '''
-
-        # List of valid sub-keys of sub-dictionaries
-        valid_subkeys = [
-            'obs_file',
-            'date_format'
-        ]
-
-        # Iterate dictionary
-        for file_key, file_dict in observe_data.items():
-            # Check type of a sub-dictionary
-            if not isinstance(file_dict, dict):
-                raise TypeError(
-                    f'Expected "{file_key}" in observe_data must be a dictionary, '
-                    f'but got type "{type(file_dict).__name__}"'
-                )
-            # Check sub-dictionary length
-            if len(file_dict) != 2:
-                raise ValueError(
-                    f'Length of "{file_key}" sub-dictionary in observe_data must be 2, '
-                    f'but got {len(file_dict)}'
-                )
-            # Iterate sub-key
-            for sub_key in file_dict:
-                # Check valid sub-key
-                if sub_key not in valid_subkeys:
-                    raise KeyError(
-                        f'Invalid sub-key "{sub_key}" for "{file_key}" in observe_data; '
-                        f'expected sub-keys are {json.dumps(valid_subkeys)}'
-                    )
-
-        return None
-
-    def _validate_objectives_config(
-        self,
-        objectives: dict[str, dict[str, str]],
-    ) -> None:
-        '''
-        Validate `objectives` configuration.
-        '''
-
-        # List of valid sub-keys of sub-dictionaries
-        valid_subkeys = [
-            'sim_col',
-            'obs_col',
-            'indicator'
-        ]
-
-        valid_indicators = [
-            key for key in PerformanceMetrics().indicator_names if key != 'PBIAS'
-        ]
-
-        # Iterate dictionary
-        for file_key, file_dict in objectives.items():
-            # Check type of a sub-dictionary
-            if not isinstance(file_dict, dict):
-                raise TypeError(
-                    f'Expected "{file_key}" in "objectives" must be a dictionary, '
-                    f'but got type "{type(file_dict).__name__}"'
-                )
-            # Check sub-dictionary length
-            if len(file_dict) != 3:
-                raise ValueError(
-                    f'Length of "{file_key}" sub-dictionary in "objectives" must be 3, '
-                    f'but got {len(file_dict)}'
-                )
-            # Iterate sub-key
-            for sub_key in file_dict:
-                # Check valid sub-key
-                if sub_key not in valid_subkeys:
-                    raise KeyError(
-                        f'Invalid sub-key "{sub_key}" for "{file_key}" in "objectives"; '
-                        f'expected sub-keys are {json.dumps(valid_subkeys)}'
-                    )
-                if sub_key == 'indicator' and file_dict[sub_key] not in valid_indicators:
-                    raise ValueError(
-                        f'Invalid "indicator" value "{file_dict[sub_key]}" for "{file_key}" in "objectives"; '
-                        f'expected indicators are {valid_indicators}'
-                    )
-
-        return None
-
     def _algorithm_class(
         self,
         algorithm: str
@@ -509,6 +427,9 @@ class Calibration(pymoo.core.problem.Problem):  # type: ignore[misc]
         '''
         Retrieve the optimization algorithm class from the `pymoo` package.
         '''
+
+        single_obj = ['GA', 'DE']
+        multi_obj = ['NSGA2']
 
         # Dictionary mapping between algorithm name and module
         api_module = {
@@ -521,6 +442,12 @@ class Calibration(pymoo.core.problem.Problem):  # type: ignore[misc]
         if algorithm not in api_module:
             raise NameError(
                 f'Invalid algorithm "{algorithm}"; valid names are {list(api_module.keys())}'
+            )
+
+        # Check single objective algorithm cannot be used for multiple objectives
+        if len(self.objective_config) >= 2 and algorithm in single_obj:
+            raise ValueError(
+                f'Algorithm "{algorithm}" cannot handle multiple objectives; use one of {multi_obj}'
             )
 
         # Algorithm class
@@ -540,15 +467,15 @@ class Calibration(pymoo.core.problem.Problem):  # type: ignore[misc]
         This method executes the optimization process and returns a dictionary containing the optimized
         parameters, corresponding objective values, and total execution time.
 
-        Two JSON files are saved in the input directory `calsim_dir`.
+        The following JSON files are saved in `calsim_dir`:
 
-        The file `optimization_history.json` stores the optimization history. Each key in this
-        file is an integer starting from 1, representing the generation number. The corresponding value
-        is a sub-dictionary with two keys: `pop` for the population data (decision variables) and `obj`
-        for the objective function values. This file is useful for analyzing optimization progress,
-        convergence trends, performance indicators, and visualization.
+        - `optimization_history.json`: A dictionary containing the optimization history. Each key in this
+          file is an integer starting from 1, representing the generation number. The corresponding value
+          is a sub-dictionary with two keys: `pop` for the population data (decision variables) and `obj`
+          for the objective function values. This file is useful for analyzing optimization progress,
+          convergence trends, performance indicators, and visualization.
 
-        The file `optimization_result.json` contains the final output dictionary described below.
+        - `optimization_result.json`: A dictionary containing the final output dictionary.
 
         Returns:
             Dictionary with the following keys:
@@ -599,7 +526,7 @@ class Calibration(pymoo.core.problem.Problem):  # type: ignore[misc]
         # Sign of objective directions
         objs_dirs = self._objectives_directions()
         dir_list = [
-            objs_dirs[v['indicator']] for k, v in self.objectives.items()
+            objs_dirs[v['indicator']] for k, v in self.objective_config.items()
         ]
         dir_sign = numpy.where(numpy.array(dir_list) == 'max', -1, 1)
 
@@ -610,18 +537,16 @@ class Calibration(pymoo.core.problem.Problem):  # type: ignore[misc]
                 'pop': gen.pop.get('X').tolist(),
                 'obj': (gen.pop.get('F') * dir_sign).tolist()
             }
-        json_file = self.calsim_dir / 'optimization_history.json'
-        with open(json_file, 'w') as output_write:
+        with open(self.calsim_dir / 'optimization_history.json', 'w') as output_write:
             json.dump(opt_hist, output_write, indent=4)
 
         # Optimized output of parameters, objectives, and execution times
-        required_time = round(result.exec_time)
         opt_output = {
             'algorithm': self.algorithm,
             'generation': self.n_gen,
             'population': self.pop_size,
             'total_simulation': self.pop_size * self.n_gen,
-            'time_sec': required_time,
+            'time_sec': round(result.exec_time),
             'variables': result.X,
             'objectives': result.F * dir_sign
         }
@@ -631,8 +556,7 @@ class Calibration(pymoo.core.problem.Problem):  # type: ignore[misc]
         save_output = {
             k: v.tolist() if k.startswith(('var', 'obj')) else v for k, v in save_output.items()
         }
-        json_file = self.calsim_dir / 'optimization_result.json'
-        with open(json_file, 'w') as output_write:
+        with open(self.calsim_dir / 'optimization_result.json', 'w') as output_write:
             json.dump(save_output, output_write, indent=4)
 
         return opt_output

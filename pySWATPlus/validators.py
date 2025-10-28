@@ -414,3 +414,121 @@ def _extract_data_config(
                 )
 
     return None
+
+
+def _metric_config(
+    input_dict: dict[str, dict[str, str]],
+    var_name: str
+) -> None:
+    '''
+    Validate metric dictionary configuration.
+    '''
+
+    # List of valid sub-keys of sub-dictionaries
+    valid_subkeys = [
+        'sim_col',
+        'obs_col',
+        'indicator'
+    ]
+
+    # List of valid indicators
+    valid_indicators = [
+        'NSE',
+        'KGE',
+        'MSE',
+        'RMSE',
+        'PBIAS',
+        'MARE'
+    ]
+
+    # Iterate dictionary
+    for file_key, file_dict in input_dict.items():
+        # Check type of a sub-dictionary
+        if not isinstance(file_dict, dict):
+            raise TypeError(
+                f'Expected "{file_key}" in {var_name} must be a dictionary, '
+                f'but got type "{type(file_dict).__name__}"'
+            )
+        # Check sub-dictionary length
+        if len(file_dict) != 3:
+            raise ValueError(
+                f'Length of "{file_key}" sub-dictionary in {var_name} must be 3, '
+                f'but got {len(file_dict)}'
+            )
+        # Iterate sub-key
+        for sub_key in file_dict:
+            # Check valid sub-key
+            if sub_key not in valid_subkeys:
+                raise KeyError(
+                    f'Invalid sub-key "{sub_key}" for "{file_key}" in {var_name}; '
+                    f'expected sub-keys are {json.dumps(valid_subkeys)}'
+                )
+            if sub_key == 'indicator' and file_dict[sub_key] not in valid_indicators:
+                raise ValueError(
+                    f'Invalid "indicator" value "{file_dict[sub_key]}" for "{file_key}" in {var_name}; '
+                    f'expected indicators are {valid_indicators}'
+                )
+
+    return None
+
+
+def _observe_data_config(
+    observe_data: dict[str, dict[str, str]],
+) -> None:
+    '''
+    Validate `observe_data` configuration.
+    '''
+
+    # List of valid sub-keys of sub-dictionaries
+    valid_subkeys = [
+        'obs_file',
+        'date_format'
+    ]
+
+    # Iterate dictionary
+    for file_key, file_dict in observe_data.items():
+        # Check type of a sub-dictionary
+        if not isinstance(file_dict, dict):
+            raise TypeError(
+                f'Expected "{file_key}" in observe_data must be a dictionary, '
+                f'but got type "{type(file_dict).__name__}"'
+            )
+        # Check sub-dictionary length
+        if len(file_dict) != 2:
+            raise ValueError(
+                f'Length of "{file_key}" sub-dictionary in observe_data must be 2, '
+                f'but got {len(file_dict)}'
+            )
+        # Iterate sub-key
+        for sub_key in file_dict:
+            # Check valid sub-key
+            if sub_key not in valid_subkeys:
+                raise KeyError(
+                    f'Invalid sub-key "{sub_key}" for "{file_key}" in observe_data; '
+                    f'expected sub-keys are {json.dumps(valid_subkeys)}'
+                )
+
+        return None
+
+
+def _dict_key_equal(
+    **dicts: dict[str, typing.Any]
+) -> None:
+    '''
+    Validate equal top-level keys across input dictionaries.
+    '''
+
+    # List of dictionary name and their values
+    dict_items = list(dicts.items())
+
+    # Get reference name and keys from the first dictionary
+    ref_name, ref_dict = dict_items[0]
+
+    # Compare with each subsequent dictionary
+    for c_name, c_dict in dict_items[1:]:
+        if c_dict.keys() != ref_dict.keys():
+            raise ValueError(
+                f'Top-level keys mismatch between "{ref_name}" and "{c_name}"'
+            )
+
+    return None

@@ -393,3 +393,25 @@ def _parameters_name_with_counter(
             name_counter.append(f'{p_name}|{current_count[p_name]}')
 
     return name_counter
+
+
+def _observe_data_dict(
+    observe_data: dict[str, dict[str, str]],
+    metric_config: dict[str, dict[str, str]],
+    df_key: dict[str, str]
+) -> dict[str, pandas.DataFrame]:
+    '''
+    Generate a dictionary mapping each entry in `observed_data` to its corresponding `DataFrame`.
+    '''
+
+    observe_dict = {}
+    for obs in observe_data:
+        obs_df = _df_observe(
+            obs_file=pathlib.Path(observe_data[obs]['obs_file']).resolve(),
+            date_format=observe_data[obs]['date_format'],
+            obs_col=metric_config[obs]['obs_col']
+        )
+        obs_df.columns = ['date', 'obs']
+        observe_dict[df_key[obs]] = obs_df
+
+    return observe_dict
