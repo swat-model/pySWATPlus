@@ -834,9 +834,10 @@ class SensitivityAnalyzer:
                     norm_col='obs'
                 )
                 # Indicator method from abbreviation
+                ind_abbr = metric_config[m]['indicator']
                 ind_method = getattr(
                     PerformanceMetrics(),
-                    f'compute_{metric_config[m]['indicator'].lower()}'
+                    f'compute_{ind_abbr.lower()}'
                 )
                 # Indicator value computed from method
                 ind_val = ind_method(
