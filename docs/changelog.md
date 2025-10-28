@@ -1,5 +1,12 @@
 # Release Notes
 
+## Version 1.3.0 (not released yet)
+
+- Introduced the `pySWATPlus.Calibration` class for parameter calibration using multi-objective optimization, evolutionary algorithms, and parallel computing.
+
+- Added the `pySWATPlus.SensitivityAnalyzer.simulation_and_indices` method to compute sensitivity indices directly against observed data without saving detailed simulation results.
+
+  
 ## Version 1.2.0 (October 13, 2025)
 
 - All SWAT+ simulations with modified parameters are now configured through the `calibration.cal` file, eliminating the need to read and modify individual input files.
@@ -29,7 +36,6 @@
     - Added `set_print_interval` to modify the print interval in the `print.prt` file.
     - Added `set_print_period` to modify the print period in the `print.prt` file for recording simulated results.  
     - Renamed `set_begin_and_end_date` to `set_simulation_period` for better consistency.
-
 
 
 ## Version 1.1.0 (August 26, 2025)

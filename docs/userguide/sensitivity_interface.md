@@ -131,3 +131,80 @@ output = pySWATPlus.SensitivityAnalyzer().parameter_sensitivity_indices(
     json_file=r"C:\Users\Username\sensitivity_indices.json"
 )
 ```
+
+
+## Integrated Simulation and Sensitivity
+
+To compute sensitivity indices directly for multiple outputs against observed data and skip saving the detailed simulation results, use the following interface:
+
+
+```python
+# Define parameter space
+parameters = [
+    {
+        'name': 'esco',
+        'change_type': 'absval',
+        'lower_bound': 0,
+        'upper_bound': 1
+    },
+    {
+        'name': 'perco',
+        'change_type': 'absval',
+        'lower_bound': 0,
+        'upper_bound': 1
+    }
+]
+
+
+# Extract data configuration
+extract_data = {
+    'channel_sd_day.txt': {
+        'has_units': True,
+        'apply_filter': {'name': ['cha561']}
+    },
+    'channel_sd_mon.txt': {
+        'has_units': True,
+        'ref_day': 1,
+        'apply_filter': {'name': ['cha561']}
+    }
+}
+
+# Observe data configuration
+observe_data = {
+    'channel_sd_day.txt': {
+        'obs_file': r"C:\Users\Username\observed_folder\discharge_daily.csv",
+        'date_format': '%Y-%m-%d'
+    },
+    'channel_sd_mon.txt': {
+        'obs_file': r"C:\Users\Username\observed_folder\discharge_monthly.csv",
+        'date_format': '%Y-%m-%d'
+    }
+}
+
+# Metric configuration
+metric_config = {
+    'channel_sd_day.txt': {
+        'sim_col': 'flo_out',
+        'obs_col': 'discharge',
+        'indicator': 'NSE'
+    },
+    'channel_sd_mon.txt': {
+        'sim_col': 'flo_out',
+        'obs_col': 'mean',
+        'indicator': 'RMSE'
+    }
+}
+
+# Sensitivity indices
+if __name__ == '__main__':
+    output = pySWATPlus.SensitivityAnalyzer().simulation_and_indices(
+        parameters=parameters,
+        sample_number=1,
+        sensim_dir=r"C:\Users\dpal22\Desktop\swat_run\experiment_dominant_hru\empty_dir",
+        txtinout_dir=r"C:\Users\dpal22\Desktop\swat_run\experiment_dominant_hru\txtinout_copy",
+        extract_data=extract_data,
+        observe_data=observe_data,
+        metric_config=metric_config
+    )
+    print(output)
+```

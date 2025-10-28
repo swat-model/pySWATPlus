@@ -33,7 +33,8 @@ the calibration interface offers flexible options for optimizing model parameter
 
 
 The interface provides a [`Calibration`](https://swat-model.github.io/pySWATPlus/api/calibration/) class that must be initialized with the required parameters.
-This class includes the `parameter_optimization` method, which performs parameter optimization using multi-objective algorithms, evolutionary strategies, and parallel computation.
+This class includes the [`parameter_optimization`](https://swat-model.github.io/pySWATPlus/api/calibration/#pySWATPlus.Calibration.parameter_optimization) method,
+which performs parameter optimization using multi-objective algorithms, evolutionary strategies, and parallel computation.
 
 The following code provides an example of optimizing flow discharge for both daily and monthly time-series data using multi-objective evolutionary computation.
 The usage of both daily and monthly flow discharge is just for illustrative purposes on how multi-objective optimization can be performed. Users should replace monthly flow
@@ -41,7 +42,7 @@ discharge by nitorgen or phosporus concentration according to their needs.
 
 
 ```python
-# Calibration parameter space
+# Define parameter space
 parameters = [
     {
         'name': 'esco',
@@ -84,7 +85,7 @@ observe_data = {
 }
 
 # Objective configuration
-objectives = {
+objective_config = {
     'channel_sd_day.txt': {
         'sim_col': 'flo_out',
         'obs_col': 'discharge',
@@ -105,7 +106,7 @@ if __name__ == '__main__':
         txtinout_dir=r"C:\Users\Username\project\Scenarios\Default\TxtInOut",
         extract_data=extract_data,
         observe_data=observe_data,
-        objectives=objectives,
+        objective_config=objective_config,
         algorithm='NSGA2',
         n_gen=2,
         pop_size=5
