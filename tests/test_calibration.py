@@ -41,7 +41,7 @@ def test_calibration():
     }
 
     # Objective configuration
-    objectives = {
+    objective_config = {
         'channel_sd_mon.txt': {
             'sim_col': 'flo_out',
             'obs_col': 'mean',
@@ -84,7 +84,7 @@ def test_calibration():
                 txtinout_dir=tmp1_dir,
                 extract_data=extract_data,
                 observe_data=observe_data,
-                objectives=objectives,
+                objective_config=objective_config,
                 algorithm='NSGA2',
                 n_gen=2,
                 pop_size=3
@@ -98,6 +98,23 @@ def test_calibration():
             assert 'objectives' in output
             assert os.path.exists(os.path.join(tmp2_dir, 'optimization_history.json'))
             assert os.path.exists(os.path.join(tmp2_dir, 'optimization_result.json'))
+
+        # Pass: compute sensitivity indices directly
+        with tempfile.TemporaryDirectory() as tmp3_dir:
+            output = pySWATPlus.SensitivityAnalyzer().simulation_and_indices(
+                parameters=parameters,
+                sample_number=1,
+                sensim_dir=tmp3_dir,
+                txtinout_dir=tmp1_dir,
+                extract_data=extract_data,
+                observe_data=observe_data,
+                metric_config=objective_config
+            )
+
+            assert isinstance(output, dict)
+            assert len(output) == 1
+            assert os.path.exists(os.path.join(tmp3_dir, 'sensitivity_indices.json'))
+            assert os.path.exists(os.path.join(tmp3_dir, 'time.json'))
 
 
 def test_error_calibration():
@@ -137,7 +154,7 @@ def test_error_calibration():
     }
 
     # Objective configuration
-    objectives = {
+    objective_config = {
         'channel_sd_mon.txt': {
             'sim_col': 'flo_out',
             'obs_col': 'mean',
@@ -161,7 +178,7 @@ def test_error_calibration():
                     txtinout_dir=tmp1_dir,
                     extract_data=extract_data,
                     observe_data=observe_data,
-                    objectives={
+                    objective_config={
                         'channel_sd_monn.txt': {
                             'sim_col': 'flo_out',
                             'obs_col': 'mean',
@@ -172,7 +189,28 @@ def test_error_calibration():
                     n_gen=2,
                     pop_size=5
                 )
-            assert exc_info.value.args[0] == 'Mismatch of key names. Ensure extract_data, observe_data, and objectives have identical top-level keys.'
+            assert 'Top-level keys mismatch' in exc_info.value.args[0]
+
+            # Error: PBIAS is not allowed as an indicator name
+            with pytest.raises(Exception) as exc_info:
+                pySWATPlus.Calibration(
+                    parameters=parameters,
+                    calsim_dir=tmp2_dir,
+                    txtinout_dir=tmp1_dir,
+                    extract_data=extract_data,
+                    observe_data=observe_data,
+                    objective_config={
+                        'channel_sd_mon.txt': {
+                            'sim_col': 'flo_out',
+                            'obs_col': 'mean',
+                            'indicator': 'PBIAS'
+                        }
+                    },
+                    algorithm='NSGA2',
+                    n_gen=2,
+                    pop_size=5
+                )
+            assert exc_info.value.args[0] == 'Indicator "PBIAS" is invalid in objective_config; it lacks a defined optimization direction'
 
             # Error: invalid value type of top-key in observe_data
             with pytest.raises(Exception) as exc_info:
@@ -184,7 +222,7 @@ def test_error_calibration():
                     observe_data={
                         'channel_sd_mon.txt': []
                     },
-                    objectives=objectives,
+                    objective_config=objective_config,
                     algorithm='NSGA2',
                     n_gen=2,
                     pop_size=5
@@ -203,7 +241,7 @@ def test_error_calibration():
                             'date_format': '%Y-%m-%d'
                         }
                     },
-                    objectives=objectives,
+                    objective_config=objective_config,
                     algorithm='NSGA2',
                     n_gen=2,
                     pop_size=5
@@ -223,7 +261,7 @@ def test_error_calibration():
                             'date_formatt': '%Y-%m-%d'
                         }
                     },
-                    objectives=objectives,
+                    objective_config=objective_config,
                     algorithm='NSGA2',
                     n_gen=2,
                     pop_size=5
@@ -238,14 +276,14 @@ def test_error_calibration():
                     txtinout_dir=tmp1_dir,
                     extract_data=extract_data,
                     observe_data=observe_data,
-                    objectives={
+                    objective_config={
                         'channel_sd_mon.txt': []
                     },
                     algorithm='NSGA2',
                     n_gen=2,
                     pop_size=5
                 )
-            assert 'Expected "channel_sd_mon.txt" in "objectives" must be a dictionary' in exc_info.value.args[0]
+            assert 'Expected "channel_sd_mon.txt" in objective_config must be a dictionary' in exc_info.value.args[0]
 
             # Error: invalid length of sub-dictionary in objectives
             with pytest.raises(Exception) as exc_info:
@@ -255,7 +293,7 @@ def test_error_calibration():
                     txtinout_dir=tmp1_dir,
                     extract_data=extract_data,
                     observe_data=observe_data,
-                    objectives={
+                    objective_config={
                         'channel_sd_mon.txt': {
                             'sim_col': 'flo_out',
                             'obs_col': 'mean'
@@ -265,7 +303,7 @@ def test_error_calibration():
                     n_gen=2,
                     pop_size=5
                 )
-            assert 'Length of "channel_sd_mon.txt" sub-dictionary in "objectives" must be 3' in exc_info.value.args[0]
+            assert 'Length of "channel_sd_mon.txt" sub-dictionary in objective_config must be 3' in exc_info.value.args[0]
 
             # Error: invalid sub-key in objectives
             with pytest.raises(Exception) as exc_info:
@@ -275,7 +313,7 @@ def test_error_calibration():
                     txtinout_dir=tmp1_dir,
                     extract_data=extract_data,
                     observe_data=observe_data,
-                    objectives={
+                    objective_config={
                         'channel_sd_mon.txt': {
                             'sim_col': 'flo_out',
                             'obs_col': 'mean',
@@ -286,7 +324,7 @@ def test_error_calibration():
                     n_gen=2,
                     pop_size=5
                 )
-            assert 'Invalid sub-key "indicatorr" for "channel_sd_mon.txt" in "objectives"' in exc_info.value.args[0]
+            assert 'Invalid sub-key "indicatorr" for "channel_sd_mon.txt" in objective_config' in exc_info.value.args[0]
 
             # Error: invalid indicator in objectives
             with pytest.raises(Exception) as exc_info:
@@ -296,7 +334,7 @@ def test_error_calibration():
                     txtinout_dir=tmp1_dir,
                     extract_data=extract_data,
                     observe_data=observe_data,
-                    objectives={
+                    objective_config={
                         'channel_sd_mon.txt': {
                             'sim_col': 'flo_out',
                             'obs_col': 'mean',
@@ -307,7 +345,7 @@ def test_error_calibration():
                     n_gen=2,
                     pop_size=5
                 )
-            assert 'Invalid "indicator" value "RMSEE" for "channel_sd_mon.txt" in "objectives"' in exc_info.value.args[0]
+            assert 'Invalid "indicator" value "RMSEE" for "channel_sd_mon.txt" in objective_config' in exc_info.value.args[0]
 
             # Error: invalid algorithm name
             with pytest.raises(Exception) as exc_info:
@@ -317,9 +355,54 @@ def test_error_calibration():
                     txtinout_dir=tmp1_dir,
                     extract_data=extract_data,
                     observe_data=observe_data,
-                    objectives=objectives,
+                    objective_config=objective_config,
                     algorithm='NSGA',
                     n_gen=2,
                     pop_size=5
                 ).parameter_optimization()
             assert 'Invalid algorithm "NSGA"' in exc_info.value.args[0]
+
+            # Error: invalid algorithm for multiple objectives
+            with pytest.raises(Exception) as exc_info:
+                pySWATPlus.Calibration(
+                    parameters=parameters,
+                    calsim_dir=tmp2_dir,
+                    txtinout_dir=tmp1_dir,
+                    extract_data={
+                        'channel_sd_day.txt': {
+                            'has_units': True,
+                            'apply_filter': {'name': ['cha561']}
+                        },
+                        'channel_sd_mon.txt': {
+                            'has_units': True,
+                            'ref_day': 1,
+                            'apply_filter': {'name': ['cha561']}
+                        }
+                    },
+                    observe_data={
+                        'channel_sd_day.txt': {
+                            'obs_file': os.path.join(txtinout_dir, 'a_observe_discharge_monthly.csv'),
+                            'date_format': '%Y-%m-%d'
+                        },
+                        'channel_sd_mon.txt': {
+                            'obs_file': os.path.join(txtinout_dir, 'a_observe_discharge_monthly.csv'),
+                            'date_format': '%Y-%m-%d'
+                        }
+                    },
+                    objective_config={
+                        'channel_sd_day.txt': {
+                            'sim_col': 'flo_out',
+                            'obs_col': 'mean',
+                            'indicator': 'NSE'
+                        },
+                        'channel_sd_mon.txt': {
+                            'sim_col': 'flo_out',
+                            'obs_col': 'mean',
+                            'indicator': 'RMSE'
+                        }
+                    },
+                    algorithm='DE',
+                    n_gen=2,
+                    pop_size=5
+                ).parameter_optimization()
+            assert 'Algorithm "DE" cannot handle multiple objectives' in exc_info.value.args[0]
