@@ -7,6 +7,8 @@ import typing
 import collections.abc
 from . import newtype
 from . import validators
+import os
+import sys
 
 
 def _print_prt_line_add(
@@ -293,3 +295,173 @@ def _sensitivity_output_retrieval(
         output['sample'] = sensitivity_sim['sample']
 
     return output
+
+
+def _parameters_modify_dict_list(
+    parameters: list[dict[str, typing.Any]],
+) -> list[newtype.ModifyDict]:
+    '''
+    Convert each dictionary in the `parameters` list into a `pySWATPlus.newtype.ModifyDict` object.
+    '''
+
+    # Validate the "parameters" list contains unique dictionaries
+    validators._parameters_contain_unique_dict(
+        parameters=parameters
+    )
+
+    valid_keys = [
+        'name',
+        'value',
+        'change_type',
+        'units',
+        'conditions'
+    ]
+
+    param_list = []
+    for param in parameters:
+        for key in param:
+            if key not in valid_keys:
+                raise KeyError(
+                    f'Invalid key "{key}" for {json.dumps(param)} in "parameters"; '
+                    f'expected keys are {json.dumps(valid_keys)}'
+                )
+        param_list.append(newtype.ModifyDict(**param))
+
+    return param_list
+
+
+def _parameters_bound_dict_list(
+    parameters: list[dict[str, typing.Any]],
+) -> list[newtype.BoundDict]:
+    '''
+    Convert each dictionary in the `parameters` list into a `pySWATPlus.newtype.BoundDict` object.
+    '''
+
+    # Validate the "parameters" list contains unique dictionaries
+    validators._parameters_contain_unique_dict(
+        parameters=parameters
+    )
+
+    valid_keys = [
+        'name',
+        'change_type',
+        'lower_bound',
+        'upper_bound',
+        'units',
+        'conditions'
+    ]
+
+    param_list = []
+    for param in parameters:
+        for key in param:
+            if key not in valid_keys:
+                raise KeyError(
+                    f'Invalid key "{key}" for {json.dumps(param)} in "parameters"; '
+                    f'expected keys are {json.dumps(valid_keys)}'
+                )
+        param_list.append(newtype.BoundDict(**param))
+
+    return param_list
+
+
+def _parameters_name_with_counter(
+    parameters: list[newtype.BoundDict]
+) -> list[str]:
+    '''
+    Add a counter with parameter name if same calibration parameter appears
+    multiple times in `pySWATPlus.newtype.BoundType` list.
+    '''
+
+    # Count variables
+    count_vars = collections.Counter(
+        p.name for p in parameters
+    )
+
+    # Intialize dictionary to keeps track the count of variables
+    current_count = {
+        v: 0 for v in list(count_vars)
+    }
+
+    # List of unique name with counter
+    name_counter = []
+    for param in parameters:
+        p_name = param.name
+        if count_vars[p_name] == 1:
+            # Keep same name if occur only once in the list
+            name_counter.append(p_name)
+        else:
+            # Add counter suffix if occur multiple times
+            current_count[p_name] = current_count[p_name] + 1
+            name_counter.append(f'{p_name}|{current_count[p_name]}')
+
+    return name_counter
+
+
+def _observe_data_dict(
+    observe_data: dict[str, dict[str, str]],
+    metric_config: dict[str, dict[str, str]],
+    df_key: dict[str, str]
+) -> dict[str, pandas.DataFrame]:
+    '''
+    Generate a dictionary mapping each entry in `observed_data` to its corresponding `DataFrame`.
+    '''
+
+    observe_dict = {}
+    for obs in observe_data:
+        obs_df = _df_observe(
+            obs_file=pathlib.Path(observe_data[obs]['obs_file']).resolve(),
+            date_format=observe_data[obs]['date_format'],
+            obs_col=metric_config[obs]['obs_col']
+        )
+        obs_df.columns = ['date', 'obs']
+        observe_dict[df_key[obs]] = obs_df
+
+    return observe_dict
+
+
+def _is_real_executable(file_path: pathlib.Path) -> bool:
+    """
+    Check if a file is truly executable.
+
+    Windows:
+        - Must end with .exe
+        - Must have the PE header (b'MZ')
+
+    Linux:
+        - Must have execute permission
+        - Must be a compiled ELF binary (excludes scripts with shebang)
+    """
+    if not file_path.is_file():
+        return False
+
+    # Windows check
+    if sys.platform.startswith("win"):
+        # Must end in .exe
+        if file_path.suffix.lower() != ".exe":
+            return False
+        try:
+            with open(file_path, "rb") as f:
+                header = f.read(2)
+            # Check PE signature (MZ)
+            return header == b'MZ'
+        except OSError:
+            return False
+
+    # Linux check
+    # 1. Must have execute permission
+    if not os.access(file_path, os.X_OK):
+        return False
+
+    # 2. Must be an ELF binary
+    try:
+        with open(file_path, "rb") as f:
+            # Read first 4 bytes for ELF magic number
+            header = f.read(4)
+        return header == b'\x7fELF'
+    except OSError:
+        return False
+
+
+def _find_executables(folder: pathlib.Path):
+    """Find all executable files in a given folder."""
+    return [f for f in folder.iterdir() if _is_real_executable(f)]
