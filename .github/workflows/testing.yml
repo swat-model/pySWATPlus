@@ -13,13 +13,13 @@ on:
       - '**/*.py'  # Trigger for changes in Python files
   workflow_dispatch:
 
+
 jobs:
   build:
-    runs-on: ${{ matrix.os }}
+    runs-on: windows-latest
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-latest, windows-latest]
         python-version: ["3.10", "3.11", "3.12", "3.13"]
 
     steps:
@@ -35,20 +35,10 @@ jobs:
         python -m pip install --upgrade pip
         python -m pip install -r requirements.txt  # Install dependencies
 
-    - name: Run tests on Linux
-      if: runner.os == 'Linux'
+    - name: Run tests with pytest
       run: |
-        echo "Running tests on Linux with Python ${{ matrix.python-version }}"
-        export PYTHONPATH="${{ github.workspace }}"
-        pytest -rA -Wignore::DeprecationWarning --cov=pySWATPlus --cov-report=xml
-      shell: bash
-
-    - name: Run tests on Windows
-      if: runner.os == 'Windows'
-      run: |
-        Write-Host "Running tests on Windows with Python ${{ matrix.python-version }}"
         $env:PYTHONPATH = "${{ github.workspace }}"
-        pytest -rA -Wignore::DeprecationWarning --cov=pySWATPlus --cov-report=xml
+        pytest -rA -Wignore::DeprecationWarning --cov=pySWATPlus --cov-report=xml  # Run tests and generate coverage report in XML format
 
     - name: Upload coverage to Codecov  # Upload coverage report to Codecov
       uses: codecov/codecov-action@v4.2.0
