@@ -11,6 +11,7 @@ on:
       - main  # Your branch name
     paths:
       - '**/*.py'  # Trigger for changes in Python files
+  workflow_dispatch:
 
 jobs:
   build:
