@@ -16,10 +16,11 @@ on:
 
 jobs:
   build:
-    runs-on: windows-latest
+    runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
       matrix:
+        os: [windows-latest, ubuntu-latest]
         python-version: ["3.10", "3.11", "3.12", "3.13"]
 
     steps:
@@ -41,7 +42,11 @@ jobs:
         $env:PYTHONPATH = "${{ github.workspace }}"
         pytest -rA -Wignore::DeprecationWarning --cov=pySWATPlus --cov-report=xml
 
-
+    - name: Run tests with pytest (Linux)
+      if: runner.os == 'Linux'
+      run: |
+        export PYTHONPATH="${{ github.workspace }}"
+        pytest -rA -Wignore::DeprecationWarning --cov=pySWATPlus --cov-report=xml
 
     - name: Upload coverage to Codecov  # Upload coverage report to Codecov
       uses: codecov/codecov-action@v4.2.0
