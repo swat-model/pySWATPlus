@@ -46,6 +46,7 @@ jobs:
       if: runner.os == 'Linux'
       run: |
         export PYTHONPATH="${{ github.workspace }}"
+        chmod +x tests/TxtInOut/swatplus-61.0.1-lin
         pytest -rA -Wignore::DeprecationWarning --cov=pySWATPlus --cov-report=xml
 
     - name: Upload coverage to Codecov  # Upload coverage report to Codecov
