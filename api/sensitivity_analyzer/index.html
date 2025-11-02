@@ -16,7 +16,7 @@
       
       
       <link rel="icon" href="../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.22">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.23">
     
     
       
@@ -1721,8 +1721,7 @@
 <span class="normal">881</span>
 <span class="normal">882</span>
 <span class="normal">883</span>
-<span class="normal">884</span>
-<span class="normal">885</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">SensitivityAnalyzer</span><span class="p">:</span>
+<span class="normal">884</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">SensitivityAnalyzer</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    Provide functionality for sensitivity analyzis.</span>
 <span class="sd">    &#39;&#39;&#39;</span>
@@ -2168,7 +2167,6 @@
 <span class="sd">        Returns:</span>
 <span class="sd">            Dictionary with two keys, `problem` and `sensitivity_indices`, and their corresponding values.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
-
         <span class="c1"># Check input variables type</span>
         <span class="n">validators</span><span class="o">.</span><span class="n">_variable_origin_static_type</span><span class="p">(</span>
             <span class="n">vars_types</span><span class="o">=</span><span class="n">typing</span><span class="o">.</span><span class="n">get_type_hints</span><span class="p">(</span>
@@ -2915,8 +2913,7 @@ and the corresponding value is the computed sensitivity indices. If <code>None</
 <span class="normal">510</span>
 <span class="normal">511</span>
 <span class="normal">512</span>
-<span class="normal">513</span>
-<span class="normal">514</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">parameter_sensitivity_indices</span><span class="p">(</span>
+<span class="normal">513</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">parameter_sensitivity_indices</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">sensim_file</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">,</span>
     <span class="n">df_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
@@ -2972,7 +2969,6 @@ and the corresponding value is the computed sensitivity indices. If <code>None</
 <span class="sd">    Returns:</span>
 <span class="sd">        Dictionary with two keys, `problem` and `sensitivity_indices`, and their corresponding values.</span>
 <span class="sd">    &#39;&#39;&#39;</span>
-
     <span class="c1"># Check input variables type</span>
     <span class="n">validators</span><span class="o">.</span><span class="n">_variable_origin_static_type</span><span class="p">(</span>
         <span class="n">vars_types</span><span class="o">=</span><span class="n">typing</span><span class="o">.</span><span class="n">get_type_hints</span><span class="p">(</span>
@@ -3347,7 +3343,8 @@ are same as keys of <code>extract_data</code> (e.g., <code>channel_sd_day.txt</c
 
             <details class="quote">
               <summary>Source code in <code>pySWATPlus/sensitivity_analyzer.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">516</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">515</span>
+<span class="normal">516</span>
 <span class="normal">517</span>
 <span class="normal">518</span>
 <span class="normal">519</span>
@@ -3715,8 +3712,7 @@ are same as keys of <code>extract_data</code> (e.g., <code>channel_sd_day.txt</c
 <span class="normal">881</span>
 <span class="normal">882</span>
 <span class="normal">883</span>
-<span class="normal">884</span>
-<span class="normal">885</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">simulation_and_indices</span><span class="p">(</span>
+<span class="normal">884</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">simulation_and_indices</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">parameters</span><span class="p">:</span> <span class="n">newtype</span><span class="o">.</span><span class="n">BoundType</span><span class="p">,</span>
     <span class="n">sample_number</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
