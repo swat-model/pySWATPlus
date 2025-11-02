@@ -169,7 +169,7 @@ def test_error_txtinoutreader_class():
             pySWATPlus.TxtinoutReader(
                 tio_dir=tmp_dir
             )
-        assert 'Expected exactly one ".exe" file in directory' in exc_info.value.args[0]
+        assert exc_info.value.args[0] == 'Expected exactly one executable file in the parent folder, but found none or multiple'
 
 
 def test_error_enable_object_in_print_prt(

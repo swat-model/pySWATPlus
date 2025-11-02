@@ -1,4 +1,4 @@
-ovn_table.lum: written by SWAT+ editor v3.0.8 on 2025-07-29 21:28 for SWAT+ rev.61.0.1
+ovn_table.lum: written by SWAT+ editor v3.0.8 on 2025-10-29 11:31 for SWAT+ rev.61.0.1
 name                  ovn_mean       ovn_min       ovn_max  description
 fallow_nores           0.01000       0.00800       0.01200  Fallow_no_residue
 convtill_nores         0.09000       0.06000       0.12000  Conventional_tillage_no_residue

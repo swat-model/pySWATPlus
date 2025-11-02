@@ -38,18 +38,19 @@ def test_simulation_by_sample_parameters(
     # Sensitivity parameters
     parameters = [
         {
-            'name': 'perco',
+            'name': 'esco',
             'change_type': 'absval',
             'lower_bound': 0,
             'upper_bound': 1
         }
+
     ]
     # Target data from sensitivity simulation
     extract_data = {
         'channel_sd_mon.txt': {
             'has_units': True,
             'ref_day': 1,
-            'apply_filter': {'name': ['cha561']},
+            'apply_filter': {'name': ['cha300']},
             'usecols': ['gis_id', 'flo_out']
         }
     }
@@ -59,7 +60,7 @@ def test_simulation_by_sample_parameters(
         sim_dir = txtinout_reader.copy_required_files(
             sim_dir=tmp1_dir
         )
-        # Intialize TxtinOutReader class by simulation direcotry
+        # Intialize TxtinOutReader class by simulation directory
         sim_reader = pySWATPlus.TxtinoutReader(
             tio_dir=sim_dir
         )

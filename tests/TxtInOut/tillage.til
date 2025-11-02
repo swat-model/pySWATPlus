@@ -1,4 +1,4 @@
-tillage.til: written by SWAT+ editor v3.0.8 on 2025-07-29 21:28 for SWAT+ rev.61.0.1
+tillage.til: written by SWAT+ editor v3.0.8 on 2025-10-29 11:31 for SWAT+ rev.61.0.1
 name                   mix_eff        mix_dp         rough      ridge_ht      ridge_sp  description
 fallplow               0.95000     150.00000      75.00000       0.00000       0.00000  genericfallplowingoperation
 sprgplow               0.50000     125.00000      50.00000       0.00000       0.00000  genericspringplowingoperation

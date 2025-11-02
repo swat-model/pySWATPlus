@@ -14,10 +14,11 @@ on:
 
 jobs:
   build:
-    runs-on: windows-latest
+    runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
       matrix:
+        os: [ubuntu-latest, windows-latest]
         python-version: ["3.10", "3.11", "3.12", "3.13"]
 
     steps:
@@ -33,11 +34,13 @@ jobs:
         python -m pip install --upgrade pip
         python -m pip install -r requirements.txt  # Install dependencies
 
-    - name: Run tests with pytest
+    - name: Run tests with pytest (cross-platform)
       run: |
-        $env:PYTHONPATH = "${{ github.workspace }}"
-        pytest -rA -Wignore::DeprecationWarning --cov=pySWATPlus --cov-report=xml  # Run tests and generate coverage report in XML format
-
+        echo "Running tests on ${{ matrix.os }} with Python ${{ matrix.python-version }}"
+        export PYTHONPATH="${{ github.workspace }}"
+        pytest -rA -Wignore::DeprecationWarning --cov=pySWATPlus --cov-report=xml
+      shell: bash
+    
     - name: Upload coverage to Codecov  # Upload coverage report to Codecov
       uses: codecov/codecov-action@v4.2.0
       with:

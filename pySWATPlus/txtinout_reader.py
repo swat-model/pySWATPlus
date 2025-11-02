@@ -44,15 +44,13 @@ class TxtinoutReader:
             input_dir=tio_dir
         )
 
-        # Check .exe files in the directory
-        exe_files = [
-            file for file in tio_dir.iterdir() if file.suffix == ".exe"
-        ]
+        # Check executable files in the directory
+        exe_files = utils._find_executables(tio_dir)
 
-        # Raise error on .exe file
+        # Raise error on executable files
         if len(exe_files) != 1:
-            raise ValueError(
-                f'Expected exactly one ".exe" file in directory {str(tio_dir)}, but found none or multiple'
+            raise TypeError(
+                'Expected exactly one executable file in the parent folder, but found none or multiple'
             )
 
         # TxtInOut directory path
