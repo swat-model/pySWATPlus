@@ -105,7 +105,7 @@ def test_run_swat(
             stats_dict = pySWATPlus.DataManager().hru_stats_from_daily_simulation(
                 sim_file=sim2_dir / 'channel_sd_day.txt',
                 has_units=True,
-                gis_id=561,
+                gis_id=300,
                 sim_col='flo_out',
                 output_dir=sim2_dir
             )

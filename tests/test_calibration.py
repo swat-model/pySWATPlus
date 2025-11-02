@@ -28,7 +28,7 @@ def test_calibration():
         'channel_sd_mon.txt': {
             'has_units': True,
             'ref_day': 1,
-            'apply_filter': {'name': ['cha561']}
+            'apply_filter': {'name': ['cha300']}
         }
     }
 

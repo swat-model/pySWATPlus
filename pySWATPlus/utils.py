@@ -462,6 +462,6 @@ def _is_real_executable(file_path: pathlib.Path) -> bool:
         return False
 
 
-def _find_executables(folder: pathlib.Path):
+def _find_executables(folder: pathlib.Path) -> list[pathlib.Path]:
     """Find all executable files in a given folder."""
     return [f for f in folder.iterdir() if _is_real_executable(f)]
