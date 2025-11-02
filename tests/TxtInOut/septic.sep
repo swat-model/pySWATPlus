@@ -1,4 +1,4 @@
-septic.sep: written by SWAT+ editor v3.0.8 on 2025-07-29 21:28 for SWAT+ rev.61.0.1
+septic.sep: written by SWAT+ editor v3.0.8 on 2025-10-29 11:31 for SWAT+ rev.61.0.1
 name                    q_rate           bod           tss         nh4_n         no3_n         no2_n         org_n         min_p         org_p         fcoli  description
 gcon                   0.22700     170.00000      75.00000      42.40000       0.00000       0.00000      10.00000       6.00000       1.00000  10000000.00000  1Generic
 gadv                   0.22700      22.00000      14.00000      18.90000       9.60000       0.00000       3.00000       5.10000       0.90000     543.00000  2Generic

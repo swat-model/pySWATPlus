@@ -1,0 +1,2 @@
+Skipping wnd import. File does not exist: C:\Users\dpal22\Desktop\research_data\gis\UOULU\Oulanka\climate\wind.txt
+Skipping pet import. File does not exist: C:\Users\dpal22\Desktop\research_data\gis\UOULU\Oulanka\climate\pet.txt

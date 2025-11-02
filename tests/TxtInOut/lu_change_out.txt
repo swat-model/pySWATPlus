@@ -1,2 +1,2 @@
- Oulanka_absent_lake_clima SWAT+ Jul 2 2024        MODULAR Rev 2024.61.0.1                                
+ Oulanka_with_lake         SWAT+ 2024-07-08        MODULAR Rev 2024.61.0.1                                
           hru       year         mon         day     operation   lu_before         lu_after

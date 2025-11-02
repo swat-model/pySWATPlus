@@ -1,4 +1,4 @@
-cntable.lum: written by SWAT+ editor v3.0.8 on 2025-07-29 21:28 for SWAT+ rev.61.0.1
+cntable.lum: written by SWAT+ editor v3.0.8 on 2025-10-29 11:31 for SWAT+ rev.61.0.1
 name                      cn_a          cn_b          cn_c          cn_d  description                                                             treat                                     cond_cov          
 fal_bare              77.00000      86.00000      91.00000      94.00000  Fallow                                                                  Bare_soil                                 ----              
 fal_res_p             76.00000      85.00000      90.00000      93.00000  Fallow                                                                  Crop_residue_cover                        Poor              
