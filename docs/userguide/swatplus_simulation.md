@@ -145,7 +145,7 @@ Instead of performing each step separately as explained above, you can run a `SW
 ```python
 # Run SWAT+ simulation to a custom directory
 txtinout_reader.run_swat(
-    sim_dir=r"C:\Users\Username\custom_folder",  # directory (optional)
+    sim_dir=r"C:\Users\Username\empty_folder",  # directory (optional)
     parameters=[
         {
             'name': 'esco',
