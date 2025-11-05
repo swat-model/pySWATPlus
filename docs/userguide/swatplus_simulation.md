@@ -14,6 +14,7 @@ import pySWATPlus
 # Replace this with the path to your project's TxtInOut folder
 txtinout_dir = r"C:\Users\Username\project\Scenarios\Default\TxtInOut"
 
+# Initialize TxtinoutReader class
 txtinout_reader = pySWATPlus.TxtinoutReader(
     tio_dir=txtinout_dir
 )
@@ -142,31 +143,30 @@ The following steps demonstrate how to configure parameters in a custom director
 Instead of performing each step separately as explained above, you can run a `SWAT+` simulation in a separate empty directory by configuring all options at once using a single function:
 
 ```python
-# Configure modified parameters
-parameters = [
-    {
-        'name': 'esco',
-        'change_type': 'absval',
-        'value': 0.3
-    },
-    {
-        'name': 'perco',
-        'change_type': 'absval',
-        'value': 0.6
-    }
-]
-
-# Run SWAT+ simulation from the original `TxtInOut` folder
+# Run SWAT+ simulation to a custom directory
 txtinout_reader.run_swat(
-    sim_dir=r"C:\Users\Username\custom_folder",  # mandatory
-    parameters=parameters,  # optional
-    begin_date='01-Jan-2012',  # optional
-    end_date= '31-Dec-2016',  # optional
-    simulation_timestep=0,  # optional
-    warmup=1,  # optional
-    print_prt_control={'channel_sd': {'daily': False}},  # optional
-    print_begin_date='15-Jun-2012',  # optional
-    print_end_date='15-Jun-2016',  # optional
-    print_interval=1  # optional
+    sim_dir=r"C:\Users\Username\custom_folder",  # directory (optional)
+    parameters=[
+        {
+            'name': 'esco',
+            'change_type': 'absval',
+            'value': 0.3
+        },
+        {
+            'name': 'perco',
+            'change_type': 'absval',
+            'value': 0.6
+        }
+    ],  # modified parameter value (optional)
+    begin_date='01-Jan-2012',  # simulation begin date (optional)
+    end_date= '31-Dec-2016',  # simulation end date (optional)
+    simulation_timestep=0,  # simulation time step (optional)
+    warmup=1,  # warm-up years (optional)
+    print_prt_control={
+        'channel_sd': {'daily': False}
+    },  # control print.prt file (optional)
+    print_begin_date='15-Jun-2012',  # begin date to print output (optional)
+    print_end_date='15-Jun-2016',  # end date to print output (optional)
+    print_interval=1  # interval to print output (optional)
 )
 ```
