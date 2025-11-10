@@ -100,12 +100,13 @@ class TxtinoutReader:
 
         # Dictionary of available objects
         obj_dict = {
-            'model_components': ['channel_sd', 'channel_sdmorph', 'aquifer', 'reservoir', 'recall', 'ru', 'hyd', 'water_allo'],
-            'basin_model_components': ['basin_sd_cha', 'basin_sd_chamorph', 'basin_aqu', 'basin_res', 'basin_psc'],
-            'nutrient_balance': ['basin_nb', 'lsunit_nb', 'hru-lte_nb'],
-            'water_balance': ['basin_wb', 'lsunit_wb', 'hru_wb', 'hru-lte_wb'],
-            'plant_weather': ['basin_pw', 'lsunit_pw', 'hru_pw', 'hru-lte_pw'],
-            'losses': ['basin_ls', 'lsunit_ls', 'hru_ls', 'hru-lte_ls'],
+            'model_components': ['channel', 'channel_sd', 'channel_sdmorph', 'aquifer', 'reservoir', 'recall', 'ru', 'hyd', 'water_allo'],
+            'basin_model_components': ['basin_cha', 'basin_sd_cha', 'basin_sd_chamorph', 'basin_aqu', 'basin_res', 'basin_psc'],
+            'region_model_components': ['region_sd_cha', 'region_aqu', 'region_res', 'region_psc'],
+            'nutrient_balance': ['basin_nb', 'lsunit_nb', 'hru_nb', 'hru-lte_nb', 'region_nb'],
+            'water_balance': ['basin_wb', 'lsunit_wb', 'hru_wb', 'hru-lte_wb', 'region_wb'],
+            'plant_weather': ['basin_pw', 'lsunit_pw', 'hru_pw', 'hru-lte_pw', 'region_pw'],
+            'losses': ['basin_ls', 'lsunit_ls', 'hru_ls', 'hru-lte_ls', 'region_ls'],
             'salts': ['basin_salt', 'hru_salt', 'ru_salt', 'aqu_salt', 'channel_salt', 'res_salt', 'wetland_salt'],
             'constituents': ['basin_cs', 'hru_cs', 'ru_cs', 'aqu_cs', 'channel_cs', 'res_cs', 'wetland_cs']
         }

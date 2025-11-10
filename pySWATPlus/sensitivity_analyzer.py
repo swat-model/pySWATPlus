@@ -1,4 +1,5 @@
 import numpy
+import pandas
 import SALib.sample.sobol
 import SALib.analyze.sobol
 import functools
@@ -165,17 +166,8 @@ class SensitivityAnalyzer:
                 containing the following sub-keys, which correspond to the input variables within the method
                 [`simulated_timeseries_df`](https://swat-model.github.io/pySWATPlus/api/data_manager/#pySWATPlus.DataManager.simulated_timeseries_df):
 
-                - `has_units` (bool): **Required.** If `True`, the third line of the simulated file contains units for the columns.
-                - `begin_date` (str): Optional. Start date in `DD-Mon-YYYY` format (e.g., 01-Jan-2010). Defaults to the earliest date in the simulated file.
-                - `end_date` (str): Optional. End date in `DD-Mon-YYYY` format (e.g., 31-Dec-2013). Defaults to the latest date in the simulated file.
-                - `ref_day` (int): Optional. Reference day for monthly and yearly time series.
-                   If `None` (default), the last day of the month or year is used, obtained from simulation. Not applicable to daily time series files (ending with `_day`).
-                - `ref_month` (int): Optional. Reference month for yearly time series. If `None` (default), the last month of the year is used, obtained from simulation.
-                  Not applicable to monthly time series files (ending with `_mon`).
-                - `apply_filter` (dict[str, list[typing.Any]]): Optional. Each key is a column name and the corresponding value
-                  is a list of allowed values for filtering rows in the DataFrame. By default, no filtering is applied.
-                  An error is raised if filtering produces an empty DataFrame.
-                - `usecols` (list[str]): Optional. List of columns to extract from the simulated file. By default, all available columns are used.
+                - *Required sub-key:* `has_units`.
+                - *Optional sub-key:* `begin_date`, `end_date`, `ref_day`, `ref_month`, `apply_filter`, and `usecols`.
 
                 ```python
                 extract_data = {
@@ -428,10 +420,8 @@ class SensitivityAnalyzer:
           [`SALib.analyze.sobol.analyze`](https://salib.readthedocs.io/en/latest/api/SALib.analyze.html#SALib.analyze.sobol.analyze) method.
 
         The sensitivity indices are computed for the specified list of indicators. Before computing the indicators, both simulated and observed values are normalized using the formula
-        `(v - min_o) / (max_o - min_o)`, where `min_o` and `max_o` represent the minimum and maximum of observed values, respectively.
-
-        Note:
-            All negative and `None` observed values are removed before computing `min_o` and `max_o` to prevent errors during normalization.
+        `(v - min_o) / (max_o - min_o)`, where `min_o` and `max_o` represent the minimum and maximum of observed values, respectively. All negative and `None` observed values are removed
+        before computing `min_o` and `max_o` to prevent errors during normalization.
 
         Args:
             sensim_file (str | pathlib.Path): Path to the `sensitivity_simulation.json` file produced by `simulation_by_sample_parameters`.
@@ -447,14 +437,8 @@ class SensitivityAnalyzer:
 
             obs_col (str): Name of the column in `obs_file` containing observed data.
 
-            indicators (list[str]): List of indicators to compute sensitivity indices. Available options:
-
-                - `NSE`: Nash–Sutcliffe Efficiency
-                - `KGE`: Kling–Gupta Efficiency
-                - `MSE`: Mean Squared Error
-                - `RMSE`: Root Mean Squared Error
-                - `PBIAS`: Percent Bias
-                - `MARE`: Mean Absolute Relative Error
+            indicators (list[str]): List of indicator abbreviations selected from the available options in the property
+                [`indicator_names`](https://swatmodel.github.io/pySWATPlus/api/performance_metrics/#pySWATPlus.PerformanceMetrics.indicator_names).
 
             json_file (str | pathlib.Path, optional): Path to a JSON file for saving the output dictionary where each key is an indicator name
                 and the corresponding value is the computed sensitivity indices. If `None` (default), the dictionary is not saved.
@@ -524,56 +508,20 @@ class SensitivityAnalyzer:
         max_workers: typing.Optional[int] = None
     ) -> dict[str, typing.Any]:
         '''
-        Warning:
-            This method is currently under development.
-
-        Provide a high-level interface for directly computing sensitivity indices. Similar to the method
-        [`simulation_by_sample_parameters`](https://swat-model.github.io/pySWATPlus/api/sensitivity_analyzer/#pySWATPlus.SensitivityAnalyzer.simulation_by_sample_parameters),
-        it follows the same computational approach but skips saving the simulated data, instead computing sensitivity indices directly against the observed data.
+        Provide a high-level interface for directly computing sensitivity indices of input parameters against observed data,
+        without saving the simulated time series data for each parameter sample.
 
         The method returns a dictionary containing keys correspond to entries in `metric_config`, and values are the computed sensitivity indices.
 
         The following JSON files are saved in `sensim_dir`:
 
         - `sensitivity_indices.json`: A dictionary where keys correspond to entries in `metric_config`, and values are the computed sensitivity indices.
+        - `metric_values.json`: A `DataFrame` containing parameter samples and their corresponding metric values used in computing the sensitivity indices.
         - `time.json`: A dictionary containing the computation time details.
 
         Args:
-            parameters (newtype.BoundType): List of dictionaries defining parameter configurations for sensitivity simulations.
-                Each dictionary contain the following keys:
-
-                - `name` (str): **Required.** Name of the parameter in the `cal_parms.cal` file.
-                - `change_type` (str): **Required.** Type of change to apply. Must be one of 'absval', 'abschg', or 'pctchg'.
-                - `lower_bound` (float): **Required.** Lower bound for the parameter.
-                - `upper_bound` (float): **Required.** Upper bound for the parameter.
-                - `units` (Iterable[int]): Optional. List of unit IDs to which the parameter change should be constrained.
-                - `conditions` (dict[str, list[str]]): Optional.  Conditions to apply when changing the parameter.
-                  Supported keys include `'hsg'`, `'texture'`, `'plant'`, and `'landuse'`, each mapped to a list of allowed values.
-
-                ```python
-                parameters = [
-                    {
-                        'name': 'cn2',
-                        'change_type': 'pctchg',
-                        'lower_bound': 25,
-                        'upper_bound': 75,
-                    },
-                    {
-                        'name': 'perco',
-                        'change_type': 'absval',
-                        'lower_bound': 0,
-                        'upper_bound': 1,
-                        'conditions': {'hsg': ['A']}
-                    },
-                    {
-                        'name': 'bf_max',
-                        'change_type': 'absval',
-                        'lower_bound': 0.1,
-                        'upper_bound': 2.0,
-                        'units': range(1, 194)
-                    }
-                ]
-                ```
+            parameters (newtype.BoundType): List of dictionaries defining parameter configurations for sensitivity simulations, consistent with the structure used in
+                [`simulation_by_sample_parameters`](https://swat-model.github.io/pySWATPlus/api/sensitivity_analyzer/#pySWATPlus.SensitivityAnalyzer.simulation_by_sample_parameters).
 
             sample_number (int): sample_number (int): Determines the number of samples.
                 Generates an array of length `2^N * (D + 1)`, where `D` is the number of parameter changes
@@ -590,37 +538,12 @@ class SensitivityAnalyzer:
                 containing the following sub-keys, which correspond to the input variables within the method
                 [`simulated_timeseries_df`](https://swat-model.github.io/pySWATPlus/api/data_manager/#pySWATPlus.DataManager.simulated_timeseries_df):
 
-                - `has_units` (bool): **Required.** If `True`, the third line of the simulated file contains units for the columns.
-                - `begin_date` (str): Optional. Start date in `DD-Mon-YYYY` format (e.g., 01-Jan-2010). Defaults to the earliest date in the simulated file.
-                - `end_date` (str): Optional. End date in `DD-Mon-YYYY` format (e.g., 31-Dec-2013). Defaults to the latest date in the simulated file.
-                - `ref_day` (int): Optional. Reference day for monthly and yearly time series.
-                   If `None` (default), the last day of the month or year is used, obtained from simulation. Not applicable to daily time series files (ending with `_day`).
-                - `ref_month` (int): Optional. Reference month for yearly time series. If `None` (default), the last month of the year is used, obtained from simulation.
-                  Not applicable to monthly time series files (ending with `_mon`).
-                - `apply_filter` (dict[str, list[typing.Any]]): Optional. Each key is a column name and the corresponding value
-                  is a list of allowed values for filtering rows in the DataFrame. By default, no filtering is applied.
-                  An error is raised if filtering produces an empty DataFrame.
+                - *Required sub-key:* `has_units`.
+                - *Optional sub-key:* `begin_date`, `end_date`, `ref_day`, `ref_month`, and `apply_filter`.
 
                 !!! note
-                    The sub-key `usecols` should **not** be included here. Although no error will be raised, it will be ignored during class initialization
-                    because the `sim_col` sub-key from the `objective_config` input is automatically used as `usecols`. Including it manually has no effect.
-
-                ```python
-                extract_data = {
-                    'channel_sd_mon.txt': {
-                        'has_units': True,
-                        'begin_date': '01-Jun-2014',
-                        'end_date': '01-Oct-2016',
-                        'apply_filter': {'gis_id': [561], 'yr': [2015, 2016]},
-                        'usecols': ['gis_id', 'flo_out']
-                    },
-                    'channel_sd_yr.txt': {
-                        'has_units': True,
-                        'apply_filter': {'name': ['cha561'], 'yr': [2015, 2016]},
-                        'usecols': ['gis_id', 'flo_out']
-                    }
-                }
-                ```
+                    The optional key `usecols` should **not** be included here. Although no error will be raised,
+                    it will be ignored because the `sim_col` sub-key from the `metric_config` is internally used to define the `usecols` list.
 
             observe_data (dict[str, dict[str, str]]): A nested dictionary specifying observed data configuration. The top-level keys
                 are same as keys of `extract_data` (e.g., `channel_sd_day.txt`). Each key must map to a non-empty dictionary containing the following sub-keys:
@@ -648,15 +571,8 @@ class SensitivityAnalyzer:
 
                 - `sim_col` (str): **Required.** Name of the column containing simulated values.
                 - `obs_col` (str): **Required.** Name of the column containing observed values.
-                - `indicator` (str): **Required.** Name of the performance indicator used for optimization.
-                  Available options with their optimization direction are listed below:
-
-                    - `NSE`: Nash–Sutcliffe Efficiency.
-                    - `KGE`: Kling–Gupta Efficiency.
-                    - `MSE`: Mean Squared Error.
-                    - `RMSE`: Root Mean Squared Error.
-                    - `PBIAS`: Percent Bias.
-                    - `MARE`: Mean Absolute Relative Error.
+                - `indicator` (str): **Required.** Abbreviation of the indicator, selected from the available options
+                  in the property [`indicator_names`](https://swatmodel.github.io/pySWATPlus/api/performance_metrics/#pySWATPlus.PerformanceMetrics.indicator_names).
 
                 !!! tip
                     Avoid using `MARE` if `obs_col` contains zero values, as it will cause a division-by-zero error.
@@ -805,7 +721,7 @@ class SensitivityAnalyzer:
                     k: v for k, v in future_result.items() if k != 'array'
                 }
 
-        # An empty dictionary to store metric values for array
+        # An empty dictionary to store metric values for unique array
         metric_dict = {}
 
         # Iterate unique array
@@ -832,34 +748,41 @@ class SensitivityAnalyzer:
                     df=merge_df[['sim', 'obs']],
                     norm_col='obs'
                 )
-                # Indicator method from abbreviation
-                ind_abbr = metric_config[m]['indicator']
-                ind_method = getattr(
-                    PerformanceMetrics(),
-                    f'compute_{ind_abbr.lower()}'
-                )
-                # Indicator value computed from method
-                ind_val = ind_method(
+                # Store DataFrame indicator in dictionary
+                ind_val = PerformanceMetrics().compute_from_abbr(
                     df=norm_df,
                     sim_col='sim',
-                    obs_col='obs'
+                    obs_col='obs',
+                    indicator=metric_config[m]['indicator']
                 )
-                # Store DataFrame metric in dictionary
                 arr_ind[df_key[m]] = ind_val
-            # Store metric values for array
+            # Store indicator values for array
             metric_dict[tuple(arr)] = arr_ind
+
+        # DataFrame of metric for all sample array
+        sample_metric = {}
+        for m in metric_config:
+            sample_metric[m] = [
+                metric_dict[tuple(arr)][df_key[m]] for arr in sample_array
+            ]
+        metric_df = pandas.DataFrame(
+            data=sample_metric,
+            index=[tuple(arr) for arr in sample_array]
+        )
+        metric_df = metric_df.reset_index(names=['parameters'])
+        metric_df.to_json(
+            path_or_buf=sensim_dir / 'metric_values.json',
+            orient='records',
+            indent=4
+        )
 
         # Sensitivity indices
         sensitivity_indices = {}
         for m in metric_config:
-            # List of metric values
-            m_list = [
-                metric_dict[tuple(arr)][df_key[m]] for arr in sample_array
-            ]
             # Indicator sensitivity indices
             m_index = SALib.analyze.sobol.analyze(
                 problem=copy.deepcopy(problem),
-                Y=numpy.array(m_list)
+                Y=numpy.array(sample_metric[m])
             )
             sensitivity_indices[m] = m_index
 

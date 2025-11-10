@@ -18,9 +18,6 @@ from . import cpu
 
 class Calibration(pymoo.core.problem.Problem):  # type: ignore[misc]
     '''
-    Warning:
-        This class is currently under development.
-
     A `Problem` subclass from the [`pymoo`](https://github.com/anyoptimization/pymoo) Python package
     for performing model calibration against observed data using multi-objective optimization
     and evolutionary algorithms.
@@ -376,17 +373,14 @@ class Calibration(pymoo.core.problem.Problem):  # type: ignore[misc]
                     df=merge_df[['sim', 'obs']],
                     norm_col='obs'
                 )
-                # Indicator method from abbreviation
+                # Indicator abbreviation
                 obj_ind = self.objective_config[obj]['indicator']
-                indicator_method = getattr(
-                    PerformanceMetrics(),
-                    f'compute_{obj_ind.lower()}'
-                )
-                # Indicator value computed from method
-                ind_val = indicator_method(
+                # Indicator value
+                ind_val = PerformanceMetrics().compute_from_abbr(
                     df=norm_df,
                     sim_col='sim',
-                    obs_col='obs'
+                    obs_col='obs',
+                    indicator=obj_ind
                 )
                 # Objective value based on maximize or minimize direction
                 obj_val = - ind_val if objs_dirs[obj_ind] == 'max' else ind_val
