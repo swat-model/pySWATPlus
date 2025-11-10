@@ -101,11 +101,27 @@ def test_run_swat(
             assert list(df.columns) == list(csv_df.columns)
             assert all(df.dtypes == csv_df.dtypes)
 
+            # Pass: computing indicator from file
+            output = pySWATPlus.PerformanceMetrics().indicator_from_file(
+                sim_file=sim2_dir / 'channel_sd_day.txt',
+                sim_col='flo_out',
+                extract_sim={
+                    'has_units': True,
+                    'apply_filter': {'name': ['cha771']}
+                },
+                obs_file=txtinout_reader.root_dir / 'a_observe_discharge_daily.csv',
+                date_format='%Y-%m-%d',
+                obs_col='discharge',
+                indicators=['NSE', 'KGE', 'RMSE']
+            )
+            assert isinstance(output, dict)
+            assert len(output) == 3
+
             # Pass: monthly and yearly summary statistics from daily time series
             stats_dict = pySWATPlus.DataManager().hru_stats_from_daily_simulation(
                 sim_file=sim2_dir / 'channel_sd_day.txt',
                 has_units=True,
-                gis_id=300,
+                gis_id=771,
                 sim_col='flo_out',
                 output_dir=sim2_dir
             )

@@ -133,7 +133,7 @@ def test_error_hru_stats_from_daily_simulation(
         data_manager.hru_stats_from_daily_simulation(
             sim_file='channel_sd_mon.txt',
             has_units=True,
-            gis_id=561,
+            gis_id=771,
             sim_col='flo_out'
         )
     assert exc_info.value.args[0] == 'Statistical summary applies only to daily time series files ending with "_day"; received file name "channel_sd_mon"'

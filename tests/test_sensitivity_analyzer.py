@@ -50,7 +50,7 @@ def test_simulation_by_sample_parameters(
         'channel_sd_mon.txt': {
             'has_units': True,
             'ref_day': 1,
-            'apply_filter': {'name': ['cha300']},
+            'apply_filter': {'name': ['cha771']},
             'usecols': ['gis_id', 'flo_out']
         }
     }
@@ -209,22 +209,16 @@ def test_simulation_by_sample_parameters(
             assert 'Invalid sub-key "begin_datee" for "channel_sd_yr.txt" in extract_data' in exc_info.value.args[0]
 
 
-def test_error_scenario_indicators(
+def test_error_indicator_abbr(
     performance_metrics
 ):
 
     # Error: invalid indicator name
     with pytest.raises(Exception) as exc_info:
-        performance_metrics.scenario_indicators(
-            sensim_file='sensitivity_simulation.json',
-            df_name='channel_sd_mon_df',
-            sim_col='flo_out',
-            obs_file='a_observe_discharge_monthly.csv',
-            date_format='%Y-%m-%d',
-            obs_col='mean',
+        performance_metrics._validate_indicator_abbr(
             indicators=['NSEE']
         )
-    assert 'Invalid name "NSEE" in "indicatiors" list' in exc_info.value.args[0]
+    assert 'Invalid indicator "NSEE"' in exc_info.value.args[0]
 
 
 def test_create_sobol_problem(
