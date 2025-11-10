@@ -4,7 +4,7 @@
 
 To run a `SWAT+` simulation, the `TxtInOut` folder must include all required input files, which are created during simulation setup in the [SWAT+ Editor](https://github.com/swat-model/swatplus-editor) via `QSWAT+`.
 
-Additionally, the `TxtInOut` folder must contain the `SWAT+` executable. If you need help locating it, open the **`Run SWAT+`** tab in the `SWAT+ Editor` to find its path. Once located, copy the executable file into the `TxtInOut` folder. If the executable is missing, the simulation will fail.
+Additionally, the `TxtInOut` folder must contain the `SWAT+` executable. The executable file compatible with your operating system and `SWAT+` version can be obtained from the [official GitHub releases](https://github.com/swat-model/swatplus/releases).
 
 Once the `TxtInOut` folder is properly configured with the necessary input files and the `SWAT+` executable, you can initialize the `TxtinoutReader` class to interact with the `SWAT+` model:
 

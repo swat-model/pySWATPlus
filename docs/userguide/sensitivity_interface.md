@@ -61,6 +61,12 @@ Currently, it supports [Sobol](https://doi.org/10.1016/S0378-4754(00)00270-6) sa
 - Structured export of results for downstream analysis
 
 
+!!! warning
+    Before executing the following high-level interafce, comment out the code shown in
+    [`Configuration Settings`](https://swat-model.github.io/pySWATPlus/userguide/sensitivity_interface/#configuration-settings)
+    to avoid overwriting configuration files that may occur when rerunning the setup, which could affect the target results.
+
+
 ```python
 # Define parameter space
 parameters = [
@@ -129,7 +135,7 @@ output = pySWATPlus.SensitivityAnalyzer().parameter_sensitivity_indices(
 
 ## Integrated Simulation and Sensitivity
 
-To compute sensitivity indices directly for multiple outputs against observed data and skip saving the detailed simulation results, use the following interface:
+To compute sensitivity indices for multiple outputs against observed data without saving detailed simulation time series for each parameter sample, use the following interface.
 
 
 ```python
