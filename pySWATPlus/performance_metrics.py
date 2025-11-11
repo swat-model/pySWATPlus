@@ -1,13 +1,14 @@
 import pandas
 import pathlib
 import typing
+from .data_manager import DataManager
 from . import utils
 from . import validators
 
 
 class PerformanceMetrics:
     '''
-    Provide functionality to compute errors between simulated and ovserved values.
+    Provide functionality to evaluate model perfromance between simulated and ovserved values.
     '''
 
     @property
@@ -15,8 +16,17 @@ class PerformanceMetrics:
         self
     ) -> dict[str, str]:
         '''
-        Return a dictionary of available indicators. Keys are the commonly used abbreviations,
-        and values are the corresponding full indicator names.
+        Returns a dictionary of available performance indicators. The keys are
+        commonly used abbreviations, and the values are the corresponding full
+        indicator names. The computed indicator values are treated as performance
+        metrics of the model. Available abbreviations:
+
+        - `NSE`: Nash–Sutcliffe Efficiency
+        - `KGE`: Kling–Gupta Efficiency
+        - `MSE`: Mean Squared Error
+        - `RMSE`: Root Mean Squared Error
+        - `PBIAS`: Percent Bias
+        - `MARE`: Mean Absolute Relative Error
         '''
 
         abbr_name = {
@@ -46,6 +56,9 @@ class PerformanceMetrics:
             sim_col (str): Name of the column containing simulated values.
 
             obs_col (str): Name of the column containing observed values.
+
+        Returns:
+            Computed value of the `Nash-Sutcliffe Efficiency` metric.
         '''
 
         # Check input variables type
@@ -85,6 +98,9 @@ class PerformanceMetrics:
             sim_col (str): Name of the column containing simulated values.
 
             obs_col (str): Name of the column containing observed values.
+
+        Returns:
+            Computed value of the `Kling-Gupta Efficiency` metric.
         '''
 
         # Check input variables type
@@ -130,6 +146,9 @@ class PerformanceMetrics:
             sim_col (str): Name of the column containing simulated values.
 
             obs_col (str): Name of the column containing observed values.
+
+        Returns:
+            Computed value of the `Mean Squared Error` metric.
         '''
 
         # Check input variables type
@@ -166,6 +185,9 @@ class PerformanceMetrics:
             sim_col (str): Name of the column containing simulated values.
 
             obs_col (str): Name of the column containing observed values.
+
+        Returns:
+            Computed value of the `Root Mean Squared Error` metric.
         '''
 
         # Check input variables type
@@ -203,6 +225,9 @@ class PerformanceMetrics:
             sim_col (str): Name of the column containing simulated values.
 
             obs_col (str): Name of the column containing observed values.
+
+        Returns:
+            Computed value of the `Percent Bias` metric.
         '''
 
         # Check input variables type
@@ -239,6 +264,9 @@ class PerformanceMetrics:
             sim_col (str): Name of the column containing simulated values.
 
             obs_col (str): Name of the column containing observed values.
+
+        Returns:
+            Computed value of the `Mean Absolute Relative Error` metric.
         '''
 
         # Check input variables type
@@ -260,6 +288,75 @@ class PerformanceMetrics:
 
         return output
 
+    def _validate_indicator_abbr(
+        self,
+        indicators: list[str]
+    ) -> None:
+        '''
+        Validate each indicator abbreviation in the provided list.
+        '''
+
+        abbr_indicator = self.indicator_names
+        for ind in indicators:
+            if ind not in abbr_indicator:
+                raise ValueError(
+                    f'Invalid indicator "{ind}"; expected names are {list(abbr_indicator.keys())}'
+                )
+
+        return None
+
+    def compute_from_abbr(
+        self,
+        df: pandas.DataFrame,
+        sim_col: str,
+        obs_col: str,
+        indicator: str
+    ) -> float:
+        '''
+        Compute the performance metric between simulated and observed values based on the provided indicator abbreviation.
+
+        Args:
+            df (pandas.DataFrame): DataFrame containing at least two columns with simulated and observed values.
+
+            sim_col (str): Name of the column containing simulated values.
+
+            obs_col (str): Name of the column containing observed values.
+
+            indicator (str): Abbreviation of the indicator, selected from the available options in the property
+                [`indicator_names`](https://swatmodel.github.io/pySWATPlus/api/performance_metrics/#pySWATPlus.PerformanceMetrics.indicator_names).
+
+        Returns:
+            Computed metric value corresponding to the specified indicator.
+        '''
+
+        # Check input variables type
+        validators._variable_origin_static_type(
+            vars_types=typing.get_type_hints(
+                obj=self.compute_from_abbr
+            ),
+            vars_values=locals()
+        )
+
+        # Validate abbreviation of indicators
+        self._validate_indicator_abbr(
+            indicators=[indicator]
+        )
+
+        # Method from indicator abbreviation
+        indicator_method = getattr(
+            self,
+            f'compute_{indicator.lower()}'
+        )
+
+        # Indicator value
+        indicator_value = indicator_method(
+            df=df,
+            sim_col=sim_col,
+            obs_col=obs_col
+        )
+
+        return float(indicator_value)
+
     def scenario_indicators(
         self,
         sensim_file: str | pathlib.Path,
@@ -272,10 +369,10 @@ class PerformanceMetrics:
         json_file: typing.Optional[str | pathlib.Path] = None
     ) -> dict[str, typing.Any]:
         '''
-        Compute performance indicators for sample scenarios obtained using the method
+        Compute performance metrics for sample scenarios obtained using the method
         [`simulation_by_sample_parameters`](https://swat-model.github.io/pySWATPlus/api/sensitivity_analyzer/#pySWATPlus.SensitivityAnalyzer.simulation_by_sample_parameters).
 
-        Before computing the indicators, simulated and observed values are normalized using the formula `(v - min_o) / (max_o - min_o)`,
+        Before computing the metrics, simulated and observed values are normalized using the formula `(v - min_o) / (max_o - min_o)`,
         where `min_o` and `max_o` represent the minimum and maximum of observed values, respectively.
 
         The method returns a dictionary with two keys:
@@ -286,9 +383,7 @@ class PerformanceMetrics:
 
         Before computing the indicators, both simulated and observed values are normalized using the formula
         `(v - min_o) / (max_o - min_o)`, where `min_o` and `max_o` represent the minimum and maximum of observed values, respectively.
-
-        Note:
-            All negative and `None` observed values are removed before computing `min_o` and `max_o` to prevent errors during normalization.
+        All negative and `None` observed values are removed before computing `min_o` and `max_o` to prevent errors during normalization.
 
         Args:
             sensim_file (str | pathlib.Path): Path to the `sensitivity_simulation.json` file produced by `simulation_by_sobol_sample`.
@@ -304,14 +399,8 @@ class PerformanceMetrics:
 
             obs_col (str): Name of the column in `obs_file` containing observed data.
 
-            indicators (list[str]): List of performance indicators to compute. Available options:
-
-                - `NSE`: Nash–Sutcliffe Efficiency
-                - `KGE`: Kling–Gupta Efficiency
-                - `MSE`: Mean Squared Error
-                - `RMSE`: Root Mean Squared Error
-                - `PBIAS`: Percent Bias
-                - `MARE`: Mean Absolute Relative Error
+            indicators (list[str]): List of indicator abbreviations selected from the available options in the property
+                [`indicator_names`](https://swatmodel.github.io/pySWATPlus/api/performance_metrics/#pySWATPlus.PerformanceMetrics.indicator_names).
 
             json_file (str | pathlib.Path, optional): Path to a JSON file for saving the output `DataFrame` containing indicator values.
                 If `None` (default), the `DataFrame` is not saved.
@@ -328,13 +417,10 @@ class PerformanceMetrics:
             vars_values=locals()
         )
 
-        # Check valid name of metric
-        abbr_indicator = self.indicator_names
-        for indicator in indicators:
-            if indicator not in abbr_indicator:
-                raise ValueError(
-                    f'Invalid name "{indicator}" in "indicatiors" list; expected names are {list(abbr_indicator.keys())}'
-                )
+        # Validate abbreviation of indicators
+        self._validate_indicator_abbr(
+            indicators=indicators
+        )
 
         # Observed DataFrame
         obs_df = utils._df_observe(
@@ -374,19 +460,14 @@ class PerformanceMetrics:
             )
             # Iterate indicators
             for indicator in indicators:
-                # Method from indicator abbreviation
-                indicator_method = getattr(
-                    self,
-                    f'compute_{indicator.lower()}'
-                )
-                # Indicator value
-                key_indicator = indicator_method(
+                # Store indicator value in DataFrame
+                ind_val = PerformanceMetrics().compute_from_abbr(
                     df=norm_df,
                     sim_col='sim',
-                    obs_col='obs'
+                    obs_col='obs',
+                    indicator=indicator
                 )
-                # Store indicator value in DataFrame
-                ind_df.loc[key, indicator] = key_indicator
+                ind_df.loc[key, indicator] = ind_val
 
         # Reset index to scenario column
         scnro_col = 'Scenario'
@@ -416,3 +497,111 @@ class PerformanceMetrics:
         }
 
         return output
+
+    def indicator_from_file(
+        self,
+        sim_file: str | pathlib.Path,
+        sim_col: str,
+        extract_sim: dict[str, typing.Any],
+        obs_file: str | pathlib.Path,
+        date_format: str,
+        obs_col: str,
+        indicators: list[str]
+    ) -> dict[str, float]:
+
+        '''
+        Compute performance metrics for simulated values obtained using the method
+        [`run_swat`](https://swat-model.github.io/pySWATPlus/api/txtinout_reader/#pySWATPlus.TxtinoutReader.run_swat).
+
+        Before computing the indicators, simulated and observed values are normalized using the formula `(v - min_o) / (max_o - min_o)`,
+        where `min_o` and `max_o` represent the minimum and maximum of observed values, respectively. All negative and `None` observed values
+        are removed before computing `min_o` and `max_o` to prevent errors during normalization.
+
+        Args:
+            sim_file (str | pathlib.Path): Path to the simulation file generated using the method
+                [`run_swat`](https://swat-model.github.io/pySWATPlus/api/txtinout_reader/#pySWATPlus.TxtinoutReader.run_swat).
+
+            sim_col (str): Name of the column in `sim_file` containing simulated data.
+
+            extract_sim (dict[str, typing.Any]): Dictionary specifying input variable configurations for
+                [`simulated_timeseries_df`](https://swat-model.github.io/pySWATPlus/api/data_manager/#pySWATPlus.DataManager.simulated_timeseries_df)
+                to extract data from `sim_file`. Each key corresponds to an input variable name, and its value is the parameter supplied to the method.
+
+                - *Required key:* `has_units`.
+                - *Optional key:* `begin_date`, `end_date`, `ref_day`, `ref_month`, and `apply_filter`.
+
+                !!! note
+                    The optional key `usecols` should **not** be included in `extract_sim`. Although no error will be raised,
+                    it will be ignored because the `sim_col` argument is internally used to define the `usecols` list.
+
+            obs_file (str | pathlib.Path): Path to the CSV file containing observed data. The file must include a
+                `date` column (used to merge simulated and observed data) and use a comma as the separator.
+
+            date_format (str): Date format of the `date` column in `obs_file`, used to parse `datetime.date` objects from date strings.
+
+            obs_col (str): Name of the column in `obs_file` containing observed data.
+
+            indicators (list[str]): List of indicator abbreviations selected from the available options in the property
+                [`indicator_names`](https://swatmodel.github.io/pySWATPlus/api/performance_metrics/#pySWATPlus.PerformanceMetrics.indicator_names).
+
+        Returns:
+            Dictionary where each key is an indicator abbreviation, and value is the corresponding performance metric.
+        '''
+
+        # Check input variables type
+        validators._variable_origin_static_type(
+            vars_types=typing.get_type_hints(
+                obj=self.indicator_from_file
+            ),
+            vars_values=locals()
+        )
+
+        # Validate abbreviation of indicators
+        self._validate_indicator_abbr(
+            indicators=indicators
+        )
+
+        # Simulated DataFrame
+        extract_sim['usecols'] = [sim_col]
+        sim_df = DataManager().simulated_timeseries_df(
+            sim_file=pathlib.Path(sim_file).resolve(),
+            **extract_sim
+        )
+        sim_df.columns = ['date', 'sim']
+
+        # Observed DataFrame
+        obs_df = utils._df_observe(
+            obs_file=pathlib.Path(obs_file).resolve(),
+            date_format=date_format,
+            obs_col=obs_col
+        )
+        obs_df.columns = ['date', 'obs']
+
+        # Merge simulated and observed DataFrames
+        merge_df = sim_df.merge(
+            right=obs_df,
+            how='inner',
+            on='date'
+        )
+
+        # Normalized DataFrame
+        norm_df = utils._df_normalize(
+            df=merge_df[['sim', 'obs']],
+            norm_col='obs'
+        )
+
+        # Empty dictionary to store indicator values
+        ind_dict = {}
+
+        # Iterate indicator
+        for ind in indicators:
+            # Store indicator value in dictionary
+            ind_val = PerformanceMetrics().compute_from_abbr(
+                df=norm_df,
+                sim_col='sim',
+                obs_col='obs',
+                indicator=ind
+            )
+            ind_dict[ind] = ind_val
+
+        return ind_dict

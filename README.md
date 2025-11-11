@@ -35,7 +35,7 @@
 
 ## ✨ Key Features
 
-- Run `SWAT+` simulations by modifying model parameters through the  `calibration.cal` file..
+- Run `SWAT+` simulations by modifying model parameters through the  `calibration.cal` file.
 - Evaluate model performance against observed data using widely recognized statistical indicators.
 - Perform sensitivity analysis on model parameters using the [`SALib`](https://github.com/SALib/SALib) Python package.
 - Calibrate model parameters through multi-objective optimization and evolutionary algorithms using the [`pymoo`](https://github.com/anyoptimization/pymoo) Python package. 

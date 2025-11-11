@@ -28,7 +28,7 @@ def test_calibration():
         'channel_sd_mon.txt': {
             'has_units': True,
             'ref_day': 1,
-            'apply_filter': {'name': ['cha300']}
+            'apply_filter': {'name': ['cha771']}
         }
     }
 
@@ -141,7 +141,7 @@ def test_error_calibration():
         'channel_sd_mon.txt': {
             'has_units': True,
             'ref_day': 1,
-            'apply_filter': {'name': ['cha561']}
+            'apply_filter': {'name': ['cha771']}
         }
     }
 
@@ -371,12 +371,12 @@ def test_error_calibration():
                     extract_data={
                         'channel_sd_day.txt': {
                             'has_units': True,
-                            'apply_filter': {'name': ['cha561']}
+                            'apply_filter': {'name': ['cha771']}
                         },
                         'channel_sd_mon.txt': {
                             'has_units': True,
                             'ref_day': 1,
-                            'apply_filter': {'name': ['cha561']}
+                            'apply_filter': {'name': ['cha771']}
                         }
                     },
                     observe_data={

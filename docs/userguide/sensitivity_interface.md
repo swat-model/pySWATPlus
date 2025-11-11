@@ -61,8 +61,14 @@ Currently, it supports [Sobol](https://doi.org/10.1016/S0378-4754(00)00270-6) sa
 - Structured export of results for downstream analysis
 
 
+!!! warning
+    Before executing the following high-level interafce, comment out the code shown in
+    [`Configuration Settings`](https://swat-model.github.io/pySWATPlus/userguide/sensitivity_interface/#configuration-settings)
+    to avoid overwriting configuration files that may occur when rerunning the setup, which could affect the target results.
+
+
 ```python
-# Sensitivity parameter space
+# Define parameter space
 parameters = [
     {
         'name': 'esco',
@@ -78,7 +84,7 @@ parameters = [
     }
 ]
 
-# Target data extraction from sensitivity simulation
+# Configuration of data extraction
 extract_data = {
     'channel_sdmorph_yr.txt': {
         'has_units': True,
@@ -108,12 +114,6 @@ if __name__ == '__main__':
     print(output)
 ```
 
-
-!!! tip "Troubleshooting Parallel Processing Errors"
-    If you encounter an error related to `concurrent.futures.ProcessPoolExecutor` and  `multiprocessing` without a clear description,
-    try closing the current command terminal and restarting it. This issue can occasionally occur due to lingering background processes
-    or locked resources from previous runs.
-
 ## Sensitivity Indices
 
 Sensitivity indices (first, second, and total orders) are computed using the indicators available in the `pySWATPlus.PerformanceMetrics` class, along with their confidence intervals.
@@ -135,7 +135,7 @@ output = pySWATPlus.SensitivityAnalyzer().parameter_sensitivity_indices(
 
 ## Integrated Simulation and Sensitivity
 
-To compute sensitivity indices directly for multiple outputs against observed data and skip saving the detailed simulation results, use the following interface:
+To compute sensitivity indices for multiple outputs against observed data without saving detailed simulation time series for each parameter sample, use the following interface.
 
 
 ```python
@@ -156,7 +156,7 @@ parameters = [
 ]
 
 
-# Extract data configuration
+# Configuration of simulation data extraction
 extract_data = {
     'channel_sd_day.txt': {
         'has_units': True,
@@ -169,7 +169,7 @@ extract_data = {
     }
 }
 
-# Observe data configuration
+# Configuration of observes data
 observe_data = {
     'channel_sd_day.txt': {
         'obs_file': r"C:\Users\Username\observed_folder\discharge_daily.csv",
@@ -181,7 +181,7 @@ observe_data = {
     }
 }
 
-# Metric configuration
+# Configuration of performance metrics
 metric_config = {
     'channel_sd_day.txt': {
         'sim_col': 'flo_out',
@@ -200,11 +200,18 @@ if __name__ == '__main__':
     output = pySWATPlus.SensitivityAnalyzer().simulation_and_indices(
         parameters=parameters,
         sample_number=1,
-        sensim_dir=r"C:\Users\dpal22\Desktop\swat_run\experiment_dominant_hru\empty_dir",
-        txtinout_dir=r"C:\Users\dpal22\Desktop\swat_run\experiment_dominant_hru\txtinout_copy",
+        sensim_dir=sim_dir,
+        txtinout_dir=r"C:\Users\Username\custom_folder",
         extract_data=extract_data,
         observe_data=observe_data,
         metric_config=metric_config
     )
     print(output)
 ```
+
+
+
+!!! tip "Troubleshooting Parallel Processing Errors"
+    If you encounter an error related to `concurrent.futures.ProcessPoolExecutor` and  `multiprocessing` without a clear description,
+    try closing the current command terminal and restarting it. This issue can occasionally occur due to lingering background processes
+    or locked resources from previous runs.
