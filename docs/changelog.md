@@ -6,6 +6,8 @@
 
 - Added the `pySWATPlus.SensitivityAnalyzer.simulation_and_indices` method to compute sensitivity indices directly against observed data without saving detailed simulation results.
 
+- Added the `pySWATPlus.PerformanceMetrics.indicator_from_file` method to compute performance metrics directly for simulated and observed files.
+
   
 ## Version 1.2.0 (October 13, 2025)
 
