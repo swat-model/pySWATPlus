@@ -812,11 +812,7 @@
 
 
 
-
-<details class="warning" open>
-  <summary>Warning</summary>
-  <p>This class is currently under development.</p>
-</details>        <p>A <code>Problem</code> subclass from the <a href="https://github.com/anyoptimization/pymoo"><code>pymoo</code></a> Python package
+        <p>A <code>Problem</code> subclass from the <a href="https://github.com/anyoptimization/pymoo"><code>pymoo</code></a> Python package
 for performing model calibration against observed data using multi-objective optimization
 and evolutionary algorithms.</p>
 
@@ -1138,7 +1134,7 @@ therefore, selecting a <code>pop_size</code> of 16 or 32 may improve efficiency.
 
 
 
-              <details class="quote">
+              <details class="mkdocstrings-source">
                 <summary>Source code in <code>pySWATPlus/calibration.py</code></summary>
                 <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 19</span>
 <span class="normal"> 20</span>
@@ -1677,17 +1673,8 @@ therefore, selecting a <code>pop_size</code> of 16 or 32 may improve efficiency.
 <span class="normal">553</span>
 <span class="normal">554</span>
 <span class="normal">555</span>
-<span class="normal">556</span>
-<span class="normal">557</span>
-<span class="normal">558</span>
-<span class="normal">559</span>
-<span class="normal">560</span>
-<span class="normal">561</span>
-<span class="normal">562</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Calibration</span><span class="p">(</span><span class="n">pymoo</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">problem</span><span class="o">.</span><span class="n">Problem</span><span class="p">):</span>  <span class="c1"># type: ignore[misc]</span>
+<span class="normal">556</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Calibration</span><span class="p">(</span><span class="n">pymoo</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">problem</span><span class="o">.</span><span class="n">Problem</span><span class="p">):</span>  <span class="c1"># type: ignore[misc]</span>
 <span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">    Warning:</span>
-<span class="sd">        This class is currently under development.</span>
-
 <span class="sd">    A `Problem` subclass from the [`pymoo`](https://github.com/anyoptimization/pymoo) Python package</span>
 <span class="sd">    for performing model calibration against observed data using multi-objective optimization</span>
 <span class="sd">    and evolutionary algorithms.</span>
@@ -2043,17 +2030,14 @@ therefore, selecting a <code>pop_size</code> of 16 or 32 may improve efficiency.
                     <span class="n">df</span><span class="o">=</span><span class="n">merge_df</span><span class="p">[[</span><span class="s1">&#39;sim&#39;</span><span class="p">,</span> <span class="s1">&#39;obs&#39;</span><span class="p">]],</span>
                     <span class="n">norm_col</span><span class="o">=</span><span class="s1">&#39;obs&#39;</span>
                 <span class="p">)</span>
-                <span class="c1"># Indicator method from abbreviation</span>
+                <span class="c1"># Indicator abbreviation</span>
                 <span class="n">obj_ind</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">objective_config</span><span class="p">[</span><span class="n">obj</span><span class="p">][</span><span class="s1">&#39;indicator&#39;</span><span class="p">]</span>
-                <span class="n">indicator_method</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span>
-                    <span class="n">PerformanceMetrics</span><span class="p">(),</span>
-                    <span class="sa">f</span><span class="s1">&#39;compute_</span><span class="si">{</span><span class="n">obj_ind</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="si">}</span><span class="s1">&#39;</span>
-                <span class="p">)</span>
-                <span class="c1"># Indicator value computed from method</span>
-                <span class="n">ind_val</span> <span class="o">=</span> <span class="n">indicator_method</span><span class="p">(</span>
+                <span class="c1"># Indicator value</span>
+                <span class="n">ind_val</span> <span class="o">=</span> <span class="n">PerformanceMetrics</span><span class="p">()</span><span class="o">.</span><span class="n">compute_from_abbr</span><span class="p">(</span>
                     <span class="n">df</span><span class="o">=</span><span class="n">norm_df</span><span class="p">,</span>
                     <span class="n">sim_col</span><span class="o">=</span><span class="s1">&#39;sim&#39;</span><span class="p">,</span>
-                    <span class="n">obs_col</span><span class="o">=</span><span class="s1">&#39;obs&#39;</span>
+                    <span class="n">obs_col</span><span class="o">=</span><span class="s1">&#39;obs&#39;</span><span class="p">,</span>
+                    <span class="n">indicator</span><span class="o">=</span><span class="n">obj_ind</span>
                 <span class="p">)</span>
                 <span class="c1"># Objective value based on maximize or minimize direction</span>
                 <span class="n">obj_val</span> <span class="o">=</span> <span class="o">-</span> <span class="n">ind_val</span> <span class="k">if</span> <span class="n">objs_dirs</span><span class="p">[</span><span class="n">obj_ind</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;max&#39;</span> <span class="k">else</span> <span class="n">ind_val</span>
@@ -2331,9 +2315,15 @@ parameters, corresponding objective values, and total execution time.</p>
 </ul>
 </details>
 
-            <details class="quote">
+            <details class="mkdocstrings-source">
               <summary>Source code in <code>pySWATPlus/calibration.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">461</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">455</span>
+<span class="normal">456</span>
+<span class="normal">457</span>
+<span class="normal">458</span>
+<span class="normal">459</span>
+<span class="normal">460</span>
+<span class="normal">461</span>
 <span class="normal">462</span>
 <span class="normal">463</span>
 <span class="normal">464</span>
@@ -2428,13 +2418,7 @@ parameters, corresponding objective values, and total execution time.</p>
 <span class="normal">553</span>
 <span class="normal">554</span>
 <span class="normal">555</span>
-<span class="normal">556</span>
-<span class="normal">557</span>
-<span class="normal">558</span>
-<span class="normal">559</span>
-<span class="normal">560</span>
-<span class="normal">561</span>
-<span class="normal">562</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">parameter_optimization</span><span class="p">(</span>
+<span class="normal">556</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">parameter_optimization</span><span class="p">(</span>
     <span class="bp">self</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">typing</span><span class="o">.</span><span class="n">Any</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>

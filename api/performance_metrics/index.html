@@ -596,6 +596,15 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#pySWATPlus.PerformanceMetrics.compute_from_abbr" class="md-nav__link">
+    <span class="md-ellipsis">
+      compute_from_abbr
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#pySWATPlus.PerformanceMetrics.compute_kge" class="md-nav__link">
     <span class="md-ellipsis">
       compute_kge
@@ -644,6 +653,15 @@
   <a href="#pySWATPlus.PerformanceMetrics.compute_rmse" class="md-nav__link">
     <span class="md-ellipsis">
       compute_rmse
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pySWATPlus.PerformanceMetrics.indicator_from_file" class="md-nav__link">
+    <span class="md-ellipsis">
+      indicator_from_file
     </span>
   </a>
   
@@ -836,6 +854,15 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#pySWATPlus.PerformanceMetrics.compute_from_abbr" class="md-nav__link">
+    <span class="md-ellipsis">
+      compute_from_abbr
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#pySWATPlus.PerformanceMetrics.compute_kge" class="md-nav__link">
     <span class="md-ellipsis">
       compute_kge
@@ -890,6 +917,15 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#pySWATPlus.PerformanceMetrics.indicator_from_file" class="md-nav__link">
+    <span class="md-ellipsis">
+      indicator_from_file
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#pySWATPlus.PerformanceMetrics.scenario_indicators" class="md-nav__link">
     <span class="md-ellipsis">
       scenario_indicators
@@ -935,7 +971,8 @@
     <div class="doc doc-contents first">
 
 
-        <p>Provide functionality to compute errors between simulated and ovserved values.</p>
+
+        <p>Provide functionality to evaluate model perfromance between simulated and ovserved values.</p>
 
 
 
@@ -944,10 +981,9 @@
 
 
 
-              <details class="quote">
+              <details class="mkdocstrings-source">
                 <summary>Source code in <code>pySWATPlus/performance_metrics.py</code></summary>
-                <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">  8</span>
-<span class="normal">  9</span>
+                <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">  9</span>
 <span class="normal"> 10</span>
 <span class="normal"> 11</span>
 <span class="normal"> 12</span>
@@ -1356,9 +1392,198 @@
 <span class="normal">415</span>
 <span class="normal">416</span>
 <span class="normal">417</span>
-<span class="normal">418</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">PerformanceMetrics</span><span class="p">:</span>
+<span class="normal">418</span>
+<span class="normal">419</span>
+<span class="normal">420</span>
+<span class="normal">421</span>
+<span class="normal">422</span>
+<span class="normal">423</span>
+<span class="normal">424</span>
+<span class="normal">425</span>
+<span class="normal">426</span>
+<span class="normal">427</span>
+<span class="normal">428</span>
+<span class="normal">429</span>
+<span class="normal">430</span>
+<span class="normal">431</span>
+<span class="normal">432</span>
+<span class="normal">433</span>
+<span class="normal">434</span>
+<span class="normal">435</span>
+<span class="normal">436</span>
+<span class="normal">437</span>
+<span class="normal">438</span>
+<span class="normal">439</span>
+<span class="normal">440</span>
+<span class="normal">441</span>
+<span class="normal">442</span>
+<span class="normal">443</span>
+<span class="normal">444</span>
+<span class="normal">445</span>
+<span class="normal">446</span>
+<span class="normal">447</span>
+<span class="normal">448</span>
+<span class="normal">449</span>
+<span class="normal">450</span>
+<span class="normal">451</span>
+<span class="normal">452</span>
+<span class="normal">453</span>
+<span class="normal">454</span>
+<span class="normal">455</span>
+<span class="normal">456</span>
+<span class="normal">457</span>
+<span class="normal">458</span>
+<span class="normal">459</span>
+<span class="normal">460</span>
+<span class="normal">461</span>
+<span class="normal">462</span>
+<span class="normal">463</span>
+<span class="normal">464</span>
+<span class="normal">465</span>
+<span class="normal">466</span>
+<span class="normal">467</span>
+<span class="normal">468</span>
+<span class="normal">469</span>
+<span class="normal">470</span>
+<span class="normal">471</span>
+<span class="normal">472</span>
+<span class="normal">473</span>
+<span class="normal">474</span>
+<span class="normal">475</span>
+<span class="normal">476</span>
+<span class="normal">477</span>
+<span class="normal">478</span>
+<span class="normal">479</span>
+<span class="normal">480</span>
+<span class="normal">481</span>
+<span class="normal">482</span>
+<span class="normal">483</span>
+<span class="normal">484</span>
+<span class="normal">485</span>
+<span class="normal">486</span>
+<span class="normal">487</span>
+<span class="normal">488</span>
+<span class="normal">489</span>
+<span class="normal">490</span>
+<span class="normal">491</span>
+<span class="normal">492</span>
+<span class="normal">493</span>
+<span class="normal">494</span>
+<span class="normal">495</span>
+<span class="normal">496</span>
+<span class="normal">497</span>
+<span class="normal">498</span>
+<span class="normal">499</span>
+<span class="normal">500</span>
+<span class="normal">501</span>
+<span class="normal">502</span>
+<span class="normal">503</span>
+<span class="normal">504</span>
+<span class="normal">505</span>
+<span class="normal">506</span>
+<span class="normal">507</span>
+<span class="normal">508</span>
+<span class="normal">509</span>
+<span class="normal">510</span>
+<span class="normal">511</span>
+<span class="normal">512</span>
+<span class="normal">513</span>
+<span class="normal">514</span>
+<span class="normal">515</span>
+<span class="normal">516</span>
+<span class="normal">517</span>
+<span class="normal">518</span>
+<span class="normal">519</span>
+<span class="normal">520</span>
+<span class="normal">521</span>
+<span class="normal">522</span>
+<span class="normal">523</span>
+<span class="normal">524</span>
+<span class="normal">525</span>
+<span class="normal">526</span>
+<span class="normal">527</span>
+<span class="normal">528</span>
+<span class="normal">529</span>
+<span class="normal">530</span>
+<span class="normal">531</span>
+<span class="normal">532</span>
+<span class="normal">533</span>
+<span class="normal">534</span>
+<span class="normal">535</span>
+<span class="normal">536</span>
+<span class="normal">537</span>
+<span class="normal">538</span>
+<span class="normal">539</span>
+<span class="normal">540</span>
+<span class="normal">541</span>
+<span class="normal">542</span>
+<span class="normal">543</span>
+<span class="normal">544</span>
+<span class="normal">545</span>
+<span class="normal">546</span>
+<span class="normal">547</span>
+<span class="normal">548</span>
+<span class="normal">549</span>
+<span class="normal">550</span>
+<span class="normal">551</span>
+<span class="normal">552</span>
+<span class="normal">553</span>
+<span class="normal">554</span>
+<span class="normal">555</span>
+<span class="normal">556</span>
+<span class="normal">557</span>
+<span class="normal">558</span>
+<span class="normal">559</span>
+<span class="normal">560</span>
+<span class="normal">561</span>
+<span class="normal">562</span>
+<span class="normal">563</span>
+<span class="normal">564</span>
+<span class="normal">565</span>
+<span class="normal">566</span>
+<span class="normal">567</span>
+<span class="normal">568</span>
+<span class="normal">569</span>
+<span class="normal">570</span>
+<span class="normal">571</span>
+<span class="normal">572</span>
+<span class="normal">573</span>
+<span class="normal">574</span>
+<span class="normal">575</span>
+<span class="normal">576</span>
+<span class="normal">577</span>
+<span class="normal">578</span>
+<span class="normal">579</span>
+<span class="normal">580</span>
+<span class="normal">581</span>
+<span class="normal">582</span>
+<span class="normal">583</span>
+<span class="normal">584</span>
+<span class="normal">585</span>
+<span class="normal">586</span>
+<span class="normal">587</span>
+<span class="normal">588</span>
+<span class="normal">589</span>
+<span class="normal">590</span>
+<span class="normal">591</span>
+<span class="normal">592</span>
+<span class="normal">593</span>
+<span class="normal">594</span>
+<span class="normal">595</span>
+<span class="normal">596</span>
+<span class="normal">597</span>
+<span class="normal">598</span>
+<span class="normal">599</span>
+<span class="normal">600</span>
+<span class="normal">601</span>
+<span class="normal">602</span>
+<span class="normal">603</span>
+<span class="normal">604</span>
+<span class="normal">605</span>
+<span class="normal">606</span>
+<span class="normal">607</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">PerformanceMetrics</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">    Provide functionality to compute errors between simulated and ovserved values.</span>
+<span class="sd">    Provide functionality to evaluate model perfromance between simulated and ovserved values.</span>
 <span class="sd">    &#39;&#39;&#39;</span>
 
     <span class="nd">@property</span>
@@ -1366,8 +1591,17 @@
         <span class="bp">self</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">        Return a dictionary of available indicators. Keys are the commonly used abbreviations,</span>
-<span class="sd">        and values are the corresponding full indicator names.</span>
+<span class="sd">        Returns a dictionary of available performance indicators. The keys are</span>
+<span class="sd">        commonly used abbreviations, and the values are the corresponding full</span>
+<span class="sd">        indicator names. The computed indicator values are treated as performance</span>
+<span class="sd">        metrics of the model. Available abbreviations:</span>
+
+<span class="sd">        - `NSE`: Nash–Sutcliffe Efficiency</span>
+<span class="sd">        - `KGE`: Kling–Gupta Efficiency</span>
+<span class="sd">        - `MSE`: Mean Squared Error</span>
+<span class="sd">        - `RMSE`: Root Mean Squared Error</span>
+<span class="sd">        - `PBIAS`: Percent Bias</span>
+<span class="sd">        - `MARE`: Mean Absolute Relative Error</span>
 <span class="sd">        &#39;&#39;&#39;</span>
 
         <span class="n">abbr_name</span> <span class="o">=</span> <span class="p">{</span>
@@ -1397,6 +1631,9 @@
 <span class="sd">            sim_col (str): Name of the column containing simulated values.</span>
 
 <span class="sd">            obs_col (str): Name of the column containing observed values.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Computed value of the `Nash-Sutcliffe Efficiency` metric.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
 
         <span class="c1"># Check input variables type</span>
@@ -1436,6 +1673,9 @@
 <span class="sd">            sim_col (str): Name of the column containing simulated values.</span>
 
 <span class="sd">            obs_col (str): Name of the column containing observed values.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Computed value of the `Kling-Gupta Efficiency` metric.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
 
         <span class="c1"># Check input variables type</span>
@@ -1481,6 +1721,9 @@
 <span class="sd">            sim_col (str): Name of the column containing simulated values.</span>
 
 <span class="sd">            obs_col (str): Name of the column containing observed values.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Computed value of the `Mean Squared Error` metric.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
 
         <span class="c1"># Check input variables type</span>
@@ -1517,6 +1760,9 @@
 <span class="sd">            sim_col (str): Name of the column containing simulated values.</span>
 
 <span class="sd">            obs_col (str): Name of the column containing observed values.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Computed value of the `Root Mean Squared Error` metric.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
 
         <span class="c1"># Check input variables type</span>
@@ -1554,6 +1800,9 @@
 <span class="sd">            sim_col (str): Name of the column containing simulated values.</span>
 
 <span class="sd">            obs_col (str): Name of the column containing observed values.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Computed value of the `Percent Bias` metric.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
 
         <span class="c1"># Check input variables type</span>
@@ -1590,6 +1839,9 @@
 <span class="sd">            sim_col (str): Name of the column containing simulated values.</span>
 
 <span class="sd">            obs_col (str): Name of the column containing observed values.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Computed value of the `Mean Absolute Relative Error` metric.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
 
         <span class="c1"># Check input variables type</span>
@@ -1611,6 +1863,75 @@
 
         <span class="k">return</span> <span class="n">output</span>
 
+    <span class="k">def</span><span class="w"> </span><span class="nf">_validate_indicator_abbr</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">indicators</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Validate each indicator abbreviation in the provided list.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+
+        <span class="n">abbr_indicator</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">indicator_names</span>
+        <span class="k">for</span> <span class="n">ind</span> <span class="ow">in</span> <span class="n">indicators</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">ind</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">abbr_indicator</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s1">&#39;Invalid indicator &quot;</span><span class="si">{</span><span class="n">ind</span><span class="si">}</span><span class="s1">&quot;; expected names are </span><span class="si">{</span><span class="nb">list</span><span class="p">(</span><span class="n">abbr_indicator</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span><span class="si">}</span><span class="s1">&#39;</span>
+                <span class="p">)</span>
+
+        <span class="k">return</span> <span class="kc">None</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">compute_from_abbr</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">df</span><span class="p">:</span> <span class="n">pandas</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span>
+        <span class="n">sim_col</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">obs_col</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">indicator</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Compute the performance metric between simulated and observed values based on the provided indicator abbreviation.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            df (pandas.DataFrame): DataFrame containing at least two columns with simulated and observed values.</span>
+
+<span class="sd">            sim_col (str): Name of the column containing simulated values.</span>
+
+<span class="sd">            obs_col (str): Name of the column containing observed values.</span>
+
+<span class="sd">            indicator (str): Abbreviation of the indicator, selected from the available options in the property</span>
+<span class="sd">                [`indicator_names`](https://swatmodel.github.io/pySWATPlus/api/performance_metrics/#pySWATPlus.PerformanceMetrics.indicator_names).</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Computed metric value corresponding to the specified indicator.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+
+        <span class="c1"># Check input variables type</span>
+        <span class="n">validators</span><span class="o">.</span><span class="n">_variable_origin_static_type</span><span class="p">(</span>
+            <span class="n">vars_types</span><span class="o">=</span><span class="n">typing</span><span class="o">.</span><span class="n">get_type_hints</span><span class="p">(</span>
+                <span class="n">obj</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">compute_from_abbr</span>
+            <span class="p">),</span>
+            <span class="n">vars_values</span><span class="o">=</span><span class="nb">locals</span><span class="p">()</span>
+        <span class="p">)</span>
+
+        <span class="c1"># Validate abbreviation of indicators</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_validate_indicator_abbr</span><span class="p">(</span>
+            <span class="n">indicators</span><span class="o">=</span><span class="p">[</span><span class="n">indicator</span><span class="p">]</span>
+        <span class="p">)</span>
+
+        <span class="c1"># Method from indicator abbreviation</span>
+        <span class="n">indicator_method</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="sa">f</span><span class="s1">&#39;compute_</span><span class="si">{</span><span class="n">indicator</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="si">}</span><span class="s1">&#39;</span>
+        <span class="p">)</span>
+
+        <span class="c1"># Indicator value</span>
+        <span class="n">indicator_value</span> <span class="o">=</span> <span class="n">indicator_method</span><span class="p">(</span>
+            <span class="n">df</span><span class="o">=</span><span class="n">df</span><span class="p">,</span>
+            <span class="n">sim_col</span><span class="o">=</span><span class="n">sim_col</span><span class="p">,</span>
+            <span class="n">obs_col</span><span class="o">=</span><span class="n">obs_col</span>
+        <span class="p">)</span>
+
+        <span class="k">return</span> <span class="nb">float</span><span class="p">(</span><span class="n">indicator_value</span><span class="p">)</span>
+
     <span class="k">def</span><span class="w"> </span><span class="nf">scenario_indicators</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">sensim_file</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">,</span>
@@ -1623,10 +1944,10 @@
         <span class="n">json_file</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span> <span class="o">|</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">typing</span><span class="o">.</span><span class="n">Any</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">        Compute performance indicators for sample scenarios obtained using the method</span>
+<span class="sd">        Compute performance metrics for sample scenarios obtained using the method</span>
 <span class="sd">        [`simulation_by_sample_parameters`](https://swat-model.github.io/pySWATPlus/api/sensitivity_analyzer/#pySWATPlus.SensitivityAnalyzer.simulation_by_sample_parameters).</span>
 
-<span class="sd">        Before computing the indicators, simulated and observed values are normalized using the formula `(v - min_o) / (max_o - min_o)`,</span>
+<span class="sd">        Before computing the metrics, simulated and observed values are normalized using the formula `(v - min_o) / (max_o - min_o)`,</span>
 <span class="sd">        where `min_o` and `max_o` represent the minimum and maximum of observed values, respectively.</span>
 
 <span class="sd">        The method returns a dictionary with two keys:</span>
@@ -1637,9 +1958,7 @@
 
 <span class="sd">        Before computing the indicators, both simulated and observed values are normalized using the formula</span>
 <span class="sd">        `(v - min_o) / (max_o - min_o)`, where `min_o` and `max_o` represent the minimum and maximum of observed values, respectively.</span>
-
-<span class="sd">        Note:</span>
-<span class="sd">            All negative and `None` observed values are removed before computing `min_o` and `max_o` to prevent errors during normalization.</span>
+<span class="sd">        All negative and `None` observed values are removed before computing `min_o` and `max_o` to prevent errors during normalization.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            sensim_file (str | pathlib.Path): Path to the `sensitivity_simulation.json` file produced by `simulation_by_sobol_sample`.</span>
@@ -1655,14 +1974,8 @@
 
 <span class="sd">            obs_col (str): Name of the column in `obs_file` containing observed data.</span>
 
-<span class="sd">            indicators (list[str]): List of performance indicators to compute. Available options:</span>
-
-<span class="sd">                - `NSE`: Nash–Sutcliffe Efficiency</span>
-<span class="sd">                - `KGE`: Kling–Gupta Efficiency</span>
-<span class="sd">                - `MSE`: Mean Squared Error</span>
-<span class="sd">                - `RMSE`: Root Mean Squared Error</span>
-<span class="sd">                - `PBIAS`: Percent Bias</span>
-<span class="sd">                - `MARE`: Mean Absolute Relative Error</span>
+<span class="sd">            indicators (list[str]): List of indicator abbreviations selected from the available options in the property</span>
+<span class="sd">                [`indicator_names`](https://swatmodel.github.io/pySWATPlus/api/performance_metrics/#pySWATPlus.PerformanceMetrics.indicator_names).</span>
 
 <span class="sd">            json_file (str | pathlib.Path, optional): Path to a JSON file for saving the output `DataFrame` containing indicator values.</span>
 <span class="sd">                If `None` (default), the `DataFrame` is not saved.</span>
@@ -1679,13 +1992,10 @@
             <span class="n">vars_values</span><span class="o">=</span><span class="nb">locals</span><span class="p">()</span>
         <span class="p">)</span>
 
-        <span class="c1"># Check valid name of metric</span>
-        <span class="n">abbr_indicator</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">indicator_names</span>
-        <span class="k">for</span> <span class="n">indicator</span> <span class="ow">in</span> <span class="n">indicators</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">indicator</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">abbr_indicator</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-                    <span class="sa">f</span><span class="s1">&#39;Invalid name &quot;</span><span class="si">{</span><span class="n">indicator</span><span class="si">}</span><span class="s1">&quot; in &quot;indicatiors&quot; list; expected names are </span><span class="si">{</span><span class="nb">list</span><span class="p">(</span><span class="n">abbr_indicator</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span><span class="si">}</span><span class="s1">&#39;</span>
-                <span class="p">)</span>
+        <span class="c1"># Validate abbreviation of indicators</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_validate_indicator_abbr</span><span class="p">(</span>
+            <span class="n">indicators</span><span class="o">=</span><span class="n">indicators</span>
+        <span class="p">)</span>
 
         <span class="c1"># Observed DataFrame</span>
         <span class="n">obs_df</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">_df_observe</span><span class="p">(</span>
@@ -1725,19 +2035,14 @@
             <span class="p">)</span>
             <span class="c1"># Iterate indicators</span>
             <span class="k">for</span> <span class="n">indicator</span> <span class="ow">in</span> <span class="n">indicators</span><span class="p">:</span>
-                <span class="c1"># Method from indicator abbreviation</span>
-                <span class="n">indicator_method</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span>
-                    <span class="bp">self</span><span class="p">,</span>
-                    <span class="sa">f</span><span class="s1">&#39;compute_</span><span class="si">{</span><span class="n">indicator</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="si">}</span><span class="s1">&#39;</span>
-                <span class="p">)</span>
-                <span class="c1"># Indicator value</span>
-                <span class="n">key_indicator</span> <span class="o">=</span> <span class="n">indicator_method</span><span class="p">(</span>
+                <span class="c1"># Store indicator value in DataFrame</span>
+                <span class="n">ind_val</span> <span class="o">=</span> <span class="n">PerformanceMetrics</span><span class="p">()</span><span class="o">.</span><span class="n">compute_from_abbr</span><span class="p">(</span>
                     <span class="n">df</span><span class="o">=</span><span class="n">norm_df</span><span class="p">,</span>
                     <span class="n">sim_col</span><span class="o">=</span><span class="s1">&#39;sim&#39;</span><span class="p">,</span>
-                    <span class="n">obs_col</span><span class="o">=</span><span class="s1">&#39;obs&#39;</span>
+                    <span class="n">obs_col</span><span class="o">=</span><span class="s1">&#39;obs&#39;</span><span class="p">,</span>
+                    <span class="n">indicator</span><span class="o">=</span><span class="n">indicator</span>
                 <span class="p">)</span>
-                <span class="c1"># Store indicator value in DataFrame</span>
-                <span class="n">ind_df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">key</span><span class="p">,</span> <span class="n">indicator</span><span class="p">]</span> <span class="o">=</span> <span class="n">key_indicator</span>
+                <span class="n">ind_df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">key</span><span class="p">,</span> <span class="n">indicator</span><span class="p">]</span> <span class="o">=</span> <span class="n">ind_val</span>
 
         <span class="c1"># Reset index to scenario column</span>
         <span class="n">scnro_col</span> <span class="o">=</span> <span class="s1">&#39;Scenario&#39;</span>
@@ -1767,6 +2072,114 @@
         <span class="p">}</span>
 
         <span class="k">return</span> <span class="n">output</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">indicator_from_file</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">sim_file</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">,</span>
+        <span class="n">sim_col</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">extract_sim</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">typing</span><span class="o">.</span><span class="n">Any</span><span class="p">],</span>
+        <span class="n">obs_file</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">,</span>
+        <span class="n">date_format</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">obs_col</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">indicators</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">]:</span>
+
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Compute performance metrics for simulated values obtained using the method</span>
+<span class="sd">        [`run_swat`](https://swat-model.github.io/pySWATPlus/api/txtinout_reader/#pySWATPlus.TxtinoutReader.run_swat).</span>
+
+<span class="sd">        Before computing the indicators, simulated and observed values are normalized using the formula `(v - min_o) / (max_o - min_o)`,</span>
+<span class="sd">        where `min_o` and `max_o` represent the minimum and maximum of observed values, respectively. All negative and `None` observed values</span>
+<span class="sd">        are removed before computing `min_o` and `max_o` to prevent errors during normalization.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            sim_file (str | pathlib.Path): Path to the simulation file generated using the method</span>
+<span class="sd">                [`run_swat`](https://swat-model.github.io/pySWATPlus/api/txtinout_reader/#pySWATPlus.TxtinoutReader.run_swat).</span>
+
+<span class="sd">            sim_col (str): Name of the column in `sim_file` containing simulated data.</span>
+
+<span class="sd">            extract_sim (dict[str, typing.Any]): Dictionary specifying input variable configurations for</span>
+<span class="sd">                [`simulated_timeseries_df`](https://swat-model.github.io/pySWATPlus/api/data_manager/#pySWATPlus.DataManager.simulated_timeseries_df)</span>
+<span class="sd">                to extract data from `sim_file`. Each key corresponds to an input variable name, and its value is the parameter supplied to the method.</span>
+
+<span class="sd">                - *Required key:* `has_units`.</span>
+<span class="sd">                - *Optional key:* `begin_date`, `end_date`, `ref_day`, `ref_month`, and `apply_filter`.</span>
+
+<span class="sd">                !!! note</span>
+<span class="sd">                    The optional key `usecols` should **not** be included in `extract_sim`. Although no error will be raised,</span>
+<span class="sd">                    it will be ignored because the `sim_col` argument is internally used to define the `usecols` list.</span>
+
+<span class="sd">            obs_file (str | pathlib.Path): Path to the CSV file containing observed data. The file must include a</span>
+<span class="sd">                `date` column (used to merge simulated and observed data) and use a comma as the separator.</span>
+
+<span class="sd">            date_format (str): Date format of the `date` column in `obs_file`, used to parse `datetime.date` objects from date strings.</span>
+
+<span class="sd">            obs_col (str): Name of the column in `obs_file` containing observed data.</span>
+
+<span class="sd">            indicators (list[str]): List of indicator abbreviations selected from the available options in the property</span>
+<span class="sd">                [`indicator_names`](https://swatmodel.github.io/pySWATPlus/api/performance_metrics/#pySWATPlus.PerformanceMetrics.indicator_names).</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Dictionary where each key is an indicator abbreviation, and value is the corresponding performance metric.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+
+        <span class="c1"># Check input variables type</span>
+        <span class="n">validators</span><span class="o">.</span><span class="n">_variable_origin_static_type</span><span class="p">(</span>
+            <span class="n">vars_types</span><span class="o">=</span><span class="n">typing</span><span class="o">.</span><span class="n">get_type_hints</span><span class="p">(</span>
+                <span class="n">obj</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">indicator_from_file</span>
+            <span class="p">),</span>
+            <span class="n">vars_values</span><span class="o">=</span><span class="nb">locals</span><span class="p">()</span>
+        <span class="p">)</span>
+
+        <span class="c1"># Validate abbreviation of indicators</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_validate_indicator_abbr</span><span class="p">(</span>
+            <span class="n">indicators</span><span class="o">=</span><span class="n">indicators</span>
+        <span class="p">)</span>
+
+        <span class="c1"># Simulated DataFrame</span>
+        <span class="n">extract_sim</span><span class="p">[</span><span class="s1">&#39;usecols&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">sim_col</span><span class="p">]</span>
+        <span class="n">sim_df</span> <span class="o">=</span> <span class="n">DataManager</span><span class="p">()</span><span class="o">.</span><span class="n">simulated_timeseries_df</span><span class="p">(</span>
+            <span class="n">sim_file</span><span class="o">=</span><span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="n">sim_file</span><span class="p">)</span><span class="o">.</span><span class="n">resolve</span><span class="p">(),</span>
+            <span class="o">**</span><span class="n">extract_sim</span>
+        <span class="p">)</span>
+        <span class="n">sim_df</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;date&#39;</span><span class="p">,</span> <span class="s1">&#39;sim&#39;</span><span class="p">]</span>
+
+        <span class="c1"># Observed DataFrame</span>
+        <span class="n">obs_df</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">_df_observe</span><span class="p">(</span>
+            <span class="n">obs_file</span><span class="o">=</span><span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="n">obs_file</span><span class="p">)</span><span class="o">.</span><span class="n">resolve</span><span class="p">(),</span>
+            <span class="n">date_format</span><span class="o">=</span><span class="n">date_format</span><span class="p">,</span>
+            <span class="n">obs_col</span><span class="o">=</span><span class="n">obs_col</span>
+        <span class="p">)</span>
+        <span class="n">obs_df</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;date&#39;</span><span class="p">,</span> <span class="s1">&#39;obs&#39;</span><span class="p">]</span>
+
+        <span class="c1"># Merge simulated and observed DataFrames</span>
+        <span class="n">merge_df</span> <span class="o">=</span> <span class="n">sim_df</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span>
+            <span class="n">right</span><span class="o">=</span><span class="n">obs_df</span><span class="p">,</span>
+            <span class="n">how</span><span class="o">=</span><span class="s1">&#39;inner&#39;</span><span class="p">,</span>
+            <span class="n">on</span><span class="o">=</span><span class="s1">&#39;date&#39;</span>
+        <span class="p">)</span>
+
+        <span class="c1"># Normalized DataFrame</span>
+        <span class="n">norm_df</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">_df_normalize</span><span class="p">(</span>
+            <span class="n">df</span><span class="o">=</span><span class="n">merge_df</span><span class="p">[[</span><span class="s1">&#39;sim&#39;</span><span class="p">,</span> <span class="s1">&#39;obs&#39;</span><span class="p">]],</span>
+            <span class="n">norm_col</span><span class="o">=</span><span class="s1">&#39;obs&#39;</span>
+        <span class="p">)</span>
+
+        <span class="c1"># Empty dictionary to store indicator values</span>
+        <span class="n">ind_dict</span> <span class="o">=</span> <span class="p">{}</span>
+
+        <span class="c1"># Iterate indicator</span>
+        <span class="k">for</span> <span class="n">ind</span> <span class="ow">in</span> <span class="n">indicators</span><span class="p">:</span>
+            <span class="c1"># Store indicator value in dictionary</span>
+            <span class="n">ind_val</span> <span class="o">=</span> <span class="n">PerformanceMetrics</span><span class="p">()</span><span class="o">.</span><span class="n">compute_from_abbr</span><span class="p">(</span>
+                <span class="n">df</span><span class="o">=</span><span class="n">norm_df</span><span class="p">,</span>
+                <span class="n">sim_col</span><span class="o">=</span><span class="s1">&#39;sim&#39;</span><span class="p">,</span>
+                <span class="n">obs_col</span><span class="o">=</span><span class="s1">&#39;obs&#39;</span><span class="p">,</span>
+                <span class="n">indicator</span><span class="o">=</span><span class="n">ind</span>
+            <span class="p">)</span>
+            <span class="n">ind_dict</span><span class="p">[</span><span class="n">ind</span><span class="p">]</span> <span class="o">=</span> <span class="n">ind_val</span>
+
+        <span class="k">return</span> <span class="n">ind_dict</span>
 </code></pre></div></td></tr></table></div>
               </details>
 
@@ -1796,8 +2209,18 @@
 
     <div class="doc doc-contents ">
 
-        <p>Return a dictionary of available indicators. Keys are the commonly used abbreviations,
-and values are the corresponding full indicator names.</p>
+        <p>Returns a dictionary of available performance indicators. The keys are
+commonly used abbreviations, and the values are the corresponding full
+indicator names. The computed indicator values are treated as performance
+metrics of the model. Available abbreviations:</p>
+<ul>
+<li><code>NSE</code>: Nash–Sutcliffe Efficiency</li>
+<li><code>KGE</code>: Kling–Gupta Efficiency</li>
+<li><code>MSE</code>: Mean Squared Error</li>
+<li><code>RMSE</code>: Root Mean Squared Error</li>
+<li><code>PBIAS</code>: Percent Bias</li>
+<li><code>MARE</code>: Mean Absolute Relative Error</li>
+</ul>
 
     </div>
 
@@ -1805,6 +2228,232 @@ and values are the corresponding full indicator names.</p>
 
 
 
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="pySWATPlus.PerformanceMetrics.compute_from_abbr" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">compute_from_abbr</span><span class="p">(</span><span class="n">df</span><span class="p">:</span> <span class="n">pandas</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">sim_col</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">obs_col</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">indicator</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span></code>
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Compute the performance metric between simulated and observed values based on the provided indicator abbreviation.</p>
+
+
+<p><span class="doc-section-title">Parameters:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+          <th>Default</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                <code>df</code>
+            </td>
+            <td>
+                  <code><span title="pandas.DataFrame">DataFrame</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>DataFrame containing at least two columns with simulated and observed values.</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>sim_col</code>
+            </td>
+            <td>
+                  <code><span title="str">str</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Name of the column containing simulated values.</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>obs_col</code>
+            </td>
+            <td>
+                  <code><span title="str">str</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Name of the column containing observed values.</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>indicator</code>
+            </td>
+            <td>
+                  <code><span title="str">str</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Abbreviation of the indicator, selected from the available options in the property
+<a href="https://swatmodel.github.io/pySWATPlus/api/performance_metrics/#pySWATPlus.PerformanceMetrics.indicator_names"><code>indicator_names</code></a>.</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+    <p><span class="doc-section-title">Returns:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                  <code><span title="float">float</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Computed metric value corresponding to the specified indicator.</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>pySWATPlus/performance_metrics.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">308</span>
+<span class="normal">309</span>
+<span class="normal">310</span>
+<span class="normal">311</span>
+<span class="normal">312</span>
+<span class="normal">313</span>
+<span class="normal">314</span>
+<span class="normal">315</span>
+<span class="normal">316</span>
+<span class="normal">317</span>
+<span class="normal">318</span>
+<span class="normal">319</span>
+<span class="normal">320</span>
+<span class="normal">321</span>
+<span class="normal">322</span>
+<span class="normal">323</span>
+<span class="normal">324</span>
+<span class="normal">325</span>
+<span class="normal">326</span>
+<span class="normal">327</span>
+<span class="normal">328</span>
+<span class="normal">329</span>
+<span class="normal">330</span>
+<span class="normal">331</span>
+<span class="normal">332</span>
+<span class="normal">333</span>
+<span class="normal">334</span>
+<span class="normal">335</span>
+<span class="normal">336</span>
+<span class="normal">337</span>
+<span class="normal">338</span>
+<span class="normal">339</span>
+<span class="normal">340</span>
+<span class="normal">341</span>
+<span class="normal">342</span>
+<span class="normal">343</span>
+<span class="normal">344</span>
+<span class="normal">345</span>
+<span class="normal">346</span>
+<span class="normal">347</span>
+<span class="normal">348</span>
+<span class="normal">349</span>
+<span class="normal">350</span>
+<span class="normal">351</span>
+<span class="normal">352</span>
+<span class="normal">353</span>
+<span class="normal">354</span>
+<span class="normal">355</span>
+<span class="normal">356</span>
+<span class="normal">357</span>
+<span class="normal">358</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">compute_from_abbr</span><span class="p">(</span>
+    <span class="bp">self</span><span class="p">,</span>
+    <span class="n">df</span><span class="p">:</span> <span class="n">pandas</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span>
+    <span class="n">sim_col</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">obs_col</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">indicator</span><span class="p">:</span> <span class="nb">str</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Compute the performance metric between simulated and observed values based on the provided indicator abbreviation.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        df (pandas.DataFrame): DataFrame containing at least two columns with simulated and observed values.</span>
+
+<span class="sd">        sim_col (str): Name of the column containing simulated values.</span>
+
+<span class="sd">        obs_col (str): Name of the column containing observed values.</span>
+
+<span class="sd">        indicator (str): Abbreviation of the indicator, selected from the available options in the property</span>
+<span class="sd">            [`indicator_names`](https://swatmodel.github.io/pySWATPlus/api/performance_metrics/#pySWATPlus.PerformanceMetrics.indicator_names).</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        Computed metric value corresponding to the specified indicator.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+
+    <span class="c1"># Check input variables type</span>
+    <span class="n">validators</span><span class="o">.</span><span class="n">_variable_origin_static_type</span><span class="p">(</span>
+        <span class="n">vars_types</span><span class="o">=</span><span class="n">typing</span><span class="o">.</span><span class="n">get_type_hints</span><span class="p">(</span>
+            <span class="n">obj</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">compute_from_abbr</span>
+        <span class="p">),</span>
+        <span class="n">vars_values</span><span class="o">=</span><span class="nb">locals</span><span class="p">()</span>
+    <span class="p">)</span>
+
+    <span class="c1"># Validate abbreviation of indicators</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_validate_indicator_abbr</span><span class="p">(</span>
+        <span class="n">indicators</span><span class="o">=</span><span class="p">[</span><span class="n">indicator</span><span class="p">]</span>
+    <span class="p">)</span>
+
+    <span class="c1"># Method from indicator abbreviation</span>
+    <span class="n">indicator_method</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="sa">f</span><span class="s1">&#39;compute_</span><span class="si">{</span><span class="n">indicator</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="si">}</span><span class="s1">&#39;</span>
+    <span class="p">)</span>
+
+    <span class="c1"># Indicator value</span>
+    <span class="n">indicator_value</span> <span class="o">=</span> <span class="n">indicator_method</span><span class="p">(</span>
+        <span class="n">df</span><span class="o">=</span><span class="n">df</span><span class="p">,</span>
+        <span class="n">sim_col</span><span class="o">=</span><span class="n">sim_col</span><span class="p">,</span>
+        <span class="n">obs_col</span><span class="o">=</span><span class="n">obs_col</span>
+    <span class="p">)</span>
+
+    <span class="k">return</span> <span class="nb">float</span><span class="p">(</span><span class="n">indicator_value</span><span class="p">)</span>
+</code></pre></div></td></tr></table></div>
+            </details>
+    </div>
+
+</div>
 
 <div class="doc doc-object doc-function">
 
@@ -1884,22 +2533,32 @@ metric between simulated and observed values</p>
     </table>
 
 
-            <details class="quote">
+    <p><span class="doc-section-title">Returns:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                  <code><span title="float">float</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Computed value of the <code>Kling-Gupta Efficiency</code> metric.</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+            <details class="mkdocstrings-source">
               <summary>Source code in <code>pySWATPlus/performance_metrics.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 72</span>
-<span class="normal"> 73</span>
-<span class="normal"> 74</span>
-<span class="normal"> 75</span>
-<span class="normal"> 76</span>
-<span class="normal"> 77</span>
-<span class="normal"> 78</span>
-<span class="normal"> 79</span>
-<span class="normal"> 80</span>
-<span class="normal"> 81</span>
-<span class="normal"> 82</span>
-<span class="normal"> 83</span>
-<span class="normal"> 84</span>
-<span class="normal"> 85</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 85</span>
 <span class="normal"> 86</span>
 <span class="normal"> 87</span>
 <span class="normal"> 88</span>
@@ -1930,7 +2589,23 @@ metric between simulated and observed values</p>
 <span class="normal">113</span>
 <span class="normal">114</span>
 <span class="normal">115</span>
-<span class="normal">116</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">compute_kge</span><span class="p">(</span>
+<span class="normal">116</span>
+<span class="normal">117</span>
+<span class="normal">118</span>
+<span class="normal">119</span>
+<span class="normal">120</span>
+<span class="normal">121</span>
+<span class="normal">122</span>
+<span class="normal">123</span>
+<span class="normal">124</span>
+<span class="normal">125</span>
+<span class="normal">126</span>
+<span class="normal">127</span>
+<span class="normal">128</span>
+<span class="normal">129</span>
+<span class="normal">130</span>
+<span class="normal">131</span>
+<span class="normal">132</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">compute_kge</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">df</span><span class="p">:</span> <span class="n">pandas</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span>
     <span class="n">sim_col</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
@@ -1946,6 +2621,9 @@ metric between simulated and observed values</p>
 <span class="sd">        sim_col (str): Name of the column containing simulated values.</span>
 
 <span class="sd">        obs_col (str): Name of the column containing observed values.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        Computed value of the `Kling-Gupta Efficiency` metric.</span>
 <span class="sd">    &#39;&#39;&#39;</span>
 
     <span class="c1"># Check input variables type</span>
@@ -2058,34 +2736,32 @@ metric between simulated and observed values</p>
     </table>
 
 
-            <details class="quote">
+    <p><span class="doc-section-title">Returns:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                  <code><span title="float">float</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Computed value of the <code>Mean Absolute Relative Error</code> metric.</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+            <details class="mkdocstrings-source">
               <summary>Source code in <code>pySWATPlus/performance_metrics.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">227</span>
-<span class="normal">228</span>
-<span class="normal">229</span>
-<span class="normal">230</span>
-<span class="normal">231</span>
-<span class="normal">232</span>
-<span class="normal">233</span>
-<span class="normal">234</span>
-<span class="normal">235</span>
-<span class="normal">236</span>
-<span class="normal">237</span>
-<span class="normal">238</span>
-<span class="normal">239</span>
-<span class="normal">240</span>
-<span class="normal">241</span>
-<span class="normal">242</span>
-<span class="normal">243</span>
-<span class="normal">244</span>
-<span class="normal">245</span>
-<span class="normal">246</span>
-<span class="normal">247</span>
-<span class="normal">248</span>
-<span class="normal">249</span>
-<span class="normal">250</span>
-<span class="normal">251</span>
-<span class="normal">252</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">252</span>
 <span class="normal">253</span>
 <span class="normal">254</span>
 <span class="normal">255</span>
@@ -2094,7 +2770,35 @@ metric between simulated and observed values</p>
 <span class="normal">258</span>
 <span class="normal">259</span>
 <span class="normal">260</span>
-<span class="normal">261</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">compute_mare</span><span class="p">(</span>
+<span class="normal">261</span>
+<span class="normal">262</span>
+<span class="normal">263</span>
+<span class="normal">264</span>
+<span class="normal">265</span>
+<span class="normal">266</span>
+<span class="normal">267</span>
+<span class="normal">268</span>
+<span class="normal">269</span>
+<span class="normal">270</span>
+<span class="normal">271</span>
+<span class="normal">272</span>
+<span class="normal">273</span>
+<span class="normal">274</span>
+<span class="normal">275</span>
+<span class="normal">276</span>
+<span class="normal">277</span>
+<span class="normal">278</span>
+<span class="normal">279</span>
+<span class="normal">280</span>
+<span class="normal">281</span>
+<span class="normal">282</span>
+<span class="normal">283</span>
+<span class="normal">284</span>
+<span class="normal">285</span>
+<span class="normal">286</span>
+<span class="normal">287</span>
+<span class="normal">288</span>
+<span class="normal">289</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">compute_mare</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">df</span><span class="p">:</span> <span class="n">pandas</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span>
     <span class="n">sim_col</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
@@ -2109,6 +2813,9 @@ metric between simulated and observed values</p>
 <span class="sd">        sim_col (str): Name of the column containing simulated values.</span>
 
 <span class="sd">        obs_col (str): Name of the column containing observed values.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        Computed value of the `Mean Absolute Relative Error` metric.</span>
 <span class="sd">    &#39;&#39;&#39;</span>
 
     <span class="c1"># Check input variables type</span>
@@ -2212,25 +2919,32 @@ metric between simulated and observed values</p>
     </table>
 
 
-            <details class="quote">
+    <p><span class="doc-section-title">Returns:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                  <code><span title="float">float</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Computed value of the <code>Mean Squared Error</code> metric.</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+            <details class="mkdocstrings-source">
               <summary>Source code in <code>pySWATPlus/performance_metrics.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">118</span>
-<span class="normal">119</span>
-<span class="normal">120</span>
-<span class="normal">121</span>
-<span class="normal">122</span>
-<span class="normal">123</span>
-<span class="normal">124</span>
-<span class="normal">125</span>
-<span class="normal">126</span>
-<span class="normal">127</span>
-<span class="normal">128</span>
-<span class="normal">129</span>
-<span class="normal">130</span>
-<span class="normal">131</span>
-<span class="normal">132</span>
-<span class="normal">133</span>
-<span class="normal">134</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">134</span>
 <span class="normal">135</span>
 <span class="normal">136</span>
 <span class="normal">137</span>
@@ -2248,7 +2962,26 @@ metric between simulated and observed values</p>
 <span class="normal">149</span>
 <span class="normal">150</span>
 <span class="normal">151</span>
-<span class="normal">152</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">compute_mse</span><span class="p">(</span>
+<span class="normal">152</span>
+<span class="normal">153</span>
+<span class="normal">154</span>
+<span class="normal">155</span>
+<span class="normal">156</span>
+<span class="normal">157</span>
+<span class="normal">158</span>
+<span class="normal">159</span>
+<span class="normal">160</span>
+<span class="normal">161</span>
+<span class="normal">162</span>
+<span class="normal">163</span>
+<span class="normal">164</span>
+<span class="normal">165</span>
+<span class="normal">166</span>
+<span class="normal">167</span>
+<span class="normal">168</span>
+<span class="normal">169</span>
+<span class="normal">170</span>
+<span class="normal">171</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">compute_mse</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">df</span><span class="p">:</span> <span class="n">pandas</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span>
     <span class="n">sim_col</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
@@ -2263,6 +2996,9 @@ metric between simulated and observed values</p>
 <span class="sd">        sim_col (str): Name of the column containing simulated values.</span>
 
 <span class="sd">        obs_col (str): Name of the column containing observed values.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        Computed value of the `Mean Squared Error` metric.</span>
 <span class="sd">    &#39;&#39;&#39;</span>
 
     <span class="c1"># Check input variables type</span>
@@ -2367,19 +3103,32 @@ metric between simulated and observed values</p>
     </table>
 
 
-            <details class="quote">
+    <p><span class="doc-section-title">Returns:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                  <code><span title="float">float</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Computed value of the <code>Nash-Sutcliffe Efficiency</code> metric.</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+            <details class="mkdocstrings-source">
               <summary>Source code in <code>pySWATPlus/performance_metrics.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">33</span>
-<span class="normal">34</span>
-<span class="normal">35</span>
-<span class="normal">36</span>
-<span class="normal">37</span>
-<span class="normal">38</span>
-<span class="normal">39</span>
-<span class="normal">40</span>
-<span class="normal">41</span>
-<span class="normal">42</span>
-<span class="normal">43</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">43</span>
 <span class="normal">44</span>
 <span class="normal">45</span>
 <span class="normal">46</span>
@@ -2406,7 +3155,20 @@ metric between simulated and observed values</p>
 <span class="normal">67</span>
 <span class="normal">68</span>
 <span class="normal">69</span>
-<span class="normal">70</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">compute_nse</span><span class="p">(</span>
+<span class="normal">70</span>
+<span class="normal">71</span>
+<span class="normal">72</span>
+<span class="normal">73</span>
+<span class="normal">74</span>
+<span class="normal">75</span>
+<span class="normal">76</span>
+<span class="normal">77</span>
+<span class="normal">78</span>
+<span class="normal">79</span>
+<span class="normal">80</span>
+<span class="normal">81</span>
+<span class="normal">82</span>
+<span class="normal">83</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">compute_nse</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">df</span><span class="p">:</span> <span class="n">pandas</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span>
     <span class="n">sim_col</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
@@ -2422,6 +3184,9 @@ metric between simulated and observed values</p>
 <span class="sd">        sim_col (str): Name of the column containing simulated values.</span>
 
 <span class="sd">        obs_col (str): Name of the column containing observed values.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        Computed value of the `Nash-Sutcliffe Efficiency` metric.</span>
 <span class="sd">    &#39;&#39;&#39;</span>
 
     <span class="c1"># Check input variables type</span>
@@ -2527,31 +3292,32 @@ metric between simulated and observed values</p>
     </table>
 
 
-            <details class="quote">
+    <p><span class="doc-section-title">Returns:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                  <code><span title="float">float</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Computed value of the <code>Percent Bias</code> metric.</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+            <details class="mkdocstrings-source">
               <summary>Source code in <code>pySWATPlus/performance_metrics.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">191</span>
-<span class="normal">192</span>
-<span class="normal">193</span>
-<span class="normal">194</span>
-<span class="normal">195</span>
-<span class="normal">196</span>
-<span class="normal">197</span>
-<span class="normal">198</span>
-<span class="normal">199</span>
-<span class="normal">200</span>
-<span class="normal">201</span>
-<span class="normal">202</span>
-<span class="normal">203</span>
-<span class="normal">204</span>
-<span class="normal">205</span>
-<span class="normal">206</span>
-<span class="normal">207</span>
-<span class="normal">208</span>
-<span class="normal">209</span>
-<span class="normal">210</span>
-<span class="normal">211</span>
-<span class="normal">212</span>
-<span class="normal">213</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">213</span>
 <span class="normal">214</span>
 <span class="normal">215</span>
 <span class="normal">216</span>
@@ -2563,7 +3329,32 @@ metric between simulated and observed values</p>
 <span class="normal">222</span>
 <span class="normal">223</span>
 <span class="normal">224</span>
-<span class="normal">225</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">compute_pbias</span><span class="p">(</span>
+<span class="normal">225</span>
+<span class="normal">226</span>
+<span class="normal">227</span>
+<span class="normal">228</span>
+<span class="normal">229</span>
+<span class="normal">230</span>
+<span class="normal">231</span>
+<span class="normal">232</span>
+<span class="normal">233</span>
+<span class="normal">234</span>
+<span class="normal">235</span>
+<span class="normal">236</span>
+<span class="normal">237</span>
+<span class="normal">238</span>
+<span class="normal">239</span>
+<span class="normal">240</span>
+<span class="normal">241</span>
+<span class="normal">242</span>
+<span class="normal">243</span>
+<span class="normal">244</span>
+<span class="normal">245</span>
+<span class="normal">246</span>
+<span class="normal">247</span>
+<span class="normal">248</span>
+<span class="normal">249</span>
+<span class="normal">250</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">compute_pbias</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">df</span><span class="p">:</span> <span class="n">pandas</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span>
     <span class="n">sim_col</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
@@ -2578,6 +3369,9 @@ metric between simulated and observed values</p>
 <span class="sd">        sim_col (str): Name of the column containing simulated values.</span>
 
 <span class="sd">        obs_col (str): Name of the column containing observed values.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        Computed value of the `Percent Bias` metric.</span>
 <span class="sd">    &#39;&#39;&#39;</span>
 
     <span class="c1"># Check input variables type</span>
@@ -2681,28 +3475,32 @@ metric between simulated and observed values</p>
     </table>
 
 
-            <details class="quote">
+    <p><span class="doc-section-title">Returns:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                  <code><span title="float">float</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Computed value of the <code>Root Mean Squared Error</code> metric.</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+            <details class="mkdocstrings-source">
               <summary>Source code in <code>pySWATPlus/performance_metrics.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">154</span>
-<span class="normal">155</span>
-<span class="normal">156</span>
-<span class="normal">157</span>
-<span class="normal">158</span>
-<span class="normal">159</span>
-<span class="normal">160</span>
-<span class="normal">161</span>
-<span class="normal">162</span>
-<span class="normal">163</span>
-<span class="normal">164</span>
-<span class="normal">165</span>
-<span class="normal">166</span>
-<span class="normal">167</span>
-<span class="normal">168</span>
-<span class="normal">169</span>
-<span class="normal">170</span>
-<span class="normal">171</span>
-<span class="normal">172</span>
-<span class="normal">173</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">173</span>
 <span class="normal">174</span>
 <span class="normal">175</span>
 <span class="normal">176</span>
@@ -2718,7 +3516,29 @@ metric between simulated and observed values</p>
 <span class="normal">186</span>
 <span class="normal">187</span>
 <span class="normal">188</span>
-<span class="normal">189</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">compute_rmse</span><span class="p">(</span>
+<span class="normal">189</span>
+<span class="normal">190</span>
+<span class="normal">191</span>
+<span class="normal">192</span>
+<span class="normal">193</span>
+<span class="normal">194</span>
+<span class="normal">195</span>
+<span class="normal">196</span>
+<span class="normal">197</span>
+<span class="normal">198</span>
+<span class="normal">199</span>
+<span class="normal">200</span>
+<span class="normal">201</span>
+<span class="normal">202</span>
+<span class="normal">203</span>
+<span class="normal">204</span>
+<span class="normal">205</span>
+<span class="normal">206</span>
+<span class="normal">207</span>
+<span class="normal">208</span>
+<span class="normal">209</span>
+<span class="normal">210</span>
+<span class="normal">211</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">compute_rmse</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">df</span><span class="p">:</span> <span class="n">pandas</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span>
     <span class="n">sim_col</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
@@ -2733,6 +3553,9 @@ metric between simulated and observed values</p>
 <span class="sd">        sim_col (str): Name of the column containing simulated values.</span>
 
 <span class="sd">        obs_col (str): Name of the column containing observed values.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        Computed value of the `Root Mean Squared Error` metric.</span>
 <span class="sd">    &#39;&#39;&#39;</span>
 
     <span class="c1"># Check input variables type</span>
@@ -2763,6 +3586,409 @@ metric between simulated and observed values</p>
 <div class="doc doc-object doc-function">
 
 
+<h3 id="pySWATPlus.PerformanceMetrics.indicator_from_file" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">indicator_from_file</span><span class="p">(</span><span class="n">sim_file</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">,</span> <span class="n">sim_col</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">extract_sim</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">typing</span><span class="o">.</span><span class="n">Any</span><span class="p">],</span> <span class="n">obs_file</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">,</span> <span class="n">date_format</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">obs_col</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">indicators</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">]</span></code>
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Compute performance metrics for simulated values obtained using the method
+<a href="https://swat-model.github.io/pySWATPlus/api/txtinout_reader/#pySWATPlus.TxtinoutReader.run_swat"><code>run_swat</code></a>.</p>
+<p>Before computing the indicators, simulated and observed values are normalized using the formula <code>(v - min_o) / (max_o - min_o)</code>,
+where <code>min_o</code> and <code>max_o</code> represent the minimum and maximum of observed values, respectively. All negative and <code>None</code> observed values
+are removed before computing <code>min_o</code> and <code>max_o</code> to prevent errors during normalization.</p>
+
+
+<p><span class="doc-section-title">Parameters:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+          <th>Default</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                <code>sim_file</code>
+            </td>
+            <td>
+                  <code><span title="str">str</span> | <span title="pathlib.Path">Path</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Path to the simulation file generated using the method
+<a href="https://swat-model.github.io/pySWATPlus/api/txtinout_reader/#pySWATPlus.TxtinoutReader.run_swat"><code>run_swat</code></a>.</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>sim_col</code>
+            </td>
+            <td>
+                  <code><span title="str">str</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Name of the column in <code>sim_file</code> containing simulated data.</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>extract_sim</code>
+            </td>
+            <td>
+                  <code><span title="dict">dict</span>[<span title="str">str</span>, <span title="typing.Any">Any</span>]</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Dictionary specifying input variable configurations for
+<a href="https://swat-model.github.io/pySWATPlus/api/data_manager/#pySWATPlus.DataManager.simulated_timeseries_df"><code>simulated_timeseries_df</code></a>
+to extract data from <code>sim_file</code>. Each key corresponds to an input variable name, and its value is the parameter supplied to the method.</p>
+<ul>
+<li><em>Required key:</em> <code>has_units</code>.</li>
+<li><em>Optional key:</em> <code>begin_date</code>, <code>end_date</code>, <code>ref_day</code>, <code>ref_month</code>, and <code>apply_filter</code>.</li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The optional key <code>usecols</code> should <strong>not</strong> be included in <code>extract_sim</code>. Although no error will be raised,
+it will be ignored because the <code>sim_col</code> argument is internally used to define the <code>usecols</code> list.</p>
+</div>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>obs_file</code>
+            </td>
+            <td>
+                  <code><span title="str">str</span> | <span title="pathlib.Path">Path</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Path to the CSV file containing observed data. The file must include a
+<code>date</code> column (used to merge simulated and observed data) and use a comma as the separator.</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>date_format</code>
+            </td>
+            <td>
+                  <code><span title="str">str</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Date format of the <code>date</code> column in <code>obs_file</code>, used to parse <code>datetime.date</code> objects from date strings.</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>obs_col</code>
+            </td>
+            <td>
+                  <code><span title="str">str</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Name of the column in <code>obs_file</code> containing observed data.</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>indicators</code>
+            </td>
+            <td>
+                  <code><span title="list">list</span>[<span title="str">str</span>]</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>List of indicator abbreviations selected from the available options in the property
+<a href="https://swatmodel.github.io/pySWATPlus/api/performance_metrics/#pySWATPlus.PerformanceMetrics.indicator_names"><code>indicator_names</code></a>.</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+    <p><span class="doc-section-title">Returns:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                  <code><span title="dict">dict</span>[<span title="str">str</span>, <span title="float">float</span>]</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Dictionary where each key is an indicator abbreviation, and value is the corresponding performance metric.</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>pySWATPlus/performance_metrics.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">501</span>
+<span class="normal">502</span>
+<span class="normal">503</span>
+<span class="normal">504</span>
+<span class="normal">505</span>
+<span class="normal">506</span>
+<span class="normal">507</span>
+<span class="normal">508</span>
+<span class="normal">509</span>
+<span class="normal">510</span>
+<span class="normal">511</span>
+<span class="normal">512</span>
+<span class="normal">513</span>
+<span class="normal">514</span>
+<span class="normal">515</span>
+<span class="normal">516</span>
+<span class="normal">517</span>
+<span class="normal">518</span>
+<span class="normal">519</span>
+<span class="normal">520</span>
+<span class="normal">521</span>
+<span class="normal">522</span>
+<span class="normal">523</span>
+<span class="normal">524</span>
+<span class="normal">525</span>
+<span class="normal">526</span>
+<span class="normal">527</span>
+<span class="normal">528</span>
+<span class="normal">529</span>
+<span class="normal">530</span>
+<span class="normal">531</span>
+<span class="normal">532</span>
+<span class="normal">533</span>
+<span class="normal">534</span>
+<span class="normal">535</span>
+<span class="normal">536</span>
+<span class="normal">537</span>
+<span class="normal">538</span>
+<span class="normal">539</span>
+<span class="normal">540</span>
+<span class="normal">541</span>
+<span class="normal">542</span>
+<span class="normal">543</span>
+<span class="normal">544</span>
+<span class="normal">545</span>
+<span class="normal">546</span>
+<span class="normal">547</span>
+<span class="normal">548</span>
+<span class="normal">549</span>
+<span class="normal">550</span>
+<span class="normal">551</span>
+<span class="normal">552</span>
+<span class="normal">553</span>
+<span class="normal">554</span>
+<span class="normal">555</span>
+<span class="normal">556</span>
+<span class="normal">557</span>
+<span class="normal">558</span>
+<span class="normal">559</span>
+<span class="normal">560</span>
+<span class="normal">561</span>
+<span class="normal">562</span>
+<span class="normal">563</span>
+<span class="normal">564</span>
+<span class="normal">565</span>
+<span class="normal">566</span>
+<span class="normal">567</span>
+<span class="normal">568</span>
+<span class="normal">569</span>
+<span class="normal">570</span>
+<span class="normal">571</span>
+<span class="normal">572</span>
+<span class="normal">573</span>
+<span class="normal">574</span>
+<span class="normal">575</span>
+<span class="normal">576</span>
+<span class="normal">577</span>
+<span class="normal">578</span>
+<span class="normal">579</span>
+<span class="normal">580</span>
+<span class="normal">581</span>
+<span class="normal">582</span>
+<span class="normal">583</span>
+<span class="normal">584</span>
+<span class="normal">585</span>
+<span class="normal">586</span>
+<span class="normal">587</span>
+<span class="normal">588</span>
+<span class="normal">589</span>
+<span class="normal">590</span>
+<span class="normal">591</span>
+<span class="normal">592</span>
+<span class="normal">593</span>
+<span class="normal">594</span>
+<span class="normal">595</span>
+<span class="normal">596</span>
+<span class="normal">597</span>
+<span class="normal">598</span>
+<span class="normal">599</span>
+<span class="normal">600</span>
+<span class="normal">601</span>
+<span class="normal">602</span>
+<span class="normal">603</span>
+<span class="normal">604</span>
+<span class="normal">605</span>
+<span class="normal">606</span>
+<span class="normal">607</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">indicator_from_file</span><span class="p">(</span>
+    <span class="bp">self</span><span class="p">,</span>
+    <span class="n">sim_file</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">,</span>
+    <span class="n">sim_col</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">extract_sim</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">typing</span><span class="o">.</span><span class="n">Any</span><span class="p">],</span>
+    <span class="n">obs_file</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">,</span>
+    <span class="n">date_format</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">obs_col</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">indicators</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">]:</span>
+
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Compute performance metrics for simulated values obtained using the method</span>
+<span class="sd">    [`run_swat`](https://swat-model.github.io/pySWATPlus/api/txtinout_reader/#pySWATPlus.TxtinoutReader.run_swat).</span>
+
+<span class="sd">    Before computing the indicators, simulated and observed values are normalized using the formula `(v - min_o) / (max_o - min_o)`,</span>
+<span class="sd">    where `min_o` and `max_o` represent the minimum and maximum of observed values, respectively. All negative and `None` observed values</span>
+<span class="sd">    are removed before computing `min_o` and `max_o` to prevent errors during normalization.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        sim_file (str | pathlib.Path): Path to the simulation file generated using the method</span>
+<span class="sd">            [`run_swat`](https://swat-model.github.io/pySWATPlus/api/txtinout_reader/#pySWATPlus.TxtinoutReader.run_swat).</span>
+
+<span class="sd">        sim_col (str): Name of the column in `sim_file` containing simulated data.</span>
+
+<span class="sd">        extract_sim (dict[str, typing.Any]): Dictionary specifying input variable configurations for</span>
+<span class="sd">            [`simulated_timeseries_df`](https://swat-model.github.io/pySWATPlus/api/data_manager/#pySWATPlus.DataManager.simulated_timeseries_df)</span>
+<span class="sd">            to extract data from `sim_file`. Each key corresponds to an input variable name, and its value is the parameter supplied to the method.</span>
+
+<span class="sd">            - *Required key:* `has_units`.</span>
+<span class="sd">            - *Optional key:* `begin_date`, `end_date`, `ref_day`, `ref_month`, and `apply_filter`.</span>
+
+<span class="sd">            !!! note</span>
+<span class="sd">                The optional key `usecols` should **not** be included in `extract_sim`. Although no error will be raised,</span>
+<span class="sd">                it will be ignored because the `sim_col` argument is internally used to define the `usecols` list.</span>
+
+<span class="sd">        obs_file (str | pathlib.Path): Path to the CSV file containing observed data. The file must include a</span>
+<span class="sd">            `date` column (used to merge simulated and observed data) and use a comma as the separator.</span>
+
+<span class="sd">        date_format (str): Date format of the `date` column in `obs_file`, used to parse `datetime.date` objects from date strings.</span>
+
+<span class="sd">        obs_col (str): Name of the column in `obs_file` containing observed data.</span>
+
+<span class="sd">        indicators (list[str]): List of indicator abbreviations selected from the available options in the property</span>
+<span class="sd">            [`indicator_names`](https://swatmodel.github.io/pySWATPlus/api/performance_metrics/#pySWATPlus.PerformanceMetrics.indicator_names).</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        Dictionary where each key is an indicator abbreviation, and value is the corresponding performance metric.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+
+    <span class="c1"># Check input variables type</span>
+    <span class="n">validators</span><span class="o">.</span><span class="n">_variable_origin_static_type</span><span class="p">(</span>
+        <span class="n">vars_types</span><span class="o">=</span><span class="n">typing</span><span class="o">.</span><span class="n">get_type_hints</span><span class="p">(</span>
+            <span class="n">obj</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">indicator_from_file</span>
+        <span class="p">),</span>
+        <span class="n">vars_values</span><span class="o">=</span><span class="nb">locals</span><span class="p">()</span>
+    <span class="p">)</span>
+
+    <span class="c1"># Validate abbreviation of indicators</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_validate_indicator_abbr</span><span class="p">(</span>
+        <span class="n">indicators</span><span class="o">=</span><span class="n">indicators</span>
+    <span class="p">)</span>
+
+    <span class="c1"># Simulated DataFrame</span>
+    <span class="n">extract_sim</span><span class="p">[</span><span class="s1">&#39;usecols&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">sim_col</span><span class="p">]</span>
+    <span class="n">sim_df</span> <span class="o">=</span> <span class="n">DataManager</span><span class="p">()</span><span class="o">.</span><span class="n">simulated_timeseries_df</span><span class="p">(</span>
+        <span class="n">sim_file</span><span class="o">=</span><span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="n">sim_file</span><span class="p">)</span><span class="o">.</span><span class="n">resolve</span><span class="p">(),</span>
+        <span class="o">**</span><span class="n">extract_sim</span>
+    <span class="p">)</span>
+    <span class="n">sim_df</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;date&#39;</span><span class="p">,</span> <span class="s1">&#39;sim&#39;</span><span class="p">]</span>
+
+    <span class="c1"># Observed DataFrame</span>
+    <span class="n">obs_df</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">_df_observe</span><span class="p">(</span>
+        <span class="n">obs_file</span><span class="o">=</span><span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="n">obs_file</span><span class="p">)</span><span class="o">.</span><span class="n">resolve</span><span class="p">(),</span>
+        <span class="n">date_format</span><span class="o">=</span><span class="n">date_format</span><span class="p">,</span>
+        <span class="n">obs_col</span><span class="o">=</span><span class="n">obs_col</span>
+    <span class="p">)</span>
+    <span class="n">obs_df</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;date&#39;</span><span class="p">,</span> <span class="s1">&#39;obs&#39;</span><span class="p">]</span>
+
+    <span class="c1"># Merge simulated and observed DataFrames</span>
+    <span class="n">merge_df</span> <span class="o">=</span> <span class="n">sim_df</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span>
+        <span class="n">right</span><span class="o">=</span><span class="n">obs_df</span><span class="p">,</span>
+        <span class="n">how</span><span class="o">=</span><span class="s1">&#39;inner&#39;</span><span class="p">,</span>
+        <span class="n">on</span><span class="o">=</span><span class="s1">&#39;date&#39;</span>
+    <span class="p">)</span>
+
+    <span class="c1"># Normalized DataFrame</span>
+    <span class="n">norm_df</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">_df_normalize</span><span class="p">(</span>
+        <span class="n">df</span><span class="o">=</span><span class="n">merge_df</span><span class="p">[[</span><span class="s1">&#39;sim&#39;</span><span class="p">,</span> <span class="s1">&#39;obs&#39;</span><span class="p">]],</span>
+        <span class="n">norm_col</span><span class="o">=</span><span class="s1">&#39;obs&#39;</span>
+    <span class="p">)</span>
+
+    <span class="c1"># Empty dictionary to store indicator values</span>
+    <span class="n">ind_dict</span> <span class="o">=</span> <span class="p">{}</span>
+
+    <span class="c1"># Iterate indicator</span>
+    <span class="k">for</span> <span class="n">ind</span> <span class="ow">in</span> <span class="n">indicators</span><span class="p">:</span>
+        <span class="c1"># Store indicator value in dictionary</span>
+        <span class="n">ind_val</span> <span class="o">=</span> <span class="n">PerformanceMetrics</span><span class="p">()</span><span class="o">.</span><span class="n">compute_from_abbr</span><span class="p">(</span>
+            <span class="n">df</span><span class="o">=</span><span class="n">norm_df</span><span class="p">,</span>
+            <span class="n">sim_col</span><span class="o">=</span><span class="s1">&#39;sim&#39;</span><span class="p">,</span>
+            <span class="n">obs_col</span><span class="o">=</span><span class="s1">&#39;obs&#39;</span><span class="p">,</span>
+            <span class="n">indicator</span><span class="o">=</span><span class="n">ind</span>
+        <span class="p">)</span>
+        <span class="n">ind_dict</span><span class="p">[</span><span class="n">ind</span><span class="p">]</span> <span class="o">=</span> <span class="n">ind_val</span>
+
+    <span class="k">return</span> <span class="n">ind_dict</span>
+</code></pre></div></td></tr></table></div>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
 <h3 id="pySWATPlus.PerformanceMetrics.scenario_indicators" class="doc doc-heading">
             <code class="highlight language-python"><span class="n">scenario_indicators</span><span class="p">(</span><span class="n">sensim_file</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">,</span> <span class="n">df_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">sim_col</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">obs_file</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">,</span> <span class="n">date_format</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">obs_col</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">indicators</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">json_file</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span> <span class="o">|</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">typing</span><span class="o">.</span><span class="n">Any</span><span class="p">]</span></code>
 
@@ -2771,9 +3997,9 @@ metric between simulated and observed values</p>
 
     <div class="doc doc-contents ">
 
-        <p>Compute performance indicators for sample scenarios obtained using the method
+        <p>Compute performance metrics for sample scenarios obtained using the method
 <a href="https://swat-model.github.io/pySWATPlus/api/sensitivity_analyzer/#pySWATPlus.SensitivityAnalyzer.simulation_by_sample_parameters"><code>simulation_by_sample_parameters</code></a>.</p>
-<p>Before computing the indicators, simulated and observed values are normalized using the formula <code>(v - min_o) / (max_o - min_o)</code>,
+<p>Before computing the metrics, simulated and observed values are normalized using the formula <code>(v - min_o) / (max_o - min_o)</code>,
 where <code>min_o</code> and <code>max_o</code> represent the minimum and maximum of observed values, respectively.</p>
 <p>The method returns a dictionary with two keys:</p>
 <ul>
@@ -2782,13 +4008,9 @@ where <code>min_o</code> and <code>max_o</code> represent the minimum and maximu
   with scenario indices and corresponding indicator values.</li>
 </ul>
 <p>Before computing the indicators, both simulated and observed values are normalized using the formula
-<code>(v - min_o) / (max_o - min_o)</code>, where <code>min_o</code> and <code>max_o</code> represent the minimum and maximum of observed values, respectively.</p>
+<code>(v - min_o) / (max_o - min_o)</code>, where <code>min_o</code> and <code>max_o</code> represent the minimum and maximum of observed values, respectively.
+All negative and <code>None</code> observed values are removed before computing <code>min_o</code> and <code>max_o</code> to prevent errors during normalization.</p>
 
-
-<details class="note" open>
-  <summary>Note</summary>
-  <p>All negative and <code>None</code> observed values are removed before computing <code>min_o</code> and <code>max_o</code> to prevent errors during normalization.</p>
-</details>
 
 <p><span class="doc-section-title">Parameters:</span></p>
     <table>
@@ -2907,15 +4129,8 @@ where <code>min_o</code> and <code>max_o</code> represent the minimum and maximu
             </td>
             <td>
               <div class="doc-md-description">
-                <p>List of performance indicators to compute. Available options:</p>
-<ul>
-<li><code>NSE</code>: Nash–Sutcliffe Efficiency</li>
-<li><code>KGE</code>: Kling–Gupta Efficiency</li>
-<li><code>MSE</code>: Mean Squared Error</li>
-<li><code>RMSE</code>: Root Mean Squared Error</li>
-<li><code>PBIAS</code>: Percent Bias</li>
-<li><code>MARE</code>: Mean Absolute Relative Error</li>
-</ul>
+                <p>List of indicator abbreviations selected from the available options in the property
+<a href="https://swatmodel.github.io/pySWATPlus/api/performance_metrics/#pySWATPlus.PerformanceMetrics.indicator_names"><code>indicator_names</code></a>.</p>
               </div>
             </td>
             <td>
@@ -2966,106 +4181,9 @@ If <code>None</code> (default), the <code>DataFrame</code> is not saved.</p>
     </table>
 
 
-            <details class="quote">
+            <details class="mkdocstrings-source">
               <summary>Source code in <code>pySWATPlus/performance_metrics.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">263</span>
-<span class="normal">264</span>
-<span class="normal">265</span>
-<span class="normal">266</span>
-<span class="normal">267</span>
-<span class="normal">268</span>
-<span class="normal">269</span>
-<span class="normal">270</span>
-<span class="normal">271</span>
-<span class="normal">272</span>
-<span class="normal">273</span>
-<span class="normal">274</span>
-<span class="normal">275</span>
-<span class="normal">276</span>
-<span class="normal">277</span>
-<span class="normal">278</span>
-<span class="normal">279</span>
-<span class="normal">280</span>
-<span class="normal">281</span>
-<span class="normal">282</span>
-<span class="normal">283</span>
-<span class="normal">284</span>
-<span class="normal">285</span>
-<span class="normal">286</span>
-<span class="normal">287</span>
-<span class="normal">288</span>
-<span class="normal">289</span>
-<span class="normal">290</span>
-<span class="normal">291</span>
-<span class="normal">292</span>
-<span class="normal">293</span>
-<span class="normal">294</span>
-<span class="normal">295</span>
-<span class="normal">296</span>
-<span class="normal">297</span>
-<span class="normal">298</span>
-<span class="normal">299</span>
-<span class="normal">300</span>
-<span class="normal">301</span>
-<span class="normal">302</span>
-<span class="normal">303</span>
-<span class="normal">304</span>
-<span class="normal">305</span>
-<span class="normal">306</span>
-<span class="normal">307</span>
-<span class="normal">308</span>
-<span class="normal">309</span>
-<span class="normal">310</span>
-<span class="normal">311</span>
-<span class="normal">312</span>
-<span class="normal">313</span>
-<span class="normal">314</span>
-<span class="normal">315</span>
-<span class="normal">316</span>
-<span class="normal">317</span>
-<span class="normal">318</span>
-<span class="normal">319</span>
-<span class="normal">320</span>
-<span class="normal">321</span>
-<span class="normal">322</span>
-<span class="normal">323</span>
-<span class="normal">324</span>
-<span class="normal">325</span>
-<span class="normal">326</span>
-<span class="normal">327</span>
-<span class="normal">328</span>
-<span class="normal">329</span>
-<span class="normal">330</span>
-<span class="normal">331</span>
-<span class="normal">332</span>
-<span class="normal">333</span>
-<span class="normal">334</span>
-<span class="normal">335</span>
-<span class="normal">336</span>
-<span class="normal">337</span>
-<span class="normal">338</span>
-<span class="normal">339</span>
-<span class="normal">340</span>
-<span class="normal">341</span>
-<span class="normal">342</span>
-<span class="normal">343</span>
-<span class="normal">344</span>
-<span class="normal">345</span>
-<span class="normal">346</span>
-<span class="normal">347</span>
-<span class="normal">348</span>
-<span class="normal">349</span>
-<span class="normal">350</span>
-<span class="normal">351</span>
-<span class="normal">352</span>
-<span class="normal">353</span>
-<span class="normal">354</span>
-<span class="normal">355</span>
-<span class="normal">356</span>
-<span class="normal">357</span>
-<span class="normal">358</span>
-<span class="normal">359</span>
-<span class="normal">360</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">360</span>
 <span class="normal">361</span>
 <span class="normal">362</span>
 <span class="normal">363</span>
@@ -3123,7 +4241,88 @@ If <code>None</code> (default), the <code>DataFrame</code> is not saved.</p>
 <span class="normal">415</span>
 <span class="normal">416</span>
 <span class="normal">417</span>
-<span class="normal">418</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">scenario_indicators</span><span class="p">(</span>
+<span class="normal">418</span>
+<span class="normal">419</span>
+<span class="normal">420</span>
+<span class="normal">421</span>
+<span class="normal">422</span>
+<span class="normal">423</span>
+<span class="normal">424</span>
+<span class="normal">425</span>
+<span class="normal">426</span>
+<span class="normal">427</span>
+<span class="normal">428</span>
+<span class="normal">429</span>
+<span class="normal">430</span>
+<span class="normal">431</span>
+<span class="normal">432</span>
+<span class="normal">433</span>
+<span class="normal">434</span>
+<span class="normal">435</span>
+<span class="normal">436</span>
+<span class="normal">437</span>
+<span class="normal">438</span>
+<span class="normal">439</span>
+<span class="normal">440</span>
+<span class="normal">441</span>
+<span class="normal">442</span>
+<span class="normal">443</span>
+<span class="normal">444</span>
+<span class="normal">445</span>
+<span class="normal">446</span>
+<span class="normal">447</span>
+<span class="normal">448</span>
+<span class="normal">449</span>
+<span class="normal">450</span>
+<span class="normal">451</span>
+<span class="normal">452</span>
+<span class="normal">453</span>
+<span class="normal">454</span>
+<span class="normal">455</span>
+<span class="normal">456</span>
+<span class="normal">457</span>
+<span class="normal">458</span>
+<span class="normal">459</span>
+<span class="normal">460</span>
+<span class="normal">461</span>
+<span class="normal">462</span>
+<span class="normal">463</span>
+<span class="normal">464</span>
+<span class="normal">465</span>
+<span class="normal">466</span>
+<span class="normal">467</span>
+<span class="normal">468</span>
+<span class="normal">469</span>
+<span class="normal">470</span>
+<span class="normal">471</span>
+<span class="normal">472</span>
+<span class="normal">473</span>
+<span class="normal">474</span>
+<span class="normal">475</span>
+<span class="normal">476</span>
+<span class="normal">477</span>
+<span class="normal">478</span>
+<span class="normal">479</span>
+<span class="normal">480</span>
+<span class="normal">481</span>
+<span class="normal">482</span>
+<span class="normal">483</span>
+<span class="normal">484</span>
+<span class="normal">485</span>
+<span class="normal">486</span>
+<span class="normal">487</span>
+<span class="normal">488</span>
+<span class="normal">489</span>
+<span class="normal">490</span>
+<span class="normal">491</span>
+<span class="normal">492</span>
+<span class="normal">493</span>
+<span class="normal">494</span>
+<span class="normal">495</span>
+<span class="normal">496</span>
+<span class="normal">497</span>
+<span class="normal">498</span>
+<span class="normal">499</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">scenario_indicators</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">sensim_file</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">,</span>
     <span class="n">df_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
@@ -3135,10 +4334,10 @@ If <code>None</code> (default), the <code>DataFrame</code> is not saved.</p>
     <span class="n">json_file</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span> <span class="o">|</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">typing</span><span class="o">.</span><span class="n">Any</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">    Compute performance indicators for sample scenarios obtained using the method</span>
+<span class="sd">    Compute performance metrics for sample scenarios obtained using the method</span>
 <span class="sd">    [`simulation_by_sample_parameters`](https://swat-model.github.io/pySWATPlus/api/sensitivity_analyzer/#pySWATPlus.SensitivityAnalyzer.simulation_by_sample_parameters).</span>
 
-<span class="sd">    Before computing the indicators, simulated and observed values are normalized using the formula `(v - min_o) / (max_o - min_o)`,</span>
+<span class="sd">    Before computing the metrics, simulated and observed values are normalized using the formula `(v - min_o) / (max_o - min_o)`,</span>
 <span class="sd">    where `min_o` and `max_o` represent the minimum and maximum of observed values, respectively.</span>
 
 <span class="sd">    The method returns a dictionary with two keys:</span>
@@ -3149,9 +4348,7 @@ If <code>None</code> (default), the <code>DataFrame</code> is not saved.</p>
 
 <span class="sd">    Before computing the indicators, both simulated and observed values are normalized using the formula</span>
 <span class="sd">    `(v - min_o) / (max_o - min_o)`, where `min_o` and `max_o` represent the minimum and maximum of observed values, respectively.</span>
-
-<span class="sd">    Note:</span>
-<span class="sd">        All negative and `None` observed values are removed before computing `min_o` and `max_o` to prevent errors during normalization.</span>
+<span class="sd">    All negative and `None` observed values are removed before computing `min_o` and `max_o` to prevent errors during normalization.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        sensim_file (str | pathlib.Path): Path to the `sensitivity_simulation.json` file produced by `simulation_by_sobol_sample`.</span>
@@ -3167,14 +4364,8 @@ If <code>None</code> (default), the <code>DataFrame</code> is not saved.</p>
 
 <span class="sd">        obs_col (str): Name of the column in `obs_file` containing observed data.</span>
 
-<span class="sd">        indicators (list[str]): List of performance indicators to compute. Available options:</span>
-
-<span class="sd">            - `NSE`: Nash–Sutcliffe Efficiency</span>
-<span class="sd">            - `KGE`: Kling–Gupta Efficiency</span>
-<span class="sd">            - `MSE`: Mean Squared Error</span>
-<span class="sd">            - `RMSE`: Root Mean Squared Error</span>
-<span class="sd">            - `PBIAS`: Percent Bias</span>
-<span class="sd">            - `MARE`: Mean Absolute Relative Error</span>
+<span class="sd">        indicators (list[str]): List of indicator abbreviations selected from the available options in the property</span>
+<span class="sd">            [`indicator_names`](https://swatmodel.github.io/pySWATPlus/api/performance_metrics/#pySWATPlus.PerformanceMetrics.indicator_names).</span>
 
 <span class="sd">        json_file (str | pathlib.Path, optional): Path to a JSON file for saving the output `DataFrame` containing indicator values.</span>
 <span class="sd">            If `None` (default), the `DataFrame` is not saved.</span>
@@ -3191,13 +4382,10 @@ If <code>None</code> (default), the <code>DataFrame</code> is not saved.</p>
         <span class="n">vars_values</span><span class="o">=</span><span class="nb">locals</span><span class="p">()</span>
     <span class="p">)</span>
 
-    <span class="c1"># Check valid name of metric</span>
-    <span class="n">abbr_indicator</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">indicator_names</span>
-    <span class="k">for</span> <span class="n">indicator</span> <span class="ow">in</span> <span class="n">indicators</span><span class="p">:</span>
-        <span class="k">if</span> <span class="n">indicator</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">abbr_indicator</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s1">&#39;Invalid name &quot;</span><span class="si">{</span><span class="n">indicator</span><span class="si">}</span><span class="s1">&quot; in &quot;indicatiors&quot; list; expected names are </span><span class="si">{</span><span class="nb">list</span><span class="p">(</span><span class="n">abbr_indicator</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span><span class="si">}</span><span class="s1">&#39;</span>
-            <span class="p">)</span>
+    <span class="c1"># Validate abbreviation of indicators</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_validate_indicator_abbr</span><span class="p">(</span>
+        <span class="n">indicators</span><span class="o">=</span><span class="n">indicators</span>
+    <span class="p">)</span>
 
     <span class="c1"># Observed DataFrame</span>
     <span class="n">obs_df</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">_df_observe</span><span class="p">(</span>
@@ -3237,19 +4425,14 @@ If <code>None</code> (default), the <code>DataFrame</code> is not saved.</p>
         <span class="p">)</span>
         <span class="c1"># Iterate indicators</span>
         <span class="k">for</span> <span class="n">indicator</span> <span class="ow">in</span> <span class="n">indicators</span><span class="p">:</span>
-            <span class="c1"># Method from indicator abbreviation</span>
-            <span class="n">indicator_method</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span>
-                <span class="bp">self</span><span class="p">,</span>
-                <span class="sa">f</span><span class="s1">&#39;compute_</span><span class="si">{</span><span class="n">indicator</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="si">}</span><span class="s1">&#39;</span>
-            <span class="p">)</span>
-            <span class="c1"># Indicator value</span>
-            <span class="n">key_indicator</span> <span class="o">=</span> <span class="n">indicator_method</span><span class="p">(</span>
+            <span class="c1"># Store indicator value in DataFrame</span>
+            <span class="n">ind_val</span> <span class="o">=</span> <span class="n">PerformanceMetrics</span><span class="p">()</span><span class="o">.</span><span class="n">compute_from_abbr</span><span class="p">(</span>
                 <span class="n">df</span><span class="o">=</span><span class="n">norm_df</span><span class="p">,</span>
                 <span class="n">sim_col</span><span class="o">=</span><span class="s1">&#39;sim&#39;</span><span class="p">,</span>
-                <span class="n">obs_col</span><span class="o">=</span><span class="s1">&#39;obs&#39;</span>
+                <span class="n">obs_col</span><span class="o">=</span><span class="s1">&#39;obs&#39;</span><span class="p">,</span>
+                <span class="n">indicator</span><span class="o">=</span><span class="n">indicator</span>
             <span class="p">)</span>
-            <span class="c1"># Store indicator value in DataFrame</span>
-            <span class="n">ind_df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">key</span><span class="p">,</span> <span class="n">indicator</span><span class="p">]</span> <span class="o">=</span> <span class="n">key_indicator</span>
+            <span class="n">ind_df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">key</span><span class="p">,</span> <span class="n">indicator</span><span class="p">]</span> <span class="o">=</span> <span class="n">ind_val</span>
 
     <span class="c1"># Reset index to scenario column</span>
     <span class="n">scnro_col</span> <span class="o">=</span> <span class="s1">&#39;Scenario&#39;</span>

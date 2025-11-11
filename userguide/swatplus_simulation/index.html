@@ -826,13 +826,14 @@
 <h1 id="swat-simulation">SWAT+ Simulation</h1>
 <p><code>pySWATPlus</code> executes <a href="https://swat.tamu.edu/software/plus/">SWAT+</a> simulations using the <code>TxtInOut</code> folder generated during project creation with <a href="https://github.com/swat-model/QSWATPlus">QSWAT+</a>.</p>
 <p>To run a <code>SWAT+</code> simulation, the <code>TxtInOut</code> folder must include all required input files, which are created during simulation setup in the <a href="https://github.com/swat-model/swatplus-editor">SWAT+ Editor</a> via <code>QSWAT+</code>.</p>
-<p>Additionally, the <code>TxtInOut</code> folder must contain the <code>SWAT+</code> executable. If you need help locating it, open the <strong><code>Run SWAT+</code></strong> tab in the <code>SWAT+ Editor</code> to find its path. Once located, copy the executable file into the <code>TxtInOut</code> folder. If the executable is missing, the simulation will fail.</p>
+<p>Additionally, the <code>TxtInOut</code> folder must contain the <code>SWAT+</code> executable. The executable file compatible with your operating system and <code>SWAT+</code> version can be obtained from the <a href="https://github.com/swat-model/swatplus/releases">official GitHub releases</a>.</p>
 <p>Once the <code>TxtInOut</code> folder is properly configured with the necessary input files and the <code>SWAT+</code> executable, you can initialize the <code>TxtinoutReader</code> class to interact with the <code>SWAT+</code> model:</p>
 <div class="highlight"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">pySWATPlus</span>
 
 <span class="c1"># Replace this with the path to your project&#39;s TxtInOut folder</span>
 <span class="n">txtinout_dir</span> <span class="o">=</span> <span class="sa">r</span><span class="s2">&quot;C:\Users\Username\project\Scenarios\Default\TxtInOut&quot;</span>
 
+<span class="c1"># Initialize TxtinoutReader class</span>
 <span class="n">txtinout_reader</span> <span class="o">=</span> <span class="n">pySWATPlus</span><span class="o">.</span><span class="n">TxtinoutReader</span><span class="p">(</span>
     <span class="n">tio_dir</span><span class="o">=</span><span class="n">txtinout_dir</span>
 <span class="p">)</span>
@@ -936,32 +937,31 @@
 </ul>
 <h2 id="configurable-simulations-in-a-single-function">Configurable Simulations in a Single Function</h2>
 <p>Instead of performing each step separately as explained above, you can run a <code>SWAT+</code> simulation in a separate empty directory by configuring all options at once using a single function:</p>
-<div class="highlight"><pre><span></span><code><span class="c1"># Configure modified parameters</span>
-<span class="n">parameters</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="p">{</span>
-        <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;esco&#39;</span><span class="p">,</span>
-        <span class="s1">&#39;change_type&#39;</span><span class="p">:</span> <span class="s1">&#39;absval&#39;</span><span class="p">,</span>
-        <span class="s1">&#39;value&#39;</span><span class="p">:</span> <span class="mf">0.3</span>
-    <span class="p">},</span>
-    <span class="p">{</span>
-        <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;perco&#39;</span><span class="p">,</span>
-        <span class="s1">&#39;change_type&#39;</span><span class="p">:</span> <span class="s1">&#39;absval&#39;</span><span class="p">,</span>
-        <span class="s1">&#39;value&#39;</span><span class="p">:</span> <span class="mf">0.6</span>
-    <span class="p">}</span>
-<span class="p">]</span>
-
-<span class="c1"># Run SWAT+ simulation from the original `TxtInOut` folder</span>
+<div class="highlight"><pre><span></span><code><span class="c1"># Run SWAT+ simulation to a custom directory</span>
 <span class="n">txtinout_reader</span><span class="o">.</span><span class="n">run_swat</span><span class="p">(</span>
-    <span class="n">sim_dir</span><span class="o">=</span><span class="sa">r</span><span class="s2">&quot;C:\Users\Username\custom_folder&quot;</span><span class="p">,</span>  <span class="c1"># mandatory</span>
-    <span class="n">parameters</span><span class="o">=</span><span class="n">parameters</span><span class="p">,</span>  <span class="c1"># optional</span>
-    <span class="n">begin_date</span><span class="o">=</span><span class="s1">&#39;01-Jan-2012&#39;</span><span class="p">,</span>  <span class="c1"># optional</span>
-    <span class="n">end_date</span><span class="o">=</span> <span class="s1">&#39;31-Dec-2016&#39;</span><span class="p">,</span>  <span class="c1"># optional</span>
-    <span class="n">simulation_timestep</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>  <span class="c1"># optional</span>
-    <span class="n">warmup</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>  <span class="c1"># optional</span>
-    <span class="n">print_prt_control</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;channel_sd&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;daily&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">}},</span>  <span class="c1"># optional</span>
-    <span class="n">print_begin_date</span><span class="o">=</span><span class="s1">&#39;15-Jun-2012&#39;</span><span class="p">,</span>  <span class="c1"># optional</span>
-    <span class="n">print_end_date</span><span class="o">=</span><span class="s1">&#39;15-Jun-2016&#39;</span><span class="p">,</span>  <span class="c1"># optional</span>
-    <span class="n">print_interval</span><span class="o">=</span><span class="mi">1</span>  <span class="c1"># optional</span>
+    <span class="n">sim_dir</span><span class="o">=</span><span class="sa">r</span><span class="s2">&quot;C:\Users\Username\empty_folder&quot;</span><span class="p">,</span>  <span class="c1"># directory (optional)</span>
+    <span class="n">parameters</span><span class="o">=</span><span class="p">[</span>
+        <span class="p">{</span>
+            <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;esco&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;change_type&#39;</span><span class="p">:</span> <span class="s1">&#39;absval&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;value&#39;</span><span class="p">:</span> <span class="mf">0.3</span>
+        <span class="p">},</span>
+        <span class="p">{</span>
+            <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;perco&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;change_type&#39;</span><span class="p">:</span> <span class="s1">&#39;absval&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;value&#39;</span><span class="p">:</span> <span class="mf">0.6</span>
+        <span class="p">}</span>
+    <span class="p">],</span>  <span class="c1"># modified parameter value (optional)</span>
+    <span class="n">begin_date</span><span class="o">=</span><span class="s1">&#39;01-Jan-2012&#39;</span><span class="p">,</span>  <span class="c1"># simulation begin date (optional)</span>
+    <span class="n">end_date</span><span class="o">=</span> <span class="s1">&#39;31-Dec-2016&#39;</span><span class="p">,</span>  <span class="c1"># simulation end date (optional)</span>
+    <span class="n">simulation_timestep</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>  <span class="c1"># simulation time step (optional)</span>
+    <span class="n">warmup</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>  <span class="c1"># warm-up years (optional)</span>
+    <span class="n">print_prt_control</span><span class="o">=</span><span class="p">{</span>
+        <span class="s1">&#39;channel_sd&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;daily&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">}</span>
+    <span class="p">},</span>  <span class="c1"># control print.prt file (optional)</span>
+    <span class="n">print_begin_date</span><span class="o">=</span><span class="s1">&#39;15-Jun-2012&#39;</span><span class="p">,</span>  <span class="c1"># begin date to print output (optional)</span>
+    <span class="n">print_end_date</span><span class="o">=</span><span class="s1">&#39;15-Jun-2016&#39;</span><span class="p">,</span>  <span class="c1"># end date to print output (optional)</span>
+    <span class="n">print_interval</span><span class="o">=</span><span class="mi">1</span>  <span class="c1"># interval to print output (optional)</span>
 <span class="p">)</span>
 </code></pre></div>
 

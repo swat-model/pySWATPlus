@@ -876,7 +876,13 @@ Currently, it supports <a href="https://doi.org/10.1016/S0378-4754(00)00270-6">S
 <li>Output extraction with filtering options  </li>
 <li>Structured export of results for downstream analysis</li>
 </ul>
-<div class="highlight"><pre><span></span><code><span class="c1"># Sensitivity parameter space</span>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Before executing the following high-level interafce, comment out the code shown in
+<a href="https://swat-model.github.io/pySWATPlus/userguide/sensitivity_interface/#configuration-settings"><code>Configuration Settings</code></a>
+to avoid overwriting configuration files that may occur when rerunning the setup, which could affect the target results.</p>
+</div>
+<div class="highlight"><pre><span></span><code><span class="c1"># Define parameter space</span>
 <span class="n">parameters</span> <span class="o">=</span> <span class="p">[</span>
     <span class="p">{</span>
         <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;esco&#39;</span><span class="p">,</span>
@@ -892,7 +898,7 @@ Currently, it supports <a href="https://doi.org/10.1016/S0378-4754(00)00270-6">S
     <span class="p">}</span>
 <span class="p">]</span>
 
-<span class="c1"># Target data extraction from sensitivity simulation</span>
+<span class="c1"># Configuration of data extraction</span>
 <span class="n">extract_data</span> <span class="o">=</span> <span class="p">{</span>
     <span class="s1">&#39;channel_sdmorph_yr.txt&#39;</span><span class="p">:</span> <span class="p">{</span>
         <span class="s1">&#39;has_units&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
@@ -921,12 +927,6 @@ Currently, it supports <a href="https://doi.org/10.1016/S0378-4754(00)00270-6">S
     <span class="p">)</span>
     <span class="nb">print</span><span class="p">(</span><span class="n">output</span><span class="p">)</span>
 </code></pre></div>
-<div class="admonition tip">
-<p class="admonition-title">Troubleshooting Parallel Processing Errors</p>
-<p>If you encounter an error related to <code>concurrent.futures.ProcessPoolExecutor</code> and  <code>multiprocessing</code> without a clear description,
-try closing the current command terminal and restarting it. This issue can occasionally occur due to lingering background processes
-or locked resources from previous runs.</p>
-</div>
 <h2 id="sensitivity-indices">Sensitivity Indices</h2>
 <p>Sensitivity indices (first, second, and total orders) are computed using the indicators available in the <code>pySWATPlus.PerformanceMetrics</code> class, along with their confidence intervals.</p>
 <div class="highlight"><pre><span></span><code><span class="n">output</span> <span class="o">=</span> <span class="n">pySWATPlus</span><span class="o">.</span><span class="n">SensitivityAnalyzer</span><span class="p">()</span><span class="o">.</span><span class="n">parameter_sensitivity_indices</span><span class="p">(</span>
@@ -941,7 +941,7 @@ or locked resources from previous runs.</p>
 <span class="p">)</span>
 </code></pre></div>
 <h2 id="integrated-simulation-and-sensitivity">Integrated Simulation and Sensitivity</h2>
-<p>To compute sensitivity indices directly for multiple outputs against observed data and skip saving the detailed simulation results, use the following interface:</p>
+<p>To compute sensitivity indices for multiple outputs against observed data without saving detailed simulation time series for each parameter sample, use the following interface.</p>
 <div class="highlight"><pre><span></span><code><span class="c1"># Define parameter space</span>
 <span class="n">parameters</span> <span class="o">=</span> <span class="p">[</span>
     <span class="p">{</span>
@@ -959,7 +959,7 @@ or locked resources from previous runs.</p>
 <span class="p">]</span>
 
 
-<span class="c1"># Extract data configuration</span>
+<span class="c1"># Configuration of simulation data extraction</span>
 <span class="n">extract_data</span> <span class="o">=</span> <span class="p">{</span>
     <span class="s1">&#39;channel_sd_day.txt&#39;</span><span class="p">:</span> <span class="p">{</span>
         <span class="s1">&#39;has_units&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
@@ -972,7 +972,7 @@ or locked resources from previous runs.</p>
     <span class="p">}</span>
 <span class="p">}</span>
 
-<span class="c1"># Observe data configuration</span>
+<span class="c1"># Configuration of observes data</span>
 <span class="n">observe_data</span> <span class="o">=</span> <span class="p">{</span>
     <span class="s1">&#39;channel_sd_day.txt&#39;</span><span class="p">:</span> <span class="p">{</span>
         <span class="s1">&#39;obs_file&#39;</span><span class="p">:</span> <span class="sa">r</span><span class="s2">&quot;C:\Users\Username\observed_folder\discharge_daily.csv&quot;</span><span class="p">,</span>
@@ -984,7 +984,7 @@ or locked resources from previous runs.</p>
     <span class="p">}</span>
 <span class="p">}</span>
 
-<span class="c1"># Metric configuration</span>
+<span class="c1"># Configuration of performance metrics</span>
 <span class="n">metric_config</span> <span class="o">=</span> <span class="p">{</span>
     <span class="s1">&#39;channel_sd_day.txt&#39;</span><span class="p">:</span> <span class="p">{</span>
         <span class="s1">&#39;sim_col&#39;</span><span class="p">:</span> <span class="s1">&#39;flo_out&#39;</span><span class="p">,</span>
@@ -1003,14 +1003,20 @@ or locked resources from previous runs.</p>
     <span class="n">output</span> <span class="o">=</span> <span class="n">pySWATPlus</span><span class="o">.</span><span class="n">SensitivityAnalyzer</span><span class="p">()</span><span class="o">.</span><span class="n">simulation_and_indices</span><span class="p">(</span>
         <span class="n">parameters</span><span class="o">=</span><span class="n">parameters</span><span class="p">,</span>
         <span class="n">sample_number</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
-        <span class="n">sensim_dir</span><span class="o">=</span><span class="sa">r</span><span class="s2">&quot;C:\Users\dpal22\Desktop\swat_run\experiment_dominant_hru\empty_dir&quot;</span><span class="p">,</span>
-        <span class="n">txtinout_dir</span><span class="o">=</span><span class="sa">r</span><span class="s2">&quot;C:\Users\dpal22\Desktop\swat_run\experiment_dominant_hru\txtinout_copy&quot;</span><span class="p">,</span>
+        <span class="n">sensim_dir</span><span class="o">=</span><span class="n">sim_dir</span><span class="p">,</span>
+        <span class="n">txtinout_dir</span><span class="o">=</span><span class="sa">r</span><span class="s2">&quot;C:\Users\Username\custom_folder&quot;</span><span class="p">,</span>
         <span class="n">extract_data</span><span class="o">=</span><span class="n">extract_data</span><span class="p">,</span>
         <span class="n">observe_data</span><span class="o">=</span><span class="n">observe_data</span><span class="p">,</span>
         <span class="n">metric_config</span><span class="o">=</span><span class="n">metric_config</span>
     <span class="p">)</span>
     <span class="nb">print</span><span class="p">(</span><span class="n">output</span><span class="p">)</span>
 </code></pre></div>
+<div class="admonition tip">
+<p class="admonition-title">Troubleshooting Parallel Processing Errors</p>
+<p>If you encounter an error related to <code>concurrent.futures.ProcessPoolExecutor</code> and  <code>multiprocessing</code> without a clear description,
+try closing the current command terminal and restarting it. This issue can occasionally occur due to lingering background processes
+or locked resources from previous runs.</p>
+</div>
 
 
 
