@@ -1,12 +1,14 @@
 # Release Notes
 
-## Version 1.3.0 (not released yet)
+## Version 1.3.0 (November 16, 2025)
 
 - Introduced the `pySWATPlus.Calibration` class for parameter calibration using multi-objective optimization, evolutionary algorithms, and parallel computing.
 
 - Added the `pySWATPlus.SensitivityAnalyzer.simulation_and_indices` method to compute sensitivity indices directly against observed data without saving detailed simulation results.
 
 - Added the `pySWATPlus.PerformanceMetrics.indicator_from_file` method to compute performance metrics directly for simulated and observed files.
+
+- Added support for running Linux SWAT+ executable
 
   
 ## Version 1.2.0 (October 13, 2025)
