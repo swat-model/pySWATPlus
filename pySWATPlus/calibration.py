@@ -1,4 +1,6 @@
+from . import cpu
 import importlib
+import logging
 import numpy
 import functools
 import concurrent.futures
@@ -13,7 +15,8 @@ from .performance_metrics import PerformanceMetrics
 from . import validators
 from . import utils
 from . import newtype
-from . import cpu
+
+logger = logging.getLogger(__name__)
 
 
 class Calibration(pymoo.core.problem.Problem):  # type: ignore[misc]
@@ -175,7 +178,7 @@ class Calibration(pymoo.core.problem.Problem):  # type: ignore[misc]
                 For example, with 16 CPUs and a `pop_size` of 20, two batches will be required (16 + 4);
                 therefore, selecting a `pop_size` of 16 or 32 may improve efficiency.
     '''
-
+    @validators.validate_call
     def __init__(
         self,
         parameters: newtype.BoundType,
@@ -189,14 +192,6 @@ class Calibration(pymoo.core.problem.Problem):  # type: ignore[misc]
         pop_size: int,
         max_workers: typing.Optional[int] = None
     ) -> None:
-
-        # Check input variables type
-        validators._variable_origin_static_type(
-            vars_types=typing.get_type_hints(
-                obj=self.__class__.__init__
-            ),
-            vars_values=locals()
-        )
 
         # Absolute directory path
         calsim_dir = pathlib.Path(calsim_dir).resolve()
@@ -311,9 +306,7 @@ class Calibration(pymoo.core.problem.Problem):  # type: ignore[misc]
 
         # Display start of current generation number
         self.track_gen = self.track_gen + 1
-        print(
-            f'\nStarted generation: {self.track_gen}/{self.n_gen}\n'
-        )
+        logger.info(f'Started generation: {self.track_gen}/{self.n_gen}')
 
         # Simulation in separate CPU
         cpu_sim = functools.partial(
@@ -335,10 +328,16 @@ class Calibration(pymoo.core.problem.Problem):  # type: ignore[misc]
                 executor.submit(cpu_sim, idx, arr) for idx, arr in enumerate(x, start=start_sim)
             ]
             for future in concurrent.futures.as_completed(futures):
+                sim_idx = start_sim + futures.index(future)
                 # Display end of current simulation for tracking
-                print(f'Completed simulation: {start_sim + futures.index(future)}/{self.total_sim}', flush=True)
+                logger.info(f'Completed simulation: {sim_idx}/{self.total_sim}')
                 # Collect simulation results
-                future_result = future.result()
+                try:
+                    future_result = future.result()
+                except Exception as e:
+                    raise RuntimeError(
+                        f'Simulation {sim_idx} failed: {e}'
+                    ) from e
                 cpu_dict[tuple(future_result['array'])] = {
                     k: v for k, v in future_result.items() if k != 'array'
                 }
@@ -393,9 +392,7 @@ class Calibration(pymoo.core.problem.Problem):  # type: ignore[misc]
         out["F"] = numpy.array(gen_objs)
 
         # Print end of current generation number
-        print(
-            f'\nCompleted generation: {self.track_gen}/{self.n_gen}\n'
-        )
+        logger.info(f'Completed generation: {self.track_gen}/{self.n_gen}')
 
     def _objectives_directions(
         self

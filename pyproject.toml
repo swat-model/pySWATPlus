@@ -33,10 +33,14 @@ classifiers = [
 	"Topic :: Scientific/Engineering :: Hydrology"
 ]
 dependencies = [
-    "pydantic",
-    "SALib",
-    "pymoo"
+    "pydantic>=2.0,<3",
+    "SALib>=1.4,<2",
+    "pymoo>=0.6.0,<0.7"
 ]
+
+[project.optional-dependencies]
+dev = ["pytest>=7.0", "pytest-cov", "flake8"]
+typing = ["mypy"]
 
 [project.urls]
 Homepage = "https://github.com/swat-model/pySWATPlus"

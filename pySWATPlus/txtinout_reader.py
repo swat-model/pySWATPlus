@@ -9,6 +9,13 @@ from . import validators
 
 logger = logging.getLogger(__name__)
 
+# 0-based line indices in SWAT+ input files (used directly as lines[INDEX] in Python).
+_PRINT_PRT_HEADER_LINES = 10   # Last header line in print.prt (version info and global settings)
+_TIME_SIM_DATA_LINE = 2        # Data row in time.sim
+_PRINT_PRT_SETTINGS_LINE = 2   # Warmup/interval/period row in print.prt
+_PRINT_PRT_CSV_LINE = 6        # CSV enable/disable row in print.prt
+_FILE_CIO_CALIBRATION_LINE = 21  # Calibration row in file.cio
+
 
 class TxtinoutReader:
     '''
@@ -16,6 +23,7 @@ class TxtinoutReader:
     SWAT+ model files located in the `TxtInOut` folder.
     '''
 
+    @validators.validate_call
     def __init__(
         self,
         tio_dir: str | pathlib.Path
@@ -27,14 +35,6 @@ class TxtinoutReader:
             tio_dir (str | pathlib.Path): Path to the `TxtInOut` directory, which must contain
                 exactly one SWAT+ executable `.exe` file.
         '''
-
-        # Check input variables type
-        validators._variable_origin_static_type(
-            vars_types=typing.get_type_hints(
-                obj=self.__class__.__init__
-            ),
-            vars_values=locals()
-        )
 
         # Absolute path
         tio_dir = pathlib.Path(tio_dir).resolve()
@@ -49,7 +49,7 @@ class TxtinoutReader:
 
         # Raise error on executable files
         if len(exe_files) != 1:
-            raise TypeError(
+            raise FileNotFoundError(
                 'Expected exactly one executable file in the parent folder, but found none or multiple'
             )
 
@@ -59,6 +59,7 @@ class TxtinoutReader:
         # EXE file path
         self.exe_file = tio_dir / exe_files[0]
 
+    @validators.validate_call
     def enable_object_in_print_prt(
         self,
         obj: typing.Optional[str],
@@ -89,14 +90,6 @@ class TxtinoutReader:
                 the standard SWAT+ output object list. If False and `obj` is not in the standard list,
                 a ValueError is raised. Defaults to False.
         '''
-
-        # Check input variables type
-        validators._variable_origin_static_type(
-            vars_types=typing.get_type_hints(
-                obj=self.enable_object_in_print_prt
-            ),
-            vars_values=locals()
-        )
 
         # Dictionary of available objects
         obj_dict = {
@@ -130,8 +123,8 @@ class TxtinoutReader:
         found = False
         with open(print_prt_path, 'r', newline='') as file:
             for i, line in enumerate(file, start=1):
-                if i <= 10:
-                    # Always keep first 10 lines as-is
+                if i <= _PRINT_PRT_HEADER_LINES:
+                    # Always keep header lines as-is
                     new_print_prt += line
                     continue
 
@@ -181,6 +174,7 @@ class TxtinoutReader:
 
         return None
 
+    @validators.validate_call
     def set_simulation_period(
         self,
         begin_date: str,
@@ -194,14 +188,6 @@ class TxtinoutReader:
             begin_date (str): Start date of the simulation in DD-Mon-YYYY format (e.g., 01-Jan-2010).
             end_date (str): End date of the simulation in DD-Mon-YYYY format (e.g., 31-Dec-2013).
         '''
-
-        # Check input variables type
-        validators._variable_origin_static_type(
-            vars_types=typing.get_type_hints(
-                obj=self.set_simulation_period
-            ),
-            vars_values=locals()
-        )
 
         # Convert date string to datetime.date object
         begin_dt = utils._date_str_to_object(
@@ -223,9 +209,6 @@ class TxtinoutReader:
         end_day = end_dt.timetuple().tm_yday
         end_year = end_dt.year
 
-        # Target line
-        nth_line = 3
-
         # File path of time.sim
         time_sim_path = self.root_dir / 'time.sim'
 
@@ -234,7 +217,7 @@ class TxtinoutReader:
             lines = file.readlines()
 
         # Split targeted line
-        elements = lines[nth_line - 1].split()
+        elements = lines[_TIME_SIM_DATA_LINE].split()
 
         # Update values
         elements[0] = str(begin_day)
@@ -244,7 +227,7 @@ class TxtinoutReader:
 
         # Reconstruct the result string while maintaining spaces
         result_string = '{: >8} {: >10} {: >10} {: >10} {: >10} \n'.format(*elements)
-        lines[nth_line - 1] = result_string
+        lines[_TIME_SIM_DATA_LINE] = result_string
 
         # Modify time.sim file
         with open(time_sim_path, 'w') as file:
@@ -252,6 +235,7 @@ class TxtinoutReader:
 
         return None
 
+    @validators.validate_call
     def set_simulation_timestep(
         self,
         step: int
@@ -269,14 +253,6 @@ class TxtinoutReader:
                 - `1440` = 1 minute
         '''
 
-        # Check input variables type
-        validators._variable_origin_static_type(
-            vars_types=typing.get_type_hints(
-                obj=self.set_simulation_timestep
-            ),
-            vars_values=locals()
-        )
-
         # Valid time step dictionary
         valid_steps = {
             0: '1 day',
@@ -292,9 +268,6 @@ class TxtinoutReader:
                 f'Received invalid step: {step}; must be one of the keys in {valid_steps}'
             )
 
-        # Target line
-        nth_line = 3
-
         # File path of time.sim
         time_sim_path = self.root_dir / 'time.sim'
 
@@ -303,14 +276,14 @@ class TxtinoutReader:
             lines = file.readlines()
 
         # Split targeted line
-        elements = lines[nth_line - 1].split()
+        elements = lines[_TIME_SIM_DATA_LINE].split()
 
         # Update values
         elements[4] = str(step)
 
         # Reconstruct the result string while maintaining spaces
         result_string = '{: >8} {: >10} {: >10} {: >10} {: >10} \n'.format(*elements)
-        lines[nth_line - 1] = result_string
+        lines[_TIME_SIM_DATA_LINE] = result_string
 
         # Modify time.sim file
         with open(time_sim_path, 'w') as file:
@@ -318,6 +291,7 @@ class TxtinoutReader:
 
         return None
 
+    @validators.validate_call
     def set_warmup_year(
         self,
         warmup: int
@@ -328,14 +302,6 @@ class TxtinoutReader:
         Args:
             warmup (int): Warm-up years for the simulation, must be ≥ 1.
         '''
-
-        # Check input variables type
-        validators._variable_origin_static_type(
-            vars_types=typing.get_type_hints(
-                obj=self.set_warmup_year
-            ),
-            vars_values=locals()
-        )
 
         # Check warmup year is greater than 0
         if warmup <= 0:
@@ -350,12 +316,8 @@ class TxtinoutReader:
         with open(print_prt_path, 'r') as file:
             lines = file.readlines()
 
-        # Target line
-        nth_line = 3
-        year_line = lines[nth_line - 1]
-
         # Split the input string by spaces
-        elements = year_line.split()
+        elements = lines[_PRINT_PRT_SETTINGS_LINE].split()
 
         # Modify warmup year
         elements[0] = str(warmup)
@@ -363,38 +325,8 @@ class TxtinoutReader:
         # Reconstruct the result string while maintaining spaces
         result_string = '{: <12} {: <11} {: <11} {: <10} {: <10} {: <10} \n'.format(*elements)
 
-        lines[nth_line - 1] = result_string
+        lines[_PRINT_PRT_SETTINGS_LINE] = result_string
 
-        with open(print_prt_path, 'w') as file:
-            file.writelines(lines)
-
-        return None
-
-    def _enable_disable_csv_print(
-        self,
-        enable: bool = True
-    ) -> None:
-        '''
-        Enable or disable print in the `print.prt` file.
-        '''
-
-        # File path of print.prt
-        print_prt_path = self.root_dir / 'print.prt'
-
-        # Target line
-        nth_line = 7
-
-        # Open the file in read mode and read its contents
-        with open(print_prt_path, 'r') as file:
-            lines = file.readlines()
-
-        # Change line string
-        if enable:
-            lines[nth_line - 1] = 'y' + lines[nth_line - 1][1:]
-        else:
-            lines[nth_line - 1] = 'n' + lines[nth_line - 1][1:]
-
-        # Modify print.prt file
         with open(print_prt_path, 'w') as file:
             file.writelines(lines)
 
@@ -404,10 +336,15 @@ class TxtinoutReader:
         self
     ) -> None:
         '''
-        Enable print in the `print.prt` file.
+        Enable CSV print in the `print.prt` file.
         '''
 
-        self._enable_disable_csv_print(enable=True)
+        print_prt_path = self.root_dir / 'print.prt'
+        with open(print_prt_path, 'r') as file:
+            lines = file.readlines()
+        lines[_PRINT_PRT_CSV_LINE] = 'y' + lines[_PRINT_PRT_CSV_LINE][1:]
+        with open(print_prt_path, 'w') as file:
+            file.writelines(lines)
 
         return None
 
@@ -415,13 +352,19 @@ class TxtinoutReader:
         self
     ) -> None:
         '''
-        Disable print in the `print.prt` file.
+        Disable CSV print in the `print.prt` file.
         '''
 
-        self._enable_disable_csv_print(enable=False)
+        print_prt_path = self.root_dir / 'print.prt'
+        with open(print_prt_path, 'r') as file:
+            lines = file.readlines()
+        lines[_PRINT_PRT_CSV_LINE] = 'n' + lines[_PRINT_PRT_CSV_LINE][1:]
+        with open(print_prt_path, 'w') as file:
+            file.writelines(lines)
 
         return None
 
+    @validators.validate_call
     def set_print_interval(
         self,
         interval: int,
@@ -434,14 +377,6 @@ class TxtinoutReader:
                 For example, if `interval = 2`, output will be printed every other day.
         '''
 
-        # Check input variables type
-        validators._variable_origin_static_type(
-            vars_types=typing.get_type_hints(
-                obj=self.set_print_interval
-            ),
-            vars_values=locals()
-        )
-
         # File path of print.prt
         print_prt_path = self.root_dir / 'print.prt'
 
@@ -449,9 +384,8 @@ class TxtinoutReader:
         with open(print_prt_path, 'r') as file:
             lines = file.readlines()
 
-            nth_line = 3
-            columns = lines[nth_line - 1].split()
-            lines[nth_line - 1] = f"{columns[0]:<12}{columns[1]:<11}{columns[2]:<11}{columns[3]:<10}{columns[4]:<10}{interval}\n"
+        columns = lines[_PRINT_PRT_SETTINGS_LINE].split()
+        lines[_PRINT_PRT_SETTINGS_LINE] = f"{columns[0]:<12}{columns[1]:<11}{columns[2]:<11}{columns[3]:<10}{columns[4]:<10}{interval}\n"
 
         # Modify print.prt file
         with open(print_prt_path, 'w') as file:
@@ -459,6 +393,7 @@ class TxtinoutReader:
 
         return None
 
+    @validators.validate_call
     def set_print_period(
         self,
         begin_date: str,
@@ -471,14 +406,6 @@ class TxtinoutReader:
             begin_date (str): Start date in `DD-Mon-YYYY` format (e.g., 01-Jun-2010).
             end_date (str): End date in `DD-Mon-YYYY` format (e.g., 31-Dec-2020).
         '''
-
-        # Check input variables type
-        validators._variable_origin_static_type(
-            vars_types=typing.get_type_hints(
-                obj=self.set_print_period
-            ),
-            vars_values=locals()
-        )
 
         # Convert date string to datetime.date object
         begin_dt = utils._date_str_to_object(
@@ -507,9 +434,8 @@ class TxtinoutReader:
         with open(print_prt_path, 'r') as file:
             lines = file.readlines()
 
-            nth_line = 3
-            columns = lines[nth_line - 1].split()
-            lines[nth_line - 1] = f"{columns[0]:<12}{start_day:<11}{start_year:<11}{end_day:<10}{end_year:<10}{columns[5]}\n"
+            columns = lines[_PRINT_PRT_SETTINGS_LINE].split()
+            lines[_PRINT_PRT_SETTINGS_LINE] = f"{columns[0]:<12}{start_day:<11}{start_year:<11}{end_day:<10}{end_year:<10}{columns[5]}\n"
 
         # Modify print.prt file
         with open(print_prt_path, 'w') as file:
@@ -517,6 +443,7 @@ class TxtinoutReader:
 
         return None
 
+    @validators.validate_call
     def copy_required_files(
         self,
         sim_dir: str | pathlib.Path,
@@ -531,14 +458,6 @@ class TxtinoutReader:
         Returns:
             The path to the target directory containing the copied files.
         '''
-
-        # Check input variables type
-        validators._variable_origin_static_type(
-            vars_types=typing.get_type_hints(
-                obj=self.copy_required_files
-            ),
-            vars_values=locals()
-        )
 
         # Absolute path of sim_dir
         sim_dir = pathlib.Path(sim_dir).resolve()
@@ -702,21 +621,18 @@ class TxtinoutReader:
         ] + ['null'] * 9
         line_to_add = fmt.format(*cal_line_values)
 
-        # Line index for calibration.cal
-        line_index = 21
-
         # Read all lines
         with open(file_path, 'r') as f:
             lines = f.readlines()
 
         # Safety check: ensure the file has enough lines
-        if line_index >= len(lines):
+        if _FILE_CIO_CALIBRATION_LINE >= len(lines):
             raise IndexError(
-                f'The file only has {len(lines)} lines, cannot replace line {line_index + 1}'
+                f'The file only has {len(lines)} lines, cannot replace line {_FILE_CIO_CALIBRATION_LINE + 1}'
             )
 
         # Replace the line, ensure it ends with a newline
-        lines[line_index] = line_to_add.rstrip() + '\n'
+        lines[_FILE_CIO_CALIBRATION_LINE] = line_to_add.rstrip() + '\n'
 
         # Modify file.cio
         with open(file_path, 'w') as f:
@@ -884,6 +800,7 @@ class TxtinoutReader:
 
         return None
 
+    @validators.validate_call
     def run_swat(
         self,
         sim_dir: typing.Optional[str | pathlib.Path] = None,
@@ -952,10 +869,9 @@ class TxtinoutReader:
             warmup (int): A positive integer representing the number of warm-up years (e.g., 1).
 
             print_prt_control (dict[str, dict[str, bool]]): A dictionary to control output printing in the `print.prt` file.
-                Each outer key corresponds to an object name from `print.prt` (e.g., 'channel_sd', 'basin_wb').
-                Each value is a dictionary with keys `daily`, `monthly`, `yearly`, or `avann`, mapped to boolean values.
-                Set to `False` to disable printing for a specific time step; defaults to `True` if an empty dictionary is provided.
-                The time step keys represent:
+                Each outer key is an object name from `print.prt` (e.g., `'channel_sd'`, `'basin_wb'`).
+                Each value is a dictionary with zero or more of the keys `daily`, `monthly`, `yearly`, `avann`,
+                mapped to `True` or `False`. Any omitted time-step key defaults to `True`.
 
                 - `daily`: Output for each simulation day.
                 - `monthly`: Output aggregated by month.
@@ -965,8 +881,9 @@ class TxtinoutReader:
                 Examples:
                 ```python
                 print_prt_control = {
-                    'channel_sd': {},  # set True for all time frequency
-                    'channel_sdmorph': {'monthly': False}
+                    'channel_sd': {},  # enable all time frequencies
+                    'channel_sdmorph': {'monthly': False},  # enable all except monthly
+                    'basin_wb': {'daily': False, 'monthly': False, 'yearly': False, 'avann': False},  # disable all
                 }
                 ```
 
@@ -981,14 +898,6 @@ class TxtinoutReader:
         Returns:
             Path where the SWAT+ simulation was executed.
         '''
-
-        # Check input variables type
-        validators._variable_origin_static_type(
-            vars_types=typing.get_type_hints(
-                obj=self.run_swat
-            ),
-            vars_values=locals()
-        )
 
         # TxtinoutReader class instance
         if sim_dir is not None:

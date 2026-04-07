@@ -40,6 +40,7 @@ class PerformanceMetrics:
 
         return abbr_name
 
+    @validators.validate_call
     def compute_nse(
         self,
         df: pandas.DataFrame,
@@ -61,14 +62,6 @@ class PerformanceMetrics:
             Computed value of the `Nash-Sutcliffe Efficiency` metric.
         '''
 
-        # Check input variables type
-        validators._variable_origin_static_type(
-            vars_types=typing.get_type_hints(
-                obj=self.compute_nse
-            ),
-            vars_values=locals()
-        )
-
         # Simulation values
         sim_arr = df[sim_col].astype(float)
 
@@ -82,6 +75,7 @@ class PerformanceMetrics:
 
         return output
 
+    @validators.validate_call
     def compute_kge(
         self,
         df: pandas.DataFrame,
@@ -103,14 +97,6 @@ class PerformanceMetrics:
             Computed value of the `Kling-Gupta Efficiency` metric.
         '''
 
-        # Check input variables type
-        validators._variable_origin_static_type(
-            vars_types=typing.get_type_hints(
-                obj=self.compute_kge
-            ),
-            vars_values=locals()
-        )
-
         # Simulation values
         sim_arr = df[sim_col].astype(float)
 
@@ -131,6 +117,7 @@ class PerformanceMetrics:
 
         return output
 
+    @validators.validate_call
     def compute_mse(
         self,
         df: pandas.DataFrame,
@@ -151,14 +138,6 @@ class PerformanceMetrics:
             Computed value of the `Mean Squared Error` metric.
         '''
 
-        # Check input variables type
-        validators._variable_origin_static_type(
-            vars_types=typing.get_type_hints(
-                obj=self.compute_mse
-            ),
-            vars_values=locals()
-        )
-
         # Simulation values
         sim_arr = df[sim_col].astype(float)
 
@@ -170,6 +149,7 @@ class PerformanceMetrics:
 
         return output
 
+    @validators.validate_call
     def compute_rmse(
         self,
         df: pandas.DataFrame,
@@ -190,15 +170,7 @@ class PerformanceMetrics:
             Computed value of the `Root Mean Squared Error` metric.
         '''
 
-        # Check input variables type
-        validators._variable_origin_static_type(
-            vars_types=typing.get_type_hints(
-                obj=self.compute_rmse
-            ),
-            vars_values=locals()
-        )
-
-        # computer MSE error
+        # compute MSE
         mse_value = self.compute_mse(
             df=df,
             sim_col=sim_col,
@@ -210,6 +182,7 @@ class PerformanceMetrics:
 
         return output
 
+    @validators.validate_call
     def compute_pbias(
         self,
         df: pandas.DataFrame,
@@ -230,14 +203,6 @@ class PerformanceMetrics:
             Computed value of the `Percent Bias` metric.
         '''
 
-        # Check input variables type
-        validators._variable_origin_static_type(
-            vars_types=typing.get_type_hints(
-                obj=self.compute_pbias
-            ),
-            vars_values=locals()
-        )
-
         # Simulation values
         sim_arr = df[sim_col].astype(float)
 
@@ -249,6 +214,7 @@ class PerformanceMetrics:
 
         return output
 
+    @validators.validate_call
     def compute_mare(
         self,
         df: pandas.DataFrame,
@@ -268,14 +234,6 @@ class PerformanceMetrics:
         Returns:
             Computed value of the `Mean Absolute Relative Error` metric.
         '''
-
-        # Check input variables type
-        validators._variable_origin_static_type(
-            vars_types=typing.get_type_hints(
-                obj=self.compute_mare
-            ),
-            vars_values=locals()
-        )
 
         # Simulation values
         sim_arr = df[sim_col].astype(float)
@@ -305,6 +263,7 @@ class PerformanceMetrics:
 
         return None
 
+    @validators.validate_call
     def compute_from_abbr(
         self,
         df: pandas.DataFrame,
@@ -329,14 +288,6 @@ class PerformanceMetrics:
             Computed metric value corresponding to the specified indicator.
         '''
 
-        # Check input variables type
-        validators._variable_origin_static_type(
-            vars_types=typing.get_type_hints(
-                obj=self.compute_from_abbr
-            ),
-            vars_values=locals()
-        )
-
         # Validate abbreviation of indicators
         self._validate_indicator_abbr(
             indicators=[indicator]
@@ -357,6 +308,7 @@ class PerformanceMetrics:
 
         return float(indicator_value)
 
+    @validators.validate_call
     def scenario_indicators(
         self,
         sensim_file: str | pathlib.Path,
@@ -372,18 +324,15 @@ class PerformanceMetrics:
         Compute performance metrics for sample scenarios obtained using the method
         [`simulation_by_sample_parameters`](https://swat-model.github.io/pySWATPlus/api/sensitivity_analyzer/#pySWATPlus.SensitivityAnalyzer.simulation_by_sample_parameters).
 
-        Before computing the metrics, simulated and observed values are normalized using the formula `(v - min_o) / (max_o - min_o)`,
-        where `min_o` and `max_o` represent the minimum and maximum of observed values, respectively.
+        Before computing the indicators, both simulated and observed values are normalized using the formula
+        `(v - min_o) / (max_o - min_o)`, where `min_o` and `max_o` represent the minimum and maximum of observed values, respectively.
+        All negative and `None` observed values are removed before computing `min_o` and `max_o` to prevent errors during normalization.
 
         The method returns a dictionary with two keys:
 
         - `problem`: The definition dictionary passed to sampling.
         - `indicator`: A `DataFrame` containing the `Scenario` column and one column per indicator,
           with scenario indices and corresponding indicator values.
-
-        Before computing the indicators, both simulated and observed values are normalized using the formula
-        `(v - min_o) / (max_o - min_o)`, where `min_o` and `max_o` represent the minimum and maximum of observed values, respectively.
-        All negative and `None` observed values are removed before computing `min_o` and `max_o` to prevent errors during normalization.
 
         Args:
             sensim_file (str | pathlib.Path): Path to the `sensitivity_simulation.json` file produced by `simulation_by_sobol_sample`.
@@ -408,14 +357,6 @@ class PerformanceMetrics:
         Returns:
             Dictionary with two keys, `problem` and `indicator`, and their corresponding values.
         '''
-
-        # Check input variables type
-        validators._variable_origin_static_type(
-            vars_types=typing.get_type_hints(
-                obj=self.scenario_indicators
-            ),
-            vars_values=locals()
-        )
 
         # Validate abbreviation of indicators
         self._validate_indicator_abbr(
@@ -498,6 +439,7 @@ class PerformanceMetrics:
 
         return output
 
+    @validators.validate_call
     def indicator_from_file(
         self,
         sim_file: str | pathlib.Path,
@@ -508,7 +450,6 @@ class PerformanceMetrics:
         obs_col: str,
         indicators: list[str]
     ) -> dict[str, float]:
-
         '''
         Compute performance metrics for simulated values obtained using the method
         [`run_swat`](https://swat-model.github.io/pySWATPlus/api/txtinout_reader/#pySWATPlus.TxtinoutReader.run_swat).
@@ -547,14 +488,6 @@ class PerformanceMetrics:
         Returns:
             Dictionary where each key is an indicator abbreviation, and value is the corresponding performance metric.
         '''
-
-        # Check input variables type
-        validators._variable_origin_static_type(
-            vars_types=typing.get_type_hints(
-                obj=self.indicator_from_file
-            ),
-            vars_values=locals()
-        )
 
         # Validate abbreviation of indicators
         self._validate_indicator_abbr(

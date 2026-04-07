@@ -12,7 +12,7 @@ To contribute, ensure you have the following installed:
 - **Python**: Version 3.10 or higher.
 - **Git**: For version control.
 - **pip** or **conda** (if using `conda` environments).
-- A code editor (e.g., JuputerLab, VS Code, PyCharm).
+- A code editor (e.g., JupyterLab, VS Code, PyCharm).
 
 ### Development Setting
 
@@ -32,7 +32,6 @@ To contribute, ensure you have the following installed:
         conda activate pySWATPlus
         conda install pip
         ```
-        
 
 - Clone the `GitHub` Repository:
 
@@ -48,30 +47,17 @@ To contribute, ensure you have the following installed:
 
 - Install Dependencies:
 
-    - Install required dependencies:
+    - Install the package in editable mode with all development and typing dependencies:
 
         ```bash
-        pip install -r requirements.txt
+        pip install -e ".[dev,typing]"
         ```
 
-    - Install development dependencies:
+    - To also install documentation dependencies:
 
         ```bash
-        pip install flake8       # Code style check
-        pip install mypy         # Static type checking
-        pip install pytest       # Run tests
-        pip install pytest-cov   # Test coverage report
-        pip install build        # Build distribution package
-        pip install mkdocs mkdocs-material  # Documentation site generation
-        pip install mkdocstrings-python     # Documentation for Python docstrings
+        pip install -r docs/requirements-docs.txt
         ```
-
-- Install `pySWATPlus` in Editable Mode:
-
-    ```bash
-    python -m build
-    pip install --editable .
-    ```
 
 - Verify Installation:
 

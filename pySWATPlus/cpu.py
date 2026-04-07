@@ -1,3 +1,4 @@
+import logging
 import numpy
 import shutil
 import typing
@@ -5,6 +6,8 @@ import pathlib
 from .txtinout_reader import TxtinoutReader
 from .data_manager import DataManager
 from . import newtype
+
+logger = logging.getLogger(__name__)
 
 
 def _simulation_output(
@@ -42,10 +45,7 @@ def _simulation_output(
         )
 
     # Display start of current simulation for tracking
-    print(
-        f'Started simulation: {track_sim}/{num_sim}',
-        flush=True
-    )
+    logger.info(f'Started simulation: {track_sim}/{num_sim}')
 
     # Create simulation directory
     cpu_dir = f'sim_{track_sim}'

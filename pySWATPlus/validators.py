@@ -1,55 +1,14 @@
 import pandas
 import pathlib
 import typing
-import types
 import datetime
 import json
+import pydantic
 from . import newtype
 
-
-def _variable_origin_static_type(
-    vars_types: dict[str, typing.Any],
-    vars_values: dict[str, typing.Any]
-) -> None:
-    '''
-    Check that input variables match their expected origin types.
-    '''
-
-    # iterate name and type of method variables
-    for v_name, v_type in vars_types.items():
-        # continute if varibale name is return
-        if v_name == 'return':
-            continue
-        # get origin type and value of the variable
-        type_origin = typing.get_origin(v_type)
-        type_value = vars_values[v_name]
-        # if origin type in None
-        if type_origin is None:
-            if not isinstance(type_value, v_type):
-                raise TypeError(
-                    f'Expected "{v_name}" to be "{v_type.__name__}", but got type "{type(type_value).__name__}"'
-                )
-        # if origin type in not None
-        else:
-            # if origin type is a Union
-            if type_origin in (typing.Union, types.UnionType):
-                # get argument types
-                type_args = tuple(
-                    typing.get_origin(arg) or arg for arg in typing.get_args(v_type)
-                )
-                if not isinstance(type_value, type_args):
-                    type_expect = [t.__name__ for t in type_args]
-                    raise TypeError(
-                        f'Expected "{v_name}" to be one of {type_expect}, but got type "{type(type_value).__name__}"'
-                    )
-            # if origin type in not a Union
-            else:
-                if not isinstance(type_value, type_origin):
-                    raise TypeError(
-                        f'Expected "{v_name}" to be "{type_origin.__name__}", but got type "{type(type_value).__name__}"'
-                    )
-
-    return None
+validate_call = pydantic.validate_call(
+    config=pydantic.ConfigDict(strict=True, arbitrary_types_allowed=True)
+)
 
 
 def _dir_path(
@@ -216,20 +175,20 @@ def _calibration_conditions(
 
     supported_conditions = {'hsg', 'texture', 'plant', 'landuse'}
 
-    # Build validators lazily (only when needed)
-    validators = {}
+    # Build valid values map lazily (only when needed)
+    valid_values_map: dict[str, set[str]] = {}
 
     if 'hsg' in conditions:
-        validators['hsg'] = {'A', 'B', 'C', 'D'}
+        valid_values_map['hsg'] = {'A', 'B', 'C', 'D'}
     if 'texture' in conditions:
         df_textures = pandas.read_fwf(input_dir / 'soils.sol', skiprows=1)
-        validators['texture'] = set(df_textures['texture'].dropna().unique())
+        valid_values_map['texture'] = set(df_textures['texture'].dropna().unique())
     if 'plant' in conditions:
         df_plants = pandas.read_fwf(input_dir / 'plants.plt', sep=r'\s+', skiprows=1)
-        validators['plant'] = set(df_plants['name'].dropna().unique())
+        valid_values_map['plant'] = set(df_plants['name'].dropna().unique())
     if 'landuse' in conditions:
         df_landuse = pandas.read_csv(input_dir / 'landuse.lum', sep=r'\s+', skiprows=1)
-        validators['landuse'] = set(df_landuse['plnt_com'].dropna().unique())
+        valid_values_map['landuse'] = set(df_landuse['plnt_com'].dropna().unique())
 
     # Validate conditions
     for cond_name, cond_values in conditions.items():
@@ -239,7 +198,7 @@ def _calibration_conditions(
                 f'Available conditions are: {", ".join(sorted(supported_conditions))}.'
             )
 
-        valid_values = validators.get(cond_name, set())
+        valid_values = valid_values_map.get(cond_name, set())
         for val in cond_values:
             if val not in valid_values:
                 raise ValueError(
@@ -508,7 +467,7 @@ def _observe_data_config(
                     f'expected sub-keys are {json.dumps(valid_subkeys)}'
                 )
 
-        return None
+    return None
 
 
 def _dict_key_equal(

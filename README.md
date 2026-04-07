@@ -57,23 +57,19 @@ To install the latest development version from GitHub:
 pip install git+https://github.com/swat-model/pySWATPlus.git
 ```
 
-To install from source in editable mode within your desired `conda` environment:
+To install from source in editable mode:
 
 ```bash
-# Activate your Conda environment
-conda activate <environment_name>
-
-# Install required tools and clone the repository
-pip install build
+# Clone the repository
 cd C:\Users\Username\Folder  # Replace with your actual path
 git clone https://github.com/swat-model/pySWATPlus.git
 cd pySWATPlus
 
-# Build the package
-python -m build
+# Optionally activate your conda environment
+conda activate <environment_name>
 
 # Install in editable mode
-pip install --editable .
+uv pip install -e .
 ```
 
 ## ✅ Verify Installation
@@ -87,7 +83,7 @@ import pySWATPlus
 ## 📚 Documentation
 
 For a guide to setting up first SWAT+ project and other functionalities with examples,
-refere to the [pySWATPlus documentation](https://swat-model.github.io/pySWATPlus/).
+refer to the [pySWATPlus documentation](https://swat-model.github.io/pySWATPlus/).
 
 ## 📖 Citation
 

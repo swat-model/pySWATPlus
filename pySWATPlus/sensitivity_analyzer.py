@@ -1,3 +1,6 @@
+from . import cpu
+from . import utils
+import logging
 import numpy
 import pandas
 import SALib.sample.sobol
@@ -13,8 +16,8 @@ from .performance_metrics import PerformanceMetrics
 from .txtinout_reader import TxtinoutReader
 from . import newtype
 from . import validators
-from . import utils
-from . import cpu
+
+logger = logging.getLogger(__name__)
 
 
 class SensitivityAnalyzer:
@@ -86,6 +89,7 @@ class SensitivityAnalyzer:
 
         return None
 
+    @validators.validate_call
     def simulation_by_sample_parameters(
         self,
         parameters: newtype.BoundType,
@@ -151,7 +155,7 @@ class SensitivityAnalyzer:
                 ]
                 ```
 
-            sample_number (int): sample_number (int): Determines the number of samples.
+            sample_number (int): Determines the number of samples.
                 Generates an array of length `2^N * (D + 1)`, where `D` is the number of parameter changes
                 and `N = sample_number + 1`. For example, when `sample_number` is 1, 12 samples will be generated.
 
@@ -194,7 +198,7 @@ class SensitivityAnalyzer:
                 will be deleted dynamically after collecting the required data.
 
         Returns:
-            Dictionary with the follwoing keys:
+            Dictionary with the following keys:
 
                 - `time`: A dictionary containing time-related statistics:
 
@@ -245,14 +249,6 @@ class SensitivityAnalyzer:
 
         # Start time
         start_time = time.time()
-
-        # Check input variables type
-        validators._variable_origin_static_type(
-            vars_types=typing.get_type_hints(
-                obj=self.simulation_by_sample_parameters
-            ),
-            vars_values=locals()
-        )
 
         # Absolute directory path
         sensim_dir = pathlib.Path(sensim_dir).resolve()
@@ -326,10 +322,16 @@ class SensitivityAnalyzer:
                 executor.submit(cpu_sim, idx, arr) for idx, arr in enumerate(unique_array, start=1)
             ]
             for future in concurrent.futures.as_completed(futures):
+                sim_idx = futures.index(future) + 1
                 # Message simulation completion for tracking
-                print(f'Completed simulation: {futures.index(future) + 1}/{num_sim}', flush=True)
+                logger.info(f'Completed simulation: {sim_idx}/{num_sim}')
                 # Collect simulation results
-                future_result = future.result()
+                try:
+                    future_result = future.result()
+                except Exception as e:
+                    raise RuntimeError(
+                        f'Simulation {sim_idx} failed: {e}'
+                    ) from e
                 cpu_dict[tuple(future_result['array'])] = {
                     k: v for k, v in future_result.items() if k != 'array'
                 }
@@ -398,6 +400,7 @@ class SensitivityAnalyzer:
 
         return None
 
+    @validators.validate_call
     def parameter_sensitivity_indices(
         self,
         sensim_file: str | pathlib.Path,
@@ -446,13 +449,6 @@ class SensitivityAnalyzer:
         Returns:
             Dictionary with two keys, `problem` and `sensitivity_indices`, and their corresponding values.
         '''
-        # Check input variables type
-        validators._variable_origin_static_type(
-            vars_types=typing.get_type_hints(
-                obj=self.parameter_sensitivity_indices
-            ),
-            vars_values=locals()
-        )
 
         # Problem and indicators
         prob_ind = PerformanceMetrics().scenario_indicators(
@@ -496,6 +492,7 @@ class SensitivityAnalyzer:
 
         return output
 
+    @validators.validate_call
     def simulation_and_indices(
         self,
         parameters: newtype.BoundType,
@@ -523,7 +520,7 @@ class SensitivityAnalyzer:
             parameters (newtype.BoundType): List of dictionaries defining parameter configurations for sensitivity simulations, consistent with the structure used in
                 [`simulation_by_sample_parameters`](https://swat-model.github.io/pySWATPlus/api/sensitivity_analyzer/#pySWATPlus.SensitivityAnalyzer.simulation_by_sample_parameters).
 
-            sample_number (int): sample_number (int): Determines the number of samples.
+            sample_number (int): Determines the number of samples.
                 Generates an array of length `2^N * (D + 1)`, where `D` is the number of parameter changes
                 and `N = sample_number + 1`. For example, when `sample_number` is 1, 12 samples will be generated.
 
@@ -600,14 +597,6 @@ class SensitivityAnalyzer:
 
         # Start time
         start_time = time.time()
-
-        # Check input variables type
-        validators._variable_origin_static_type(
-            vars_types=typing.get_type_hints(
-                obj=self.simulation_and_indices
-            ),
-            vars_values=locals()
-        )
 
         # Absolute directory path
         sensim_dir = pathlib.Path(sensim_dir).resolve()
@@ -713,10 +702,16 @@ class SensitivityAnalyzer:
                 executor.submit(cpu_sim, idx, arr) for idx, arr in enumerate(unique_array, start=1)
             ]
             for future in concurrent.futures.as_completed(futures):
+                sim_idx = futures.index(future) + 1
                 # Message simulation completion for tracking
-                print(f'Completed simulation: {futures.index(future) + 1}/{num_sim}', flush=True)
+                logger.info(f'Completed simulation: {sim_idx}/{num_sim}')
                 # Collect simulation results
-                future_result = future.result()
+                try:
+                    future_result = future.result()
+                except Exception as e:
+                    raise RuntimeError(
+                        f'Simulation {sim_idx} failed: {e}'
+                    ) from e
                 cpu_dict[tuple(future_result['array'])] = {
                     k: v for k, v in future_result.items() if k != 'array'
                 }

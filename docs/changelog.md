@@ -1,5 +1,26 @@
 # Release Notes
 
+## Version 1.4.0 (April 7, 2026)
+
+- Replaced 26 repetitive type-checking blocks across all classes with `pydantic.validate_call`, providing consistent runtime type validation with clear error messages.
+
+- Added structured logging via Python's `logging` module in `TxtinoutReader`, `Calibration`, `SensitivityAnalyzer`, and `CpuCount`, replacing `print()` calls. Users can now control verbosity with `logging.basicConfig(level=logging.INFO)`.
+
+- Improved error handling in parallel simulations: individual simulation failures are now caught and re-raised with the simulation index, preventing a single failure from silently crashing the entire run.
+
+- Replaced magic line numbers in `TxtinoutReader` with named constants (`_TIME_SIM_DATA_LINE`, `_PRINT_PRT_SETTINGS_LINE`, `_PRINT_PRT_CSV_LINE`, `_FILE_CIO_CALIBRATION_LINE`) for improved readability.
+
+- Fixed a bug in `validators._observe_data_config` where validation exited after checking only the first key in the dictionary.
+
+- Modernised CI/CD workflows: switched from `pip` to `uv` for faster dependency installation, moved all dependencies into `pyproject.toml` optional groups (`dev`, `typing`), replaced `twine upload` with `uv publish`, and added version-tag trigger for automated documentation deployment.
+
+- Added version constraints for `pydantic`, `SALib`, and `pymoo` dependencies to prevent silent breaking changes from upstream upgrades.
+
+- Updated documentation with logging usage tips in the sensitivity analysis and model calibration guides.
+
+- Deleted legacy `requirements.txt` and `requirements-mypy.txt` files.
+
+
 ## Version 1.3.0 (November 16, 2025)
 
 - Introduced the `pySWATPlus.Calibration` class for parameter calibration using multi-objective optimization, evolutionary algorithms, and parallel computing.

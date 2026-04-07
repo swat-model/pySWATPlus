@@ -188,16 +188,18 @@ def _df_extract(
             skiprows=skiprows
         )
     ]
+    last_error: Exception = ValueError(f'No parsing strategies available for: {input_file}')
     for attempt in strategies:
         try:
             txt_df: pandas.DataFrame = attempt()
             return _df_clean(txt_df)
-        except Exception:
-            pass
+        except (pandas.errors.ParserError, pandas.errors.EmptyDataError, ValueError) as e:
+            last_error = e
 
-    raise ValueError(f'Error reading the file: {input_file}')
+    raise ValueError(f'Error reading the file: {input_file}') from last_error
 
 
+@validators.validate_call
 def _df_observe(
     obs_file: pathlib.Path,
     date_format: str,
@@ -208,14 +210,6 @@ def _df_observe(
     `date_format`, and returns a `DataFrame` with two columns: `date` (as `datetime.date`)
     and `obs_col` (the observed values).
     '''
-
-    # Check input variables type
-    validators._variable_origin_static_type(
-        vars_types=typing.get_type_hints(
-            obj=_df_observe
-        ),
-        vars_values=locals()
-    )
 
     # DataFrame
     obs_df = pandas.read_csv(

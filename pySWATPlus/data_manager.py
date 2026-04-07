@@ -12,6 +12,7 @@ class DataManager:
     Provide functionality for handling data processings and workflows.
     '''
 
+    @validators.validate_call
     def simulated_timeseries_df(
         self,
         sim_file: str | pathlib.Path,
@@ -62,14 +63,6 @@ class DataManager:
         Returns:
             Time series `DataFrame` with a new `date` column.
         '''
-
-        # Check input variables type
-        validators._variable_origin_static_type(
-            vars_types=typing.get_type_hints(
-                obj=self.simulated_timeseries_df
-            ),
-            vars_values=locals()
-        )
 
         # Absolute file path
         sim_file = pathlib.Path(sim_file).resolve()
@@ -189,6 +182,7 @@ class DataManager:
 
         return df
 
+    @validators.validate_call
     def hru_stats_from_daily_simulation(
         self,
         sim_file: str | pathlib.Path,
@@ -240,14 +234,6 @@ class DataManager:
                 - `monthly`: `DataFrame` containing monthly statistics, with `date` as `datetime.date` objects.
                 - `yearly`: `DataFrame` containing yearly statistics, with `date` as `datetime.date` objects.
         '''
-
-        # Check input variables type
-        validators._variable_origin_static_type(
-            vars_types=typing.get_type_hints(
-                obj=self.hru_stats_from_daily_simulation
-            ),
-            vars_values=locals()
-        )
 
         # Check input file contains daily time series data
         sim_file = pathlib.Path(sim_file).resolve()
@@ -325,6 +311,7 @@ class DataManager:
 
         return output
 
+    @validators.validate_call
     def read_sensitive_dfs(
         self,
         sensim_file: str | pathlib.Path,
@@ -358,14 +345,6 @@ class DataManager:
                 - `problem` (optional):  The definition dictionary passed to sampling.
                 - `sample` (optional): The sample list used in the sensitivity simulation.
         '''
-
-        # Check input variables type
-        validators._variable_origin_static_type(
-            vars_types=typing.get_type_hints(
-                obj=self.read_sensitive_dfs
-            ),
-            vars_values=locals()
-        )
 
         # Absolute file path
         sensim_file = pathlib.Path(sensim_file).resolve()

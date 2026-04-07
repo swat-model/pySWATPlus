@@ -211,6 +211,24 @@ if __name__ == '__main__':
 
 
 
+!!! tip "Tracking Simulation Progress"
+    Simulation progress is emitted via Python's standard `logging` module. To see messages such as
+    `Completed simulation: 3/12` in your terminal, configure a handler before running:
+
+    ```python
+    import logging
+    logging.basicConfig(level=logging.INFO)
+    ```
+
+    You can also direct output to a file:
+
+    ```python
+    logging.basicConfig(
+        filename='sensitivity.log',
+        level=logging.INFO
+    )
+    ```
+
 !!! tip "Troubleshooting Parallel Processing Errors"
     If you encounter an error related to `concurrent.futures.ProcessPoolExecutor` and  `multiprocessing` without a clear description,
     try closing the current command terminal and restarting it. This issue can occasionally occur due to lingering background processes
