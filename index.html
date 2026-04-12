@@ -17,7 +17,7 @@
       
       
       <link rel="icon" href="assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.0">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
     
     
       
@@ -25,7 +25,7 @@
       
     
     
-      <link rel="stylesheet" href="assets/stylesheets/main.618322db.min.css">
+      <link rel="stylesheet" href="assets/stylesheets/main.484c7ddc.min.css">
       
         
         <link rel="stylesheet" href="assets/stylesheets/palette.ab4e12ef.min.css">
@@ -363,7 +363,7 @@
   <a href="#key-features" class="md-nav__link">
     <span class="md-ellipsis">
       
-        ✨ Key Features
+        Key Features
       
     </span>
   </a>
@@ -371,10 +371,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#install-pyswatplus" class="md-nav__link">
+  <a href="#install" class="md-nav__link">
     <span class="md-ellipsis">
       
-        📥 Install pySWATPlus
+        Install
       
     </span>
   </a>
@@ -382,10 +382,21 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#verify-installation" class="md-nav__link">
+  <a href="#where-to-start" class="md-nav__link">
     <span class="md-ellipsis">
       
-        ✅ Verify Installation
+        Where to Start
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#quick-example" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Quick Example
       
     </span>
   </a>
@@ -396,7 +407,7 @@
   <a href="#citation" class="md-nav__link">
     <span class="md-ellipsis">
       
-        📖 Citation
+        Citation
       
     </span>
   </a>
@@ -407,7 +418,7 @@
   <a href="#acknowledgments" class="md-nav__link">
     <span class="md-ellipsis">
       
-        🙏 Acknowledgments
+        Acknowledgments
       
     </span>
   </a>
@@ -872,7 +883,7 @@
   <a href="#key-features" class="md-nav__link">
     <span class="md-ellipsis">
       
-        ✨ Key Features
+        Key Features
       
     </span>
   </a>
@@ -880,10 +891,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#install-pyswatplus" class="md-nav__link">
+  <a href="#install" class="md-nav__link">
     <span class="md-ellipsis">
       
-        📥 Install pySWATPlus
+        Install
       
     </span>
   </a>
@@ -891,10 +902,21 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#verify-installation" class="md-nav__link">
+  <a href="#where-to-start" class="md-nav__link">
     <span class="md-ellipsis">
       
-        ✅ Verify Installation
+        Where to Start
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#quick-example" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Quick Example
       
     </span>
   </a>
@@ -905,7 +927,7 @@
   <a href="#citation" class="md-nav__link">
     <span class="md-ellipsis">
       
-        📖 Citation
+        Citation
       
     </span>
   </a>
@@ -916,7 +938,7 @@
   <a href="#acknowledgments" class="md-nav__link">
     <span class="md-ellipsis">
       
-        🙏 Acknowledgments
+        Acknowledgments
       
     </span>
   </a>
@@ -942,59 +964,91 @@
 
 <h1 id="pyswatplus">pySWATPlus</h1>
 <p><a href="https://doi.org/10.5281/zenodo.14889319"><img alt="DOI" src="https://zenodo.org/badge/DOI/10.5281/zenodo.14889319.svg" /></a></p>
-<p><code>pySWATPlus</code> is an open-source Python package that provides a programmatic interface to the <a href="https://swat.tamu.edu/software/plus/">SWAT+</a> model, allowing users to run simulations and conduct custom experiments.</p>
-<h2 id="key-features">✨ Key Features</h2>
+<p><code>pySWATPlus</code> is an open-source Python package that provides a programmatic interface to the <a href="https://swat.tamu.edu/software/plus/">SWAT+</a> model, enabling reproducible simulations and custom experiments from Python code.</p>
+<hr />
+<h2 id="key-features">Key Features</h2>
 <ul>
-<li>Run <code>SWAT+</code> simulations by modifying model parameters through the  <code>calibration.cal</code> file..</li>
-<li>Evaluate model performance against observed data using widely recognized statistical indicators.</li>
-<li>Perform sensitivity analysis on model parameters using the <a href="https://github.com/SALib/SALib"><code>SALib</code></a> Python package.</li>
-<li>Calibrate model parameters through multi-objective optimization and evolutionary algorithms using the <a href="https://github.com/anyoptimization/pymoo"><code>pymoo</code></a> Python package. </li>
+<li>Run SWAT+ simulations by modifying model parameters through the <code>calibration.cal</code> file.</li>
+<li>Evaluate model performance against observed data using widely recognised statistical indicators.</li>
+<li>Perform sensitivity analysis on model parameters using <a href="https://github.com/SALib/SALib">SALib</a>.</li>
+<li>Calibrate model parameters through multi-objective optimisation and evolutionary algorithms using <a href="https://github.com/anyoptimization/pymoo">pymoo</a>.</li>
 <li>Execute sensitivity analysis and model calibration through high-level interfaces with built-in parallel computation support.</li>
-<li>Analyze outputs from model simulations, sensitivity analyses, and calibrations.</li>
+<li>Analyse outputs from simulations, sensitivity analyses, and calibrations.</li>
 </ul>
-<h2 id="install-pyswatplus">📥 Install pySWATPlus</h2>
-<p>To install from PyPI repository:</p>
+<hr />
+<h2 id="install">Install</h2>
 <div class="highlight"><pre><span></span><code>pip<span class="w"> </span>install<span class="w"> </span>pySWATPlus
 </code></pre></div>
-<p>To install the latest development version from GitHub:</p>
-<div class="highlight"><pre><span></span><code>pip<span class="w"> </span>install<span class="w"> </span>git+https://github.com/swat-model/pySWATPlus.git
+<div class="highlight"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">pySWATPlus</span>  <span class="c1"># verify installation</span>
 </code></pre></div>
-<p>To install from source in editable mode within your desired <code>conda</code> environment:</p>
-<div class="highlight"><pre><span></span><code><span class="c1"># Activate your Conda environment</span>
-conda<span class="w"> </span>activate<span class="w"> </span>&lt;environment_name&gt;
+<hr />
+<h2 id="where-to-start">Where to Start</h2>
+<div class="grid cards" markdown>
 
-<span class="c1"># Install required tools and clone the repository</span>
-pip<span class="w"> </span>install<span class="w"> </span>build
-<span class="nb">cd</span><span class="w"> </span>C:<span class="se">\U</span>sers<span class="se">\U</span>sername<span class="se">\F</span>older<span class="w">  </span><span class="c1"># Replace with your actual path</span>
-git<span class="w"> </span>clone<span class="w"> </span>https://github.com/swat-model/pySWATPlus.git
-<span class="nb">cd</span><span class="w"> </span>pySWATPlus
+- **[SWAT+ Simulation](userguide/swatplus_simulation.md)**
 
-<span class="c1"># Build the package</span>
-python<span class="w"> </span>-m<span class="w"> </span>build
+    Set up your TxtInOut folder, modify parameters, and run a simulation.
 
-<span class="c1"># Install in editable mode</span>
-pip<span class="w"> </span>install<span class="w"> </span>--editable<span class="w"> </span>.
-</code></pre></div>
-<h2 id="verify-installation">✅ Verify Installation</h2>
-<p>The installation is successful if no error is raised when importing the module using the following command:</p>
+- **[Sensitivity Analysis](userguide/sensitivity_interface.md)**
+
+    Use Sobol sampling and parallel computing to rank parameter influence.
+
+- **[Model Calibration](userguide/model_calibration.md)**
+
+    Optimise parameters with GA, DE, or NSGA-II evolutionary algorithms.
+
+- **[Data Analysis](userguide/data_analysis.md)**
+
+    Load simulation output files and compute performance metrics.
+
+</div>
+
+<hr />
+<h2 id="quick-example">Quick Example</h2>
 <div class="highlight"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">pySWATPlus</span>
+
+<span class="c1"># Point to your TxtInOut folder</span>
+<span class="n">reader</span> <span class="o">=</span> <span class="n">pySWATPlus</span><span class="o">.</span><span class="n">TxtinoutReader</span><span class="p">(</span><span class="s1">&#39;/path/to/TxtInOut&#39;</span><span class="p">)</span>
+
+<span class="c1"># Run a simulation with parameter changes</span>
+<span class="n">reader</span><span class="o">.</span><span class="n">run_swat</span><span class="p">(</span>
+    <span class="n">begin_date</span><span class="o">=</span><span class="s1">&#39;01-Jan-2010&#39;</span><span class="p">,</span>
+    <span class="n">end_date</span><span class="o">=</span><span class="s1">&#39;31-Dec-2015&#39;</span><span class="p">,</span>
+    <span class="n">warmup</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+    <span class="n">parameters</span><span class="o">=</span><span class="p">[</span>
+        <span class="p">{</span><span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;cn2&#39;</span><span class="p">,</span>  <span class="s1">&#39;change_type&#39;</span><span class="p">:</span> <span class="s1">&#39;pctchg&#39;</span><span class="p">,</span> <span class="s1">&#39;value&#39;</span><span class="p">:</span> <span class="mf">10.0</span><span class="p">},</span>
+        <span class="p">{</span><span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;esco&#39;</span><span class="p">,</span> <span class="s1">&#39;change_type&#39;</span><span class="p">:</span> <span class="s1">&#39;absval&#39;</span><span class="p">,</span>  <span class="s1">&#39;value&#39;</span><span class="p">:</span> <span class="mf">0.8</span><span class="p">},</span>
+    <span class="p">],</span>
+    <span class="n">print_prt_control</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;channel_sd&#39;</span><span class="p">:</span> <span class="p">{}}</span>
+<span class="p">)</span>
+
+<span class="c1"># Evaluate performance against observed data</span>
+<span class="n">pm</span> <span class="o">=</span> <span class="n">pySWATPlus</span><span class="o">.</span><span class="n">PerformanceMetrics</span><span class="p">()</span>
+<span class="n">nse</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">indicator_from_file</span><span class="p">(</span>
+    <span class="n">sim_file</span><span class="o">=</span><span class="s1">&#39;/path/to/TxtInOut/channel_sd_day.txt&#39;</span><span class="p">,</span>
+    <span class="n">obs_file</span><span class="o">=</span><span class="s1">&#39;/path/to/observed.csv&#39;</span><span class="p">,</span>
+    <span class="n">has_units</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">sim_col</span><span class="o">=</span><span class="s1">&#39;flo_out&#39;</span><span class="p">,</span>
+    <span class="n">obs_col</span><span class="o">=</span><span class="s1">&#39;discharge&#39;</span><span class="p">,</span>
+    <span class="n">indicator</span><span class="o">=</span><span class="s1">&#39;NSE&#39;</span><span class="p">,</span>
+    <span class="n">date_format</span><span class="o">=</span><span class="s1">&#39;%Y-%m-</span><span class="si">%d</span><span class="s1">&#39;</span>
+<span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;NSE: </span><span class="si">{</span><span class="n">nse</span><span class="si">:</span><span class="s1">.3f</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
 </code></pre></div>
-<h2 id="citation">📖 Citation</h2>
-<p>If you use <code>pySWATPlus</code> in your research, please cite it using the following <strong>concept DOI</strong>, which always points to the latest version:</p>
+<hr />
+<h2 id="citation">Citation</h2>
+<p>If you use <code>pySWATPlus</code> in your research, please cite it using the following concept DOI:</p>
 <div class="highlight"><pre><span></span><code><span class="nc">@software</span><span class="p">{</span><span class="nl">joan_salo_pyswatplus_latest</span><span class="p">,</span>
-<span class="w">  </span><span class="na">author</span><span class="w">       </span><span class="p">=</span><span class="w"> </span><span class="s">{Joan Saló and</span>
-<span class="s">                  Debasish Pal and</span>
-<span class="s">                  Oliu Llorente}</span><span class="p">,</span>
+<span class="w">  </span><span class="na">author</span><span class="w">       </span><span class="p">=</span><span class="w"> </span><span class="s">{Joan Saló and Debasish Pal and Oliu Llorente}</span><span class="p">,</span>
 <span class="w">  </span><span class="na">title</span><span class="w">        </span><span class="p">=</span><span class="w"> </span><span class="s">{swat-model/pySWATPlus}</span><span class="p">,</span>
 <span class="w">  </span><span class="na">year</span><span class="w">         </span><span class="p">=</span><span class="w"> </span><span class="m">2025</span><span class="p">,</span>
 <span class="w">  </span><span class="na">publisher</span><span class="w">    </span><span class="p">=</span><span class="w"> </span><span class="s">{Zenodo}</span><span class="p">,</span>
 <span class="w">  </span><span class="na">doi</span><span class="w">          </span><span class="p">=</span><span class="w"> </span><span class="s">{10.5281/zenodo.14889319}</span><span class="p">,</span>
 <span class="w">  </span><span class="na">url</span><span class="w">          </span><span class="p">=</span><span class="w"> </span><span class="s">{https://doi.org/10.5281/zenodo.14889319}</span><span class="p">,</span>
-<span class="w">  </span><span class="na">note</span><span class="w">         </span><span class="p">=</span><span class="w"> </span><span class="s">{This DOI always points to the latest version of pySWATPlus.}</span><span class="p">,</span>
 <span class="p">}</span>
 </code></pre></div>
-<h2 id="acknowledgments">🙏 Acknowledgments</h2>
-<p>We acknowledge the <a href="https://www.oulu.fi/en">University of Oulu</a> and <a href="https://icra.cat/en">ICRA</a> research center for their support and the collaborative environment that made this project possible.</p>
+<h2 id="acknowledgments">Acknowledgments</h2>
+<p>We acknowledge the <a href="https://www.oulu.fi/en">University of Oulu</a> and <a href="https://icra.cat/en">ICRA</a> research centre for their support and the collaborative environment that made this project possible.</p>
 
 
 
@@ -1044,10 +1098,10 @@ pip<span class="w"> </span>install<span class="w"> </span>--editable<span class=
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": ".", "features": ["navigation.tabs", "content.code.annotate"], "search": "assets/javascripts/workers/search.7a47a382.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": ".", "features": ["navigation.tabs", "content.code.annotate"], "search": "assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
-      <script src="assets/javascripts/bundle.e71a0d61.min.js"></script>
+      <script src="assets/javascripts/bundle.79ae519e.min.js"></script>
       
     
   </body>

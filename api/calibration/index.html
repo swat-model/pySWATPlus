@@ -19,7 +19,7 @@
       
       
       <link rel="icon" href="../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.0">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
     
     
       
@@ -27,7 +27,7 @@
       
     
     
-      <link rel="stylesheet" href="../../assets/stylesheets/main.618322db.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.484c7ddc.min.css">
       
         
         <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
@@ -76,7 +76,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#pySWATPlus.Calibration" class="md-skip">
+        <a href="#calibration" class="md-skip">
           Skip to content
         </a>
       
@@ -643,6 +643,8 @@
       <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
       
       
+        
+      
       
         <label class="md-nav__link md-nav__link--active" for="__toc">
           
@@ -684,6 +686,8 @@
 <nav class="md-nav md-nav--secondary" aria-label="Table of contents">
   
   
+  
+    
   
   
     <label class="md-nav__title" for="__toc">
@@ -835,6 +839,8 @@
   
   
   
+    
+  
   
     <label class="md-nav__title" for="__toc">
       <span class="md-nav__icon md-icon"></span>
@@ -887,7 +893,93 @@
 
 
 
-  <h1>Calibration</h1>
+<h1 id="calibration">Calibration</h1>
+<p><code>Calibration</code> performs automatic parameter optimisation for SWAT+ using evolutionary algorithms
+from <a href="https://pymoo.org/">pymoo</a>. It subclasses <code>pymoo.core.problem.Problem</code> and supports both
+single-objective and multi-objective optimisation.</p>
+<p><strong>Available algorithms:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Algorithm</th>
+<th>Type</th>
+<th>Use when</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>GA</code></td>
+<td>Single-objective</td>
+<td>One output variable and one indicator</td>
+</tr>
+<tr>
+<td><code>DE</code></td>
+<td>Single-objective</td>
+<td>One output variable and one indicator</td>
+</tr>
+<tr>
+<td><code>NSGA2</code></td>
+<td>Multi-objective</td>
+<td>Multiple output variables or indicators</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Typical workflow:</strong></p>
+<ol>
+<li>Define parameter bounds (same format as <code>SensitivityAnalyzer</code>).</li>
+<li>Instantiate <code>Calibration</code> with simulation directories, observed data, and objectives.</li>
+<li>Call <code>parameter_optimization()</code> to run the evolutionary algorithm.</li>
+</ol>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pySWATPlus</span>
+
+<span class="n">logging</span><span class="o">.</span><span class="n">basicConfig</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">INFO</span><span class="p">)</span>  <span class="c1"># track generation progress</span>
+
+<span class="n">cal</span> <span class="o">=</span> <span class="n">pySWATPlus</span><span class="o">.</span><span class="n">Calibration</span><span class="p">(</span>
+    <span class="n">parameters</span><span class="o">=</span><span class="p">[</span>
+        <span class="p">{</span><span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;cn2&#39;</span><span class="p">,</span>  <span class="s1">&#39;change_type&#39;</span><span class="p">:</span> <span class="s1">&#39;pctchg&#39;</span><span class="p">,</span> <span class="s1">&#39;lower_bound&#39;</span><span class="p">:</span> <span class="mi">25</span><span class="p">,</span> <span class="s1">&#39;upper_bound&#39;</span><span class="p">:</span> <span class="mi">75</span><span class="p">},</span>
+        <span class="p">{</span><span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;esco&#39;</span><span class="p">,</span> <span class="s1">&#39;change_type&#39;</span><span class="p">:</span> <span class="s1">&#39;absval&#39;</span><span class="p">,</span>  <span class="s1">&#39;lower_bound&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>  <span class="s1">&#39;upper_bound&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">},</span>
+    <span class="p">],</span>
+    <span class="n">calsim_dir</span><span class="o">=</span><span class="s1">&#39;/path/to/cal_dir&#39;</span><span class="p">,</span>
+    <span class="n">txtinout_dir</span><span class="o">=</span><span class="s1">&#39;/path/to/TxtInOut&#39;</span><span class="p">,</span>
+    <span class="n">extract_data</span><span class="o">=</span><span class="p">{</span>
+        <span class="s1">&#39;channel_sd_day.txt&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s1">&#39;has_units&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+            <span class="s1">&#39;apply_filter&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;gis_id&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">42</span><span class="p">]}</span>
+        <span class="p">}</span>
+    <span class="p">},</span>
+    <span class="n">observe_data</span><span class="o">=</span><span class="p">{</span>
+        <span class="s1">&#39;channel_sd_day.txt&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s1">&#39;obs_file&#39;</span><span class="p">:</span> <span class="s1">&#39;/path/to/observed.csv&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;date_format&#39;</span><span class="p">:</span> <span class="s1">&#39;%Y-%m-</span><span class="si">%d</span><span class="s1">&#39;</span>
+        <span class="p">}</span>
+    <span class="p">},</span>
+    <span class="n">objective_config</span><span class="o">=</span><span class="p">{</span>
+        <span class="s1">&#39;channel_sd_day.txt&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s1">&#39;sim_col&#39;</span><span class="p">:</span> <span class="s1">&#39;flo_out&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;obs_col&#39;</span><span class="p">:</span> <span class="s1">&#39;discharge&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;indicator&#39;</span><span class="p">:</span> <span class="s1">&#39;NSE&#39;</span>
+        <span class="p">}</span>
+    <span class="p">},</span>
+    <span class="n">algorithm</span><span class="o">=</span><span class="s1">&#39;NSGA2&#39;</span><span class="p">,</span>
+    <span class="n">n_gen</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span>
+    <span class="n">pop_size</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="n">result</span> <span class="o">=</span> <span class="n">cal</span><span class="o">.</span><span class="n">parameter_optimization</span><span class="p">(</span><span class="n">json_output</span><span class="o">=</span><span class="s1">&#39;/path/to/results.json&#39;</span><span class="p">)</span>
+</code></pre></div>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>Choose <code>pop_size</code> as a multiple of your CPU count to maximise parallel efficiency.
+With 16 CPUs and <code>pop_size=16</code>, each generation runs in a single parallel batch.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Do <strong>not</strong> include <code>usecols</code> in <code>extract_data</code> for <code>Calibration</code> — it is automatically
+derived from the <code>sim_col</code> values in <code>objective_config</code>.</p>
+</div>
+<hr />
+
 
 <div class="doc doc-object doc-class">
 
@@ -1230,10 +1322,7 @@ therefore, selecting a <code>pop_size</code> of 16 or 32 may improve efficiency.
 
               <details class="mkdocstrings-source">
                 <summary>Source code in <code>pySWATPlus/calibration.py</code></summary>
-                <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 19</span>
-<span class="normal"> 20</span>
-<span class="normal"> 21</span>
-<span class="normal"> 22</span>
+                <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 22</span>
 <span class="normal"> 23</span>
 <span class="normal"> 24</span>
 <span class="normal"> 25</span>
@@ -1764,10 +1853,7 @@ therefore, selecting a <code>pop_size</code> of 16 or 32 may improve efficiency.
 <span class="normal">550</span>
 <span class="normal">551</span>
 <span class="normal">552</span>
-<span class="normal">553</span>
-<span class="normal">554</span>
-<span class="normal">555</span>
-<span class="normal">556</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Calibration</span><span class="p">(</span><span class="n">pymoo</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">problem</span><span class="o">.</span><span class="n">Problem</span><span class="p">):</span>  <span class="c1"># type: ignore[misc]</span>
+<span class="normal">553</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Calibration</span><span class="p">(</span><span class="n">pymoo</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">problem</span><span class="o">.</span><span class="n">Problem</span><span class="p">):</span>  <span class="c1"># type: ignore[misc]</span>
 <span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    A `Problem` subclass from the [`pymoo`](https://github.com/anyoptimization/pymoo) Python package</span>
 <span class="sd">    for performing model calibration against observed data using multi-objective optimization</span>
@@ -1926,7 +2012,7 @@ therefore, selecting a <code>pop_size</code> of 16 or 32 may improve efficiency.
 <span class="sd">                For example, with 16 CPUs and a `pop_size` of 20, two batches will be required (16 + 4);</span>
 <span class="sd">                therefore, selecting a `pop_size` of 16 or 32 may improve efficiency.</span>
 <span class="sd">    &#39;&#39;&#39;</span>
-
+    <span class="nd">@validators</span><span class="o">.</span><span class="n">validate_call</span>
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">parameters</span><span class="p">:</span> <span class="n">newtype</span><span class="o">.</span><span class="n">BoundType</span><span class="p">,</span>
@@ -1940,14 +2026,6 @@ therefore, selecting a <code>pop_size</code> of 16 or 32 may improve efficiency.
         <span class="n">pop_size</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
         <span class="n">max_workers</span><span class="p">:</span> <span class="n">typing</span><span class="o">.</span><span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-
-        <span class="c1"># Check input variables type</span>
-        <span class="n">validators</span><span class="o">.</span><span class="n">_variable_origin_static_type</span><span class="p">(</span>
-            <span class="n">vars_types</span><span class="o">=</span><span class="n">typing</span><span class="o">.</span><span class="n">get_type_hints</span><span class="p">(</span>
-                <span class="n">obj</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="fm">__init__</span>
-            <span class="p">),</span>
-            <span class="n">vars_values</span><span class="o">=</span><span class="nb">locals</span><span class="p">()</span>
-        <span class="p">)</span>
 
         <span class="c1"># Absolute directory path</span>
         <span class="n">calsim_dir</span> <span class="o">=</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="n">calsim_dir</span><span class="p">)</span><span class="o">.</span><span class="n">resolve</span><span class="p">()</span>
@@ -2062,9 +2140,7 @@ therefore, selecting a <code>pop_size</code> of 16 or 32 may improve efficiency.
 
         <span class="c1"># Display start of current generation number</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">track_gen</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">track_gen</span> <span class="o">+</span> <span class="mi">1</span>
-        <span class="nb">print</span><span class="p">(</span>
-            <span class="sa">f</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">Started generation: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">track_gen</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">n_gen</span><span class="si">}</span><span class="se">\n</span><span class="s1">&#39;</span>
-        <span class="p">)</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Started generation: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">track_gen</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">n_gen</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
 
         <span class="c1"># Simulation in separate CPU</span>
         <span class="n">cpu_sim</span> <span class="o">=</span> <span class="n">functools</span><span class="o">.</span><span class="n">partial</span><span class="p">(</span>
@@ -2086,10 +2162,16 @@ therefore, selecting a <code>pop_size</code> of 16 or 32 may improve efficiency.
                 <span class="n">executor</span><span class="o">.</span><span class="n">submit</span><span class="p">(</span><span class="n">cpu_sim</span><span class="p">,</span> <span class="n">idx</span><span class="p">,</span> <span class="n">arr</span><span class="p">)</span> <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">arr</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">start</span><span class="o">=</span><span class="n">start_sim</span><span class="p">)</span>
             <span class="p">]</span>
             <span class="k">for</span> <span class="n">future</span> <span class="ow">in</span> <span class="n">concurrent</span><span class="o">.</span><span class="n">futures</span><span class="o">.</span><span class="n">as_completed</span><span class="p">(</span><span class="n">futures</span><span class="p">):</span>
+                <span class="n">sim_idx</span> <span class="o">=</span> <span class="n">start_sim</span> <span class="o">+</span> <span class="n">futures</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">future</span><span class="p">)</span>
                 <span class="c1"># Display end of current simulation for tracking</span>
-                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Completed simulation: </span><span class="si">{</span><span class="n">start_sim</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">futures</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">future</span><span class="p">)</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">total_sim</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">flush</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Completed simulation: </span><span class="si">{</span><span class="n">sim_idx</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">total_sim</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
                 <span class="c1"># Collect simulation results</span>
-                <span class="n">future_result</span> <span class="o">=</span> <span class="n">future</span><span class="o">.</span><span class="n">result</span><span class="p">()</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="n">future_result</span> <span class="o">=</span> <span class="n">future</span><span class="o">.</span><span class="n">result</span><span class="p">()</span>
+                <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span>
+                        <span class="sa">f</span><span class="s1">&#39;Simulation </span><span class="si">{</span><span class="n">sim_idx</span><span class="si">}</span><span class="s1"> failed: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s1">&#39;</span>
+                    <span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="nn">e</span>
                 <span class="n">cpu_dict</span><span class="p">[</span><span class="nb">tuple</span><span class="p">(</span><span class="n">future_result</span><span class="p">[</span><span class="s1">&#39;array&#39;</span><span class="p">])]</span> <span class="o">=</span> <span class="p">{</span>
                     <span class="n">k</span><span class="p">:</span> <span class="n">v</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">future_result</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="n">k</span> <span class="o">!=</span> <span class="s1">&#39;array&#39;</span>
                 <span class="p">}</span>
@@ -2144,9 +2226,7 @@ therefore, selecting a <code>pop_size</code> of 16 or 32 may improve efficiency.
         <span class="n">out</span><span class="p">[</span><span class="s2">&quot;F&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">gen_objs</span><span class="p">)</span>
 
         <span class="c1"># Print end of current generation number</span>
-        <span class="nb">print</span><span class="p">(</span>
-            <span class="sa">f</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">Completed generation: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">track_gen</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">n_gen</span><span class="si">}</span><span class="se">\n</span><span class="s1">&#39;</span>
-        <span class="p">)</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Completed generation: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">track_gen</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">n_gen</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_objectives_directions</span><span class="p">(</span>
         <span class="bp">self</span>
@@ -2310,7 +2390,7 @@ therefore, selecting a <code>pop_size</code> of 16 or 32 may improve efficiency.
 
 
 
-  <div class="doc doc-children">
+<div class="doc doc-children">
 
 
 
@@ -2411,7 +2491,10 @@ parameters, corresponding objective values, and total execution time.</p>
 
             <details class="mkdocstrings-source">
               <summary>Source code in <code>pySWATPlus/calibration.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">455</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">452</span>
+<span class="normal">453</span>
+<span class="normal">454</span>
+<span class="normal">455</span>
 <span class="normal">456</span>
 <span class="normal">457</span>
 <span class="normal">458</span>
@@ -2509,10 +2592,7 @@ parameters, corresponding objective values, and total execution time.</p>
 <span class="normal">550</span>
 <span class="normal">551</span>
 <span class="normal">552</span>
-<span class="normal">553</span>
-<span class="normal">554</span>
-<span class="normal">555</span>
-<span class="normal">556</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">parameter_optimization</span><span class="p">(</span>
+<span class="normal">553</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">parameter_optimization</span><span class="p">(</span>
     <span class="bp">self</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">typing</span><span class="o">.</span><span class="n">Any</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
@@ -2676,10 +2756,10 @@ parameters, corresponding objective values, and total execution time.</p>
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.tabs", "content.code.annotate"], "search": "../../assets/javascripts/workers/search.7a47a382.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.tabs", "content.code.annotate"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
-      <script src="../../assets/javascripts/bundle.e71a0d61.min.js"></script>
+      <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
       
     
   </body>
