@@ -33,6 +33,7 @@ classifiers = [
 	"Topic :: Scientific/Engineering :: Hydrology"
 ]
 dependencies = [
+    "pandas>=1.5,<3",
     "pydantic>=2.0,<3",
     "SALib>=1.4,<2",
     "pymoo>=0.6.0,<0.7"

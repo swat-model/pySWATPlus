@@ -30,7 +30,7 @@ jobs:
         uses: astral-sh/setup-uv@v5
 
       - name: Install build tools
-        run: uv pip install --system build twine
+        run: uv pip install --system twine
 
       - name: Build distributions
         run: uv build --sdist --wheel

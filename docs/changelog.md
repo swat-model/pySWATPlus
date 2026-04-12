@@ -1,6 +1,6 @@
 # Release Notes
 
-## Version 1.4.0 (April 7, 2026)
+## Version 1.4.0 (April 12, 2026)
 
 - Replaced 26 repetitive type-checking blocks across all classes with `pydantic.validate_call`, providing consistent runtime type validation with clear error messages.
 
@@ -19,6 +19,8 @@
 - Updated documentation with logging usage tips in the sensitivity analysis and model calibration guides.
 
 - Deleted legacy `requirements.txt` and `requirements-mypy.txt` files.
+
+- Improved documentation: rewrote the homepage as a proper landing page with a quick-start example, and added hand-written intro sections with usage examples to all API reference pages.
 
 
 ## Version 1.3.0 (November 16, 2025)
