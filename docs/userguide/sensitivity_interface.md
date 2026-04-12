@@ -47,7 +47,7 @@ sim_reader.run_swat(
     warmup=1,
     print_prt_control={
         'channel_sd': {}
-    }  # enable daily time series for 'channel_sd'
+    }  # enable all time series frequencies for 'channel_sd'
 ```
 
 ## Sensitivity Simulation
