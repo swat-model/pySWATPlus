@@ -39,6 +39,7 @@ nav:
     - SWAT+ Simulation: userguide/swatplus_simulation.md
     - Sensitivity Interface: userguide/sensitivity_interface.md
     - Model Calibration: userguide/model_calibration.md
+    - Advanced Calibration: userguide/advanced_calibration.md
     - Data Analysis: userguide/data_analysis.md
 
   - API Reference:
