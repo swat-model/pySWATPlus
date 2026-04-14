@@ -9,10 +9,10 @@
       
       
       
-        <link rel="prev" href="../model_calibration/">
+        <link rel="prev" href="../sensitivity_interface/">
       
       
-        <link rel="next" href="../data_analysis/">
+        <link rel="next" href="../model_calibration/">
       
       
         
@@ -23,7 +23,7 @@
     
     
       
-        <title>Advanced Calibration - pySWATPlus</title>
+        <title>Advanced Sensitivity - pySWATPlus</title>
       
     
     
@@ -76,7 +76,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#advanced-calibration" class="md-skip">
+        <a href="#advanced-sensitivity-analysis" class="md-skip">
           Skip to content
         </a>
       
@@ -110,7 +110,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Advanced Calibration
+              Advanced Sensitivity
             
           </span>
         </div>
@@ -437,10 +437,37 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../advanced_sensitivity/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Advanced Sensitivity
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   
@@ -456,6 +483,120 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#building-blocks" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Building blocks
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#example-multi-channel-sobol-sensitivity" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Example: multi-channel Sobol sensitivity
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Example: multi-channel Sobol sensitivity">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#step-1-configure-the-model" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 1 — Configure the model
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-2-module-level-setup" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 2 — Module-level setup
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-3-define-the-simulation-function" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 3 — Define the simulation function
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-4-generate-samples-and-run-simulations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 4 — Generate samples and run simulations
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-5-score-each-sample-and-compute-indices" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 5 — Score each sample and compute indices
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#tips" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Tips
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -493,37 +634,10 @@
                 
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Advanced Calibration
-  
-
-    
-  </span>
-  
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../advanced_calibration/" class="md-nav__link">
         
   
   
@@ -539,120 +653,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#building-blocks" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Building blocks
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#example-multi-channel-calibration-with-pymoo" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Example: multi-channel calibration with pymoo
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Example: multi-channel calibration with pymoo">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#step-1-configure-the-model" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Step 1 — Configure the model
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#step-2-module-level-setup" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Step 2 — Module-level setup
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#step-3-define-the-simulation-function" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Step 3 — Define the simulation function
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#step-4-define-the-pymoo-problem" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Step 4 — Define the pymoo Problem
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#step-5-run-and-save" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Step 5 — Run and save
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#tips" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Tips
-      
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -982,15 +982,15 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#example-multi-channel-calibration-with-pymoo" class="md-nav__link">
+  <a href="#example-multi-channel-sobol-sensitivity" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Example: multi-channel calibration with pymoo
+        Example: multi-channel Sobol sensitivity
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Example: multi-channel calibration with pymoo">
+    <nav class="md-nav" aria-label="Example: multi-channel Sobol sensitivity">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
@@ -1027,10 +1027,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#step-4-define-the-pymoo-problem" class="md-nav__link">
+  <a href="#step-4-generate-samples-and-run-simulations" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Step 4 — Define the pymoo Problem
+        Step 4 — Generate samples and run simulations
       
     </span>
   </a>
@@ -1038,10 +1038,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#step-5-run-and-save" class="md-nav__link">
+  <a href="#step-5-score-each-sample-and-compute-indices" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Step 5 — Run and save
+        Step 5 — Score each sample and compute indices
       
     </span>
   </a>
@@ -1081,13 +1081,13 @@
 
 
 
-<h1 id="advanced-calibration">Advanced Calibration</h1>
-<p>The built-in <a href="../../api/calibration/"><code>Calibration</code></a> class covers the most common scenario:
-one or more output variables, each compared to observed data with a standard indicator (NSE, KGE, RMSE, etc.),
-optimised with GA, DE, or NSGA2.</p>
-<p>For cases that go beyond this — custom scoring functions, grouped Pareto objectives, integration with
-optimisers other than pymoo, or any other non-standard setup — pySWATPlus exposes the building blocks
-you need to compose your own calibration workflow directly.</p>
+<h1 id="advanced-sensitivity-analysis">Advanced Sensitivity Analysis</h1>
+<p>The built-in <a href="../../api/sensitivity_analyzer/"><code>SensitivityAnalyzer</code></a> covers the most common scenario:
+Sobol sampling over a parameter space, one output file per objective, compared against observed data
+with a standard indicator.</p>
+<p>For cases that go beyond this — sensitivity across multiple channels or locations, custom scoring,
+or samplers other than Sobol — pySWATPlus exposes the building blocks you need to compose your
+own sensitivity workflow directly.</p>
 <h2 id="building-blocks">Building blocks</h2>
 <table>
 <thead>
@@ -1110,18 +1110,22 @@ you need to compose your own calibration workflow directly.</p>
 <td><a href="../../api/performance_metrics/"><code>PerformanceMetrics.compute_from_abbr</code></a></td>
 </tr>
 <tr>
-<td>Parallel execution</td>
-<td><code>concurrent.futures.ProcessPoolExecutor</code></td>
+<td>Generate parameter samples</td>
+<td><code>SALib.sample.sobol.sample</code> (or any other SALib sampler)</td>
 </tr>
 <tr>
-<td>Optimisation</td>
-<td><a href="https://pymoo.org/">pymoo</a>, <a href="https://docs.scipy.org/doc/scipy/reference/optimize.html">scipy.optimize</a>, <a href="https://optuna.org/">Optuna</a>, …</td>
+<td>Compute Sobol indices</td>
+<td><code>SALib.analyze.sobol.analyze</code></td>
+</tr>
+<tr>
+<td>Parallel execution</td>
+<td><code>concurrent.futures.ProcessPoolExecutor</code></td>
 </tr>
 </tbody>
 </table>
 <div class="admonition tip">
-<p class="admonition-title">Use the built-in Calibration class first</p>
-<p>Before following this guide, check whether the built-in <a href="../../api/calibration/"><code>Calibration</code></a> class covers your needs:</p>
+<p class="admonition-title">Use the built-in SensitivityAnalyzer first</p>
+<p>Before following this guide, check whether the built-in <a href="../../api/sensitivity_analyzer/"><code>SensitivityAnalyzer</code></a> covers your needs:</p>
 <table>
 <thead>
 <tr>
@@ -1132,11 +1136,11 @@ you need to compose your own calibration workflow directly.</p>
 <tbody>
 <tr>
 <td>One output variable compared to observed data</td>
-<td><code>Calibration</code></td>
+<td><code>SensitivityAnalyzer</code></td>
 </tr>
 <tr>
 <td>Multiple output variables, one per file</td>
-<td><code>Calibration</code> (multi-objective)</td>
+<td><code>SensitivityAnalyzer</code> (multi-output)</td>
 </tr>
 <tr>
 <td>Multiple channels or locations from the same file</td>
@@ -1147,27 +1151,27 @@ you need to compose your own calibration workflow directly.</p>
 <td>This guide</td>
 </tr>
 <tr>
-<td>Optimiser other than GA, DE, or NSGA2</td>
+<td>Sampler other than Sobol</td>
 <td>This guide</td>
 </tr>
 </tbody>
 </table>
 </div>
 <hr />
-<h2 id="example-multi-channel-calibration-with-pymoo">Example: multi-channel calibration with pymoo</h2>
-<p>This example calibrates two parameters against observed daily flow at two channels simultaneously.
-Mean NSE and mean KGE (each averaged across both channels) are used as separate Pareto objectives —
-a case that the built-in <code>Calibration</code> class cannot express directly.</p>
+<h2 id="example-multi-channel-sobol-sensitivity">Example: multi-channel Sobol sensitivity</h2>
+<p>This example computes Sobol sensitivity indices for two parameters against observed daily flow
+at two channels simultaneously, using mean NSE across both channels as the scalar metric —
+a case the built-in <code>SensitivityAnalyzer</code> cannot express directly.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>Steps 2 – 5 all belong in <strong>one Python file</strong>. They are shown separately only to explain each part.</p>
 </div>
 <h3 id="step-1-configure-the-model">Step 1 — Configure the model</h3>
-<p>Set the simulation period, output print options, and any fixed parameters before running calibration.
+<p>Set the simulation period, output print options, and any fixed parameters before running simulations.
 See <a href="../sensitivity_interface/#configuration-settings">Configuration Settings</a> for a detailed walkthrough.</p>
 <h3 id="step-2-module-level-setup">Step 2 — Module-level setup</h3>
 <p>All imports, paths, and data are defined at the top of the file so they are available to every
-function and class defined below.</p>
+function defined below.</p>
 <div class="highlight"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">pathlib</span>
@@ -1176,9 +1180,8 @@ function and class defined below.</p>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">pymoo.algorithms.moo.nsga2</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">pymoo.core.problem</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">pymoo.optimize</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">SALib.sample.sobol</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">SALib.analyze.sobol</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">pySWATPlus</span><span class="w"> </span><span class="kn">import</span> <span class="n">TxtinoutReader</span><span class="p">,</span> <span class="n">DataManager</span><span class="p">,</span> <span class="n">PerformanceMetrics</span>
 
@@ -1186,9 +1189,9 @@ function and class defined below.</p>
 
 <span class="c1"># --- Paths ---</span>
 <span class="n">TXTINOUT_DIR</span> <span class="o">=</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;C:\Users\Username\custom_folder&#39;</span><span class="p">)</span>
-<span class="n">SIM_DIR</span>      <span class="o">=</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;C:\Users\Username\calibration_dir&#39;</span><span class="p">)</span>
+<span class="n">SIM_DIR</span>      <span class="o">=</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;C:\Users\Username\sensitivity_dir&#39;</span><span class="p">)</span>
 
-<span class="c1"># --- Channels to calibrate against ---</span>
+<span class="c1"># --- Channels to analyse ---</span>
 <span class="n">CHANNEL_IDS</span> <span class="o">=</span> <span class="p">[</span><span class="mi">561</span><span class="p">,</span> <span class="mi">562</span><span class="p">]</span>
 
 <span class="c1"># --- Parameter search space ---</span>
@@ -1247,106 +1250,94 @@ cannot be transferred that way — they will raise a <code>PicklingError</code>.
 remove them manually before restarting — <code>run_swat</code> requires each simulation
 directory to be empty.</p>
 </div>
-<h3 id="step-4-define-the-pymoo-problem">Step 4 — Define the pymoo Problem</h3>
-<div class="highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">MultiChannelCalibration</span><span class="p">(</span><span class="n">pymoo</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">problem</span><span class="o">.</span><span class="n">Problem</span><span class="p">):</span>
-
-    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="n">xl</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">cfg</span><span class="p">[</span><span class="s1">&#39;lower_bound&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">cfg</span> <span class="ow">in</span> <span class="n">PARAM_CONFIGS</span><span class="p">])</span>
-        <span class="n">xu</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">cfg</span><span class="p">[</span><span class="s1">&#39;upper_bound&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">cfg</span> <span class="ow">in</span> <span class="n">PARAM_CONFIGS</span><span class="p">])</span>
-        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">n_var</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">PARAM_CONFIGS</span><span class="p">),</span> <span class="n">n_obj</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">xl</span><span class="o">=</span><span class="n">xl</span><span class="p">,</span> <span class="n">xu</span><span class="o">=</span><span class="n">xu</span><span class="p">)</span>
-
-    <span class="k">def</span><span class="w"> </span><span class="nf">_evaluate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">out</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="c1"># Run all simulations in parallel — results come back in the same order as X</span>
-        <span class="k">with</span> <span class="n">concurrent</span><span class="o">.</span><span class="n">futures</span><span class="o">.</span><span class="n">ProcessPoolExecutor</span><span class="p">()</span> <span class="k">as</span> <span class="n">executor</span><span class="p">:</span>
-            <span class="n">all_outputs</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">executor</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">_run_sim</span><span class="p">,</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">X</span><span class="p">)),</span> <span class="n">X</span><span class="p">))</span>
-
-        <span class="c1"># Score each individual</span>
-        <span class="n">pm</span> <span class="o">=</span> <span class="n">PerformanceMetrics</span><span class="p">()</span>
-        <span class="n">F</span>  <span class="o">=</span> <span class="p">[]</span>
-
-        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">X</span><span class="p">)):</span>
-            <span class="n">nse_vals</span> <span class="o">=</span> <span class="p">[]</span>
-            <span class="n">kge_vals</span> <span class="o">=</span> <span class="p">[]</span>
-
-            <span class="k">for</span> <span class="n">ch_id</span> <span class="ow">in</span> <span class="n">CHANNEL_IDS</span><span class="p">:</span>
-                <span class="n">merged</span> <span class="o">=</span> <span class="n">all_outputs</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">ch_id</span><span class="p">]</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span>
-                    <span class="n">obs</span><span class="p">[</span><span class="n">ch_id</span><span class="p">][[</span><span class="s1">&#39;date&#39;</span><span class="p">,</span> <span class="s1">&#39;obs&#39;</span><span class="p">]],</span> <span class="n">on</span><span class="o">=</span><span class="s1">&#39;date&#39;</span><span class="p">,</span> <span class="n">how</span><span class="o">=</span><span class="s1">&#39;inner&#39;</span>
-                <span class="p">)</span>
-                <span class="n">nse_vals</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">pm</span><span class="o">.</span><span class="n">compute_from_abbr</span><span class="p">(</span><span class="n">merged</span><span class="p">,</span> <span class="s1">&#39;sim&#39;</span><span class="p">,</span> <span class="s1">&#39;obs&#39;</span><span class="p">,</span> <span class="s1">&#39;NSE&#39;</span><span class="p">))</span>
-                <span class="n">kge_vals</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">pm</span><span class="o">.</span><span class="n">compute_from_abbr</span><span class="p">(</span><span class="n">merged</span><span class="p">,</span> <span class="s1">&#39;sim&#39;</span><span class="p">,</span> <span class="s1">&#39;obs&#39;</span><span class="p">,</span> <span class="s1">&#39;KGE&#39;</span><span class="p">))</span>
-
-            <span class="c1"># pymoo minimises — negate NSE and KGE so higher is better</span>
-            <span class="n">F</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="o">-</span><span class="n">numpy</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">nse_vals</span><span class="p">),</span> <span class="o">-</span><span class="n">numpy</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">kge_vals</span><span class="p">)])</span>
-
-        <span class="n">out</span><span class="p">[</span><span class="s2">&quot;F&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">F</span><span class="p">)</span>
-</code></pre></div>
-<h3 id="step-5-run-and-save">Step 5 — Run and save</h3>
+<h3 id="step-4-generate-samples-and-run-simulations">Step 4 — Generate samples and run simulations</h3>
+<p>Sobol analysis requires a specific sample structure. <code>SALib.sample.sobol.sample</code> generates
+<code>2^(sample_number+1) × (n_params + 2)</code> parameter sets — for 2 parameters and <code>sample_number=3</code>
+that is 40 sets. Larger values give more accurate indices but require more simulations.</p>
 <div class="highlight"><pre><span></span><code><span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
-    <span class="n">result</span> <span class="o">=</span> <span class="n">pymoo</span><span class="o">.</span><span class="n">optimize</span><span class="o">.</span><span class="n">minimize</span><span class="p">(</span>
-        <span class="n">problem</span><span class="o">=</span><span class="n">MultiChannelCalibration</span><span class="p">(),</span>
-        <span class="n">algorithm</span><span class="o">=</span><span class="n">pymoo</span><span class="o">.</span><span class="n">algorithms</span><span class="o">.</span><span class="n">moo</span><span class="o">.</span><span class="n">nsga2</span><span class="o">.</span><span class="n">NSGA2</span><span class="p">(</span><span class="n">pop_size</span><span class="o">=</span><span class="mi">16</span><span class="p">),</span>
-        <span class="n">termination</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;n_gen&#39;</span><span class="p">,</span> <span class="mi">20</span><span class="p">),</span>
-        <span class="n">save_history</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-        <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span>
-    <span class="p">)</span>
+    <span class="c1"># Build the SALib problem definition</span>
+    <span class="n">problem</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;num_vars&#39;</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">PARAM_CONFIGS</span><span class="p">),</span>
+        <span class="s1">&#39;names&#39;</span><span class="p">:</span>    <span class="p">[</span><span class="n">cfg</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">cfg</span> <span class="ow">in</span> <span class="n">PARAM_CONFIGS</span><span class="p">],</span>
+        <span class="s1">&#39;bounds&#39;</span><span class="p">:</span>   <span class="p">[[</span><span class="n">cfg</span><span class="p">[</span><span class="s1">&#39;lower_bound&#39;</span><span class="p">],</span> <span class="n">cfg</span><span class="p">[</span><span class="s1">&#39;upper_bound&#39;</span><span class="p">]]</span> <span class="k">for</span> <span class="n">cfg</span> <span class="ow">in</span> <span class="n">PARAM_CONFIGS</span><span class="p">],</span>
+    <span class="p">}</span>
 
-    <span class="c1"># Pareto-optimal solutions — un-negate to recover natural direction</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Parameters:&#39;</span><span class="p">,</span> <span class="n">result</span><span class="o">.</span><span class="n">X</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;NSE / KGE:&#39;</span><span class="p">,</span> <span class="o">-</span><span class="n">result</span><span class="o">.</span><span class="n">F</span><span class="p">)</span>
+    <span class="c1"># Generate samples — sample_number=3 → 40 simulations for 2 parameters</span>
+    <span class="n">sample_array</span> <span class="o">=</span> <span class="n">SALib</span><span class="o">.</span><span class="n">sample</span><span class="o">.</span><span class="n">sobol</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="n">problem</span><span class="p">,</span> <span class="n">N</span><span class="o">=</span><span class="nb">pow</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+
+    <span class="c1"># Run all simulations in parallel — results come back in the same order as sample_array</span>
+    <span class="k">with</span> <span class="n">concurrent</span><span class="o">.</span><span class="n">futures</span><span class="o">.</span><span class="n">ProcessPoolExecutor</span><span class="p">()</span> <span class="k">as</span> <span class="n">executor</span><span class="p">:</span>
+        <span class="n">all_outputs</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">executor</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">_run_sim</span><span class="p">,</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">sample_array</span><span class="p">)),</span> <span class="n">sample_array</span><span class="p">))</span>
+</code></pre></div>
+<h3 id="step-5-score-each-sample-and-compute-indices">Step 5 — Score each sample and compute indices</h3>
+<p>Each sample needs a single scalar metric. Here, mean NSE across both channels is used.
+<code>SALib.analyze.sobol.analyze</code> then decomposes the variance of that scalar across parameters.</p>
+<div class="highlight"><pre><span></span><code>    <span class="c1"># Compute a scalar metric for every sample</span>
+    <span class="n">pm</span> <span class="o">=</span> <span class="n">PerformanceMetrics</span><span class="p">()</span>
+    <span class="n">Y</span>  <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">for</span> <span class="n">outputs</span> <span class="ow">in</span> <span class="n">all_outputs</span><span class="p">:</span>
+        <span class="n">nse_vals</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">ch_id</span> <span class="ow">in</span> <span class="n">CHANNEL_IDS</span><span class="p">:</span>
+            <span class="n">merged</span> <span class="o">=</span> <span class="n">outputs</span><span class="p">[</span><span class="n">ch_id</span><span class="p">]</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">obs</span><span class="p">[</span><span class="n">ch_id</span><span class="p">][[</span><span class="s1">&#39;date&#39;</span><span class="p">,</span> <span class="s1">&#39;obs&#39;</span><span class="p">]],</span> <span class="n">on</span><span class="o">=</span><span class="s1">&#39;date&#39;</span><span class="p">,</span> <span class="n">how</span><span class="o">=</span><span class="s1">&#39;inner&#39;</span><span class="p">)</span>
+            <span class="n">nse_vals</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">pm</span><span class="o">.</span><span class="n">compute_from_abbr</span><span class="p">(</span><span class="n">merged</span><span class="p">,</span> <span class="s1">&#39;sim&#39;</span><span class="p">,</span> <span class="s1">&#39;obs&#39;</span><span class="p">,</span> <span class="s1">&#39;NSE&#39;</span><span class="p">))</span>
+        <span class="n">Y</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">nse_vals</span><span class="p">))</span>
+
+    <span class="n">Y</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">Y</span><span class="p">)</span>
+
+    <span class="c1"># Compute Sobol indices</span>
+    <span class="n">indices</span> <span class="o">=</span> <span class="n">SALib</span><span class="o">.</span><span class="n">analyze</span><span class="o">.</span><span class="n">sobol</span><span class="o">.</span><span class="n">analyze</span><span class="p">(</span><span class="n">problem</span><span class="p">,</span> <span class="n">Y</span><span class="p">)</span>
+
+    <span class="c1"># S1: first-order index  — direct effect of each parameter alone</span>
+    <span class="c1"># ST: total-order index  — direct effect plus all interactions with other parameters</span>
+    <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">s1</span><span class="p">,</span> <span class="n">st</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">problem</span><span class="p">[</span><span class="s1">&#39;names&#39;</span><span class="p">],</span> <span class="n">indices</span><span class="p">[</span><span class="s1">&#39;S1&#39;</span><span class="p">],</span> <span class="n">indices</span><span class="p">[</span><span class="s1">&#39;ST&#39;</span><span class="p">]):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">name</span><span class="si">:</span><span class="s1">10s</span><span class="si">}</span><span class="s1">  S1=</span><span class="si">{</span><span class="n">s1</span><span class="si">:</span><span class="s1">.3f</span><span class="si">}</span><span class="s1">  ST=</span><span class="si">{</span><span class="n">st</span><span class="si">:</span><span class="s1">.3f</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
 
     <span class="c1"># Save results to disk</span>
-    <span class="n">PARAM_NAMES</span> <span class="o">=</span> <span class="p">[</span><span class="n">cfg</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">cfg</span> <span class="ow">in</span> <span class="n">PARAM_CONFIGS</span><span class="p">]</span>
-    <span class="n">OBJ_NAMES</span>   <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;NSE&#39;</span><span class="p">,</span> <span class="s1">&#39;KGE&#39;</span><span class="p">]</span>
-
-    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;optimization_result.json&#39;</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;sensitivity_indices.json&#39;</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
         <span class="n">json</span><span class="o">.</span><span class="n">dump</span><span class="p">({</span>
-            <span class="s1">&#39;param_names&#39;</span><span class="p">:</span> <span class="n">PARAM_NAMES</span><span class="p">,</span>
-            <span class="s1">&#39;obj_names&#39;</span><span class="p">:</span>   <span class="n">OBJ_NAMES</span><span class="p">,</span>
-            <span class="s1">&#39;variables&#39;</span><span class="p">:</span>   <span class="n">result</span><span class="o">.</span><span class="n">X</span><span class="o">.</span><span class="n">tolist</span><span class="p">(),</span>
-            <span class="s1">&#39;objectives&#39;</span><span class="p">:</span>  <span class="p">(</span><span class="o">-</span><span class="n">result</span><span class="o">.</span><span class="n">F</span><span class="p">)</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
-        <span class="p">},</span> <span class="n">f</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
-
-    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;optimization_history.json&#39;</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
-        <span class="n">json</span><span class="o">.</span><span class="n">dump</span><span class="p">({</span>
-            <span class="s1">&#39;param_names&#39;</span><span class="p">:</span> <span class="n">PARAM_NAMES</span><span class="p">,</span>
-            <span class="s1">&#39;obj_names&#39;</span><span class="p">:</span>   <span class="n">OBJ_NAMES</span><span class="p">,</span>
-            <span class="s1">&#39;generations&#39;</span><span class="p">:</span> <span class="p">{</span>
-                <span class="n">i</span><span class="p">:</span> <span class="p">{</span>
-                    <span class="s1">&#39;pop&#39;</span><span class="p">:</span> <span class="n">gen</span><span class="o">.</span><span class="n">pop</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;X&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">tolist</span><span class="p">(),</span>
-                    <span class="s1">&#39;obj&#39;</span><span class="p">:</span> <span class="p">(</span><span class="o">-</span><span class="n">gen</span><span class="o">.</span><span class="n">pop</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;F&#39;</span><span class="p">))</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
-                <span class="p">}</span>
-                <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">gen</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">history</span><span class="p">,</span> <span class="n">start</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-            <span class="p">}</span>
+            <span class="s1">&#39;param_names&#39;</span><span class="p">:</span> <span class="n">problem</span><span class="p">[</span><span class="s1">&#39;names&#39;</span><span class="p">],</span>
+            <span class="s1">&#39;S1&#39;</span><span class="p">:</span>          <span class="n">indices</span><span class="p">[</span><span class="s1">&#39;S1&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">tolist</span><span class="p">(),</span>
+            <span class="s1">&#39;ST&#39;</span><span class="p">:</span>          <span class="n">indices</span><span class="p">[</span><span class="s1">&#39;ST&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">tolist</span><span class="p">(),</span>
+            <span class="s1">&#39;S1_conf&#39;</span><span class="p">:</span>     <span class="n">indices</span><span class="p">[</span><span class="s1">&#39;S1_conf&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">tolist</span><span class="p">(),</span>
+            <span class="s1">&#39;ST_conf&#39;</span><span class="p">:</span>     <span class="n">indices</span><span class="p">[</span><span class="s1">&#39;ST_conf&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">tolist</span><span class="p">(),</span>
         <span class="p">},</span> <span class="n">f</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
 </code></pre></div>
-<p><code>optimization_result.json</code> will look like this — self-contained, no need to remember the parameter order:</p>
+<p><code>sensitivity_indices.json</code> will look like this:</p>
 <div class="highlight"><pre><span></span><code><span class="p">{</span>
 <span class="w">    </span><span class="nt">&quot;param_names&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;esco&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;cn2&quot;</span><span class="p">],</span>
-<span class="w">    </span><span class="nt">&quot;obj_names&quot;</span><span class="p">:</span><span class="w">   </span><span class="p">[</span><span class="s2">&quot;NSE&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;KGE&quot;</span><span class="p">],</span>
-<span class="w">    </span><span class="nt">&quot;variables&quot;</span><span class="p">:</span><span class="w">   </span><span class="p">[[</span><span class="mf">0.45</span><span class="p">,</span><span class="w"> </span><span class="mf">18.2</span><span class="p">],</span><span class="w"> </span><span class="p">[</span><span class="mf">0.61</span><span class="p">,</span><span class="w"> </span><span class="mf">12.7</span><span class="p">]],</span>
-<span class="w">    </span><span class="nt">&quot;objectives&quot;</span><span class="p">:</span><span class="w">  </span><span class="p">[[</span><span class="mf">0.83</span><span class="p">,</span><span class="w"> </span><span class="mf">0.71</span><span class="p">],</span><span class="w"> </span><span class="p">[</span><span class="mf">0.79</span><span class="p">,</span><span class="w"> </span><span class="mf">0.88</span><span class="p">]]</span>
+<span class="w">    </span><span class="nt">&quot;S1&quot;</span><span class="p">:</span><span class="w">      </span><span class="p">[</span><span class="mf">0.42</span><span class="p">,</span><span class="w"> </span><span class="mf">0.31</span><span class="p">],</span>
+<span class="w">    </span><span class="nt">&quot;ST&quot;</span><span class="p">:</span><span class="w">      </span><span class="p">[</span><span class="mf">0.58</span><span class="p">,</span><span class="w"> </span><span class="mf">0.47</span><span class="p">],</span>
+<span class="w">    </span><span class="nt">&quot;S1_conf&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="mf">0.05</span><span class="p">,</span><span class="w"> </span><span class="mf">0.04</span><span class="p">],</span>
+<span class="w">    </span><span class="nt">&quot;ST_conf&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="mf">0.06</span><span class="p">,</span><span class="w"> </span><span class="mf">0.05</span><span class="p">]</span>
 <span class="p">}</span>
 </code></pre></div>
-<p>Each row in <code>variables</code> and <code>objectives</code> is one Pareto-optimal solution.</p>
+<p>A high <code>ST</code> with a low <code>S1</code> for a parameter means it interacts strongly with others.
+Parameters with both low <code>S1</code> and low <code>ST</code> have little influence on the output and are
+candidates for fixing at a default value during calibration.</p>
 <hr />
 <h2 id="tips">Tips</h2>
 <div class="admonition tip">
-<p class="admonition-title">Choosing pop_size</p>
-<p>Set <code>pop_size</code> to a multiple of your CPU count so each generation runs in a single
-parallel batch. With 16 CPUs and <code>pop_size=16</code>, one batch per generation; with
-<code>pop_size=20</code>, two batches are needed (16 + 4).</p>
+<p class="admonition-title">How many samples do you need?</p>
+<p>Start with <code>sample_number=3</code> (40 simulations for 2 parameters) to get a quick picture.
+Increase to <code>sample_number=6</code> or higher for publication-quality indices — the required
+number of simulations grows as <code>2^(sample_number+1) × (n_params + 2)</code>.</p>
 </div>
 <div class="admonition tip">
-<p class="admonition-title">Using other optimisers</p>
-<p><code>_run_sim</code> is independent of pymoo. The same function works inside any optimisation
-loop — scipy, Optuna, a manual random search, or anything else. Wrap calls to
-<code>_run_sim</code> in a <code>ProcessPoolExecutor</code> whenever you need to evaluate a batch of
-parameter sets in parallel.</p>
+<p class="admonition-title">Using other samplers</p>
+<p>The Sobol sampler is the default choice, but SALib also provides Morris (<code>SALib.sample.morris</code>),
+FAST (<code>SALib.sample.fast_sampler</code>), and others. Replace the sampling and analysis calls;
+<code>_run_sim</code> and the scoring loop are the same regardless of the sampler used.</p>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">Single scalar vs multiple metrics</p>
+<p><code>SALib.analyze.sobol.analyze</code> requires one scalar per sample. If you want sensitivity
+indices for NSE and KGE separately, run <code>analyze</code> twice with two different <code>Y</code> arrays —
+one built from NSE values, one from KGE values.</p>
 </div>
 <div class="admonition tip">
 <p class="admonition-title">Tracking progress</p>
-<p>Set <code>verbose=True</code> in <code>pymoo.optimize.minimize</code> for generation-level logging.
-For per-simulation progress, <code>pySWATPlus</code> emits messages via Python's standard
+<p>For per-simulation progress, <code>pySWATPlus</code> emits messages via Python's standard
 <code>logging</code> module:</p>
 <div class="highlight"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
 <span class="n">logging</span><span class="o">.</span><span class="n">basicConfig</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">INFO</span><span class="p">)</span>
