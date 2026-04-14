@@ -20,7 +20,7 @@
 
 - Deleted legacy `requirements.txt` and `requirements-mypy.txt` files.
 
-- Improved documentation: rewrote the homepage as a proper landing page with a quick-start example, and added hand-written intro sections with usage examples to all API reference pages.
+- Improved documentation: rewrote the homepage as a proper landing page with a quick-start example, added hand-written intro sections with usage examples to all API reference pages, added guides on how to perform advanced calibration and sensitivy analysis.
 
 
 ## Version 1.3.0 (November 16, 2025)
