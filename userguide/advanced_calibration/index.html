@@ -1,0 +1,1310 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+        <link rel="prev" href="../model_calibration/">
+      
+      
+        <link rel="next" href="../data_analysis/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>Advanced Calibration - pySWATPlus</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/_mkdocstrings.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#advanced-calibration" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="pySWATPlus" class="md-header__button md-logo" aria-label="pySWATPlus" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            pySWATPlus
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Advanced Calibration
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 6H7c-3.31 0-6 2.69-6 6s2.69 6 6 6h10c3.31 0 6-2.69 6-6s-2.69-6-6-6m0 10H7c-2.21 0-4-1.79-4-4s1.79-4 4-4h10c2.21 0 4 1.79 4 4s-1.79 4-4 4M7 9c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 7H7a5 5 0 0 0-5 5 5 5 0 0 0 5 5h10a5 5 0 0 0 5-5 5 5 0 0 0-5-5m0 8a3 3 0 0 1-3-3 3 3 0 0 1 3-3 3 3 0 0 1 3 3 3 3 0 0 1-3 3"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../swatplus_simulation/" class="md-tabs__link">
+          
+  
+  
+  User Guide
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../api/txtinout_reader/" class="md-tabs__link">
+          
+  
+  
+  API Reference
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../CONTRIBUTING/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Contributor Guide
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../changelog/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Release Notes
+
+      </a>
+    </li>
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="pySWATPlus" class="md-nav__button md-logo" aria-label="pySWATPlus" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    pySWATPlus
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    User Guide
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    User Guide
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../swatplus_simulation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SWAT+ Simulation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sensitivity_interface/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Sensitivity Interface
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../model_calibration/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Model Calibration
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Advanced Calibration
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Advanced Calibration
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#building-blocks" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Building blocks
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#example-multi-channel-calibration-with-pymoo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Example: multi-channel calibration with pymoo
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Example: multi-channel calibration with pymoo">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#step-1-configure-the-model" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 1 — Configure the model
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-2-define-the-simulation-function" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 2 — Define the simulation function
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-3-define-the-pymoo-problem" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 3 — Define the pymoo Problem
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-4-run-the-optimisation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 4 — Run the optimisation
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#tips" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Tips
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../data_analysis/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Data Analysis
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    API Reference
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    API Reference
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/txtinout_reader/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    TxtinoutReader
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/performance_metrics/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    PerformanceMetrics
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/sensitivity_analyzer/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SensitivityAnalyzer
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/calibration/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Calibration
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/data_manager/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DataManager
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../CONTRIBUTING/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Contributor Guide
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../changelog/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Release Notes
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#building-blocks" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Building blocks
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#example-multi-channel-calibration-with-pymoo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Example: multi-channel calibration with pymoo
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Example: multi-channel calibration with pymoo">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#step-1-configure-the-model" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 1 — Configure the model
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-2-define-the-simulation-function" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 2 — Define the simulation function
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-3-define-the-pymoo-problem" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 3 — Define the pymoo Problem
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-4-run-the-optimisation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 4 — Run the optimisation
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#tips" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Tips
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="advanced-calibration">Advanced Calibration</h1>
+<p>The built-in <a href="../../api/calibration/"><code>Calibration</code></a> class covers the most common scenario:
+one or more output variables, each compared to observed data with a standard indicator (NSE, KGE, RMSE, etc.),
+optimised with GA, DE, or NSGA2.</p>
+<p>For cases that go beyond this — custom scoring functions, grouped Pareto objectives, integration with
+optimisers other than pymoo, or any other non-standard setup — pySWATPlus exposes the building blocks
+you need to compose your own calibration workflow directly.</p>
+<h2 id="building-blocks">Building blocks</h2>
+<table>
+<thead>
+<tr>
+<th>Task</th>
+<th>Tool</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Run a SWAT+ simulation with parameter changes</td>
+<td><code>TxtinoutReader.run_swat(sim_dir=..., parameters=[...])</code></td>
+</tr>
+<tr>
+<td>Read a SWAT+ output file</td>
+<td><code>DataManager().simulated_timeseries_df(sim_file=..., ...)</code></td>
+</tr>
+<tr>
+<td>Compute performance indicators</td>
+<td><code>PerformanceMetrics().compute_from_abbr(df, sim_col, obs_col, indicator)</code></td>
+</tr>
+<tr>
+<td>Parallel execution</td>
+<td><code>concurrent.futures.ProcessPoolExecutor</code></td>
+</tr>
+<tr>
+<td>Optimisation</td>
+<td><a href="https://pymoo.org/">pymoo</a>, <a href="https://docs.scipy.org/doc/scipy/reference/optimize.html">scipy.optimize</a>, <a href="https://optuna.org/">Optuna</a>, …</td>
+</tr>
+</tbody>
+</table>
+<p>No new API is required — everything needed is already public.</p>
+<hr />
+<h2 id="example-multi-channel-calibration-with-pymoo">Example: multi-channel calibration with pymoo</h2>
+<p>This example calibrates two parameters against observed daily flow at two channels simultaneously.
+Mean NSE and mean KGE (each averaged across both channels) are used as separate Pareto objectives,
+which is a case that the built-in <code>Calibration</code> class cannot express directly.</p>
+<h3 id="step-1-configure-the-model">Step 1 — Configure the model</h3>
+<p>Set the simulation period, output print options, and any fixed parameters before running calibration.
+See <a href="../sensitivity_interface/#configuration-settings">Configuration Settings</a> for a detailed walkthrough.</p>
+<h3 id="step-2-define-the-simulation-function">Step 2 — Define the simulation function</h3>
+<p>Each call to the optimiser evaluates an entire population in parallel using
+<code>concurrent.futures.ProcessPoolExecutor</code>. The function submitted to the executor
+must be <strong>defined at module level</strong> — lambdas and nested functions cannot be pickled
+and will cause a <code>PicklingError</code>.</p>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pathlib</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">shutil</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pySWATPlus</span><span class="w"> </span><span class="kn">import</span> <span class="n">TxtinoutReader</span><span class="p">,</span> <span class="n">DataManager</span>
+
+<span class="n">logging</span><span class="o">.</span><span class="n">basicConfig</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">INFO</span><span class="p">)</span>
+
+<span class="n">TXTINOUT_DIR</span> <span class="o">=</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;C:\Users\Username\custom_folder&#39;</span><span class="p">)</span>
+<span class="n">SIM_DIR</span>      <span class="o">=</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;C:\Users\Username\calibration_dir&#39;</span><span class="p">)</span>
+<span class="n">CHANNEL_IDS</span>  <span class="o">=</span> <span class="p">[</span><span class="mi">561</span><span class="p">,</span> <span class="mi">562</span><span class="p">]</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_run_sim</span><span class="p">(</span><span class="n">args</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;Run one SWAT+ simulation and return its outputs. Must be a top-level function.&#39;&#39;&#39;</span>
+    <span class="n">idx</span><span class="p">,</span> <span class="n">param_values</span><span class="p">,</span> <span class="n">param_configs</span> <span class="o">=</span> <span class="n">args</span>
+
+    <span class="c1"># Build the parameter list expected by run_swat</span>
+    <span class="n">parameters</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">{</span>
+            <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="n">cfg</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">],</span>
+            <span class="s1">&#39;change_type&#39;</span><span class="p">:</span> <span class="n">cfg</span><span class="p">[</span><span class="s1">&#39;change_type&#39;</span><span class="p">],</span>
+            <span class="s1">&#39;value&#39;</span><span class="p">:</span> <span class="nb">float</span><span class="p">(</span><span class="n">val</span><span class="p">)</span>
+        <span class="p">}</span>
+        <span class="k">for</span> <span class="n">cfg</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">param_configs</span><span class="p">,</span> <span class="n">param_values</span><span class="p">)</span>
+    <span class="p">]</span>
+
+    <span class="c1"># Each simulation needs its own empty subdirectory</span>
+    <span class="n">sim_path</span> <span class="o">=</span> <span class="n">SIM_DIR</span> <span class="o">/</span> <span class="sa">f</span><span class="s1">&#39;sim_</span><span class="si">{</span><span class="n">idx</span><span class="si">}</span><span class="s1">&#39;</span>
+    <span class="n">sim_path</span><span class="o">.</span><span class="n">mkdir</span><span class="p">()</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">reader</span>   <span class="o">=</span> <span class="n">TxtinoutReader</span><span class="p">(</span><span class="n">tio_dir</span><span class="o">=</span><span class="n">TXTINOUT_DIR</span><span class="p">)</span>
+        <span class="n">run_path</span> <span class="o">=</span> <span class="n">reader</span><span class="o">.</span><span class="n">run_swat</span><span class="p">(</span><span class="n">sim_dir</span><span class="o">=</span><span class="n">sim_path</span><span class="p">,</span> <span class="n">parameters</span><span class="o">=</span><span class="n">parameters</span><span class="p">)</span>
+
+        <span class="n">outputs</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">ch_id</span> <span class="ow">in</span> <span class="n">CHANNEL_IDS</span><span class="p">:</span>
+            <span class="n">outputs</span><span class="p">[</span><span class="n">ch_id</span><span class="p">]</span> <span class="o">=</span> <span class="n">DataManager</span><span class="p">()</span><span class="o">.</span><span class="n">simulated_timeseries_df</span><span class="p">(</span>
+                <span class="n">sim_file</span><span class="o">=</span><span class="n">run_path</span> <span class="o">/</span> <span class="s1">&#39;channel_sd_day.txt&#39;</span><span class="p">,</span>
+                <span class="n">has_units</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                <span class="n">apply_filter</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;gis_id&#39;</span><span class="p">:</span> <span class="p">[</span><span class="n">ch_id</span><span class="p">]},</span>
+                <span class="n">usecols</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;flo_out&#39;</span><span class="p">]</span>
+            <span class="p">)</span>
+    <span class="k">finally</span><span class="p">:</span>
+        <span class="n">shutil</span><span class="o">.</span><span class="n">rmtree</span><span class="p">(</span><span class="n">sim_path</span><span class="p">,</span> <span class="n">ignore_errors</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">idx</span><span class="p">,</span> <span class="n">outputs</span>
+</code></pre></div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If a previous run was interrupted and left stale <code>sim_&lt;n&gt;</code> directories behind,
+remove them manually before restarting — <code>run_swat</code> requires each simulation
+directory to be empty.</p>
+</div>
+<h3 id="step-3-define-the-pymoo-problem">Step 3 — Define the pymoo Problem</h3>
+<p>Load observed data once at module level so it is available in <code>_evaluate</code>.
+Indicator computation happens in the main process after simulations complete,
+so there is no concern about pickling pandas DataFrames.</p>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">concurrent.futures</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pymoo.core.problem</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pySWATPlus</span><span class="w"> </span><span class="kn">import</span> <span class="n">PerformanceMetrics</span>
+
+<span class="n">obs</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="mi">561</span><span class="p">:</span> <span class="n">pandas</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;C:\Users\Username\obs_561.csv&#39;</span><span class="p">,</span> <span class="n">parse_dates</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;date&#39;</span><span class="p">]),</span>
+    <span class="mi">562</span><span class="p">:</span> <span class="n">pandas</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;C:\Users\Username\obs_562.csv&#39;</span><span class="p">,</span> <span class="n">parse_dates</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;date&#39;</span><span class="p">]),</span>
+<span class="p">}</span>
+<span class="k">for</span> <span class="n">df</span> <span class="ow">in</span> <span class="n">obs</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+    <span class="n">df</span><span class="p">[</span><span class="s1">&#39;date&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;date&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">dt</span><span class="o">.</span><span class="n">date</span>
+    <span class="n">df</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;discharge&#39;</span><span class="p">:</span> <span class="s1">&#39;obs&#39;</span><span class="p">},</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="n">PARAM_CONFIGS</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">{</span><span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;esco&#39;</span><span class="p">,</span> <span class="s1">&#39;change_type&#39;</span><span class="p">:</span> <span class="s1">&#39;absval&#39;</span><span class="p">,</span> <span class="s1">&#39;lower_bound&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>  <span class="s1">&#39;upper_bound&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">},</span>
+    <span class="p">{</span><span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;cn2&#39;</span><span class="p">,</span>  <span class="s1">&#39;change_type&#39;</span><span class="p">:</span> <span class="s1">&#39;pctchg&#39;</span><span class="p">,</span> <span class="s1">&#39;lower_bound&#39;</span><span class="p">:</span> <span class="mi">25</span><span class="p">,</span> <span class="s1">&#39;upper_bound&#39;</span><span class="p">:</span> <span class="mi">75</span><span class="p">},</span>
+<span class="p">]</span>
+
+
+<span class="k">class</span><span class="w"> </span><span class="nc">MultiChannelCalibration</span><span class="p">(</span><span class="n">pymoo</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">problem</span><span class="o">.</span><span class="n">Problem</span><span class="p">):</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">xl</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">cfg</span><span class="p">[</span><span class="s1">&#39;lower_bound&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">cfg</span> <span class="ow">in</span> <span class="n">PARAM_CONFIGS</span><span class="p">])</span>
+        <span class="n">xu</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">cfg</span><span class="p">[</span><span class="s1">&#39;upper_bound&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">cfg</span> <span class="ow">in</span> <span class="n">PARAM_CONFIGS</span><span class="p">])</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">n_var</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">PARAM_CONFIGS</span><span class="p">),</span> <span class="n">n_obj</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">xl</span><span class="o">=</span><span class="n">xl</span><span class="p">,</span> <span class="n">xu</span><span class="o">=</span><span class="n">xu</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_evaluate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">out</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="c1"># Submit all simulations in the population</span>
+        <span class="n">args_list</span> <span class="o">=</span> <span class="p">[(</span><span class="n">i</span><span class="p">,</span> <span class="n">X</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">PARAM_CONFIGS</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">X</span><span class="p">))]</span>
+
+        <span class="n">results</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">with</span> <span class="n">concurrent</span><span class="o">.</span><span class="n">futures</span><span class="o">.</span><span class="n">ProcessPoolExecutor</span><span class="p">()</span> <span class="k">as</span> <span class="n">executor</span><span class="p">:</span>
+            <span class="n">futures</span> <span class="o">=</span> <span class="p">{</span><span class="n">executor</span><span class="o">.</span><span class="n">submit</span><span class="p">(</span><span class="n">_run_sim</span><span class="p">,</span> <span class="n">a</span><span class="p">):</span> <span class="n">a</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">args_list</span><span class="p">}</span>
+            <span class="k">for</span> <span class="n">future</span> <span class="ow">in</span> <span class="n">concurrent</span><span class="o">.</span><span class="n">futures</span><span class="o">.</span><span class="n">as_completed</span><span class="p">(</span><span class="n">futures</span><span class="p">):</span>
+                <span class="n">idx</span><span class="p">,</span> <span class="n">outputs</span> <span class="o">=</span> <span class="n">future</span><span class="o">.</span><span class="n">result</span><span class="p">()</span>
+                <span class="n">results</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="o">=</span> <span class="n">outputs</span>
+
+        <span class="c1"># Score each individual</span>
+        <span class="n">pm</span> <span class="o">=</span> <span class="n">PerformanceMetrics</span><span class="p">()</span>
+        <span class="n">F</span>  <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">X</span><span class="p">)):</span>
+            <span class="n">nse_vals</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="n">kge_vals</span> <span class="o">=</span> <span class="p">[]</span>
+
+            <span class="k">for</span> <span class="n">ch_id</span> <span class="ow">in</span> <span class="n">CHANNEL_IDS</span><span class="p">:</span>
+                <span class="n">sim_df</span> <span class="o">=</span> <span class="n">results</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">ch_id</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+                <span class="n">sim_df</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;date&#39;</span><span class="p">,</span> <span class="s1">&#39;sim&#39;</span><span class="p">]</span>
+
+                <span class="n">merged</span> <span class="o">=</span> <span class="n">sim_df</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">obs</span><span class="p">[</span><span class="n">ch_id</span><span class="p">][[</span><span class="s1">&#39;date&#39;</span><span class="p">,</span> <span class="s1">&#39;obs&#39;</span><span class="p">]],</span> <span class="n">on</span><span class="o">=</span><span class="s1">&#39;date&#39;</span><span class="p">,</span> <span class="n">how</span><span class="o">=</span><span class="s1">&#39;inner&#39;</span><span class="p">)</span>
+
+                <span class="c1"># Normalise by the observed range before computing indicators</span>
+                <span class="n">obs_min</span> <span class="o">=</span> <span class="n">merged</span><span class="p">[</span><span class="s1">&#39;obs&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">min</span><span class="p">()</span>
+                <span class="n">obs_max</span> <span class="o">=</span> <span class="n">merged</span><span class="p">[</span><span class="s1">&#39;obs&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
+                <span class="n">norm</span>    <span class="o">=</span> <span class="p">(</span><span class="n">merged</span><span class="p">[[</span><span class="s1">&#39;sim&#39;</span><span class="p">,</span> <span class="s1">&#39;obs&#39;</span><span class="p">]]</span> <span class="o">-</span> <span class="n">obs_min</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">obs_max</span> <span class="o">-</span> <span class="n">obs_min</span><span class="p">)</span>
+
+                <span class="n">nse_vals</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">pm</span><span class="o">.</span><span class="n">compute_from_abbr</span><span class="p">(</span><span class="n">norm</span><span class="p">,</span> <span class="s1">&#39;sim&#39;</span><span class="p">,</span> <span class="s1">&#39;obs&#39;</span><span class="p">,</span> <span class="s1">&#39;NSE&#39;</span><span class="p">))</span>
+                <span class="n">kge_vals</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">pm</span><span class="o">.</span><span class="n">compute_from_abbr</span><span class="p">(</span><span class="n">norm</span><span class="p">,</span> <span class="s1">&#39;sim&#39;</span><span class="p">,</span> <span class="s1">&#39;obs&#39;</span><span class="p">,</span> <span class="s1">&#39;KGE&#39;</span><span class="p">))</span>
+
+            <span class="c1"># Negate: pymoo minimises, NSE and KGE are maximised</span>
+            <span class="n">F</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="o">-</span><span class="n">numpy</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">nse_vals</span><span class="p">),</span> <span class="o">-</span><span class="n">numpy</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">kge_vals</span><span class="p">)])</span>
+
+        <span class="n">out</span><span class="p">[</span><span class="s2">&quot;F&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">F</span><span class="p">)</span>
+</code></pre></div>
+<h3 id="step-4-run-the-optimisation">Step 4 — Run the optimisation</h3>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">pymoo.algorithms.moo.nsga2</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pymoo.optimize</span>
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">pymoo</span><span class="o">.</span><span class="n">optimize</span><span class="o">.</span><span class="n">minimize</span><span class="p">(</span>
+        <span class="n">problem</span><span class="o">=</span><span class="n">MultiChannelCalibration</span><span class="p">(),</span>
+        <span class="n">algorithm</span><span class="o">=</span><span class="n">pymoo</span><span class="o">.</span><span class="n">algorithms</span><span class="o">.</span><span class="n">moo</span><span class="o">.</span><span class="n">nsga2</span><span class="o">.</span><span class="n">NSGA2</span><span class="p">(</span><span class="n">pop_size</span><span class="o">=</span><span class="mi">16</span><span class="p">),</span>
+        <span class="n">termination</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;n_gen&#39;</span><span class="p">,</span> <span class="mi">20</span><span class="p">),</span>
+        <span class="n">save_history</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span>
+    <span class="p">)</span>
+
+    <span class="c1"># Pareto-optimal solutions — un-negate to recover natural direction</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Parameters:&#39;</span><span class="p">,</span> <span class="n">result</span><span class="o">.</span><span class="n">X</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;NSE / KGE:&#39;</span><span class="p">,</span> <span class="o">-</span><span class="n">result</span><span class="o">.</span><span class="n">F</span><span class="p">)</span>
+</code></pre></div>
+<hr />
+<h2 id="tips">Tips</h2>
+<div class="admonition tip">
+<p class="admonition-title">Choosing pop_size</p>
+<p>Set <code>pop_size</code> to a multiple of your CPU count so each generation runs in a single
+parallel batch. With 16 CPUs and <code>pop_size=16</code>, one batch per generation; with
+<code>pop_size=20</code>, two batches are needed (16 + 4).</p>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">Using other optimisers</p>
+<p><code>_run_sim</code> is independent of pymoo. The same function works inside any optimisation
+loop — scipy, Optuna, a manual random search, or anything else. Wrap calls to
+<code>_run_sim</code> in a <code>ProcessPoolExecutor</code> whenever you need to evaluate a batch of
+parameter sets in parallel.</p>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">Tracking progress</p>
+<p>Set <code>verbose=True</code> in <code>pymoo.optimize.minimize</code> for generation-level logging.
+For per-simulation progress, <code>pySWATPlus</code> emits messages via Python's standard
+<code>logging</code> module:</p>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
+<span class="n">logging</span><span class="o">.</span><span class="n">basicConfig</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">INFO</span><span class="p">)</span>
+</code></pre></div>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">Troubleshooting parallel errors</p>
+<p>If <code>ProcessPoolExecutor</code> raises an unclear error, close the terminal and restart it.
+Lingering background processes or locked files from a previous run can interfere
+with new parallel workloads.</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.tabs", "content.code.annotate"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>
